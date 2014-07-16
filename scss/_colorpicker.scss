@@ -1,0 +1,30 @@
+@import "functions";
+@import "global";
+
+@include exports("colorpicker") {
+    .color-picker-dialog {
+        .card-item-info { padding: .5em; }
+
+        .card-item-value {
+            padding: .5em;
+            height: 2.5em;
+            min-width: 6em;
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.15);
+            border-radius: $roundness;
+
+            &:focus, &:hover, &:active {
+                outline: none;
+                box-shadow: inset 0 0 0 1px $accent-color;
+            }
+        }
+
+        .card-item-action-color { height: 2.5em; }
+    }
+
+    .color-picker-canvas {
+        border: .5em solid transparent;
+        border-bottom: none;
+    }
+
+    .color-picker { display: block; }
+}

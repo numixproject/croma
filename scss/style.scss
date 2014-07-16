@@ -1,0 +1,210 @@
+@import "functions";
+@import "reset";
+@import "global";
+@import "animations";
+@import "modal";
+@import "colorpicker";
+
+html, body { height: 100%; }
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: $font-family;
+    font-size: 14px;
+    line-height: 21px;
+
+    @each $view in $views {
+        &.view-#{$view} {
+            [data-view]:not([data-view~=#{$view}]) { display: none; }
+        }
+    }
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    padding: 0 ( .5em / 1.5);
+    height: $bar-height / 1.5;
+    background-color: $accent-color;
+    color: $light-color;
+    line-height: $bar-height / 1.5;
+    font-weight: 700;
+    font-size: 1.5em;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    box-shadow: inset 0 -2px 0 rgba(0,0,0,0.05),
+                0 1px 3px rgba(0,0,0,0.15);
+}
+
+.header-inner {
+    width: $mobile-width / 1.5;
+    max-width: 100%;
+    margin: auto;
+
+    &:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+}
+
+.header-title { float: left; }
+
+.header-actions { float: right; }
+
+.header-action-button {
+    @extend %snappy;
+
+    padding: .5em;
+    height: 2.25em;
+    width: 2.25em;
+    float: left;
+    background-size: 1em 1em;
+    background-repeat: no-repeat;
+    background-position: center center;
+    cursor: pointer;
+
+    &:focus, &:hover { background-color: rgba(0,0,0,0.05); }
+
+    &:active { background-color: rgba(0,0,0,0.10); }
+}
+
+.header-action-add { background-image: url(../img/add.svg); }
+
+.header-action-photo { background-image: url(../img/photo.svg); }
+
+.card-area-wrapper {
+    position: fixed;
+    top: $bar-height;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #eee;
+    overflow: auto;
+    -webkit-overflow-scrolling : touch;
+}
+
+.card-area {
+    height: 100%;
+    width: $mobile-width;
+    max-width: 100%;
+    margin: auto;
+}
+
+.card-item {
+    background-color: #fff;
+    padding: .5em;
+    margin: .5em;
+    border-radius: $roundness;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+.card-item-color {
+    height: 4em;
+    border-radius: $roundness - 1px;
+}
+
+.card-item-info {
+    padding-top: .5em;
+
+    &:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+}
+
+.card-item-value { float: left; }
+
+.card-item-actions { float: right; }
+
+.card-item-action {
+    @extend %snappy;
+
+    display: inline-block;
+    margin: 0 .5em;
+    height: 1.5em;
+    width: 1.5em;
+    background-repeat: no-repeat;
+    background-position: center center;
+    cursor: pointer;
+
+    &:last-of-type { margin-right: 0; }
+}
+
+$actions: love, delete, share;
+
+@for $i from 1 through length($actions) {
+    $action: nth($actions, $i);
+
+    .card-item-action-#{$action} {
+        background-image: url(../img/#{$action}.svg);
+
+        &:active { background: url(../img/#{$action}-active.svg); }
+    }
+}
+
+.card-item-loved {
+    .card-item-action-love {
+        position: relative;
+        background: url(../img/love-active.svg);
+
+        &.clicked {
+            &:after {
+                @extend %love;
+
+                content: "";
+                display: block;
+                background: url(../img/love-active.svg) no-repeat center center;
+                height: 100%;
+                width: 100%;
+            }
+        }
+    }
+}
+
+.card-item-action-color {
+    height: 1.5em;
+    width: 6em;
+    border-radius: $roundness;
+}
+
+.card-item-buttons {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: stretch;
+    align-content: space-between;
+}
+
+.card-item-button {
+    @extend %snappy;
+
+    flex-grow: 1;
+    border-color: rgba(0,0,0,0.15);
+    border-width: 1px 1px 0 0;
+    border-style: solid;
+    padding: .75em;
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+
+    &:focus, &:hover { background-color: rgba(0,0,0,0.05); }
+
+    &:active { background-color: rgba(0,0,0,0.1); }
+
+    &:only-of-type, &:last-of-type { border-right-width: 0; }
+}
+
+/* browser specific styles */
+::selection {
+    background-color: $accent-color;
+    color: $light-color;
+}
+
+::-moz-selection {
+    background-color: $accent-color;
+    color: $light-color;
+}

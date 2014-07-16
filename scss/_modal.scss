@@ -1,0 +1,44 @@
+@import "functions";
+@import "global";
+@import "animations";
+
+@include exports("modal") {
+    .backdrop {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        z-index: 40;
+        background: rgba(0,0,0,.7);
+    }
+
+    .modal {
+        display: block;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 27em;
+        max-width: 100%;
+        max-height: 100%;
+        z-index: 50;
+        padding: .5em;
+        overflow: auto;
+        -webkit-overflow-scrolling : touch;
+
+        @media #{$mobile-break-point} {
+            left: 0;
+            margin-left: 0!important;
+            min-width: 100%;
+            width: 100%;
+            border-radius: 0;
+        }
+    }
+
+    .modal-content {
+        background: $light-color;
+        border-radius: $roundness;
+        box-shadow: 0 0 15px 0 rgba(0,0,0,.3);
+    }
+}
