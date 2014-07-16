@@ -83,7 +83,8 @@ header {
     right: 0;
     bottom: 0;
     background-color: #eee;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
     -webkit-overflow-scrolling : touch;
 }
 
@@ -109,17 +110,11 @@ header {
 
 .card-item-info {
     padding-top: .5em;
-
-    &:after {
-        content: "";
-        display: table;
-        clear: both;
-    }
+    display: flex;
+    flex-flow: row nowrap;
 }
 
-.card-item-value { float: left; }
-
-.card-item-actions { float: right; }
+.card-item-value { flex-grow: 1; }
 
 .card-item-action {
     @extend %snappy;

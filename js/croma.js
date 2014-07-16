@@ -215,17 +215,31 @@ var croma = {
     },
     ui: {
         intoview: function(element, container) {
-            if ($.fn.velocity) {
-                if (($(element).offset().top - $(container).offset().top) < 0 ||
-                    $(element).offset().top > $(container).height()) {
-                    $(element).velocity("scroll", {
-                        duration: 150,
-                        container: $(container)
-                    });
-                }
-            } else {
-                $(element).get(0).scrollIntoView(true);
+            if (($(element).offset().top - $(container).offset().top) < 0 ||
+                $(element).offset().top > $(container).height()) {
+                $(element).velocity("scroll", {
+                    duration: 150,
+                    container: $(container)
+                });
             }
+        },
+        swipeout: function(element) {
+            $(element).velocity({
+                translateX: "100%",
+                opacity: 0
+            }, {
+                duration: 300,
+                easing: [0.7,0.1,0.57,0.79]
+            }).velocity({
+                height: 0,
+                paddingTop: 0,
+                paddingBottom: 0
+            }, {
+                duration: 300,
+                complete: function() {
+                    $(this).remove();
+                }
+            });
         },
         modal: function(body) {
             var $modal = $(".modal"),
@@ -252,13 +266,9 @@ var croma = {
 
             $modal.dismiss = function() {
                 [ $modal, $backdrop ].forEach(function($el) {
-                    if ($.fn.velocity) {
-                        $el.velocity("stop").velocity("fadeOut", 300, function() {
-                            $(this).remove();
-                        });
-                    } else {
-                        $el.remove();
-                    }
+                    $el.velocity("stop").velocity("fadeOut", 300, function() {
+                        $(this).remove();
+                    });
                 });
 
                 $.event.trigger({
@@ -286,7 +296,7 @@ var croma = {
                 $info = $("<div>").addClass("card-item-info"),
                 $buttons = $("<div>").addClass("card-item-buttons"),
                 $canvas = $("<canvas>").addClass("color-picker"),
-                $colorvalue = $("<div>").addClass("card-item-value").attr("contenteditable", true),
+                $colorvalue = $("<div>").addClass("card-item-value-text").attr("contenteditable", true),
                 $colorbutton = $("<div>").addClass("card-item-action-color"),
                 touch = "ontouchend" in document,
                 startEvent = (touch) ? "touchstart" : "mousedown",
@@ -342,10 +352,8 @@ var croma = {
             });
 
             $info.append(
-                $colorvalue,
-                $("<div>").addClass("card-item-actions").append(
-                    $colorbutton
-                )
+                $("<div>").addClass("card-item-value").append($colorvalue),
+                $("<div>").addClass("card-item-actions").append($colorbutton)
             );
 
             $buttons.append(
@@ -441,15 +449,7 @@ var croma = {
             }
 
             if ($cards) {
-                if ($.fn.velocity) {
-                    $cards.velocity("swipeOut", {
-                        complete: function() {
-                            $(this).remove();
-                        }
-                    });
-                } else {
-                    $cards.remove();
-                }
+                croma.ui.swipeout($cards);
             }
 
             return $cards;
