@@ -298,10 +298,9 @@ var croma = {
                 $canvas = $("<canvas>").addClass("color-picker"),
                 $colorvalue = $("<div>").addClass("card-item-value-text").attr("contenteditable", true),
                 $colorbutton = $("<div>").addClass("card-item-action-color"),
-                touch = "ontouchend" in document,
-                startEvent = (touch) ? "touchstart" : "mousedown",
-                moveEvent = (touch) ? "touchmove" : "mousemove",
-                endEvent = (touch) ? "touchend touchleave touchcancel" : "mouseup",
+                startEvent = "touchstart mousedown pointerdown",
+                moveEvent = "touchmove mousemove pointermove",
+                endEvent = "touchend touchleave touchcancel mouseup pointerup",
                 colorTimer,
                 setcolor = function(color, notext) {
                     if (croma.utils.tohex(color)) {
