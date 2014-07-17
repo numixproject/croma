@@ -143,23 +143,29 @@ $actions: love, delete, share;
     }
 }
 
-.card-item-loved {
-    .card-item-action-love {
-        position: relative;
-        background: url(../img/love-active.svg);
+.card-item-action-love {
+    position: relative;
 
-        &.clicked {
-            &:after {
+    &.clicked {
+        &:after {
+            @extend %break;
+
+            content: "";
+            display: block;
+            height: 100%;
+            width: 100%;
+            background: url(../img/love-break.svg) no-repeat center center;
+            opacity: 0;
+
+            .card-item-loved & {
                 @extend %love;
 
-                content: "";
-                display: block;
                 background: url(../img/love-active.svg) no-repeat center center;
-                height: 100%;
-                width: 100%;
             }
         }
     }
+
+    .card-item-loved & { background: url(../img/love-active.svg); }
 }
 
 .card-item-action-color {

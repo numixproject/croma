@@ -34,16 +34,16 @@ $(function() {
                 $card.find(".card-item-action-love").on("click", function() {
                     var $button = $(this);
 
+                    $button.addClass("clicked");
+
+                    setTimeout(function() {
+                        $button.removeClass("clicked");
+                    }, 500);
+
                     if ($card.hasClass("card-item-loved")) {
                         croma.cards.love(color, false);
                     } else {
                         croma.cards.love(color);
-
-                        $button.addClass("clicked");
-
-                        setTimeout(function() {
-                            $button.removeClass("clicked");
-                        }, 1000);
                     }
                 });
 

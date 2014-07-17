@@ -24,6 +24,10 @@
     @include prefix(animation, love $args);
 }
 
+@mixin break($args: .3s 1) {
+    @include prefix(animation, break $args);
+}
+
 @mixin transition($duration: .3s, $timing: ease) {
     @include prefix(transition, $duration $timing);
 }
@@ -44,6 +48,22 @@
     }
 
     %love { @include love; }
+
+    @include keyframes(break) {
+        0% {
+            @include transform(scale(1));
+
+            opacity: 1;
+        }
+
+        100% {
+            @include transform(scale(5));
+
+            opacity: 0;
+        }
+    }
+
+    %break { @include break; }
 
     %transition { @include transition; }
 

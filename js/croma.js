@@ -215,7 +215,7 @@ var croma = {
     },
     ui: {
         position: function(event) {
-            var $element = $(event.target),
+            var $element = $(event.currentTarget),
                 startX = event.originalEvent.touches ? event.originalEvent.touches[0].pageX : event.pageX,
                 startY = event.originalEvent.touches ? event.originalEvent.touches[0].pageY : event.pageY,
                 posX = startX - $element.offset().left,
@@ -254,7 +254,7 @@ var croma = {
             });
         },
         ripple: function(event) {
-            var $element = $(event.target),
+            var $element = $(event.currentTarget),
                 pos = croma.ui.position(event);
 
             var $ripple = $('<svg class="ripple">' +
@@ -362,7 +362,7 @@ var croma = {
                     }
                 };
 
-            croma.ui.picker.value = croma.ui.picker.value || "#000000";
+            croma.ui.picker.value = croma.ui.picker.value || "#f06760";
 
             setcolor(croma.ui.picker.value);
 
