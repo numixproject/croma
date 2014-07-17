@@ -92,6 +92,8 @@ $(function() {
         }
     }
 
+    $(".header-action-button").on("click", croma.ui.ripple);
+
     $(".header-action-add").on("click", function() {
         var $modal = croma.ui.picker(),
             color;

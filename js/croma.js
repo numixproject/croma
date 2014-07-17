@@ -214,12 +214,24 @@ var croma = {
         }
     },
     ui: {
+        position: function(event) {
+            var $element = $(event.target),
+                startX = event.originalEvent.touches ? event.originalEvent.touches[0].pageX : event.pageX,
+                startY = event.originalEvent.touches ? event.originalEvent.touches[0].pageY : event.pageY,
+                posX = startX - $element.offset().left,
+                posY = startY - $element.offset().top;
+
+            return [ posX, posY ];
+        },
         intoview: function(element, container) {
-            if (($(element).offset().top - $(container).offset().top) < 0 ||
-                $(element).offset().top > $(container).height()) {
-                $(element).velocity("scroll", {
+            var $element = $(element),
+                $container = $(container);
+
+            if (($element.offset().top - $container.offset().top) < 0 ||
+                $element.offset().top > $container.height()) {
+                $element.velocity("scroll", {
                     duration: 150,
-                    container: $(container)
+                    container: $container
                 });
             }
         },
@@ -239,6 +251,41 @@ var croma = {
                 complete: function() {
                     $(this).remove();
                 }
+            });
+        },
+        ripple: function(event) {
+            var $element = $(event.target),
+                pos = croma.ui.position(event);
+
+            var $ripple = $('<svg class="ripple">' +
+                            '<circle cx="' + pos[0] +'" cy="' + pos[1] + '" r="0" fill="#000" opacity="0.1"/>' +
+                            '</svg>'),
+                $circle = $ripple.find("circle");
+
+            $ripple.css({
+                position: "absolute",
+                top: 0,
+                left: 0,
+                height: "100%",
+                width: "100%"
+            });
+
+            $element.find(".ripple").remove();
+
+            $element.css({ position: "relative" })
+                    .append($ripple);
+
+            $circle.velocity(
+                { r: $ripple.outerWidth() },
+                {
+                    easing: "easeOutQuad",
+                    duration: 500,
+                    step: function(val) {
+                        $(this).attr("r", val);
+                    }
+                }
+            ).velocity({ opacity: 0 }, 300, function() {
+                $ripple.remove();
             });
         },
         modal: function(body) {
@@ -296,6 +343,7 @@ var croma = {
                 $info = $("<div>").addClass("card-item-info"),
                 $buttons = $("<div>").addClass("card-item-buttons"),
                 $canvas = $("<canvas>").addClass("color-picker"),
+                $container = $("<div>").addClass("color-picker-canvas").append($canvas),
                 $colorvalue = $("<div>").addClass("card-item-value-text").attr("contenteditable", true),
                 $colorbutton = $("<div>").addClass("card-item-action-color"),
                 startEvent = "touchstart mousedown pointerdown",
@@ -312,14 +360,6 @@ var croma = {
 
                         croma.ui.picker.value = color;
                     }
-                },
-                getPos = function(eData, element) {
-                    var startX = eData.originalEvent.touches ? eData.originalEvent.touches[0].pageX : eData.pageX,
-                        startY = eData.originalEvent.touches ? eData.originalEvent.touches[0].pageY : eData.pageY,
-                        posX = startX - $(element).offset().left,
-                        posY = startY - $(element).offset().top;
-
-                    return [ posX, posY ];
                 };
 
             croma.ui.picker.value = croma.ui.picker.value || "#000000";
@@ -327,13 +367,13 @@ var croma = {
             setcolor(croma.ui.picker.value);
 
             $canvas.on(startEvent, function(event) {
-                var pos = getPos(event, this),
+                var pos = croma.ui.position(event),
                     color = croma.canvas.getcolor(pos[0], pos[1], this);
 
                 setcolor(color);
 
                 $(this).on(moveEvent, function(event) {
-                    pos = getPos(event, this);
+                    pos = croma.ui.position(event);
                     color = croma.canvas.getcolor(pos[0], pos[1], this);
 
                     setcolor(color);
@@ -360,8 +400,10 @@ var croma = {
                 $("<div>").addClass("card-item-button card-item-button-cancel modal-remove").text("Cancel")
             );
 
+            $buttons.find(".card-item-button").on("click", croma.ui.ripple);
+
             $content.append(
-                $("<div>").addClass("color-picker-canvas").append($canvas),
+                $container,
                 $info,
                 $buttons
             ).appendTo($modal);
@@ -399,6 +441,8 @@ var croma = {
                     $("<div>").addClass("card-item-action card-item-action-delete"),
                     $("<div>").addClass("card-item-action card-item-action-share")
                 );
+
+            $color.on("click", croma.ui.ripple);
 
             $info.append(
                 $value,
