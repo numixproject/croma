@@ -253,12 +253,16 @@ var croma = {
                 }
             });
         },
-        ripple: function(event) {
+        ripple: function(event, color) {
             var $element = $(event.currentTarget),
                 pos = croma.ui.position(event);
 
+            if (!(color && typeof color === "string")) {
+                color = "rgba(0,0,0,0.1)";
+            }
+
             var $ripple = $('<svg class="ripple">' +
-                            '<circle cx="' + pos[0] +'" cy="' + pos[1] + '" r="0" fill="#000" opacity="0.1"/>' +
+                            '<circle cx="' + pos[0] +'" cy="' + pos[1] + '" r="0" fill="' + color + '" opacity="1"/>' +
                             '</svg>'),
                 $circle = $ripple.find("circle");
 
@@ -272,8 +276,11 @@ var croma = {
 
             $element.find(".ripple").remove();
 
-            $element.css({ position: "relative" })
-                    .append($ripple);
+            if ($element.css("position") === "static") {
+                $element.css({ position: "relative" });
+            }
+
+            $element.append($ripple);
 
             $circle.velocity(
                 { r: $ripple.outerWidth() },
