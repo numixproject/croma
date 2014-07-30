@@ -1,74 +1,85 @@
 /* jshint browser: true */
-/* global $, croma */
+/* global $, casket, croma */
 
 $(function() {
     var $container = $(".card-area-wrapper"),
-        colors = croma.database.get("colors"),
-        loved = croma.database.get("loved"),
-        changeView = function(view) {
-            var $body = $("body"),
-                classes;
+        colors, loved;
 
-            if (!$body.hasClass("view-" + view)) {
-                if ($body.attr("class")) {
-                    classes = $body.attr("class").replace(/view-\w+/g, "").trim();
+    try {
+        casket.query("croma");
+    } catch(err) {
+        casket.create("croma", { colors: [], loved: [] });
+    }
 
-                    $body.attr("class", classes);
+    colors = casket.query("croma", "colors").results;
+    loved = casket.query("croma", "loved").results;
+
+    function changeView(view) {
+        var $body = $("body"),
+            classes;
+
+        if (!$body.hasClass("view-" + view)) {
+            if ($body.attr("class")) {
+                classes = $body.attr("class").replace(/view-\w+/g, "").trim();
+
+                $body.attr("class", classes);
+            }
+
+            $body.addClass("view-" + view);
+        }
+    }
+
+    function addCard(color) {
+        if (!color) {
+            return;
+        }
+
+        var $start = $(".start-area"),
+            $card = croma.cards.add(color);
+
+        if ($card && $card.length) {
+            $card.on("click", function() {
+            });
+
+            $card.find(".card-item-action-love").on("click", function() {
+                var $button = $(this);
+
+                $button.addClass("clicked");
+
+                setTimeout(function() {
+                    $button.removeClass("clicked");
+                }, 500);
+
+                if ($card.hasClass("card-item-loved")) {
+                    croma.cards.love(color, false);
+                } else {
+                    croma.cards.love(color);
                 }
+            });
 
-                $body.addClass("view-" + view);
-            }
-        },
-        addCard = function(color) {
-            if (!color) {
-                return;
-            }
+            $card.find(".card-item-action-delete").on("click", function() {
+                croma.cards.remove(color);
+            });
+        }
 
-            var $start = $(".start-area"),
-                $card = croma.cards.add(color);
+        if ($("[data-color]").length) {
+            changeView("normal");
+        }
 
-            if ($card && $card.length) {
-                $card.on("click", function() {
-                });
+        return $card;
+    }
 
-                $card.find(".card-item-action-love").on("click", function() {
-                    var $button = $(this);
+    function removeCard(color) {
+        if (!color) {
+            return;
+        }
 
-                    $button.addClass("clicked");
+        croma.cards.remove(color);
 
-                    setTimeout(function() {
-                        $button.removeClass("clicked");
-                    }, 500);
-
-                    if ($card.hasClass("card-item-loved")) {
-                        croma.cards.love(color, false);
-                    } else {
-                        croma.cards.love(color);
-                    }
-                });
-
-                $card.find(".card-item-action-delete").on("click", function() {
-                    croma.cards.remove(color);
-                });
-            }
-
-            if ($("[data-color]").length) {
-                changeView("normal");
-            }
-
-            return $card;
-        },
-        removeCard = function(color) {
-            if (!color) {
-                return;
-            }
-
-            croma.cards.remove(color);
-
-            if (!$("[data-color]").length) {
-                changeView("empty");
-            }
-        };
+        if (!$("[data-color]").length) {
+            changeView("empty");
+        }
+    }
 
     if (colors) {
         if (colors.length && colors instanceof Array) {

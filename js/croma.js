@@ -1,5 +1,5 @@
 /* jshint browser: true */
-/* global $ */
+/* global $, casket */
 
 var croma = {
     utils: {
@@ -63,106 +63,6 @@ var croma = {
                     b = parseInt(hex[3], 16);
 
                 return "rgb(" + r + "," + g + "," + b + ")";
-            }
-        }
-    },
-    database: {
-        set: function(key, value) {
-            if (!key || !value) {
-                return;
-            }
-
-            localStorage.setItem(
-                JSON.stringify(key),
-                JSON.stringify(value)
-            );
-        },
-        get: function(key) {
-            if (!key) {
-                return;
-            }
-
-            var data = localStorage.getItem(
-                JSON.stringify(key)
-            );
-
-            return JSON.parse(data);
-        },
-        check: function(key, value) {
-            if (!key || !value) {
-                return;
-            }
-
-            var data = croma.database.get(key);
-
-            if (data && data.length && data instanceof Array) {
-                if (data.indexOf(value) > -1) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else if (data && data === value) {
-                return true;
-            } else {
-                return false;
-            }
-        },
-        add: function(key, value) {
-            if (!key || !value) {
-                return;
-            }
-
-            var data = croma.database.get(key);
-
-            if (data && data.length && data instanceof Array) {
-                if (value.length && value instanceof Array) {
-                    for (var i = 0; i < value.length; i++) {
-                        if (data.indexOf(value[i]) === -1) {
-                            data.push(value[i]);
-                        }
-                    }
-                } else {
-                    if (data.indexOf(value) === -1) {
-                        data.push(value);
-                    }
-                }
-
-                value = data;
-            }
-
-            croma.database.set(key, value);
-        },
-        remove: function(key, value) {
-            if (!key) {
-                return;
-            }
-
-            var data = croma.database.get(key);
-
-            if (value && data && data.length && data instanceof Array) {
-                var index;
-
-                if (value.length && value instanceof Array) {
-                    for (var i = 0; i < value.length; i++) {
-                        index = data.indexOf(value[i]);
-
-                        if (index > -1) {
-                            data.splice(index, 1);
-                        }
-                    }
-                } else {
-                    index = data.indexOf(value);
-
-                    if (index > -1) {
-                        data.splice(index, 1);
-                    }
-                }
-
-                croma.database.set(key, data);
-            } else {
-                localStorage.removeItem(
-                    JSON.stringify(key)
-                );
             }
         }
     },
@@ -464,7 +364,7 @@ var croma = {
             $card.velocity("stop").velocity("fadeIn", 300);
 
             croma.ui.intoview($card, $container.parent());
-            croma.database.add("colors", [ color ]);
+            casket.push("croma", "colors", color);
 
             return $card;
         },
@@ -489,13 +389,13 @@ var croma = {
 
                 $cards = $container.find("[data-color=" + color + "]");
 
-                croma.database.remove("colors", color);
-                croma.database.remove("loved", color);
+                casket.drop("croma", "colors", color);
+                casket.drop("croma", "loved", color);
             } else {
                 $cards = $container.find("[data-color]");
 
-                croma.database.remove("colors");
-                croma.database.remove("loved");
+                casket.drop("croma", "colors");
+                casket.drop("croma", "loved");
             }
 
             if ($cards) {
@@ -531,11 +431,11 @@ var croma = {
             if (value === false) {
                 $cards.removeClass("card-item-loved");
 
-                croma.database.remove("loved", color);
+                casket.drop("croma", "loved", color);
             } else {
                 $cards.addClass("card-item-loved");
 
-                croma.database.add("loved", [ color ]);
+                casket.push("croma", "loved", color);
             }
 
             return $cards;
