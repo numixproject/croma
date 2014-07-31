@@ -77,9 +77,9 @@ header {
     &:active { background-color: rgba(0,0,0,0.05); }
 }
 
-.header-action-add { background-image: url(../img/add.svg); }
+.header-action-add { background-image: url(../../assets/img/add.svg); }
 
-.header-action-photo { background-image: url(../img/photo.svg); }
+.header-action-photo { background-image: url(../../assets/img/photo.svg); }
 
 .card-area-wrapper {
     position: fixed;
@@ -149,9 +149,9 @@ $actions: love, delete, share;
     $action: nth($actions, $i);
 
     .card-item-action-#{$action} {
-        background-image: url(../img/#{$action}.svg);
+        background-image: url(../../assets/img/#{$action}.svg);
 
-        &:active { background: url(../img/#{$action}-active.svg); }
+        &:active { background: url(../../assets/img/#{$action}-active.svg); }
     }
 }
 
@@ -166,18 +166,18 @@ $actions: love, delete, share;
             display: block;
             height: 100%;
             width: 100%;
-            background: url(../img/love-break.svg) no-repeat center center;
+            background: url(../../assets/img/love-break.svg) no-repeat center center;
             opacity: 0;
 
             .card-item-loved & {
                 @extend %love;
 
-                background: url(../img/love-active.svg) no-repeat center center;
+                background: url(../../assets/img/love-active.svg) no-repeat center center;
             }
         }
     }
 
-    .card-item-loved & { background: url(../img/love-active.svg); }
+    .card-item-loved & { background: url(../../assets/img/love-active.svg); }
 }
 
 .card-item-action-color {
