@@ -11,7 +11,7 @@ var gulp = require("gulp"),
 gulp.task("sass", function() {
     return gulp.src("assets/scss/*.scss")
     .pipe(sass({ style: "compressed" }))
-    .on("error", function (e) { console.log(e.message); })
+    .on("error", function(e) { console.log(e.message); })
     .pipe(gulp.dest("dist/css"));
 });
 
@@ -24,18 +24,15 @@ gulp.task("lint", function() {
 gulp.task("bower", function() {
     return gulp.src(bower())
     .pipe(concat("libs.js"))
-    .pipe(gulp.dest("dist/js"));
-});
-
-gulp.task("concat", function() {
-    return gulp.src("assets/js/*.js")
-    .pipe(concat("scripts.js"))
+    .pipe(gulp.dest("dist/js"))
+    .pipe(rename({ suffix: ".min" }))
+    .pipe(uglify())
     .pipe(gulp.dest("dist/js"));
 });
 
 gulp.task("scripts", function() {
-    return gulp.src("dist/js/*.js")
-    .pipe(concat("bundle.js"))
+    return gulp.src("assets/js/*.js")
+    .pipe(concat("scripts.js"))
     .pipe(gulp.dest("dist/js"))
     .pipe(rename({ suffix: ".min" }))
     .pipe(uglify())
@@ -56,6 +53,5 @@ gulp.task("default", [
     "lint",
     "sass",
     "bower",
-    "concat",
     "scripts"
 ]);
