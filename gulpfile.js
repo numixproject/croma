@@ -10,7 +10,10 @@ var gulp = require("gulp"),
 
 gulp.task("sass", function() {
     return gulp.src("assets/scss/*.scss")
-    .pipe(sass({ style: "compressed" }))
+    .pipe(sass({
+        style: "compressed",
+        sourcemap: true
+    }))
     .on("error", function(e) { console.log(e.message); })
     .pipe(gulp.dest("dist/css"));
 });
@@ -18,24 +21,22 @@ gulp.task("sass", function() {
 gulp.task("lint", function() {
     return gulp.src("assets/js/*.js")
     .pipe(jshint())
-    .pipe(jshint.reporter("default"));
+    .pipe(jshint.reporter("jshint-stylish"));
 });
 
-gulp.task("bower", function() {
+gulp.task("libs", function() {
     return gulp.src(bower())
     .pipe(concat("libs.js"))
-    .pipe(gulp.dest("dist/js"))
+    .pipe(uglify({ sourceMap: true }))
     .pipe(rename({ suffix: ".min" }))
-    .pipe(uglify())
     .pipe(gulp.dest("dist/js"));
 });
 
 gulp.task("scripts", function() {
     return gulp.src("assets/js/*.js")
     .pipe(concat("scripts.js"))
-    .pipe(gulp.dest("dist/js"))
+    .pipe(uglify({ sourceMap: true }))
     .pipe(rename({ suffix: ".min" }))
-    .pipe(uglify())
     .pipe(gulp.dest("dist/js"));
 });
 
@@ -52,6 +53,6 @@ gulp.task("watch", function() {
 gulp.task("default", [
     "lint",
     "sass",
-    "bower",
+    "libs",
     "scripts"
 ]);

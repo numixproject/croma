@@ -25,6 +25,7 @@
     "gulp-rename": "latest",
     "gulp-ruby-sass": "latest",
     "gulp-uglify": "latest",
+    "jshint-stylish": "latest",
     "main-bower-files": "latest"
   }
 }
