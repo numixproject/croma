@@ -42,9 +42,9 @@ var Croma = (function() {
                 var rgb = (/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i).exec(color);
 
                 if (rgb && rgb.length) {
-                    var r = ("0" + parseInt(rgb[1],10).toString(16)).slice(-2),
-                        g = ("0" + parseInt(rgb[2],10).toString(16)).slice(-2),
-                        b = ("0" + parseInt(rgb[3],10).toString(16)).slice(-2);
+                    var r = ("0" + parseInt(rgb[1], 10).toString(16)).slice(-2),
+                        g = ("0" + parseInt(rgb[2], 10).toString(16)).slice(-2),
+                        b = ("0" + parseInt(rgb[3], 10).toString(16)).slice(-2);
 
                     return "#" + r + g + b;
                 }
@@ -148,7 +148,7 @@ var Croma = (function() {
                     opacity: 0
                 }, {
                     duration: 300,
-                    easing: [0.7,0.1,0.57,0.79]
+                    easing: [ 0.7, 0.1, 0.57, 0.79 ]
                 }).velocity({
                     height: 0,
                     paddingTop: 0,
@@ -169,7 +169,7 @@ var Croma = (function() {
                 }
 
                 var $ripple = $('<svg class="ripple">' +
-                                '<circle cx="' + pos[0] +'" cy="' + pos[1] + '" r="0" fill="' + color + '" opacity="1"/>' +
+                                '<circle cx="' + pos[0] + '" cy="' + pos[1] + '" r="0" fill="' + color + '" opacity="1"/>' +
                                 '</svg>'),
                     $circle = $ripple.find("circle");
 
@@ -193,10 +193,7 @@ var Croma = (function() {
                     { r: $ripple.outerWidth() },
                     {
                         easing: "easeOutQuad",
-                        duration: 500,
-                        step: function(val) {
-                            $(this).attr("r", val);
-                        }
+                        duration: 500
                     }
                 ).velocity({ opacity: 0 }, 300, function() {
                     $ripple.remove();
@@ -221,8 +218,8 @@ var Croma = (function() {
                 }
 
                 $modal.css({
-                    "margin-top" : $modal.outerHeight() / -2,
-                    "margin-left" : $modal.outerWidth() / -2
+                    "margin-top": $modal.outerHeight() / -2,
+                    "margin-left": $modal.outerWidth() / -2
                 });
 
                 $modal.dismiss = function() {
@@ -270,7 +267,7 @@ var Croma = (function() {
                                 $colorvalue.text(_this.utils.tohex(color));
                             }
 
-                            $colorbutton.css({ "background-color" : color });
+                            $colorbutton.css({ "background-color": color });
 
                             _this.ui.picker.value = color;
                         }
@@ -348,7 +345,7 @@ var Croma = (function() {
                 }
 
                 var $card = $("<div>").addClass("card-item").attr("data-color", color),
-                    $color = $("<div>").addClass("card-item-color").css({ "background-color" : color }),
+                    $color = $("<div>").addClass("card-item-color").css({ "background-color": color }),
                     $info = $("<div>").addClass("card-item-info"),
                     $value = $("<div>").addClass("card-item-value").text(color),
                     $actions = $("<div>").addClass("card-item-actions").append(
@@ -452,4 +449,4 @@ var Croma = (function() {
     };
 })();
 
-var croma = new Croma();
+window.croma = new Croma();

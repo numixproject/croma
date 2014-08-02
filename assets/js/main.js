@@ -7,7 +7,7 @@ $(function() {
 
     try {
         casket.query("croma");
-    } catch(err) {
+    } catch (err) {
         casket.create("croma", { colors: [], loved: [] });
     }
 
