@@ -8,7 +8,8 @@ var gulp = require("gulp"),
     sourcemaps = require("gulp-sourcemaps"),
     concat = require("gulp-concat"),
     uglify = require("gulp-uglify"),
-    rename = require("gulp-rename");
+    rename = require("gulp-rename"),
+    rimraf = require("gulp-rimraf");
 
 gulp.task("sass", function() {
     return gulp.src("assets/scss/*.scss")
@@ -48,19 +49,19 @@ gulp.task("scripts", function() {
     .on("error", gutil.log);
 });
 
+gulp.task("clean", function() {
+    return gulp.src([
+        "dist/css",
+        "dist/js"
+    ], { read: false })
+    .pipe(rimraf())
+    .on("error", gutil.log);
+});
+
 gulp.task("watch", function() {
-    gulp.watch("assets/js/*.js", [
-        "lint",
-        "concat",
-        "scripts"
-    ]);
+    gulp.watch("assets/js/*.js", [ "lint", "libs", "scripts" ]);
     gulp.watch("assets/scss/*.scss", [ "sass" ]);
 });
 
 // Default Task
-gulp.task("default", [
-    "lint",
-    "sass",
-    "libs",
-    "scripts"
-]);
+gulp.task("default", [ "lint", "sass", "libs", "scripts" ]);
