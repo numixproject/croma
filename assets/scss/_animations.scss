@@ -1,0 +1,75 @@
+@import "functions";
+
+@mixin prefix($property, $value) {
+    @each $prefix in -webkit-, -moz-, -ms-, -o-, "" {
+        #{$prefix}#{$property}: $value;
+    }
+}
+
+@mixin transform($args) {
+    @include prefix(transform, $args);
+}
+
+@mixin keyframes($animation) {
+    @-webkit-keyframes $animation { @content; }
+
+    @-moz-keyframes $animation { @content; }
+
+    @-ms-keyframes $animation { @content; }
+
+    @keyframes $animation { @content; }
+}
+
+@mixin love($args: .3s 1) {
+    @include prefix(animation, love $args);
+}
+
+@mixin break($args: .3s 1) {
+    @include prefix(animation, break $args);
+}
+
+@mixin transition($duration: .3s, $timing: ease) {
+    @include prefix(transition, $duration $timing);
+}
+
+@include exports("animations") {
+    @include keyframes(love) {
+        0% {
+            @include transform(scale(5));
+
+            opacity: 0;
+        }
+
+        100% {
+            @include transform(scale(1));
+
+            opacity: 1;
+        }
+    }
+
+    %love { @include love; }
+
+    @include keyframes(break) {
+        0% {
+            @include transform(scale(1));
+
+            opacity: 1;
+        }
+
+        100% {
+            @include transform(scale(5));
+
+            opacity: 0;
+        }
+    }
+
+    %break { @include break; }
+
+    %transition { @include transition; }
+
+    %snappy {
+        @extend %transition;
+
+        &:focus, &:hover, &:active { @include transition(none); }
+    }
+}

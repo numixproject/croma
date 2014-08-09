@@ -1,0 +1,22 @@
+{
+  "name": "Croma",
+  "description": "Save your colors",
+  "version": "0.0.1",
+  "authors": [
+    "Satyajit Sahoo <satyajit.happy@gmail.com>"
+  ],
+  "license": "GPL-3.0+",
+  "private": true,
+  "ignore": [
+    "bower_components",
+    "node_modules",
+    "LICENSE",
+    "*.md",
+    "*.json"
+  ],
+  "dependencies": {
+    "jquery": "latest",
+    "velocity": "latest",
+    "casket": "latest"
+  }
+}
