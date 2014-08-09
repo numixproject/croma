@@ -1,76 +1,11 @@
 /* jshint browser: true */
-/* global $, Casket */
+/* global $, Casket, Color */
 
 var Croma = (function() {
     var _casket = new Casket();
 
     return function() {
         var _this = this;
-
-        _this.utils = {
-            test: function(color) {
-                if (!color) {
-                    return;
-                }
-
-                if (color.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i)) {
-                    return "rgb";
-                } else if (color.match(/(^#[0-9a-f]{6}$)|(^#[0-9a-f]{3}$)/i)) {
-                    return "hex";
-                }
-            },
-            tohexval: function(color) {
-                if (_this.utils.test(color) !== "hex") {
-                    return;
-                }
-
-                var hex = color.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, function(m, r, g, b) {
-                    return "#" + r + r + g + g + b + b;
-                });
-
-                return hex;
-            },
-            tohex: function(color) {
-                if (_this.utils.test(color) === "hex") {
-                    return color;
-                }
-
-                if (_this.utils.test(color) !== "rgb") {
-                    return;
-                }
-
-                var rgb = (/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i).exec(color);
-
-                if (rgb && rgb.length) {
-                    var r = ("0" + parseInt(rgb[1], 10).toString(16)).slice(-2),
-                        g = ("0" + parseInt(rgb[2], 10).toString(16)).slice(-2),
-                        b = ("0" + parseInt(rgb[3], 10).toString(16)).slice(-2);
-
-                    return "#" + r + g + b;
-                }
-            },
-            torgb: function(color) {
-                if (_this.utils.test(color) === "rgb") {
-                    return color;
-                }
-
-                color = _this.utils.tohexval(color);
-
-                if (!color) {
-                    return;
-                }
-
-                var hex = (/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i).exec(color);
-
-                if (hex && hex.length) {
-                    var r = parseInt(hex[1], 16),
-                        g = parseInt(hex[2], 16),
-                        b = parseInt(hex[3], 16);
-
-                    return "rgb(" + r + "," + g + "," + b + ")";
-                }
-            }
-        };
 
         _this.canvas = {
             getcolor: function(x, y, canvas) {
@@ -262,12 +197,14 @@ var Croma = (function() {
                     endEvent = "touchend touchleave touchcancel mouseup pointerup",
                     colorTimer,
                     setcolor = function(color, notext) {
-                        if (_this.utils.tohex(color)) {
+                        var hex = new Color(color).tohex();
+
+                        if (hex) {
                             if (!notext) {
-                                $colorvalue.text(_this.utils.tohex(color));
+                                $colorvalue.text(hex);
                             }
 
-                            $colorbutton.css({ "background-color": color });
+                            $colorbutton.css({ "background-color": hex });
 
                             _this.ui.picker.value = color;
                         }
@@ -296,7 +233,7 @@ var Croma = (function() {
                 });
 
                 $colorvalue.on("DOMSubtreeModified input paste", function() {
-                    var color = _this.utils.tohex($(this).text());
+                    var color = new Color($(this).text()).tohex();
 
                     setcolor(color, true);
                 });
@@ -338,7 +275,7 @@ var Croma = (function() {
                     return;
                 }
 
-                color = _this.utils.tohexval(_this.utils.tohex(color));
+                color = new Color(color).tohex();
 
                 if ((!color) || typeof color !== "string" || $container.find("[data-color=" + color + "]").length) {
                     return;
@@ -386,7 +323,7 @@ var Croma = (function() {
                         return;
                     }
 
-                    color = _this.utils.tohexval(_this.utils.tohex(color));
+                    color = new Color(color).tohex();
 
                     if ((!color) || typeof color !== "string") {
                         return;
@@ -425,7 +362,7 @@ var Croma = (function() {
                     return;
                 }
 
-                color = _this.utils.tohexval(_this.utils.tohex(color));
+                color = new Color(color).tohex();
 
                 if ((!color) || typeof color !== "string") {
                     return;
