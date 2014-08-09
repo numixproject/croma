@@ -18,6 +18,9 @@ android {
     }
     productFlavors {
     }
+    aaptOptions {
+        ignoreAssetsPattern 'node_modules:bower_components'
+    }
 }
 
 dependencies {
