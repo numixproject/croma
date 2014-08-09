@@ -2,6 +2,7 @@
 .DS_Store
 .sass-cache
 
+build
 node_modules
 bower_components
 dist
