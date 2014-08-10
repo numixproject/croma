@@ -238,9 +238,9 @@ var Color = (function() {
 				components.rgb = utils.hslToRgb(components.hsv);
 				components.hsl = utils.rgbToHsv(components.rgb);
 			} else {
-				components.rgb = [ 0, 0, 0 ];
-				components.hsl = [ 0, 0, 0 ];
-				components.hsv = [ 0, 0, 0 ];
+				components.rgb = (color.rgb instanceof Array) ? color.rgb : [ 0, 0, 0 ];
+				components.hsl = (color.hsl instanceof Array) ? color.hsl : [ 0, 0, 0 ];
+				components.hsv = (color.hsv instanceof Array) ? color.hsv : [ 0, 0, 0 ];
 			}
 
 			return components;
