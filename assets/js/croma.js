@@ -233,9 +233,11 @@ var Croma = (function() {
                 });
 
                 $colorvalue.on("DOMSubtreeModified input paste", function() {
-                    var color = new Color($(this).text()).tohex();
+                    var value = $(this).text();
 
-                    setcolor(color, true);
+                    if (value) {
+                        setcolor(new Color(value).tohex(), true);
+                    }
                 });
 
                 $info.append(
