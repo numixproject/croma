@@ -146,30 +146,9 @@ var Color = (function() {
             yellow: [ 255, 255, 0 ],
             yellowgreen: [ 154, 205, 50 ]
         },
-        _utils = {
-            compareArray: function(arr1, arr2) {
-                if (!(arr1 instanceof Array && arr2 instanceof Array)) {
-                    return false;
-                }
 
-                if (arr1.length != arr1.length) {
-                    return false;
-                }
-
-                for (var i = 0, l = arr1.length; i < l; i++) {
-                    if (arr1[i] instanceof Array && arr2[i] instanceof Array) {
-                        if (!_utils.compareArray(arr1[i], arr2[i])) {
-                            return false;
-                        }
-                    } else if (arr1[i] != arr2[i]) {
-                        return false;
-                    }
-                }
-
-                return true;
-            },
-
-            rgbToHsl: function(values) {
+        _convert = {
+            rgb2hsl: function(values) {
                 var r = values[0] / 255,
                     g = values[1] / 255,
                     b = values[2] / 255,
@@ -195,7 +174,7 @@ var Color = (function() {
                             break;
                     }
 
-                    h = h / 6;
+                    h /= 6;
                 }
 
                 return [
@@ -205,10 +184,10 @@ var Color = (function() {
                 ];
             },
 
-            hslToRgb: function(values) {
-                var h = values[0],
-                    s = values[1],
-                    l = values[2],
+            hsl2rgb: function(values) {
+                var h = values[0] / 360,
+                    s = values[1] / 100,
+                    l = values[2] / 100,
                     r, g, b,
                     p, q,
                     hue2Rgb = function(p, q, t) {
@@ -251,7 +230,7 @@ var Color = (function() {
                 ];
             },
 
-            rgbToHsv: function(values) {
+            rgb2hsv: function(values) {
                 var r = values[0] / 255,
                     g = values[1] / 255,
                     b = values[2] / 255,
@@ -277,7 +256,7 @@ var Color = (function() {
                             break;
                     }
 
-                    h = h / 6;
+                    h /= 6;
                 }
 
                 return [
@@ -287,10 +266,10 @@ var Color = (function() {
                 ];
             },
 
-            hsvToRgb: function(values) {
-                var h = values[0],
-                    s = values[1],
-                    v = values[2],
+            hsv2rgb: function(values) {
+                var h = values[0] / 360,
+                    s = values[1] / 100,
+                    v = values[2] / 100,
                     r, g, b,
                     i = Math.floor(h * 6),
                     f = h * 6 - i,
@@ -338,6 +317,65 @@ var Color = (function() {
                 ];
             },
 
+            hsl2hsv: function(values) {
+                var h = values[0] / 360,
+                    s = values[1] / 100,
+                    l = values[2] / 100,
+                    v;
+
+                s = s * ((l < 0.5) ? l : 1 - l);
+                v = l + s;
+                s = 2 * s / v;
+
+                return [
+                    Math.round(h * 360),
+                    Math.round(s * 100),
+                    Math.round(v * 100)
+                ];
+            },
+
+            hsv2hsl: function(values) {
+                var h = values[0] / 360,
+                    s = values[1] / 100,
+                    v = values[2] / 100,
+                    l;
+
+                l = (2 - s) * v;
+                s = s * v / (l < 1 ? l : 2 - l);
+                s = isNaN(s) ? 0 : s;
+                l /= 2;
+
+                return [
+                    Math.round(h * 360),
+                    Math.round(s * 100),
+                    Math.round(l * 100)
+                ];
+            }
+        },
+
+        _utils = {
+            compareArray: function(arr1, arr2) {
+                if (!(arr1 instanceof Array && arr2 instanceof Array)) {
+                    return false;
+                }
+
+                if (arr1.length != arr1.length) {
+                    return false;
+                }
+
+                for (var i = 0, l = arr1.length; i < l; i++) {
+                    if (arr1[i] instanceof Array && arr2[i] instanceof Array) {
+                        if (!_utils.compareArray(arr1[i], arr2[i])) {
+                            return false;
+                        }
+                    } else if (arr1[i] != arr2[i]) {
+                        return false;
+                    }
+                }
+
+                return true;
+            },
+
             getType: function(color) {
                 if ((/(^#[0-9a-f]{6}$)|(^#[0-9a-f]{3}$)/i).test(color)) {
                     return "hex";
@@ -380,8 +418,8 @@ var Color = (function() {
                         ];
                     }
 
-                    components.hsl = _utils.rgbToHsl(components.rgb);
-                    components.hsv = _utils.rgbToHsv(components.rgb);
+                    components.hsl = _convert.rgb2hsl(components.rgb);
+                    components.hsv = _convert.rgb2hsv(components.rgb);
                 } else if (type === "hsl") {
                     hsl = color.replace(/[hsla()]/g, "").split(",");
 
@@ -391,8 +429,8 @@ var Color = (function() {
                         parseInt(hsl[2], 10)
                     ];
 
-                    components.rgb = _utils.hslToRgb(components.hsl);
-                    components.hsv = _utils.rgbToHsv(components.rgb);
+                    components.rgb = _convert.hsl2rgb(components.hsl);
+                    components.hsv = _convert.hsl2hsv(components.hsl);
                 } else if (type === "hsv") {
                     hsv = color.replace(/[hsva()]/g, "").split(",");
 
@@ -402,8 +440,8 @@ var Color = (function() {
                         parseInt(hsv[2], 10)
                     ];
 
-                    components.rgb = _utils.hslToRgb(components.hsv);
-                    components.hsl = _utils.rgbToHsv(components.rgb);
+                    components.rgb = _convert.hsv2rgb(components.hsv);
+                    components.hsl = _convert.hsv2hsl(components.hsv);
                 } else {
                     components.rgb = (color.rgb instanceof Array) ? color.rgb : [ 0, 0, 0 ];
                     components.hsl = (color.hsl instanceof Array) ? color.hsl : [ 0, 0, 0 ];
