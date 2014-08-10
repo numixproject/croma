@@ -395,7 +395,7 @@ var Color = (function() {
                     hex, rgb, hsl, hsv,
                     type = _utils.getType(color);
 
-                if (type === "hex" || type === "rgb" || type === "name") {
+                if (type === "hex" || type === "rgb" || type === "name" || color.rgb instanceof Array) {
                     if (type === "hex") {
                         if (color.length === 4) {
                             color = color.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, function(m, r, g, b) {
@@ -420,36 +420,46 @@ var Color = (function() {
                         ];
                     } else if (type === "name") {
                         components.rgb = _names[color];
+                    } else {
+                        components.rgb = color.rgb;
                     }
 
                     components.hsl = _convert.rgb2hsl(components.rgb);
                     components.hsv = _convert.rgb2hsv(components.rgb);
-                } else if (type === "hsl") {
-                    hsl = color.replace(/[hsla()]/g, "").split(",");
+                } else if (type === "hsl" || color.hsl instanceof Array) {
+                    if (type === "hsl") {
+                        hsl = color.replace(/[hsla()]/g, "").split(",");
 
-                    components.hsl = [
-                        parseInt(hsl[0], 10),
-                        parseInt(hsl[1], 10),
-                        parseInt(hsl[2], 10)
-                    ];
+                        components.hsl = [
+                            parseInt(hsl[0], 10),
+                            parseInt(hsl[1], 10),
+                            parseInt(hsl[2], 10)
+                        ];
+                    } else {
+                        components.hsl = color.hsl;
+                    }
 
                     components.rgb = _convert.hsl2rgb(components.hsl);
                     components.hsv = _convert.hsl2hsv(components.hsl);
-                } else if (type === "hsv") {
-                    hsv = color.replace(/[hsva()]/g, "").split(",");
+                } else if (type === "hsv" || color.hsv instanceof Array) {
+                    if (type === "hsv") {
+                        hsv = color.replace(/[hsva()]/g, "").split(",");
 
-                    components.hsv = [
-                        parseInt(hsv[0], 10),
-                        parseInt(hsv[1], 10),
-                        parseInt(hsv[2], 10)
-                    ];
+                        components.hsv = (color.hsv instanceof Array) ? color.hsv :  [
+                            parseInt(hsv[0], 10),
+                            parseInt(hsv[1], 10),
+                            parseInt(hsv[2], 10)
+                        ];
+                    } else {
+                        components.hsv = color.hsv;
+                    }
 
                     components.rgb = _convert.hsv2rgb(components.hsv);
                     components.hsl = _convert.hsv2hsl(components.hsv);
                 } else {
-                    components.rgb = (color.rgb instanceof Array) ? color.rgb : [ 0, 0, 0 ];
-                    components.hsl = (color.hsl instanceof Array) ? color.hsl : [ 0, 0, 0 ];
-                    components.hsv = (color.hsv instanceof Array) ? color.hsv : [ 0, 0, 0 ];
+                    components.rgb = [ 0, 0, 0 ];
+                    components.hsl = [ 0, 0, 0 ];
+                    components.hsv = [ 0, 0, 0 ];
                 }
 
                 return components;
@@ -463,6 +473,15 @@ var Color = (function() {
         if (!color) {
             color = "#" + ((1 << 24) * Math.random() | 0).toString(16);
         }
+
+        // Override toString method
+        _this.toString = function() {
+            if (typeof color === "string") {
+                return color;
+            } else {
+                return JSON.stringify(color);
+            }
+        };
 
         // Properties
         components = _utils.getComponents(color);
