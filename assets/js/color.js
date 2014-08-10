@@ -385,6 +385,8 @@ var Color = (function() {
                     return "hsl";
                 } else if ((/^hsva?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[%+]?[\s+]?,[\s+]?(\d+)[%+]?[\s+]?/i).test(color)) {
                     return "hsv";
+                } else if (_names.hasOwnProperty(color)) {
+                    return "name";
                 }
             },
 
@@ -393,7 +395,7 @@ var Color = (function() {
                     hex, rgb, hsl, hsv,
                     type = _utils.getType(color);
 
-                if (type === "hex" || type === "rgb") {
+                if (type === "hex" || type === "rgb" || type === "name") {
                     if (type === "hex") {
                         if (color.length === 4) {
                             color = color.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, function(m, r, g, b) {
@@ -416,6 +418,8 @@ var Color = (function() {
                             parseInt(rgb[1], 10),
                             parseInt(rgb[2], 10)
                         ];
+                    } else if (type === "name") {
+                        components.rgb = _names[color];
                     }
 
                     components.hsl = _convert.rgb2hsl(components.rgb);
