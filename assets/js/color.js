@@ -31,7 +31,11 @@ var Color = (function() {
 				h = h / 6;
 			}
 
-			return [ h, s, l ];
+			return [
+				Math.round(h * 360),
+				Math.round(s * 100),
+				Math.round(l * 100)
+			];
         },
 
 		hslToRgb: function(values) {
@@ -107,9 +111,13 @@ var Color = (function() {
                 }
 
                 h = h / 6;
-            }
+			}
 
-            return [ h, s, v ];
+			return [
+				Math.round(h * 360),
+				Math.round(s * 100),
+				Math.round(v * 100)
+			];
         },
 
         hsvToRgb: function(values) {
@@ -164,63 +172,96 @@ var Color = (function() {
         },
 
         getType: function(color) {
-            if ((/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i).test(color)) {
+			if ((/(^#[0-9a-f]{6}$)|(^#[0-9a-f]{3}$)/i).test(color)) {
+				return "hex";
+			} else if ((/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i).test(color)) {
                 return "rgb";
-            } else if ((/^hsla?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i).test(color)) {
+			} else if ((/^hsla?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[%+]?[\s+]?,[\s+]?(\d+)[%+]?[\s+]?/i).test(color)) {
                 return "hsl";
-            } else if ((/^hsva?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i).test(color)) {
+			} else if ((/^hsva?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[%+]?[\s+]?,[\s+]?(\d+)[%+]?[\s+]?/i).test(color)) {
                 return "hsv";
-            } else if ((/(^#[0-9a-f]{6}$)|(^#[0-9a-f]{3}$)/i).test(color)) {
-                return "hex";
             }
-        }
+        },
+
+		getComponents: function(color) {
+			var components = {},
+				hex, rgb, hsl, hsv,
+				type = utils.getType(color);
+
+			if (type === "hex" || type === "rgb") {
+				if (type === "hex") {
+					if (color.length === 4) {
+						color = color.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, function(m, r, g, b) {
+							return "#" + r + r + g + g + b + b;
+						});
+					}
+
+					hex = (/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i).exec(color);
+
+					components.rgb = [
+						parseInt(hex[1], 16),
+						parseInt(hex[2], 16),
+						parseInt(hex[3], 16)
+					];
+				} else if (type === "rgb") {
+					rgb = color.replace(/[rgba()]/g, "").split(",");
+
+					components.rgb = [
+						parseInt(rgb[0], 10),
+						parseInt(rgb[1], 10),
+						parseInt(rgb[2], 10)
+					];
+				}
+
+				components.hsl = utils.rgbToHsl(components.rgb);
+				components.hsv = utils.rgbToHsv(components.rgb);
+			} else if (type === "hsl") {
+				hsl = color.replace(/[hsla()]/g, "").split(",");
+
+				components.hsl = [
+					parseInt(hsl[0], 10),
+					parseInt(hsl[1], 10),
+					parseInt(hsl[2], 10)
+				];
+
+				components.rgb = utils.hslToRgb(components.hsl);
+				components.hsv = utils.rgbToHsv(components.rgb);
+			} else if (type === "hsv") {
+				hsv = color.replace(/[hsva()]/g, "").split(",");
+
+				components.hsv = [
+					parseInt(hsv[0], 10),
+					parseInt(hsv[1], 10),
+					parseInt(hsv[2], 10)
+				];
+
+				components.rgb = utils.hslToRgb(components.hsv);
+				components.hsl = utils.rgbToHsv(components.rgb);
+			} else {
+				components.rgb = [ 0, 0, 0 ];
+				components.hsl = [ 0, 0, 0 ];
+				components.hsv = [ 0, 0, 0 ];
+			}
+
+			return components;
+		}
     };
 
     return function(color) {
         var _this = this,
-            hex, rgb, hsl, hsv,
-            type;
+            components;
 
 		if (!color) {
 			color = "#" + ((1 << 24) * Math.random() | 0).toString(16);
 		}
 
-		type = utils.getType(color);
+		// Values
+		components = utils.getComponents(color);
 
-        // Values
-        if (type === "hex" || type === "rgb") {
-            if (type === "hex") {
-				if (color.length === 4) {
-					color = color.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, function(m, r, g, b) {
-						return "#" + r + r + g + g + b + b;
-					});
-				}
-
-                hex = (/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i).exec(color);
-
-                _this.rgb = [
-                    parseInt(hex[1], 16),
-                    parseInt(hex[2], 16),
-                    parseInt(hex[3], 16)
-                ];
-            } else if (type === "rgb") {
-				_this.rgb = color.replace(/[rgba()]/g, "").split(",").slice(0, 3);
-            }
-
-            _this.hsl = utils.rgbToHsl(_this.rgb);
-            _this.hsv = utils.rgbToHsv(_this.rgb);
-        } else if (type === "hsl") {
-			_this.hsl = color.replace(/[hsla()]/g, "").split(",").slice(0, 3);
-            _this.rgb = utils.hslToRgb(_this.hsl);
-            _this.hsv = utils.rgbToHsv(_this.rgb);
-        } else if (type === "hsv") {
-			_this.hsv = color.replace(/[hsva()]/g, "").split(",").slice(0, 3);
-            _this.rgb = utils.hslToRgb(_this.hsv);
-            _this.hsl = utils.rgbToHsv(_this.rgb);
-        } else {
-            _this.rgb = [ 0, 0, 0 ];
-            _this.hsl = [ 0, 0, 0 ];
-            _this.hsv = [ 0, 0, 0 ];
+		for (var c in components) {
+			if (components.hasOwnProperty(c)) {
+				_this[c] = components[c];
+			}
 		}
 
         // Methods
@@ -237,11 +278,11 @@ var Color = (function() {
         };
 
         _this.tohsl = function() {
-            return "hsl(" + _this.hsl[0] + "," + _this.hsl[1] + "," + _this.hsl[2] + ")";
+            return "hsl(" + _this.hsl[0] + "," + _this.hsl[1] + "%," + _this.hsl[2] + "%)";
         };
 
         _this.tohsv = function() {
-            return "hsv(" + _this.hsv[0] + "," + _this.hsv[1] + "," + _this.hsv[2] + ")";
+            return "hsv(" + _this.hsv[0] + "," + _this.hsv[1] + "%," + _this.hsv[2] + "%)";
         };
     };
 }());
