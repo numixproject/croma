@@ -473,14 +473,6 @@ var Color = (function() {
             }
         }
 
-        for (var n in _names) {
-            if (_names.hasOwnProperty(n) && _utils.compareArray(_names[n], _this.rgb)) {
-                _this.name = n;
-
-                break;
-            }
-        }
-
         // Methods
         _this.tohex = function() {
             var r = ("0" + parseInt(_this.rgb[0], 10).toString(16)).slice(-2),
@@ -500,6 +492,19 @@ var Color = (function() {
 
         _this.tohsv = function() {
             return "hsv(" + _this.hsv[0] + "," + _this.hsv[1] + "%," + _this.hsv[2] + "%)";
+        };
+
+        _this.name = function() {
+            var name;
+
+            for (var n in _names) {
+                if (_names.hasOwnProperty(n) && _utils.compareArray(_names[n], _this.rgb)) {
+                    name = n;
+                    break;
+                }
+            }
+
+            return name;
         };
     };
 }());
