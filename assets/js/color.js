@@ -354,28 +354,6 @@ var Color = (function() {
         },
 
         _utils = {
-            compareArray: function(arr1, arr2) {
-                if (!(arr1 instanceof Array && arr2 instanceof Array)) {
-                    return false;
-                }
-
-                if (arr1.length != arr1.length) {
-                    return false;
-                }
-
-                for (var i = 0, l = arr1.length; i < l; i++) {
-                    if (arr1[i] instanceof Array && arr2[i] instanceof Array) {
-                        if (!_utils.compareArray(arr1[i], arr2[i])) {
-                            return false;
-                        }
-                    } else if (arr1[i] != arr2[i]) {
-                        return false;
-                    }
-                }
-
-                return true;
-            },
-
             getType: function(color) {
                 if ((/(^#[0-9a-f]{6}$)|(^#[0-9a-f]{3}$)/i).test(color)) {
                     return "hex";
@@ -517,7 +495,7 @@ var Color = (function() {
             var name;
 
             for (var n in _names) {
-                if (_names.hasOwnProperty(n) && _utils.compareArray(_names[n], _this.rgb)) {
+                if (_names.hasOwnProperty(n) && _names[n].join(",") === _this.rgb.join(",")) {
                     name = n;
                     break;
                 }
