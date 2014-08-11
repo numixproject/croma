@@ -441,6 +441,23 @@ var Color = (function() {
                 }
 
                 return components;
+            },
+
+            getScheme: function(hsl, degrees) {
+                var scheme = [],
+                    hue;
+
+                for (var i = 0, l = degrees.length; i < l; i++) {
+                    hue = (hsl[0] + degrees[i]) % 360;
+
+                    scheme.push([
+                        hue,
+                        hsl[1],
+                        hsl[2]
+                    ]);
+                }
+
+                return scheme;
             }
         };
 
@@ -493,6 +510,81 @@ var Color = (function() {
             }
 
             return name;
+        };
+
+        // Color schemes
+        _this.scheme = {
+            complementary: function() {
+                return _utils.getScheme(_this.hsl, [ 0, 180 ]);
+            },
+
+            splitComplementary: function() {
+                return _utils.getScheme(_this.hsl, [ 0, 150, 320 ]);
+            },
+
+            splitComplementaryCW: function() {
+                return _utils.getScheme(_this.hsl, [ 0, 150, 300 ]);
+            },
+
+            splitComplementaryCCW: function() {
+                return _utils.getScheme(_this.hsl, [ 0, 60, 210 ]);
+            },
+
+            triadic: function() {
+                return _utils.getScheme(_this.hsl, [ 0, 120, 240 ]);
+            },
+
+            clash: function() {
+                return _utils.getScheme(_this.hsl, [ 0, 90, 270 ]);
+            },
+
+            tetradic: function() {
+                return _utils.getScheme(_this.hsl, [ 0, 90, 180, 270 ]);
+            },
+
+            neutral: function() {
+                return _utils.getScheme(_this.hsl, [ 0, 15, 30, 45, 60, 75 ]);
+            },
+
+            analogous: function() {
+                return _utils.getScheme(_this.hsl, [ 0, 30, 60, 90, 120, 150 ]);
+            },
+
+            fourToneCW: function() {
+                return _utils.getScheme(_this.hsl, [ 0, 60, 180, 240 ]);
+            },
+
+            fourToneCCW: function() {
+                return _utils.getScheme(_this.hsl, [ 0, 120, 180, 300 ]);
+            },
+
+            fiveToneA: function() {
+                return _utils.getScheme(_this.hsl, [ 0, 115, 155, 205, 245 ]);
+            },
+
+            fiveToneB: function() {
+                return _utils.getScheme(_this.hsl, [ 0, 40, 90, 130, 245 ]);
+            },
+
+            fiveToneC: function() {
+                return _utils.getScheme(_this.hsl, [ 0, 50, 90, 205, 320 ]);
+            },
+
+            fiveToneD: function() {
+                return _utils.getScheme(_this.hsl, [ 0, 40, 155, 270, 310 ]);
+            },
+
+            fiveToneE: function() {
+                return _utils.getScheme(_this.hsl, [ 0, 115, 2, 30, 270, 320 ]);
+            },
+
+            sixToneCW: function() {
+                return _utils.getScheme(_this.hsl, [ 0, 30, 120, 150, 240, 270 ]);
+            },
+
+            sixToneCCW: function() {
+                return _utils.getScheme(_this.hsl, [ 0, 90, 120, 210, 240, 330 ]);
+            }
         };
     };
 }());
