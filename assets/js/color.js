@@ -353,7 +353,26 @@ var Color = (function() {
             }
         },
 
-        _utils = {
+        _fn = {
+            colorObj: function(colors) {
+                var objs = [],
+                    c;
+
+                if (colors instanceof Array) {
+                    for (var i, l = colors.length; i < l; i++) {
+                        c = new ColorConstructor(colors[i]);
+
+                        objs.push(c);
+                    }
+
+                    return objs;
+                } else {
+                    c = new ColorConstructor(colors);
+
+                    return c;
+                }
+            },
+
             getType: function(color) {
                 if ((/(^#[0-9a-f]{6}$)|(^#[0-9a-f]{3}$)/i).test(color)) {
                     return "hex";
@@ -369,9 +388,9 @@ var Color = (function() {
             },
 
             getComponents: function(color) {
-                var components = {},
+                var c = {},
                     hex, rgb, hsl, hsv,
-                    type = _utils.getType(color);
+                    type = _fn.getType(color);
 
                 if (type === "hex" || type === "rgb" || type === "name" || color.rgb instanceof Array) {
                     if (type === "hex") {
@@ -383,7 +402,7 @@ var Color = (function() {
 
                         hex = (/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i).exec(color);
 
-                        components.rgb = [
+                        c.rgb = [
                             parseInt(hex[1], 16),
                             parseInt(hex[2], 16),
                             parseInt(hex[3], 16)
@@ -391,56 +410,64 @@ var Color = (function() {
                     } else if (type === "rgb") {
                         rgb = color.replace(/[rgba()]/g, "").split(",");
 
-                        components.rgb = [
+                        c.rgb = [
                             parseInt(rgb[0], 10),
                             parseInt(rgb[1], 10),
                             parseInt(rgb[2], 10)
                         ];
+
+                        c.alpha = parseFloat(rgb[3]);
                     } else if (type === "name") {
-                        components.rgb = _names[color];
+                        c.rgb = _names[color];
                     } else {
-                        components.rgb = color.rgb;
+                        c.rgb = color.rgb;
                     }
 
-                    components.hsl = _convert.rgb2hsl(components.rgb);
-                    components.hsv = _convert.rgb2hsv(components.rgb);
+                    c.hsl = _convert.rgb2hsl(c.rgb);
+                    c.hsv = _convert.rgb2hsv(c.rgb);
                 } else if (type === "hsl" || color.hsl instanceof Array) {
                     if (type === "hsl") {
                         hsl = color.replace(/[hsla()]/g, "").split(",");
 
-                        components.hsl = [
+                        c.hsl = [
                             parseInt(hsl[0], 10),
                             parseInt(hsl[1], 10),
                             parseInt(hsl[2], 10)
                         ];
+
+                        c.alpha = parseFloat(hsl[3]);
                     } else {
-                        components.hsl = color.hsl;
+                        c.hsl = color.hsl;
                     }
 
-                    components.rgb = _convert.hsl2rgb(components.hsl);
-                    components.hsv = _convert.hsl2hsv(components.hsl);
+                    c.rgb = _convert.hsl2rgb(c.hsl);
+                    c.hsv = _convert.hsl2hsv(c.hsl);
                 } else if (type === "hsv" || color.hsv instanceof Array) {
                     if (type === "hsv") {
                         hsv = color.replace(/[hsva()]/g, "").split(",");
 
-                        components.hsv = (color.hsv instanceof Array) ? color.hsv :  [
+                        c.hsv = (color.hsv instanceof Array) ? color.hsv :  [
                             parseInt(hsv[0], 10),
                             parseInt(hsv[1], 10),
                             parseInt(hsv[2], 10)
                         ];
+
+                        c.alpha = parseFloat(hsv[3]);
                     } else {
-                        components.hsv = color.hsv;
+                        c.hsv = color.hsv;
                     }
 
-                    components.rgb = _convert.hsv2rgb(components.hsv);
-                    components.hsl = _convert.hsv2hsl(components.hsv);
+                    c.rgb = _convert.hsv2rgb(c.hsv);
+                    c.hsl = _convert.hsv2hsl(c.hsv);
                 } else {
-                    components.rgb = [ 0, 0, 0 ];
-                    components.hsl = [ 0, 0, 0 ];
-                    components.hsv = [ 0, 0, 0 ];
+                    c.rgb = [ 0, 0, 0 ];
+                    c.hsl = [ 0, 0, 0 ];
+                    c.hsv = [ 0, 0, 0 ];
                 }
 
-                return components;
+                c.alpha = (typeof c.alpha === "number" && (c.alpha || c.alpha === 0)) ? Math.max(Math.min(c.alpha, 1), 0) : 1;
+
+                return c;
             },
 
             getScheme: function(hsl, degrees) {
@@ -450,14 +477,12 @@ var Color = (function() {
                 for (var i = 0, l = degrees.length; i < l; i++) {
                     hue = (hsl[0] + degrees[i]) % 360;
 
-                    color = new ColorConstructor({
+                    scheme.push({
                         hsl: [ hue, hsl[1], hsl[2] ]
                     });
-
-                    scheme.push(color);
                 }
 
-                return scheme;
+                return _fn.colorObj(scheme);
             }
         };
 
@@ -470,7 +495,7 @@ var Color = (function() {
         }
 
         // Properties
-        components = _utils.getComponents(color);
+        components = _fn.getComponents(color);
 
         for (var c in components) {
             if (components.hasOwnProperty(c)) {
@@ -488,15 +513,15 @@ var Color = (function() {
         };
 
         _this.torgb = function() {
-            return "rgb(" + _this.rgb[0] + "," + _this.rgb[1] + "," + _this.rgb[2] + ")";
+            return "rgba(" + _this.rgb[0] + "," + _this.rgb[1] + "," + _this.rgb[2] + "," + _this.alpha + ")";
         };
 
         _this.tohsl = function() {
-            return "hsl(" + _this.hsl[0] + "," + _this.hsl[1] + "%," + _this.hsl[2] + "%)";
+            return "hsla(" + _this.hsl[0] + "," + _this.hsl[1] + "%," + _this.hsl[2] + "%," + _this.alpha + ")";
         };
 
         _this.tohsv = function() {
-            return "hsv(" + _this.hsv[0] + "," + _this.hsv[1] + "%," + _this.hsv[2] + "%)";
+            return "hsva(" + _this.hsv[0] + "," + _this.hsv[1] + "%," + _this.hsv[2] + "%," + _this.alpha + ")";
         };
 
         _this.name = function() {
@@ -531,78 +556,200 @@ var Color = (function() {
             return yiq / 255;
         };
 
+        // Color manipulation
+        _this.lighten = function(ratio) {
+            var hsl = [
+                _this.hsl[0],
+                _this.hsl[1],
+                _this.hsl[2]
+            ];
+
+            hsl[2] += hsl[2] * Math.max(Math.min(ratio, 1), 0);
+
+            return _fn.colorObj({
+                hsl: hsl,
+                alpha: _this.alpha
+            });
+        };
+
+        _this.darken = function(ratio) {
+            var hsl = [
+                _this.hsl[0],
+                _this.hsl[1],
+                _this.hsl[2]
+            ];
+
+            hsl[2] -= hsl[2] * Math.max(Math.min(ratio, 1), 0);
+
+            return _fn.colorObj({
+                hsl: hsl,
+                alpha: _this.alpha
+            });
+        };
+
+        _this.saturate = function(ratio) {
+            var hsl = [
+                _this.hsl[0],
+                _this.hsl[1],
+                _this.hsl[2]
+            ];
+
+            hsl[1] += hsl[1] * Math.max(Math.min(ratio, 1), 0);
+
+            return _fn.colorObj({
+                hsl: hsl,
+                alpha: _this.alpha
+            });
+        };
+
+        _this.desaturate = function(ratio) {
+            var hsl = [
+                _this.hsl[0],
+                _this.hsl[1],
+                _this.hsl[2]
+            ];
+
+            hsl[1] -= hsl[1] * Math.max(Math.min(ratio, 1), 0);
+
+            return _fn.colorObj({
+                hsl: hsl,
+                alpha: _this.alpha
+            });
+        };
+
+        _this.rotate = function(degrees) {
+            var hsl = [
+                _this.hsl[0],
+                _this.hsl[1],
+                _this.hsl[2]
+            ];
+
+            hsl[0] = (hsl[0] + degrees) % 360;
+            hsl[0] = hsl[0] < 0 ? 360 + hsl[0] : hsl[0];
+
+            return _fn.colorObj({
+                hsl: hsl,
+                alpha: _this.alpha
+            });
+        };
+
+        _this.mix = function(newColor, weight) {
+            weight = 1 - (weight ? weight : 0.5);
+
+            var c = _fn.colorObj(newColor),
+                t1 = (weight * 2) - 1,
+                d = _this.alpha() - c.alpha(),
+                weight1 = (((t1 * d === -1) ? t1 : (t1 + d) / (1 + t1 * d)) + 1) / 2,
+                weight2 = 1 - weight1,
+                rgb = [],
+                alpha;
+
+            for (var i = 0; i < _this.rgb.length; i++) {
+                rgb[i] = _this.rgb[i] * weight1 + c.rgb[i] * weight2;
+            }
+
+            alpha = _this.alpha() * weight + c.alpha() * (1 - weight);
+
+            return _fn.colorObj({
+                rgb: rgb,
+                alpha: alpha
+            });
+        };
+
+        _this.negate = function() {
+            var rgb = [];
+
+            for (var i = 0; i < 3; i++) {
+                rgb[i] = 255 - _this.rgb[i];
+            }
+
+            return _fn.colorObj({
+                rgb: rgb,
+                alpha: _this.alpha
+            });
+        };
+
+        _this.greyscale = function() {
+            var val = (_this.rgb[0] * 0.3) + (_this.rgb[1] * 0.59) + (_this.rgb[2] * 0.11);
+
+            return _fn.colorObj({
+                rgb: [ val, val, val ],
+                alpha: _this.alpha
+            });
+        };
+
         // Color schemes
         _this.scheme = {
             complementary: function() {
-                return _utils.getScheme(_this.hsl, [ 0, 180 ]);
+                return _fn.getScheme(_this.hsl, [ 0, 180 ]);
             },
 
             splitComplementary: function() {
-                return _utils.getScheme(_this.hsl, [ 0, 150, 320 ]);
+                return _fn.getScheme(_this.hsl, [ 0, 150, 320 ]);
             },
 
             splitComplementaryCW: function() {
-                return _utils.getScheme(_this.hsl, [ 0, 150, 300 ]);
+                return _fn.getScheme(_this.hsl, [ 0, 150, 300 ]);
             },
 
             splitComplementaryCCW: function() {
-                return _utils.getScheme(_this.hsl, [ 0, 60, 210 ]);
+                return _fn.getScheme(_this.hsl, [ 0, 60, 210 ]);
             },
 
             triadic: function() {
-                return _utils.getScheme(_this.hsl, [ 0, 120, 240 ]);
+                return _fn.getScheme(_this.hsl, [ 0, 120, 240 ]);
             },
 
             clash: function() {
-                return _utils.getScheme(_this.hsl, [ 0, 90, 270 ]);
+                return _fn.getScheme(_this.hsl, [ 0, 90, 270 ]);
             },
 
             tetradic: function() {
-                return _utils.getScheme(_this.hsl, [ 0, 90, 180, 270 ]);
+                return _fn.getScheme(_this.hsl, [ 0, 90, 180, 270 ]);
             },
 
             neutral: function() {
-                return _utils.getScheme(_this.hsl, [ 0, 15, 30, 45, 60, 75 ]);
+                return _fn.getScheme(_this.hsl, [ 0, 15, 30, 45, 60, 75 ]);
             },
 
             analogous: function() {
-                return _utils.getScheme(_this.hsl, [ 0, 30, 60, 90, 120, 150 ]);
+                return _fn.getScheme(_this.hsl, [ 0, 30, 60, 90, 120, 150 ]);
             },
 
             fourToneCW: function() {
-                return _utils.getScheme(_this.hsl, [ 0, 60, 180, 240 ]);
+                return _fn.getScheme(_this.hsl, [ 0, 60, 180, 240 ]);
             },
 
             fourToneCCW: function() {
-                return _utils.getScheme(_this.hsl, [ 0, 120, 180, 300 ]);
+                return _fn.getScheme(_this.hsl, [ 0, 120, 180, 300 ]);
             },
 
             fiveToneA: function() {
-                return _utils.getScheme(_this.hsl, [ 0, 115, 155, 205, 245 ]);
+                return _fn.getScheme(_this.hsl, [ 0, 115, 155, 205, 245 ]);
             },
 
             fiveToneB: function() {
-                return _utils.getScheme(_this.hsl, [ 0, 40, 90, 130, 245 ]);
+                return _fn.getScheme(_this.hsl, [ 0, 40, 90, 130, 245 ]);
             },
 
             fiveToneC: function() {
-                return _utils.getScheme(_this.hsl, [ 0, 50, 90, 205, 320 ]);
+                return _fn.getScheme(_this.hsl, [ 0, 50, 90, 205, 320 ]);
             },
 
             fiveToneD: function() {
-                return _utils.getScheme(_this.hsl, [ 0, 40, 155, 270, 310 ]);
+                return _fn.getScheme(_this.hsl, [ 0, 40, 155, 270, 310 ]);
             },
 
             fiveToneE: function() {
-                return _utils.getScheme(_this.hsl, [ 0, 115, 2, 30, 270, 320 ]);
+                return _fn.getScheme(_this.hsl, [ 0, 115, 2, 30, 270, 320 ]);
             },
 
             sixToneCW: function() {
-                return _utils.getScheme(_this.hsl, [ 0, 30, 120, 150, 240, 270 ]);
+                return _fn.getScheme(_this.hsl, [ 0, 30, 120, 150, 240, 270 ]);
             },
 
             sixToneCCW: function() {
-                return _utils.getScheme(_this.hsl, [ 0, 90, 120, 210, 240, 330 ]);
+                return _fn.getScheme(_this.hsl, [ 0, 90, 120, 210, 240, 330 ]);
             }
         };
     }
