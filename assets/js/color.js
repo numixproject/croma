@@ -452,15 +452,6 @@ var Color = (function() {
             color = "#" + ((1 << 24) * Math.random() | 0).toString(16);
         }
 
-        // Override toString method
-        _this.toString = function() {
-            if (typeof color === "string") {
-                return color;
-            } else {
-                return JSON.stringify(color);
-            }
-        };
-
         // Properties
         components = _utils.getComponents(color);
 
