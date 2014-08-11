@@ -512,6 +512,25 @@ var Color = (function() {
             return name;
         };
 
+        _this.luminance = function() {
+            var lum = [],
+                chan;
+
+            for (var i = 0; i < _this.rgb.length; i++) {
+                chan = _this.rgb[i] / 255;
+
+                lum[i] = (chan <= 0.03928) ? (chan / 12.92) : Math.pow(((chan + 0.055) / 1.055), 2.4);
+            }
+
+            return 0.2126 * lum[0] + 0.7152 * lum[1] + 0.0722 * lum[2];
+        };
+
+        _this.darkness = function() {
+            var yiq = (_this.rgb[0] * 299 + _this.rgb[1] * 587 + _this.rgb[2] * 114) / 1000;
+
+            return yiq / 255;
+        };
+
         // Color schemes
         _this.scheme = {
             complementary: function() {
