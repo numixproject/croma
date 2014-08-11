@@ -445,23 +445,23 @@ var Color = (function() {
 
             getScheme: function(hsl, degrees) {
                 var scheme = [],
-                    hue;
+                    hue, color;
 
                 for (var i = 0, l = degrees.length; i < l; i++) {
                     hue = (hsl[0] + degrees[i]) % 360;
 
-                    scheme.push([
-                        hue,
-                        hsl[1],
-                        hsl[2]
-                    ]);
+                    color = new ColorConstructor({
+                        hsl: [ hue, hsl[1], hsl[2] ]
+                    });
+
+                    scheme.push(color);
                 }
 
                 return scheme;
             }
         };
 
-    return function(color) {
+    function ColorConstructor(color) {
         var _this = this,
             components;
 
@@ -586,5 +586,7 @@ var Color = (function() {
                 return _utils.getScheme(_this.hsl, [ 0, 90, 120, 210, 240, 330 ]);
             }
         };
-    };
+    }
+
+    return ColorConstructor;
 }());
