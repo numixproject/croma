@@ -352,6 +352,48 @@ var Color = (function() {
                 ];
             },
 
+            rgb2cmyk: function(values) {
+                var c, m, y, k;
+
+                c = 1 - (values[0] / 255);
+                m = 1 - (values[1] / 255);
+                y = 1 - (values[2] / 255);
+
+                k = Math.min(Math.min(c, m), y);
+
+                if (k === 1) {
+                    c = m = y = 0;
+                } else {
+                    c = (c - k) / (1 - k);
+                    m = (m - k) / (1 - k);
+                    y = (y - k) / (1 - k);
+                }
+
+                return [
+                    Math.round(c * 100),
+                    Math.round(m * 100),
+                    Math.round(y * 100),
+                    Math.round(k * 100)
+                ];
+            },
+
+            cmyk2rgb: function(values) {
+                var c = values[0] / 100,
+                    m = values[1] / 100,
+                    y = values[2] / 100,
+                    k = values[3] / 100;
+
+                c = (c * (1 - k) + k);
+                m = (m * (1 - k) + k);
+                y = (y * (1 - k) + k);
+
+                return [
+                    Math.round((1 - c) * 255),
+                    Math.round((1 - m) * 255),
+                    Math.round((1 - y) * 255)
+                ];
+            },
+
             rgb2xyz: function(values) {
                 var rgb = [
                         values[0] / 255,
@@ -466,6 +508,7 @@ var Color = (function() {
                     rgb: /^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i,
                     hsl: /^hsla?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[%+]?[\s+]?,[\s+]?(\d+)[%+]?[\s+]?/i,
                     hsv: /^hsva?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[%+]?[\s+]?,[\s+]?(\d+)[%+]?[\s+]?/i,
+                    cmyk: /^cmyk?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i,
                     lab: /^lab?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)?[\s+]?,[\s+]?(\d+)?[\s+]?/i,
                     name: function(color) {
                         return _names.hasOwnProperty(color);
@@ -537,6 +580,18 @@ var Color = (function() {
                                 alpha: parseFloat(hsv[3])
                             };
                         },
+                        cmyk: function(color) {
+                            var cmyk = color.replace(/[cmyk()]/g, "").split(",");
+
+                            return {
+                                cmyk: [
+                                    parseInt(cmyk[0], 10),
+                                    parseInt(cmyk[1], 10),
+                                    parseInt(cmyk[2], 10),
+                                    parseInt(cmyk[3], 10)
+                                ]
+                            };
+                        },
                         lab: function(color) {
                             var lab = color.replace(/[lab()]/g, "").split(",");
 
@@ -568,6 +623,10 @@ var Color = (function() {
                         return c.rgb;
                     } else if (c.hsl instanceof Array) {
                         return _convert.hsl2rgb(c.hsl);
+                    } else if (c.hsv instanceof Array) {
+                        return _convert.hsv2rgb(c.hsv);
+                    } else if (c.cmyk instanceof Array) {
+                        return _convert.cmyk2rgb(c.cmyk);
                     } else if (c.lab instanceof Array) {
                         return _convert.xyz2rgb(_convert.lab2xyz(c.lab));
                     } else {
@@ -582,6 +641,8 @@ var Color = (function() {
                         return _convert.hsv2hsl(c.hsv);
                     } else if (c.rgb instanceof Array) {
                         return _convert.rgb2hsl(c.rgb);
+                    } else if (c.cmyk instanceof Array) {
+                        return _convert.rgb2hsl(_convert.cmyk2rgb(c.cmyk));
                     } else if (c.lab instanceof Array) {
                         return _convert.rgb2hsl(_convert.xyz2rgb(_convert.lab2xyz(c.lab)));
                     } else {
@@ -596,8 +657,26 @@ var Color = (function() {
                         return _convert.hsl2hsv(c.hsl);
                     } else if (c.rgb instanceof Array) {
                         return _convert.rgb2hsv(c.rgb);
+                    } else if (c.cmyk instanceof Array) {
+                        return _convert.rgb2hsv(_convert.cmyk2rgb(c.cmyk));
                     } else if (c.lab instanceof Array) {
                         return _convert.rgb2hsv(_convert.xyz2rgb(_convert.lab2xyz(c.lab)));
+                    } else {
+                        return [ 0, 0, 0 ];
+                    }
+                }());
+
+                c.cmyk = (function() {
+                    if (c.cmyk instanceof Array) {
+                        return c.cmyk;
+                    } else if (c.rgb instanceof Array) {
+                        return _convert.rgb2cmyk(c.rgb);
+                    } else if (c.hsl instanceof Array) {
+                        return _convert.rgb2cmyk(_convert.hsl2rgb(c.hsl));
+                    } else if (c.hsv instanceof Array) {
+                        return _convert.rgb2cmyk(_convert.hsl2rgb(c.hsv));
+                    } else if (c.lab instanceof Array) {
+                        return _convert.rgb2cmyk(_convert.xyz2rgb(_convert.lab2xyz(c.lab)));
                     } else {
                         return [ 0, 0, 0 ];
                     }
@@ -608,6 +687,8 @@ var Color = (function() {
                         return c.lab;
                     } else if (c.rgb instanceof Array) {
                         return _convert.xyz2lab(_convert.rgb2xyz(c.rgb));
+                    } else if (c.cmyk instanceof Array) {
+                        return _convert.xyz2lab(_convert.rgb2xyz(_convert.cmyk2rgb(c.cmyk)));
                     } else if (c.hsl instanceof Array) {
                         return _convert.xyz2lab(_convert.rgb2xyz(_convert.hsl2rgb(c.hsl)));
                     } else if (c.hsv instanceof Array) {
@@ -674,6 +755,10 @@ var Color = (function() {
 
     ColorConstructor.prototype.tohsv = function() {
         return "hsva(" + this.hsv[0] + "," + this.hsv[1] + "%," + this.hsv[2] + "%," + this.alpha + ")";
+    };
+
+    ColorConstructor.prototype.tocmyk = function() {
+        return "cmyk(" + this.cmyk[0] + "," + this.cmyk[1] + "," + this.cmyk[2] + "," + this.cmyk[3] + ")";
     };
 
     ColorConstructor.prototype.tolab = function() {
