@@ -465,6 +465,7 @@ var Color = (function() {
                     c.hsv = [ 0, 0, 0 ];
                 }
 
+                c.alpha = c.alpha || color.alpha;
                 c.alpha = (typeof c.alpha === "number" && (c.alpha || c.alpha === 0)) ? Math.max(Math.min(c.alpha, 1), 0) : 1;
 
                 return c;
@@ -558,11 +559,7 @@ var Color = (function() {
 
         // Color manipulation
         _this.lighten = function(ratio) {
-            var hsl = [
-                _this.hsl[0],
-                _this.hsl[1],
-                _this.hsl[2]
-            ];
+            var hsl = _this.hsl.slice(0);
 
             hsl[2] += hsl[2] * Math.max(Math.min(ratio, 1), 0);
 
@@ -573,11 +570,7 @@ var Color = (function() {
         };
 
         _this.darken = function(ratio) {
-            var hsl = [
-                _this.hsl[0],
-                _this.hsl[1],
-                _this.hsl[2]
-            ];
+            var hsl = _this.hsl.slice(0);
 
             hsl[2] -= hsl[2] * Math.max(Math.min(ratio, 1), 0);
 
@@ -588,11 +581,7 @@ var Color = (function() {
         };
 
         _this.saturate = function(ratio) {
-            var hsl = [
-                _this.hsl[0],
-                _this.hsl[1],
-                _this.hsl[2]
-            ];
+            var hsl = _this.hsl.slice(0);
 
             hsl[1] += hsl[1] * Math.max(Math.min(ratio, 1), 0);
 
@@ -603,11 +592,7 @@ var Color = (function() {
         };
 
         _this.desaturate = function(ratio) {
-            var hsl = [
-                _this.hsl[0],
-                _this.hsl[1],
-                _this.hsl[2]
-            ];
+            var hsl = _this.hsl.slice(0);
 
             hsl[1] -= hsl[1] * Math.max(Math.min(ratio, 1), 0);
 
@@ -618,11 +603,7 @@ var Color = (function() {
         };
 
         _this.rotate = function(degrees) {
-            var hsl = [
-                _this.hsl[0],
-                _this.hsl[1],
-                _this.hsl[2]
-            ];
+            var hsl = _this.hsl.slice(0);
 
             hsl[0] = (hsl[0] + degrees) % 360;
             hsl[0] = hsl[0] < 0 ? 360 + hsl[0] : hsl[0];
