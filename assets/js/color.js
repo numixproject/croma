@@ -516,6 +516,10 @@ var Color = (function() {
                     cmyk: /^cmyk?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i,
                     lab: /^lab?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)?[\s+]?,[\s+]?(\d+)?[\s+]?/i,
                     name: function(color) {
+                        if (color && typeof color == "string") {
+                            color = color.toLowerCase();
+                        }
+
                         return _names.hasOwnProperty(color);
                     }
                 };
@@ -609,6 +613,10 @@ var Color = (function() {
                             };
                         },
                         name: function(color) {
+                            if (color && typeof color == "string") {
+                                color = color.toLowerCase();
+                            }
+
                             return { rgb: _names[color] };
                         }
                     },
