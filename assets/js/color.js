@@ -488,7 +488,7 @@ var Color = (function() {
                     c;
 
                 if (colors instanceof Array) {
-                    for (var i, l = colors.length; i < l; i++) {
+                    for (var i = 0, l = colors.length; i < l; i++) {
                         c = new ColorConstructor(colors[i]);
 
                         objs.push(c);
@@ -900,78 +900,76 @@ var Color = (function() {
     };
 
     // Color schemes
-    ColorConstructor.prototype.scheme = {
-        complementary: function() {
-            return _fn.getScheme(this.hsl, [ 0, 180 ]);
-        },
+    ColorConstructor.prototype.complementaryScheme = function() {
+        return _fn.getScheme(this.hsl, [ 0, 180 ]);
+    };
 
-        splitComplementary: function() {
-            return _fn.getScheme(this.hsl, [ 0, 150, 320 ]);
-        },
+    ColorConstructor.prototype.splitComplementaryScheme = function() {
+        return _fn.getScheme(this.hsl, [ 0, 150, 320 ]);
+    };
 
-        splitComplementaryCW: function() {
-            return _fn.getScheme(this.hsl, [ 0, 150, 300 ]);
-        },
+    ColorConstructor.prototype.splitComplementaryCWScheme = function() {
+        return _fn.getScheme(this.hsl, [ 0, 150, 300 ]);
+    };
 
-        splitComplementaryCCW: function() {
-            return _fn.getScheme(this.hsl, [ 0, 60, 210 ]);
-        },
+    ColorConstructor.prototype.splitComplementaryCCWScheme = function() {
+        return _fn.getScheme(this.hsl, [ 0, 60, 210 ]);
+    };
 
-        triadic: function() {
-            return _fn.getScheme(this.hsl, [ 0, 120, 240 ]);
-        },
+    ColorConstructor.prototype.triadicScheme = function() {
+        return _fn.getScheme(this.hsl, [ 0, 120, 240 ]);
+    };
 
-        clash: function() {
-            return _fn.getScheme(this.hsl, [ 0, 90, 270 ]);
-        },
+    ColorConstructor.prototype.clashScheme = function() {
+        return _fn.getScheme(this.hsl, [ 0, 90, 270 ]);
+    };
 
-        tetradic: function() {
-            return _fn.getScheme(this.hsl, [ 0, 90, 180, 270 ]);
-        },
+    ColorConstructor.prototype.tetradicScheme = function() {
+        return _fn.getScheme(this.hsl, [ 0, 90, 180, 270 ]);
+    };
 
-        neutral: function() {
-            return _fn.getScheme(this.hsl, [ 0, 15, 30, 45, 60, 75 ]);
-        },
+    ColorConstructor.prototype.neutralScheme = function() {
+        return _fn.getScheme(this.hsl, [ 0, 15, 30, 45, 60, 75 ]);
+    };
 
-        analogous: function() {
-            return _fn.getScheme(this.hsl, [ 0, 30, 60, 90, 120, 150 ]);
-        },
+    ColorConstructor.prototype.analogousScheme = function() {
+        return _fn.getScheme(this.hsl, [ 0, 30, 60, 90, 120, 150 ]);
+    };
 
-        fourToneCW: function() {
-            return _fn.getScheme(this.hsl, [ 0, 60, 180, 240 ]);
-        },
+    ColorConstructor.prototype.fourToneCWScheme = function() {
+        return _fn.getScheme(this.hsl, [ 0, 60, 180, 240 ]);
+    };
 
-        fourToneCCW: function() {
-            return _fn.getScheme(this.hsl, [ 0, 120, 180, 300 ]);
-        },
+    ColorConstructor.prototype.fourToneCCWScheme = function() {
+        return _fn.getScheme(this.hsl, [ 0, 120, 180, 300 ]);
+    };
 
-        fiveToneA: function() {
-            return _fn.getScheme(this.hsl, [ 0, 115, 155, 205, 245 ]);
-        },
+    ColorConstructor.prototype.fiveToneAScheme = function() {
+        return _fn.getScheme(this.hsl, [ 0, 115, 155, 205, 245 ]);
+    };
 
-        fiveToneB: function() {
-            return _fn.getScheme(this.hsl, [ 0, 40, 90, 130, 245 ]);
-        },
+    ColorConstructor.prototype.fiveToneBScheme = function() {
+        return _fn.getScheme(this.hsl, [ 0, 40, 90, 130, 245 ]);
+    };
 
-        fiveToneC: function() {
-            return _fn.getScheme(this.hsl, [ 0, 50, 90, 205, 320 ]);
-        },
+    ColorConstructor.prototype.fiveToneCScheme = function() {
+        return _fn.getScheme(this.hsl, [ 0, 50, 90, 205, 320 ]);
+    };
 
-        fiveToneD: function() {
-            return _fn.getScheme(this.hsl, [ 0, 40, 155, 270, 310 ]);
-        },
+    ColorConstructor.prototype.fiveToneDScheme = function() {
+        return _fn.getScheme(this.hsl, [ 0, 40, 155, 270, 310 ]);
+    };
 
-        fiveToneE: function() {
-            return _fn.getScheme(this.hsl, [ 0, 115, 2, 30, 270, 320 ]);
-        },
+    ColorConstructor.prototype.fiveToneEScheme = function() {
+        return _fn.getScheme(this.hsl, [ 0, 115, 2, 30, 270, 320 ]);
+    };
 
-        sixToneCW: function() {
-            return _fn.getScheme(this.hsl, [ 0, 30, 120, 150, 240, 270 ]);
-        },
+    ColorConstructor.prototype.sixToneCWScheme = function() {
+        return _fn.getScheme(this.hsl, [ 0, 30, 120, 150, 240, 270 ]);
+    };
 
-        sixToneCCW: function() {
-            return _fn.getScheme(this.hsl, [ 0, 90, 120, 210, 240, 330 ]);
-        }
+    ColorConstructor.prototype.sixToneCCWScheme = function() {
+        return _fn.getScheme(this.hsl, [ 0, 90, 120, 210, 240, 330 ]);
     };
 
     return ColorConstructor;
