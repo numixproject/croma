@@ -759,14 +759,26 @@ var Color = (function() {
     };
 
     ColorConstructor.prototype.torgb = function() {
+        return "rgb(" + this.rgb[0] + "," + this.rgb[1] + "," + this.rgb[2] + ")";
+    };
+
+    ColorConstructor.prototype.torgba = function() {
         return "rgba(" + this.rgb[0] + "," + this.rgb[1] + "," + this.rgb[2] + "," + this.alpha + ")";
     };
 
     ColorConstructor.prototype.tohsl = function() {
+        return "hsl(" + this.hsl[0] + "," + this.hsl[1] + "%," + this.hsl[2] + "%)";
+    };
+
+    ColorConstructor.prototype.tohsla = function() {
         return "hsla(" + this.hsl[0] + "," + this.hsl[1] + "%," + this.hsl[2] + "%," + this.alpha + ")";
     };
 
     ColorConstructor.prototype.tohsv = function() {
+        return "hsv(" + this.hsv[0] + "," + this.hsv[1] + "%," + this.hsv[2] + "%)";
+    };
+
+    ColorConstructor.prototype.tohsva = function() {
         return "hsva(" + this.hsv[0] + "," + this.hsv[1] + "%," + this.hsv[2] + "%," + this.alpha + ")";
     };
 
