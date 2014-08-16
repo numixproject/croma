@@ -735,16 +735,19 @@ var Color = (function() {
     function ColorConstructor(color) {
         var components;
 
-        if (!color) {
-            color = "#" + ((1 << 24) * Math.random() | 0).toString(16);
-        }
+        // Set a random color if no color was given
+        color = color || "#" + ((1 << 24) * Math.random() | 0).toString(16);
 
         // Properties
         components = _fn.getComponents(color);
 
         for (var c in components) {
             if (components.hasOwnProperty(c)) {
-                this[c] = components[c];
+                Object.defineProperty(this, c, {
+                    value: components[c],
+                    writable: false,
+                    enumerable: true
+                });
             }
         }
     }
@@ -922,6 +925,17 @@ var Color = (function() {
             return _fn.colorObj({
                 rgb: [ val, val, val ],
                 alpha: this.alpha
+            });
+        },
+
+        fade: function(ratio) {
+            var alpha = this.alpha;
+
+            alpha *= Math.max(Math.min(ratio, 1), 0);
+
+            return _fn.colorObj({
+                rgb: this.rgb,
+                alpha: alpha
             });
         },
 
