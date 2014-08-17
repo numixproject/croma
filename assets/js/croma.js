@@ -211,7 +211,7 @@ var Croma = (function() {
                         }
                     };
 
-                _this.ui.picker.value = _this.ui.picker.value || "#f06760";
+                _this.ui.picker.value = _this.ui.picker.value || "#f06860";
 
                 setcolor(_this.ui.picker.value);
 
