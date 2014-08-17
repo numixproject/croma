@@ -532,188 +532,236 @@ var Color = (function() {
                 }
             },
 
-            getComponents: function(color) {
-                var models = {
-                        hex: function(color) {
-                            var hex;
+            normalizeColor: function(c) {
+                return {
+                    rgb: [
+                        Math.round(Math.max(Math.min(c.rgb[0], 255), 0)),
+                        Math.round(Math.max(Math.min(c.rgb[1], 255), 0)),
+                        Math.round(Math.max(Math.min(c.rgb[2], 255), 0))
+                    ],
+                    hsl: [
+                        Math.round(Math.max(Math.min(c.hsl[0], 360), 0)),
+                        Math.round(Math.max(Math.min(c.hsl[1], 100), 0)),
+                        Math.round(Math.max(Math.min(c.hsl[2], 100), 0))
+                    ],
+                    hsv: [
+                        Math.round(Math.max(Math.min(c.hsv[0], 360), 0)),
+                        Math.round(Math.max(Math.min(c.hsv[1], 100), 0)),
+                        Math.round(Math.max(Math.min(c.hsv[2], 100), 0))
+                    ],
+                    cmyk: [
+                        Math.round(Math.max(Math.min(c.cmyk[0], 100), 0)),
+                        Math.round(Math.max(Math.min(c.cmyk[1], 100), 0)),
+                        Math.round(Math.max(Math.min(c.cmyk[2], 100), 0)),
+                        Math.round(Math.max(Math.min(c.cmyk[3], 100), 0))
+                    ],
+                    lab: [
+                        Math.round(Math.max(Math.min(c.lab[0], 100), 0)),
+                        Math.round(Math.max(Math.min(c.lab[1], 127), -128)),
+                        Math.round(Math.max(Math.min(c.lab[2], 127), -128))
+                    ],
+                    alpha: Math.max(Math.min(c.alpha, 1), 0)
+                };
+            },
 
-                            if (color.length === 4) {
-                                color = color.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, function(m, r, g, b) {
-                                    return "#" + r + r + g + g + b + b;
-                                });
-                            }
+            parseObj: function(c) {
+                var rgb, hsl, hsv, cmyk, lab, alpha;
 
-                            hex = (/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i).exec(color);
-
-                            return {
-                                rgb: [
-                                    parseInt(hex[1], 16),
-                                    parseInt(hex[2], 16),
-                                    parseInt(hex[3], 16)
-                                ]
-                            };
-                        },
-                        rgb: function(color) {
-                            var rgb = color.replace(/[rgba()]/g, "").split(",");
-
-                            return {
-                                rgb: [
-                                    parseInt(rgb[0], 10),
-                                    parseInt(rgb[1], 10),
-                                    parseInt(rgb[2], 10)
-                                ],
-                                alpha: parseFloat(rgb[3])
-                            };
-                        },
-                        hsl: function(color) {
-                            var hsl = color.replace(/[hsla()]/g, "").split(",");
-
-                            return {
-                                hsl: [
-                                    parseInt(hsl[0], 10),
-                                    parseInt(hsl[1], 10),
-                                    parseInt(hsl[2], 10)
-                                ],
-                                alpha: parseFloat(hsl[3])
-                            };
-                        },
-                        hsv: function(color) {
-                            var hsv = color.replace(/[hsva()]/g, "").split(",");
-
-                            return {
-                                hsv: [
-                                    parseInt(hsv[0], 10),
-                                    parseInt(hsv[1], 10),
-                                    parseInt(hsv[2], 10)
-                                ],
-                                alpha: parseFloat(hsv[3])
-                            };
-                        },
-                        cmyk: function(color) {
-                            var cmyk = color.replace(/[cmyk()]/g, "").split(",");
-
-                            return {
-                                cmyk: [
-                                    parseInt(cmyk[0], 10),
-                                    parseInt(cmyk[1], 10),
-                                    parseInt(cmyk[2], 10),
-                                    parseInt(cmyk[3], 10)
-                                ]
-                            };
-                        },
-                        lab: function(color) {
-                            var lab = color.replace(/[lab()]/g, "").split(",");
-
-                            return {
-                                lab: [
-                                    parseInt(lab[0], 10),
-                                    parseInt(lab[1], 10),
-                                    parseInt(lab[2], 10)
-                                ]
-                            };
-                        },
-                        name: function(color) {
-                            if (color && typeof color == "string") {
-                                color = color.toLowerCase();
-                            }
-
-                            return { rgb: _names[color] };
-                        }
-                    },
-                    c = {},
-                    type = _fn.getType(color);
-
-                if (typeof models[type] === "function") {
-                    c = models[type].call(null, color);
+                if (c.rgb && c.rgb instanceof Array) {
+                    rgb =  c.rgb;
+                    hsl = _convert.rgb2hsl(rgb);
+                    hsv = _convert.rgb2hsv(rgb);
+                    cmyk = _convert.rgb2cmyk(rgb);
+                    lab = _convert.xyz2lab(_convert.rgb2xyz(rgb));
+                } else if (c.hsl && c.hsl instanceof Array) {
+                    hsl = c.hsl;
+                    rgb = _convert.hsl2rgb(hsl);
+                    hsv = _convert.hsl2hsv(hsl);
+                    cmyk = _convert.rgb2cmyk(rgb);
+                    lab = _convert.xyz2lab(_convert.rgb2xyz(rgb));
+                } else if (c.hsv && c.hsv instanceof Array) {
+                    hsv = c.hsv;
+                    rgb = _convert.hsl2rgb(hsv);
+                    hsl = _convert.hsv2hsl(hsv);
+                    cmyk = _convert.rgb2cmyk(rgb);
+                    lab = _convert.xyz2lab(_convert.rgb2xyz(rgb));
+                } else if (c.cmyk && c.cmyk instanceof Array) {
+                    cmyk = c.cmyk;
+                    rgb = _convert.cmyk2rgb(cmyk);
+                    hsl = _convert.rgb2hsl(rgb);
+                    hsv = _convert.rgb2hsv(rgb);
+                    lab = _convert.xyz2lab(_convert.rgb2xyz(rgb));
+                } else if (c.lab && c.lab instanceof Array) {
+                    lab = c.lab;
+                    rgb = _convert.xyz2rgb(_convert.lab2xyz(lab));
+                    hsl = _convert.rgb2hsl(rgb);
+                    hsv = _convert.rgb2hsv(rgb);
+                    cmyk = _convert.rgb2cmyk(rgb);
                 } else {
-                    for (var t in models) {
-                        c[t] = color[t];
-                    }
+                    rgb =  [ 0, 0, 0 ];
+                    hsl =  [ 0, 0, 0 ];
+                    hsv =  [ 0, 0, 0 ];
+                    cmyk =  [ 0, 0, 0 ];
+                    lab =  [ 0, 0, 0 ];
                 }
 
-                c.rgb = (function() {
-                    if (c.rgb instanceof Array) {
-                        return c.rgb;
-                    } else if (c.hsl instanceof Array) {
-                        return _convert.hsl2rgb(c.hsl);
-                    } else if (c.hsv instanceof Array) {
-                        return _convert.hsv2rgb(c.hsv);
-                    } else if (c.cmyk instanceof Array) {
-                        return _convert.cmyk2rgb(c.cmyk);
-                    } else if (c.lab instanceof Array) {
-                        return _convert.xyz2rgb(_convert.lab2xyz(c.lab));
-                    } else {
-                        return [ 0, 0, 0 ];
-                    }
-                }());
+                alpha = isNaN(c.alpha) ? 1 : c.alpha;
 
-                c.hsl = (function() {
-                    if (c.hsl instanceof Array) {
-                        return c.hsl;
-                    } else if (c.hsv instanceof Array) {
-                        return _convert.hsv2hsl(c.hsv);
-                    } else if (c.rgb instanceof Array) {
-                        return _convert.rgb2hsl(c.rgb);
-                    } else if (c.cmyk instanceof Array) {
-                        return _convert.rgb2hsl(_convert.cmyk2rgb(c.cmyk));
-                    } else if (c.lab instanceof Array) {
-                        return _convert.rgb2hsl(_convert.xyz2rgb(_convert.lab2xyz(c.lab)));
-                    } else {
-                        return [ 0, 0, 0 ];
-                    }
-                }());
+                return _fn.normalizeColor({
+                    rgb: rgb,
+                    hsl: hsl,
+                    hsv: hsv,
+                    cmyk: cmyk,
+                    lab: lab,
+                    alpha: alpha
+                });
+            },
 
-                c.hsv = (function() {
-                    if (c.hsv instanceof Array) {
-                        return c.hsv;
-                    } else if (c.hsl instanceof Array) {
-                        return _convert.hsl2hsv(c.hsl);
-                    } else if (c.rgb instanceof Array) {
-                        return _convert.rgb2hsv(c.rgb);
-                    } else if (c.cmyk instanceof Array) {
-                        return _convert.rgb2hsv(_convert.cmyk2rgb(c.cmyk));
-                    } else if (c.lab instanceof Array) {
-                        return _convert.rgb2hsv(_convert.xyz2rgb(_convert.lab2xyz(c.lab)));
-                    } else {
-                        return [ 0, 0, 0 ];
-                    }
-                }());
+            parseName: function(color) {
+                var rgb;
 
-                c.cmyk = (function() {
-                    if (c.cmyk instanceof Array) {
-                        return c.cmyk;
-                    } else if (c.rgb instanceof Array) {
-                        return _convert.rgb2cmyk(c.rgb);
-                    } else if (c.hsl instanceof Array) {
-                        return _convert.rgb2cmyk(_convert.hsl2rgb(c.hsl));
-                    } else if (c.hsv instanceof Array) {
-                        return _convert.rgb2cmyk(_convert.hsl2rgb(c.hsv));
-                    } else if (c.lab instanceof Array) {
-                        return _convert.rgb2cmyk(_convert.xyz2rgb(_convert.lab2xyz(c.lab)));
-                    } else {
-                        return [ 0, 0, 0 ];
-                    }
-                }());
+                if (color && typeof color == "string") {
+                    color = color.toLowerCase();
+                }
 
-                c.lab = (function() {
-                    if (c.lab instanceof Array) {
-                        return c.lab;
-                    } else if (c.rgb instanceof Array) {
-                        return _convert.xyz2lab(_convert.rgb2xyz(c.rgb));
-                    } else if (c.cmyk instanceof Array) {
-                        return _convert.xyz2lab(_convert.rgb2xyz(_convert.cmyk2rgb(c.cmyk)));
-                    } else if (c.hsl instanceof Array) {
-                        return _convert.xyz2lab(_convert.rgb2xyz(_convert.hsl2rgb(c.hsl)));
-                    } else if (c.hsv instanceof Array) {
-                        return _convert.xyz2lab(_convert.rgb2xyz(_convert.hsl2rgb(c.hsv)));
-                    } else {
-                        return [ 0, 0, 0 ];
-                    }
-                }());
+                rgb = _names[color] || [ 0, 0, 0 ];
 
-                c.alpha = (typeof c.alpha === "number" && (c.alpha || c.alpha === 0)) ? Math.max(Math.min(c.alpha, 1), 0) : 1;
+                return _fn.parseObj({ rgb: rgb });
+            },
 
-                return c;
+            parseHex: function(color) {
+                var hex, rgb;
+
+                if (color.length === 4) {
+                    color = color.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, function(m, r, g, b) {
+                        return "#" + r + r + g + g + b + b;
+                    });
+                }
+
+                hex = (/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i).exec(color);
+
+                rgb = [
+                    parseInt(hex[1], 16),
+                    parseInt(hex[2], 16),
+                    parseInt(hex[3], 16)
+                ];
+
+                return _fn.parseObj({ rgb: rgb });
+            },
+
+            parseRGB: function(color) {
+                var arr, rgb, alpha;
+
+                arr = color.replace(/[rgba()]/g, "").split(",");
+
+                rgb = [
+                    parseInt(arr[0], 10),
+                    parseInt(arr[1], 10),
+                    parseInt(arr[2], 10)
+                ];
+
+                alpha = parseFloat(arr[3]);
+
+                return _fn.parseObj({
+                    rgb: rgb,
+                    alpha: alpha
+                });
+            },
+
+            parseHSL: function(color) {
+                var arr, hsl, rgb, alpha;
+
+                arr = color.replace(/[hsla()]/g, "").split(",");
+
+                hsl = [
+                    parseInt(arr[0], 10),
+                    parseInt(arr[1], 10),
+                    parseInt(arr[2], 10)
+                ];
+
+                alpha = parseFloat(arr[3]);
+
+                return _fn.parseObj({
+                    hsl: hsl,
+                    alpha: alpha
+                });
+            },
+
+            parseHSV: function(color) {
+                var arr, hsv, rgb, alpha;
+
+                arr = color.replace(/[hsva()]/g, "").split(",");
+
+                hsv = [
+                    parseInt(arr[0], 10),
+                    parseInt(arr[1], 10),
+                    parseInt(arr[2], 10)
+                ];
+
+                alpha = parseFloat(arr[3]);
+
+                return _fn.parseObj({
+                    hsv: hsv,
+                    alpha: alpha
+                });
+            },
+
+            parseCMYK: function(color) {
+                var arr, cmyk, rgb, alpha;
+
+                arr = color.replace(/[cmyk()]/g, "").split(",");
+
+                cmyk = [
+                    parseInt(arr[0], 10),
+                    parseInt(arr[1], 10),
+                    parseInt(arr[2], 10),
+                    parseInt(arr[3], 10)
+                ];
+
+                return _fn.parseObj({
+                    cmyk: cmyk,
+                    alpha: alpha
+                });
+            },
+
+            parseLAB: function(color) {
+                var arr, lab, rgb, alpha;
+
+                arr = color.replace(/[lab()]/g, "").split(",");
+
+                lab = [
+                    parseInt(arr[0], 10),
+                    parseInt(arr[1], 10),
+                    parseInt(arr[2], 10)
+                ];
+
+                return _fn.parseObj({
+                    lab: lab,
+                    alpha: alpha
+                });
+            },
+
+            getComponents: function(color) {
+                var type = _fn.getType(color);
+
+                switch (type) {
+                    case "name":
+                        return _fn.parseName(color);
+                    case "hex":
+                        return _fn.parseHex(color);
+                    case "rgb":
+                        return _fn.parseRGB(color);
+                    case "hsl":
+                        return _fn.parseHSL(color);
+                    case "hsv":
+                        return _fn.parseHSV(color);
+                    case "cmyk":
+                        return _fn.parseCMYK(color);
+                    case "lab":
+                        return _fn.parseLAB(color);
+                    default:
+                        return _fn.parseObj(color);
+                }
             },
 
             getScheme: function(hsl, degrees) {
@@ -928,10 +976,21 @@ var Color = (function() {
             });
         },
 
-        fade: function(ratio) {
+        fadein: function(ratio) {
             var alpha = this.alpha;
 
-            alpha *= Math.max(Math.min(ratio, 1), 0);
+            alpha += alpha * Math.max(Math.min(ratio, 1), 0);
+
+            return _fn.colorObj({
+                rgb: this.rgb,
+                alpha: alpha
+            });
+        },
+
+        fadeout: function(ratio) {
+            var alpha = this.alpha;
+
+            alpha -= alpha * Math.max(Math.min(ratio, 1), 0);
 
             return _fn.colorObj({
                 rgb: this.rgb,
