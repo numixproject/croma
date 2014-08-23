@@ -16,22 +16,94 @@
 </head>
 
 <body>
-<header>
-    <div class="header-inner">
-        <div class="header-title">croma</div>
-        <div class="header-actions">
-            <div class="header-action-button header-action-photo"></div>
-            <div class="header-action-button header-action-add"></div>
-        </div>
-    </div>
-</header>
-<main class="card-area-wrapper">
-    <div data-view="empty" class="start-area"></div>
-    <div data-view="normal" class="card-area"></div>
-    <div data-view="full" class="card-full"></div>
-</main>
 
-<script src="./dist/js/libs.min.js"></script>
-<script src="./dist/js/scripts.min.js"></script>
+    <script type="text/x-handlebars">
+        <header>
+            <div class="header-inner">
+                {{#view "header-title"}}
+                    <div class="header-title">croma</div>
+                {{/view}}
+                <div class="header-actions">
+                    {{#view "header-add"}}
+                        <div class="header-action-button header-action-add"></div>
+                    {{/view}}
+                </div>
+            </div>
+        </header>
+        <main class="card-area-wrapper">
+            <div class="card-area">
+                {{outlet}}
+            </div>
+        </main>
+    </script>
+
+    <script type="text/x-handlebars" id="index">
+        {{#if model.length}}
+            {{#each model}}
+                <div class="card-item" data-color="{{this}}" >
+                    {{#view "card"}}
+                        <div class="card-item-color" style="background-color: {{this}}"></div>
+                    {{/view}}
+                    <div class="card-item-info">
+                        <div class="card-item-value">{{this}}</div>
+                        <div class="card-item-actions">
+                            <div class="card-item-action card-item-action-love"></div>
+                            <div class="card-item-action card-item-action-delete"></div>
+                            <div class="card-item-action card-item-action-share"></div>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        {{else}}
+            No colors added.
+        {{/if}}
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="details">
+        {{#with model}}
+            <div class="card-item">
+                <div class="card-item-color" style="background-color: {{hexVal}}"></div>
+
+                {{#each strings}}
+                    {{#if this.value}}
+                        <div class="card-item-info">
+                            <span class="card-item-label">{{this.key}}:</span> {{this.value}}
+                        </div>
+                    {{/if}}
+                {{/each}}
+
+                {{#each schemes}}
+                    <div class="card-item-info">
+                        {{#each this}}
+                            {{this}}
+                        {{/each}}
+                    </div>
+                {{/each}}
+            </div>
+        {{/with}}
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="picker">
+        {{#view "picker"}}
+            <div class="card-item">
+                <div class="card-item-canvas">
+                    <canvas></canvas>
+                </div>
+                <div class="card-item-info">
+                    <div class="card-item-text-wrap">
+                        <input type="text" class="card-item-text" placeholder="Enter a color" autofocus>
+                    </div>
+                    <div class="card-item-color-button"></div>
+                </div>
+                <div class="card-item-buttons">
+                    <div class="card-item-button card-item-button-ok">Ok</div>
+                    <div class="card-item-button card-item-button-cancel">Cancel</div>
+                </div>
+            </div>
+        {{/view}}
+    </script>
+
+    <script src="./dist/js/libs.min.js"></script>
+    <script src="./dist/js/scripts.min.js"></script>
 </body>
 </html>

@@ -56,7 +56,10 @@ header {
     }
 }
 
-.header-title { float: left; }
+.header-title {
+    float: left;
+    cursor: pointer;
+}
 
 .header-actions { float: right; }
 
@@ -77,9 +80,9 @@ header {
     &:active { background-color: rgba(0,0,0,0.05); }
 }
 
-.header-action-add { background-image: url(../../assets/img/add.svg); }
+.header-action-add { background-image: url(../../src/img/add.svg); }
 
-.header-action-photo { background-image: url(../../assets/img/photo.svg); }
+.header-action-photo { background-image: url(../../src/img/photo.svg); }
 
 .card-area-wrapper {
     position: fixed;
@@ -107,6 +110,11 @@ header {
     padding-top: .5em;
     border-radius: $roundness;
     box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+.card-item-label {
+    font-weight: 700;
+    margin-right: 1em;
 }
 
 .card-item-color {
@@ -149,9 +157,9 @@ $actions: love, delete, share;
     $action: nth($actions, $i);
 
     .card-item-action-#{$action} {
-        background-image: url(../../assets/img/#{$action}.svg);
+        background-image: url(../../src/img/#{$action}.svg);
 
-        &:active { background: url(../../assets/img/#{$action}-active.svg); }
+        &:active { background: url(../../src/img/#{$action}-active.svg); }
     }
 }
 
@@ -166,24 +174,18 @@ $actions: love, delete, share;
             display: block;
             height: 100%;
             width: 100%;
-            background: url(../../assets/img/love-break.svg) no-repeat center center;
+            background: url(../../src/img/love-break.svg) no-repeat center center;
             opacity: 0;
 
             .card-item-loved & {
                 @extend %love;
 
-                background: url(../../assets/img/love-active.svg) no-repeat center center;
+                background: url(../../src/img/love-active.svg) no-repeat center center;
             }
         }
     }
 
-    .card-item-loved & { background: url(../../assets/img/love-active.svg); }
-}
-
-.card-item-action-color {
-    height: 1.5em;
-    width: 6em;
-    border-radius: $roundness;
+    .card-item-loved & { background: url(../../src/img/love-active.svg); }
 }
 
 .card-item-buttons {
@@ -209,6 +211,29 @@ $actions: love, delete, share;
     &:active { background-color: rgba(0,0,0,0.05); }
 
     &:only-of-type, &:last-of-type { border-right-width: 0; }
+}
+
+.card-item-canvas { margin: .5em; }
+
+.card-item-text-wrap { @include flex-grow(1); }
+
+.card-item-text {
+    min-width: 12em;
+    display: inline-block;
+    padding: .75em;
+    border: 1px solid darken($light-color, 20%);
+    background-color: $light-color;
+    border-radius: $roundness;
+
+    &:hover, &:focus, &:active {
+        border-color: $accent-color;
+        outline: none;
+    }
+}
+
+.card-item-color-button {
+    width: 6em;
+    border-radius: $roundness;
 }
 
 /* browser specific styles */

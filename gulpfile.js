@@ -12,17 +12,17 @@ var gulp = require("gulp"),
     rimraf = require("gulp-rimraf");
 
 gulp.task("sass", function() {
-    return gulp.src("assets/scss/*.scss")
+    return gulp.src("src/scss/*.scss")
     .pipe(sass({
         style: "compressed",
-        sourcemap: true
+        sourcemapPath: "../scss"
     }))
     .on("error", function(e) { gutil.log(e.message); })
     .pipe(gulp.dest("dist/css"));
 });
 
 gulp.task("lint", function() {
-    return gulp.src("assets/js/*.js")
+    return gulp.src("src/js/*.js")
     .pipe(jshint())
     .pipe(jshint.reporter("jshint-stylish"));
 });
@@ -39,7 +39,7 @@ gulp.task("libs", function() {
 });
 
 gulp.task("scripts", function() {
-    return gulp.src("assets/js/*.js")
+    return gulp.src("src/js/*.js")
     .pipe(sourcemaps.init())
     .pipe(concat("scripts.js"))
     .pipe(gutil.env === "production" ? uglify() : gutil.noop())
@@ -59,8 +59,8 @@ gulp.task("clean", function() {
 });
 
 gulp.task("watch", function() {
-    gulp.watch("assets/js/*.js", [ "lint", "libs", "scripts" ]);
-    gulp.watch("assets/scss/*.scss", [ "sass" ]);
+    gulp.watch("src/js/*.js", [ "lint", "libs", "scripts" ]);
+    gulp.watch("src/scss/*.scss", [ "sass" ]);
 });
 
 // Default Task

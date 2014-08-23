@@ -17,6 +17,7 @@
   "dependencies": {
     "jquery": "latest",
     "velocity": "latest",
-    "casket": "latest"
+    "casket": "latest",
+    "ember": "latest"
   }
 }
