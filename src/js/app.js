@@ -4,8 +4,7 @@
 (function() {
     var App = Ember.Application.create(),
         casket = new Casket(),
-        results = [],
-        cromaColor;
+        results = [];
 
     try {
         casket.query("croma");
@@ -27,11 +26,12 @@
     });
 
     App.DetailsRoute = Ember.Route.extend({
-        model: function() {
-            var color = new Color(cromaColor),
-                objs, strs;
+        model: function(params) {
+            var color = new Color(params.color),
+                objs, strs, val;
 
             color.hexVal = color.tohex();
+            color.cssStr = "background-color:" + color.hexVal;
 
             color.strings = [
                 { key: "Name", value: color.name() },
@@ -52,35 +52,25 @@
                     strs = [];
 
                     for (var j = 0; j < objs.length; j++) {
-                        strs.push(objs[j].tohex());
+                        val = objs[j].tohex();
+
+                        strs.push({
+                            value: val,
+                            cssStr: "background-color:" + val
+                        });
                     }
 
                     color.schemes.push(strs);
                 }
             }
 
-            return color;
+            return [ color ];
         }
     });
 
-    App.HeaderTitleView = Ember.View.extend({
-        click: function() {
-            App.Router.router.transitionTo("index");
-        }
-    });
-
-    App.HeaderAddView = Ember.View.extend({
-        click: function() {
-            App.Router.router.transitionTo("picker");
-        }
-    });
-
-    App.CardView = Ember.View.extend({
-        click: function() {
-            cromaColor = $(this).data("color");
-
-            App.Router.router.transitionTo("details");
-        }
+    App.DetailsController = Ember.ArrayController.extend({
+        queryParams: [ "color" ],
+        color: null
     });
 
     App.PickerView = Ember.View.extend({
@@ -89,7 +79,7 @@
 
             if ($target.hasClass("card-item-button")) {
                 if ($target.hasClass("card-item-button-ok")) {
-                    results.pushObject(picker.value);
+                    results.pushObject(picker.value).reverse();
                 }
 
                 App.Router.router.transitionTo("index");
@@ -98,7 +88,8 @@
 
         didInsertElement: function() {
             this._super();
-            picker.showPicker();
+
+            Ember.run.scheduleOnce('afterRender', this, picker.showPicker);
         }
     });
 }());

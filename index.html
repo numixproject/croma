@@ -20,13 +20,12 @@
     <script type="text/x-handlebars">
         <header>
             <div class="header-inner">
-                {{#view "header-title"}}
-                    <div class="header-title">croma</div>
-                {{/view}}
+                {{#link-to "index" class="header-title"}}
+                    croma
+                {{/link-to}}
                 <div class="header-actions">
-                    {{#view "header-add"}}
-                        <div class="header-action-button header-action-add"></div>
-                    {{/view}}
+                    {{#link-to "picker" class="header-action-button header-action-add"}}
+                    {{/link-to}}
                 </div>
             </div>
         </header>
@@ -41,9 +40,9 @@
         {{#if model.length}}
             {{#each model}}
                 <div class="card-item" data-color="{{this}}" >
-                    {{#view "card"}}
-                        <div class="card-item-color" style="background-color: {{this}}"></div>
-                    {{/view}}
+                    {{#link-to "details" (query-params color=this)}}
+                        <span class="card-item-color" style="background-color: {{this}}"></span>
+                    {{/link-to}}
                     <div class="card-item-info">
                         <div class="card-item-value">{{this}}</div>
                         <div class="card-item-actions">
@@ -60,27 +59,35 @@
     </script>
 
     <script type="text/x-handlebars" data-template-name="details">
-        {{#with model}}
-            <div class="card-item">
-                <div class="card-item-color" style="background-color: {{hexVal}}"></div>
+        {{#each model}}
+            {{#with this}}
+                <div class="card-item">
+                    <div class="card-item-color" {{bind-attr style=cssStr}}></div>
 
-                {{#each strings}}
-                    {{#if this.value}}
+                    {{#each strings}}
+                        {{#with this}}
+                            {{#if value}}
+                                <div class="card-item-info">
+                                    <span class="card-item-label">{{key}}:</span> {{value}}
+                                </div>
+                            {{/if}}
+                        {{/with}}
+                    {{/each}}
+
+                    {{#each schemes}}
                         <div class="card-item-info">
-                            <span class="card-item-label">{{this.key}}:</span> {{this.value}}
+                            {{#each this}}
+                                {{#with this}}
+                                    <div {{bind-attr style=cssStr}}>
+                                        {{value}}
+                                    </div>
+                                {{/with}}
+                            {{/each}}
                         </div>
-                    {{/if}}
-                {{/each}}
-
-                {{#each schemes}}
-                    <div class="card-item-info">
-                        {{#each this}}
-                            {{this}}
-                        {{/each}}
-                    </div>
-                {{/each}}
-            </div>
-        {{/with}}
+                    {{/each}}
+                </div>
+            {{/with}}
+        {{/each}}
     </script>
 
     <script type="text/x-handlebars" data-template-name="picker">

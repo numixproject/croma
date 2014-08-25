@@ -59,6 +59,8 @@ header {
 .header-title {
     float: left;
     cursor: pointer;
+    color: $light-color;
+    text-decoration: none;
 }
 
 .header-actions { float: right; }
@@ -118,6 +120,7 @@ header {
 }
 
 .card-item-color {
+    display: block;
     margin: .5em;
     margin-top: 0;
     height: 4em;
@@ -202,6 +205,8 @@ $actions: love, delete, share;
     border-width: 1px 1px 0 0;
     border-style: solid;
     padding: .75em;
+    color: $dark-color;
+    text-decoration: none;
     text-align: center;
     text-transform: uppercase;
     cursor: pointer;
