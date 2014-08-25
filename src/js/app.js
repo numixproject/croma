@@ -7,20 +7,90 @@ $(function() {
         colors = [],
         loved = [];
 
+    // Delete a color from the UI and database
+    function deleteColor(color) {
+        if ((!color) || typeof color !== "string") {
+            return;
+        }
+
+        color = new Color(color).tohex();
+
+        // Drop color from database
+        casket.drop("croma", "colors", color);
+        casket.drop("croma", "loved", color);
+        colors.removeObject(color);
+        loved.removeObject(color);
+
+        // Swipe out the card
+        $("[data-color=" + color + "]").velocity({
+            translateX: "100%",
+            opacity: 0
+        }, {
+            duration: 300,
+            easing: [ 0.7, 0.1, 0.57, 0.79 ]
+        }).velocity({
+            height: 0,
+            paddingTop: 0,
+            paddingBottom: 0
+        }, {
+            duration: 300,
+            complete: function() {
+                $(this).remove();
+            }
+        });
+    }
+
+    // Toggle love color in the UI and database
+    function loveColor(color) {
+        var $card, $button;
+
+        if ((!color) || typeof color !== "string") {
+            return;
+        }
+
+        color = new Color(color).tohex();
+
+        $card = $("[data-color=" + color + "]");
+
+        $button = $card.find(".card-item-action-love");
+
+        // Add class to animate the click
+        $button.addClass("clicked");
+
+        setTimeout(function() {
+            $button.removeClass("clicked");
+        }, 500);
+
+        // Toggle love
+        if (loved.indexOf(color) > -1) {
+            $card.removeClass("card-item-loved");
+            casket.drop("croma", "loved", color);
+            loved.removeObject(color);
+        } else {
+            $card.addClass("card-item-loved");
+            casket.push("croma", "loved", color);
+            loved.pushObject(color);
+        }
+    }
+
+    // If the database doesn't exist, create one
     try {
         casket.query("croma");
     } catch (err) {
         casket.create("croma", { colors: [], loved: [] });
     }
 
+    // Get values from database
     colors = casket.query("croma", "colors").results;
     loved = casket.query("croma", "loved").results;
 
+    // Add routes
     App.Router.map(function() {
         this.resource("picker");
         this.resource("details");
     });
 
+    // Render the index route
     App.IndexRoute = Ember.Route.extend({
         model: function() {
             var data = [],
@@ -42,24 +112,12 @@ $(function() {
 
     App.IndexController = Ember.ObjectController.extend({
         actions: {
-            love: function(color) {
-                if (loved.indexOf(color) > -1) {
-                    casket.drop("croma", "loved", color);
-                    loved.removeObject(color);
-                } else {
-                    casket.push("croma", "loved", color);
-                    loved.pushObject(color);
-                }
-            },
-
-            delete: function(color) {
-                casket.drop("croma", "colors", color);
-                casket.drop("croma", "loved", color);
-                colors.removeObject(color);
-            }
+            love: loveColor,
+            delete: deleteColor
         }
     });
 
+    // Render the details route
     App.DetailsRoute = Ember.Route.extend({
         model: function(params) {
             var color = new Color(params.color),
@@ -108,10 +166,25 @@ $(function() {
         color: null
     });
 
+    // Render the picker route
+    App.PickerView = Ember.View.extend({
+        didInsertElement: function() {
+            this._super();
+
+            Ember.run.scheduleOnce("afterRender", this, picker.showPicker);
+        }
+    });
+
     App.PickerController = Ember.ObjectController.extend({
         actions: {
             add: function() {
                 var color = picker.value;
+
+                if ((!color) || typeof color !== "string") {
+                    return;
+                }
+
+                color = new Color(color).tohex();
 
                 if (casket.query("croma", "colors", color).match) {
                     // Color already in DB
@@ -126,14 +199,6 @@ $(function() {
             cancel: function() {
                 App.Router.router.transitionTo("index");
             }
-        }
-    });
-
-    App.PickerView = Ember.View.extend({
-        didInsertElement: function() {
-            this._super();
-
-            Ember.run.scheduleOnce("afterRender", this, picker.showPicker);
         }
     });
 });
