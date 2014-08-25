@@ -3,8 +3,6 @@
 @import "global";
 @import "flexbox";
 @import "animations";
-@import "modal";
-@import "colorpicker";
 
 html, body { height: 100%; }
 
@@ -16,14 +14,6 @@ body {
     line-height: 21px;
     background-color: $light-color;
     color: $dark-color;
-
-    $views: empty, normal, full;
-
-    @each $view in $views {
-        &.view-#{$view} {
-            [data-view]:not([data-view~=#{$view}]) { display: none; }
-        }
-    }
 }
 
 header {
