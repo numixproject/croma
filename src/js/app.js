@@ -36,7 +36,7 @@
                 });
             }
 
-            return data;
+            return data.reverse();
         }
     });
 
@@ -90,11 +90,17 @@
 
     App.PickerView = Ember.View.extend({
         click: function(e) {
-            var $target = $(e.target);
+            var $target = $(e.target),
+                color = picker.value;
 
             if ($target.hasClass("card-item-button")) {
-                if ($target.hasClass("card-item-button-ok")) {
-                    results.pushObject(picker.value);
+                if ($target.hasClass("card-item-button-ok") && color) {
+                    if (casket.query("croma", "colors", color).match) {
+                        // Color already in DB
+                    } else {
+                        results.pushObject(color);
+                        casket.push("croma", "colors", color);
+                    }
                 }
 
                 App.Router.router.transitionTo("index");

@@ -62,6 +62,8 @@ var Picker = (function() {
 
 			_this.drawSheet(sheet, $parent.innerWidth(), $parent.innerHeight());
 
+			_this.setColor(_this.value);
+
 			$text.focus();
 
 			$(window).on("resize", function() {
