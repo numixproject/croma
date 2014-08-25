@@ -47,9 +47,8 @@
                         <div class="card-item-info">
                             <div class="card-item-value">{{color}}</div>
                             <div class="card-item-actions">
-                                <div class="card-item-action card-item-action-love"></div>
-                                <div class="card-item-action card-item-action-delete"></div>
-                                <div class="card-item-action card-item-action-share"></div>
+                                <div {{action "love" color}} class="card-item-action card-item-action-love"></div>
+                                <div {{action "delete" color}} class="card-item-action card-item-action-delete"></div>
                             </div>
                         </div>
                     </div>
@@ -93,21 +92,19 @@
     </script>
 
     <script type="text/x-handlebars" data-template-name="picker">
-        {{#view "picker"}}
-            <div class="card-item">
-                <div class="card-item-canvas">
-                    <canvas></canvas>
+        {{#view "picker" class="card-item"}}
+            <div class="card-item-canvas">
+                <canvas></canvas>
+            </div>
+            <div class="card-item-info">
+                <div class="card-item-text-wrap">
+                    <input type="text" class="card-item-text" placeholder="Enter a color" autofocus>
                 </div>
-                <div class="card-item-info">
-                    <div class="card-item-text-wrap">
-                        <input type="text" class="card-item-text" placeholder="Enter a color" autofocus>
-                    </div>
-                    <div class="card-item-color-button"></div>
-                </div>
-                <div class="card-item-buttons">
-                    <div class="card-item-button card-item-button-ok">Ok</div>
-                    <div class="card-item-button card-item-button-cancel">Cancel</div>
-                </div>
+                <div class="card-item-color-button"></div>
+            </div>
+            <div class="card-item-buttons">
+                <div {{action "add"}} class="card-item-button card-item-button-ok">Add</div>
+                <div {{action "cancel"}} class="card-item-button card-item-button-cancel">Cancel</div>
             </div>
         {{/view}}
     </script>

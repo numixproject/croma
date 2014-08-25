@@ -1,10 +1,10 @@
 /* jshint browser: true */
 /* global $, Ember, Color, Casket, picker */
 
-(function() {
+$(function() {
     var App = Ember.Application.create(),
         casket = new Casket(),
-        results = [],
+        colors = [],
         loved = [];
 
     try {
@@ -13,7 +13,7 @@
         casket.create("croma", { colors: [], loved: [] });
     }
 
-    results = casket.query("croma", "colors").results;
+    colors = casket.query("croma", "colors").results;
     loved = casket.query("croma", "loved").results;
 
     App.Router.map(function() {
@@ -26,8 +26,8 @@
             var data = [],
                 color;
 
-            for (var i = 0, l = results.length; i < l; i++) {
-                color = results[i];
+            for (var i = 0, l = colors.length; i < l; i++) {
+                color = colors[i];
 
                 data.push({
                     color: color,
@@ -37,6 +37,26 @@
             }
 
             return data.reverse();
+        }
+    });
+
+    App.IndexController = Ember.ObjectController.extend({
+        actions: {
+            love: function(color) {
+                if (loved.indexOf(color) > -1) {
+                    casket.drop("croma", "loved", color);
+                    loved.removeObject(color);
+                } else {
+                    casket.push("croma", "loved", color);
+                    loved.pushObject(color);
+                }
+            },
+
+            delete: function(color) {
+                casket.drop("croma", "colors", color);
+                casket.drop("croma", "loved", color);
+                colors.removeObject(color);
+            }
         }
     });
 
@@ -88,29 +108,32 @@
         color: null
     });
 
-    App.PickerView = Ember.View.extend({
-        click: function(e) {
-            var $target = $(e.target),
-                color = picker.value;
+    App.PickerController = Ember.ObjectController.extend({
+        actions: {
+            add: function() {
+                var color = picker.value;
 
-            if ($target.hasClass("card-item-button")) {
-                if ($target.hasClass("card-item-button-ok") && color) {
-                    if (casket.query("croma", "colors", color).match) {
-                        // Color already in DB
-                    } else {
-                        results.pushObject(color);
-                        casket.push("croma", "colors", color);
-                    }
+                if (casket.query("croma", "colors", color).match) {
+                    // Color already in DB
+                } else {
+                    colors.pushObject(color);
+                    casket.push("croma", "colors", color);
                 }
 
                 App.Router.router.transitionTo("index");
-            }
-        },
+            },
 
+            cancel: function() {
+                App.Router.router.transitionTo("index");
+            }
+        }
+    });
+
+    App.PickerView = Ember.View.extend({
         didInsertElement: function() {
             this._super();
 
-            Ember.run.scheduleOnce('afterRender', this, picker.showPicker);
+            Ember.run.scheduleOnce("afterRender", this, picker.showPicker);
         }
     });
-}());
+});
