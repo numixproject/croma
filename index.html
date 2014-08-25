@@ -39,19 +39,21 @@
     <script type="text/x-handlebars" id="index">
         {{#if model.length}}
             {{#each model}}
-                <div class="card-item" data-color="{{this}}" >
-                    {{#link-to "details" (query-params color=this)}}
-                        <span class="card-item-color" style="background-color: {{this}}"></span>
-                    {{/link-to}}
-                    <div class="card-item-info">
-                        <div class="card-item-value">{{this}}</div>
-                        <div class="card-item-actions">
-                            <div class="card-item-action card-item-action-love"></div>
-                            <div class="card-item-action card-item-action-delete"></div>
-                            <div class="card-item-action card-item-action-share"></div>
+                {{#with this}}
+                    <div {{bind-attr class=":card-item isLoved:card-item-loved" data-color=color}}>
+                        {{#link-to "details" (query-params color=color)}}
+                            <span class="card-item-color" {{bind-attr style=cssStr}}></span>
+                        {{/link-to}}
+                        <div class="card-item-info">
+                            <div class="card-item-value">{{color}}</div>
+                            <div class="card-item-actions">
+                                <div class="card-item-action card-item-action-love"></div>
+                                <div class="card-item-action card-item-action-delete"></div>
+                                <div class="card-item-action card-item-action-share"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                {{/with}}
             {{/each}}
         {{else}}
             No colors added.

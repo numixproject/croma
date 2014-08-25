@@ -4,7 +4,8 @@
 (function() {
     var App = Ember.Application.create(),
         casket = new Casket(),
-        results = [];
+        results = [],
+        loved = [];
 
     try {
         casket.query("croma");
@@ -13,6 +14,7 @@
     }
 
     results = casket.query("croma", "colors").results;
+    loved = casket.query("croma", "loved").results;
 
     App.Router.map(function() {
         this.resource("picker");
@@ -21,7 +23,20 @@
 
     App.IndexRoute = Ember.Route.extend({
         model: function() {
-            return results;
+            var data = [],
+                color;
+
+            for (var i = 0, l = results.length; i < l; i++) {
+                color = results[i];
+
+                data.push({
+                    color: color,
+                    isLoved: (loved.indexOf(color) > -1),
+                    cssStr: "background-color:" + color
+                });
+            }
+
+            return data;
         }
     });
 
@@ -79,7 +94,7 @@
 
             if ($target.hasClass("card-item-button")) {
                 if ($target.hasClass("card-item-button-ok")) {
-                    results.pushObject(picker.value).reverse();
+                    results.pushObject(picker.value);
                 }
 
                 App.Router.router.transitionTo("index");
