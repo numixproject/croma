@@ -112,13 +112,15 @@ var Storage = (function() {
 
             // Parse strings to objects
             try {
-                return JSON.parse(
-                    _localStorage.getItem(
-                        JSON.stringify(key)
-                    )
+                data = _localStorage.getItem(
+                    JSON.stringify(key)
                 );
             } catch (err) {
                 throw err;
+            }
+
+            if (data) {
+                return JSON.parse(data);
             }
         };
 
