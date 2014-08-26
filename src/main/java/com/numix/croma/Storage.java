@@ -11,6 +11,7 @@ public class Storage {
 
     Storage(Context c) {
         mContext = c;
+        mStorage = c.getSharedPreferences("Storage", 0);
     }
 
     @JavascriptInterface
