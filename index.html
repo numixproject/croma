@@ -55,7 +55,11 @@
                 {{/with}}
             {{/each}}
         {{else}}
-            No colors added.
+            <div class="empty-area">
+                {{#link-to "picker" class="empty-area-action"}}
+                    No colors present. Add some?
+                {{/link-to}}
+            </div>
         {{/if}}
     </script>
 
@@ -98,7 +102,7 @@
             </div>
             <div class="card-item-info">
                 <div class="card-item-text-wrap">
-                    <input type="text" class="card-item-text" placeholder="Enter a color" autofocus>
+                    <input type="text" class="card-item-text" placeholder="Enter a color">
                 </div>
                 <div class="card-item-color-button"></div>
             </div>

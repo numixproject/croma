@@ -231,6 +231,24 @@ $actions: love, delete, share;
     border-radius: $roundness;
 }
 
+.empty-area {
+    display: table;
+    table-layout: fixed;
+    height: 100%;
+    width: 100%;
+}
+
+.empty-area-action {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    color: lighten($dark-color, 30%);
+    text-shadow: 0 1px 3px rgba(255,255,255,0.3);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.5em;
+}
+
 /* browser specific styles */
 ::selection {
     background-color: $accent-color;

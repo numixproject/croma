@@ -9,7 +9,7 @@ var Storage = (function() {
     /**
      * Private objects.
      */
-    var _storage = ("androidStorage" in window) ? androidStorage : localStorage,
+    var _localStorage = ("androidStorage" in window) ? window.androidStorage : window.localStorage,
         _errMsgs = {
             NO_KEY_SPECIFIED: "A key must be specified",
             NO_VALUE_SPECIFIED: "A value must be specified",
@@ -88,7 +88,7 @@ var Storage = (function() {
 
             // Convert objects to strings and store
             try {
-                _storage.setItem(
+                _localStorage.setItem(
                     JSON.stringify(key),
                     JSON.stringify(value)
                 );
@@ -113,7 +113,7 @@ var Storage = (function() {
             // Parse strings to objects
             try {
                 return JSON.parse(
-                    _storage.getItem(
+                    _localStorage.getItem(
                         JSON.stringify(key)
                     )
                 );
@@ -134,7 +134,7 @@ var Storage = (function() {
 
             // Remove stringified object
             try {
-                _storage.removeItem(
+                _localStorage.removeItem(
                     JSON.stringify(key)
                 );
             } catch (err) {

@@ -1,9 +1,8 @@
 /* jshint browser: true */
-/* global $, Ember, Color, Casket, picker */
+/* global $, Ember, Color, storage, picker */
 
 $(function() {
     var App = Ember.Application.create(),
-        casket = new Casket(),
         colors = [],
         loved = [];
 
@@ -16,8 +15,8 @@ $(function() {
         color = new Color(color).tohex();
 
         // Drop color from database
-        casket.drop("croma", "colors", color);
-        casket.drop("croma", "loved", color);
+        storage.drop("croma", "colors", color);
+        storage.drop("croma", "loved", color);
         colors.removeObject(color);
         loved.removeObject(color);
 
@@ -64,25 +63,25 @@ $(function() {
         // Toggle love
         if (loved.indexOf(color) > -1) {
             $card.removeClass("card-item-loved");
-            casket.drop("croma", "loved", color);
+            storage.drop("croma", "loved", color);
             loved.removeObject(color);
         } else {
             $card.addClass("card-item-loved");
-            casket.push("croma", "loved", color);
+            storage.push("croma", "loved", color);
             loved.pushObject(color);
         }
     }
 
     // If the database doesn't exist, create one
     try {
-        casket.query("croma");
+        storage.query("croma");
     } catch (err) {
-        casket.create("croma", { colors: [], loved: [] });
+        storage.create("croma", { colors: [], loved: [] });
     }
 
     // Get values from database
-    colors = casket.query("croma", "colors").results;
-    loved = casket.query("croma", "loved").results;
+    colors = storage.query("croma", "colors").results;
+    loved = storage.query("croma", "loved").results;
 
     // Add routes
     App.Router.map(function() {
@@ -186,11 +185,11 @@ $(function() {
 
                 color = new Color(color).tohex();
 
-                if (casket.query("croma", "colors", color).match) {
+                if (storage.query("croma", "colors", color).match) {
                     // Color already in DB
                 } else {
                     colors.pushObject(color);
-                    casket.push("croma", "colors", color);
+                    storage.push("croma", "colors", color);
                 }
 
                 App.Router.router.transitionTo("index");
