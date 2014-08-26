@@ -15,16 +15,16 @@ public class Storage {
     }
 
     @JavascriptInterface
+    public String getItem(String key) {
+        return mStorage.getString(key, null);
+    }
+
+    @JavascriptInterface
     public void setItem(String key, String value){
         SharedPreferences.Editor e = mStorage.edit();
 
         e.putString(key, value);
         e.apply();
-    }
-
-    @JavascriptInterface
-    public void getItem(String key) {
-        PreferenceManager.getDefaultSharedPreferences(mContext).getString(key, "Key not found!");
     }
 
     @JavascriptInterface
