@@ -1,4 +1,13 @@
-apply plugin: 'android'
+apply plugin: 'com.android.application'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.12.+'
+    }
+}
 
 android {
     compileSdkVersion 20
