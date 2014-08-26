@@ -32,6 +32,8 @@ public class MainActivity extends Activity {
 
         setContentView(myWebView);
 
+        myWebView.addJavascriptInterface(new Storage(this), "androidStorage");
+
         myWebView.loadUrl("file:///android_asset/www/index.html");
     }
 }
