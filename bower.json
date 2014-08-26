@@ -17,6 +17,7 @@
   "dependencies": {
     "jquery": "latest",
     "velocity": "latest",
-    "ember": "latest"
+    "ember": "latest",
+    "ember-animate": "latest"
   }
 }

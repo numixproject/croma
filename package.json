@@ -28,7 +28,6 @@
     "gulp-sourcemaps": "latest",
     "gulp-uglify": "latest",
     "gulp-util": "latest",
-    "jshint-stylish": "latest",
-    "main-bower-files": "latest"
+    "jshint-stylish": "latest"
   }
 }

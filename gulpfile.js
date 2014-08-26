@@ -4,7 +4,6 @@ var gulp = require("gulp"),
     gutil = require("gulp-util"),
     sass = require("gulp-ruby-sass"),
     jshint = require("gulp-jshint"),
-    bower = require("main-bower-files"),
     sourcemaps = require("gulp-sourcemaps"),
     concat = require("gulp-concat"),
     uglify = require("gulp-uglify"),
@@ -28,7 +27,13 @@ gulp.task("lint", function() {
 });
 
 gulp.task("libs", function() {
-    return gulp.src(bower())
+    return gulp.src([
+        "bower_components/jquery/dist/jquery.min.js",
+        "bower_components/handlebars/handlebars.min.js",
+        "bower_components/ember/ember.min.js",
+        "bower_components/ember-animate/ember-animate.js",
+        "bower_components/velocity/jquery.velocity.min.js"
+    ])
     .pipe(sourcemaps.init())
     .pipe(concat("libs.js"))
     .pipe(gutil.env === "production" ? uglify() : gutil.noop())
