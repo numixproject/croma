@@ -2,8 +2,12 @@ package com.numix.croma;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import static android.webkit.WebSettings.LOAD_DEFAULT;
 
@@ -12,9 +16,11 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         setContentView(R.layout.main);
 
-        WebView myWebView = new WebView(this);
+        final WebView myWebView = new WebView(this);
+        WebView webView = (WebView) findViewById(R.id.webview);
 
         WebSettings webSettings = myWebView.getSettings();
 
@@ -29,8 +35,20 @@ public class MainActivity extends Activity {
         webSettings.setAppCachePath(appCachePath);
         webSettings.setAllowFileAccess(true);
         webSettings.setCacheMode(LOAD_DEFAULT);
+        myWebView.setWebViewClient(new WebViewClient() {
 
-        setContentView(myWebView);
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                //hide loading image
+                findViewById(R.id.imageView1).setVisibility(View.GONE);
+                //show webview
+                setContentView(myWebView);
+            }
+
+
+        });
+
 
         myWebView.addJavascriptInterface(new Storage(this), "androidStorage");
 
