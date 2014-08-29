@@ -6,6 +6,17 @@ $(function() {
         colors = [],
         loved = [];
 
+    // Convert camelCase to sentence
+    function parseCamelCase(text) {
+        if ((!text) || typeof text !== "string") {
+            return "";
+        }
+
+        return text.replace(/([a-z])([A-Z])/g, '$1 $2')
+                    .replace(/\b([A-Z]+)([A-Z])([a-z])/, '$1 $2$3')
+                    .replace(/^./, function(str) { return str.toUpperCase(); });
+    }
+
     // Delete a color from the UI and database
     function deleteColor(color) {
         if ((!color) || typeof color !== "string") {
@@ -87,6 +98,8 @@ $(function() {
     App.Router.map(function() {
         this.resource("picker");
         this.resource("details");
+        this.resource("schemes");
+        this.resource("fullscreen");
     });
 
     // Render the index route
@@ -119,8 +132,7 @@ $(function() {
     // Render the details route
     App.DetailsRoute = Ember.Route.extend({
         model: function(params) {
-            var color = new Color(params.color),
-                objs, strs, val;
+            var color = new Color(params.color);
 
             color.hexVal = color.tohex();
             color.cssStr = "background-color:" + color.hexVal;
@@ -130,16 +142,35 @@ $(function() {
                 { key: "HEX", value: color.tohex() },
                 { key: "RGB", value: color.torgb() },
                 { key: "HSL", value: color.tohsl() },
+                { key: "HSV", value: color.tohsv() },
                 { key: "CMYK", value: color.tocmyk() },
                 { key: "LAB", value: color.tolab() },
                 { key: "Luminance", value: color.luminance() },
                 { key: "Darkness", value: color.darkness() }
             ];
 
+            return [ color ];
+        }
+    });
+
+    App.DetailsController = Ember.ArrayController.extend({
+        queryParams: [ "color" ],
+        color: null
+    });
+
+    // Render the schemes route
+    App.SchemesRoute = Ember.Route.extend({
+        model: function(params) {
+            var color = new Color(params.color),
+                name, objs, strs, val;
+
+            color.hexVal = color.tohex();
+
             color.schemes = [];
 
             for (var i in color) {
                 if ((/.*scheme$/i).test(i) && typeof color[i] === "function") {
+                    name = parseCamelCase(i).replace(/scheme/i, "").trim();
                     objs = color[i]();
                     strs = [];
 
@@ -152,7 +183,10 @@ $(function() {
                         });
                     }
 
-                    color.schemes.push(strs);
+                    color.schemes.push({
+                        name: name,
+                        colors: strs
+                    });
                 }
             }
 
@@ -160,7 +194,7 @@ $(function() {
         }
     });
 
-    App.DetailsController = Ember.ArrayController.extend({
+    App.SchemesController = Ember.ArrayController.extend({
         queryParams: [ "color" ],
         color: null
     });

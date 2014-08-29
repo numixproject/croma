@@ -1,8 +1,10 @@
 $font-family: Roboto, sans-serif !default;
 $accent-color: #f06860 !default;
+$alt-color: #f0d360 !default;
 $light-color: #fff !default;
 $dark-color: #333 !default;
-$roundness: 3px !default;
+$roundness: 1px !default;
+$spacing: 1.5em !default;
 $bar-height: 3.5em !default;
-$mobile-width: 36em;
+$mobile-width: 36em !default;
 $mobile-break-point: "only screen and (max-width: 27em)" !default;

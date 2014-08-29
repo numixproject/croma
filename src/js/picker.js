@@ -52,8 +52,8 @@ var Picker = (function() {
 		};
 
 		_this.showPicker = function() {
-			var $picker = $(".card-item-canvas"),
-				$text = $(".card-item-text"),
+			var $picker = $(".picker-canvas"),
+				$text = $(".picker-input"),
 				$canvas = $picker.find("canvas"),
 				$parent = $canvas.parent(),
 				sheet, gradient;
@@ -91,8 +91,8 @@ var Picker = (function() {
 		};
 
 		_this.setColor = function(value, update) {
-			var $colorbutton = $(".card-item-color-button"),
-				$text = $(".card-item-text"),
+			var $colorbutton = $(".picker-color-button"),
+				$text = $(".picker-input"),
 				color = new Color(value).tohex();
 
 			if (update !== false) {

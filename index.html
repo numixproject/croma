@@ -18,99 +18,171 @@
 <body>
 
     <script type="text/x-handlebars">
+        {{outlet}}
+    </script>
+
+    <script type="text/x-handlebars" id="index">
         <header>
-            <div class="header-inner">
+            <div class="section-wrapper">
+                <span class="header-icon header-menu"></span>
                 {{#link-to "index" class="header-title"}}
-                    croma
+                    Croma
                 {{/link-to}}
-                <div class="header-actions">
-                    {{#link-to "picker" class="header-action-button header-action-add"}}
-                    {{/link-to}}
-                </div>
             </div>
         </header>
-        <main class="card-area-wrapper">
-            <div class="card-area">
-                {{outlet}}
+        <section class="action-wrapper">
+            <div class="section-wrapper">
+                {{#link-to "picker" class="action-button action-button-add"}}
+                {{/link-to}}
+            </div>
+        </section>
+        <main class="card-area">
+            <div class="section-wrapper">
+                {{#if model.length}}
+                    {{#each model}}
+                        {{#with this}}
+                            <div {{bind-attr class=":card-item isLoved:card-item-loved" data-color=color}}>
+                                {{#link-to "details" (query-params color=color)}}
+                                    <span class="card-item-color" {{bind-attr style=cssStr}}></span>
+                                {{/link-to}}
+                                <div class="card-item-segment">
+                                    <div class="card-item-text">{{color}}</div>
+                                    <div class="card-item-actions">
+                                        <div {{action "love" color}} class="card-item-action card-item-action-love"></div>
+                                        <div {{action "delete" color}} class="card-item-action card-item-action-delete"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/with}}
+                    {{/each}}
+                {{else}}
+                    <div class="empty-area">
+                        {{#link-to "picker" class="empty-area-action"}}
+                            No colors present. Add some?
+                        {{/link-to}}
+                    </div>
+                {{/if}}
             </div>
         </main>
     </script>
 
-    <script type="text/x-handlebars" id="index">
-        {{#if model.length}}
-            {{#each model}}
-                {{#with this}}
-                    <div {{bind-attr class=":card-item isLoved:card-item-loved" data-color=color}}>
-                        {{#link-to "details" (query-params color=color)}}
-                            <span class="card-item-color" {{bind-attr style=cssStr}}></span>
-                        {{/link-to}}
-                        <div class="card-item-info">
-                            <div class="card-item-value">{{color}}</div>
-                            <div class="card-item-actions">
-                                <div {{action "love" color}} class="card-item-action card-item-action-love"></div>
-                                <div {{action "delete" color}} class="card-item-action card-item-action-delete"></div>
+    <script type="text/x-handlebars" data-template-name="details">
+        <header>
+            <div class="section-wrapper">
+                {{#link-to "index" class="header-icon header-back"}}{{/link-to}}
+                {{#link-to "index" class="header-title"}}
+                    Details
+                {{/link-to}}
+            </div>
+        </header>
+        <main class="card-area">
+            <div class="section-wrapper">
+                {{#with model.[0]}}
+                    <div class="card-item">
+                        <div class="card-item-color" {{bind-attr style=cssStr}}></div>
+
+                        <div class="card-item-info-wrap">
+                            {{#each strings}}
+                                {{#with this}}
+                                    {{#if value}}
+                                        <div class="card-item-info">
+                                            <span class="card-item-label">{{key}}</span>
+                                            <span class="card-item-value">{{value}}</span>
+                                        </div>
+                                    {{/if}}
+                                {{/with}}
+                            {{/each}}
+
+                            <div class="card-item-button-area">
+                                {{#link-to "schemes" (query-params color=hexVal) class="card-item-button card-item-button-ok"}}
+                                    See color schemes
+                                {{/link-to}}
                             </div>
+
+                            {{#each schemes}}
+                                <div class="card-item-info">
+                                    {{#each this}}
+                                        {{#with this}}
+                                            <div {{bind-attr style=cssStr}}>
+                                                {{value}}
+                                            </div>
+                                        {{/with}}
+                                    {{/each}}
+                                </div>
+                            {{/each}}
                         </div>
                     </div>
                 {{/with}}
-            {{/each}}
-        {{else}}
-            <div class="empty-area">
-                {{#link-to "picker" class="empty-area-action"}}
-                    No colors present. Add some?
-                {{/link-to}}
             </div>
-        {{/if}}
+        </main>
     </script>
 
-    <script type="text/x-handlebars" data-template-name="details">
-        {{#each model}}
-            {{#with this}}
-                <div class="card-item">
-                    <div class="card-item-color" {{bind-attr style=cssStr}}></div>
-
-                    {{#each strings}}
-                        {{#with this}}
-                            {{#if value}}
+    <script type="text/x-handlebars" data-template-name="schemes">
+        {{#with model.[0]}}
+            <header>
+                <div class="section-wrapper">
+                    {{#link-to "details" (query-params color=hexVal) class="header-icon header-back"}}{{/link-to}}
+                    {{#link-to "details" (query-params color=hexVal) class="header-title"}}
+                        Color schemes
+                    {{/link-to}}
+                </div>
+            </header>
+            <main class="card-area">
+                <div class="section-wrapper">
+                    <div class="card-item">
+                            {{#each schemes}}
                                 <div class="card-item-info">
-                                    <span class="card-item-label">{{key}}:</span> {{value}}
+                                    {{#with this}}
+                                        <div class="card-item-header">
+                                            {{name}}
+                                        </div>
+                                        <div class="card-item-scheme">
+                                            {{#each colors}}
+                                                {{#with this}}
+                                                    <div class="card-item-scheme-item" {{bind-attr style=cssStr}}>
+                                                        {{value}}
+                                                    </div>
+                                                {{/with}}
+                                            {{/each}}
+                                        </div>
+                                    {{/with}}
                                 </div>
-                            {{/if}}
-                        {{/with}}
-                    {{/each}}
-
-                    {{#each schemes}}
-                        <div class="card-item-info">
-                            {{#each this}}
-                                {{#with this}}
-                                    <div {{bind-attr style=cssStr}}>
-                                        {{value}}
-                                    </div>
-                                {{/with}}
                             {{/each}}
                         </div>
-                    {{/each}}
-                </div>
-            {{/with}}
-        {{/each}}
+                    </div>
+                {{/with}}
+            </div>
+        </main>
     </script>
 
     <script type="text/x-handlebars" data-template-name="picker">
-        {{#view "picker" class="card-item"}}
-            <div class="card-item-canvas">
-                <canvas></canvas>
+        <header>
+            <div class="section-wrapper">
+                {{#link-to "index" class="header-icon header-back"}}{{/link-to}}
+                {{#link-to "index" class="header-title"}}
+                    Pick a color
+                {{/link-to}}
             </div>
-            <div class="card-item-info">
-                <div class="card-item-text-wrap">
-                    <input type="text" class="card-item-text" placeholder="Enter a color" autofocus>
-                </div>
-                <div class="card-item-color-button"></div>
+        </header>
+        <main class="card-area">
+            <div class="section-wrapper">
+                {{#view "picker" class="card-item"}}
+                    <div class="card-item-canvas picker-canvas">
+                        <canvas></canvas>
+                    </div>
+                    <div class="card-item-segment">
+                        <div class="card-item-input-wrap">
+                            <input type="text" class="card-item-input picker-input" placeholder="Enter a color" autofocus>
+                        </div>
+                        <div class="card-item-color-button picker-color-button"></div>
+                    </div>
+                    <div class="card-item-button-area">
+                        <div {{action "add"}} class="card-item-button card-item-button-ok">Add</div>
+                        <div {{action "cancel"}} class="card-item-button card-item-button-cancel">Cancel</div>
+                    </div>
+                {{/view}}
             </div>
-            <div class="card-item-buttons">
-                <div {{action "add"}} class="card-item-button card-item-button-ok">Add</div>
-                <div {{action "cancel"}} class="card-item-button card-item-button-cancel">Cancel</div>
-            </div>
-        {{/view}}
+        </main>
     </script>
 
     <script src="./dist/js/libs.min.js"></script>
