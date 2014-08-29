@@ -2,7 +2,6 @@ package com.numix.croma;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.webkit.JavascriptInterface;
 
 public class Storage {

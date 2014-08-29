@@ -10,10 +10,18 @@ import android.webkit.WebViewClient;
 import static android.webkit.WebSettings.LOAD_DEFAULT;
 
 public class MainActivity extends Activity {
+
+    private class webViewClient extends WebViewClient {
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            findViewById(R.id.imageView1).setVisibility(View.GONE);
+            findViewById(R.id.webview).setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         setContentView(R.layout.main);
 
@@ -32,20 +40,8 @@ public class MainActivity extends Activity {
         webSettings.setAppCachePath(appCachePath);
         webSettings.setAllowFileAccess(true);
         webSettings.setCacheMode(LOAD_DEFAULT);
-        webView.setWebViewClient(new WebViewClient() {
 
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                //hide loading image
-                findViewById(R.id.imageView1).setVisibility(View.GONE);
-                //show webview
-                findViewById(R.id.webview).setVisibility(View.VISIBLE);
-            }
-
-
-        });
-
+        webView.setWebViewClient(new webViewClient());
 
         webView.addJavascriptInterface(new Storage(this), "androidStorage");
 
