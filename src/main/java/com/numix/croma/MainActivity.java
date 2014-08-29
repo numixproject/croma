@@ -2,8 +2,10 @@ package com.numix.croma;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import static android.webkit.WebSettings.LOAD_DEFAULT;
 
@@ -12,11 +14,12 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         setContentView(R.layout.main);
 
-        WebView myWebView = new WebView(this);
+        final WebView webView = (WebView) findViewById(R.id.webview);
 
-        WebSettings webSettings = myWebView.getSettings();
+        WebSettings webSettings = webView.getSettings();
 
         String appCachePath = getApplicationContext().getCacheDir().getAbsolutePath();
 
@@ -29,11 +32,23 @@ public class MainActivity extends Activity {
         webSettings.setAppCachePath(appCachePath);
         webSettings.setAllowFileAccess(true);
         webSettings.setCacheMode(LOAD_DEFAULT);
+        webView.setWebViewClient(new WebViewClient() {
 
-        setContentView(myWebView);
 
-        myWebView.addJavascriptInterface(new Storage(this), "androidStorage");
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                //hide loading image
+                findViewById(R.id.imageView1).setVisibility(View.GONE);
+                //show webview
+                findViewById(R.id.webview).setVisibility(View.VISIBLE);
+            }
 
-        myWebView.loadUrl("file:///android_asset/www/index.html");
+
+        });
+
+
+        webView.addJavascriptInterface(new Storage(this), "androidStorage");
+
+        webView.loadUrl("file:///android_asset/www/index.html");
     }
 }
