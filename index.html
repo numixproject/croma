@@ -25,9 +25,9 @@
         <header>
             <div class="section-wrapper">
                 <span class="header-icon header-menu"></span>
-                {{#link-to "index" class="header-title"}}
+                <h1 class="header-title">
                     Croma
-                {{/link-to}}
+                </h1>
             </div>
         </header>
         <section class="action-wrapper">
@@ -71,9 +71,9 @@
         <header>
             <div class="section-wrapper">
                 {{#link-to "index" class="header-icon header-back"}}{{/link-to}}
-                {{#link-to "index" class="header-title"}}
+                <h1 class="header-title">
                     Details
-                {{/link-to}}
+                </h1>
             </div>
         </header>
         <main class="card-area">
@@ -93,24 +93,14 @@
                                     {{/if}}
                                 {{/with}}
                             {{/each}}
+                        </div>
+                    </div>
 
-                            <div class="card-item-button-area">
-                                {{#link-to "schemes" (query-params color=hexVal) class="card-item-button card-item-button-ok"}}
-                                    See color schemes
-                                {{/link-to}}
-                            </div>
-
-                            {{#each schemes}}
-                                <div class="card-item-info">
-                                    {{#each this}}
-                                        {{#with this}}
-                                            <div {{bind-attr style=cssStr}}>
-                                                {{value}}
-                                            </div>
-                                        {{/with}}
-                                    {{/each}}
-                                </div>
-                            {{/each}}
+                    <div class="card-item">
+                        <div class="card-item-button-area">
+                            {{#link-to "schemes" (query-params color=hexVal) class="card-item-button card-item-button-ok"}}
+                            See color schemes
+                            {{/link-to}}
                         </div>
                     </div>
                 {{/with}}
@@ -123,15 +113,15 @@
             <header>
                 <div class="section-wrapper">
                     {{#link-to "details" (query-params color=hexVal) class="header-icon header-back"}}{{/link-to}}
-                    {{#link-to "details" (query-params color=hexVal) class="header-title"}}
+                    <h1 class="header-title">
                         Color schemes
-                    {{/link-to}}
+                    </h1>
                 </div>
             </header>
             <main class="card-area">
                 <div class="section-wrapper">
-                    <div class="card-item">
-                            {{#each schemes}}
+                        {{#each schemes}}
+                            <div class="card-item">
                                 <div class="card-item-info">
                                     {{#with this}}
                                         <div class="card-item-header">
@@ -148,8 +138,8 @@
                                         </div>
                                     {{/with}}
                                 </div>
-                            {{/each}}
-                        </div>
+                            </div>
+                        {{/each}}
                     </div>
                 {{/with}}
             </div>
@@ -160,9 +150,9 @@
         <header>
             <div class="section-wrapper">
                 {{#link-to "index" class="header-icon header-back"}}{{/link-to}}
-                {{#link-to "index" class="header-title"}}
+                <h1 class="header-title">
                     Pick a color
-                {{/link-to}}
+                </h1>
             </div>
         </header>
         <main class="card-area">

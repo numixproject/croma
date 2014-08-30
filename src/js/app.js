@@ -145,8 +145,8 @@ $(function() {
                 { key: "HSV", value: color.tohsv() },
                 { key: "CMYK", value: color.tocmyk() },
                 { key: "LAB", value: color.tolab() },
-                { key: "Luminance", value: color.luminance() },
-                { key: "Darkness", value: color.darkness() }
+                { key: "Luminance", value: parseFloat(color.luminance()).toFixed(2) },
+                { key: "Darkness", value:  parseFloat(color.darkness()).toFixed(2) }
             ];
 
             return [ color ];

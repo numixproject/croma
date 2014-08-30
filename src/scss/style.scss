@@ -90,7 +90,6 @@ header {
 
 .header-title {
     float: left;
-    cursor: pointer;
     color: $light-color;
     font-weight: 400;
     font-size: 1.5em;
@@ -108,6 +107,7 @@ header {
     background: url(../../src/img/cover.png) no-repeat center center;
     background-size: 100%;
     background-size: cover;
+    background-attachment: fixed;
     box-shadow: inset 0 -1px 2px rgba(0,0,0,0.24);
 }
 
@@ -225,7 +225,7 @@ header {
 
 .card-item-color {
     display: block;
-    height: 5em;
+    height: $bar-height * 2;
     border-radius: $roundness $roundness 0 0;
     cursor: pointer;
 }
@@ -348,9 +348,9 @@ $actions: love, delete, share;
 
 .card-item-scheme-item {
     float: left;
-    height: 4em;
-    width: 6em;
-    line-height: 4em;
+    height: $bar-height;
+    width: $bar-height * 2;
+    line-height: $bar-height;
     font-weight: 700;
     text-align: center;
     color: #fff;
