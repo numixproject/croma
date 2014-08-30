@@ -148,6 +148,7 @@ header {
     top: 0;
     width: 100%;
     z-index: 30;
+    pointer-events: none;
 }
 
 .action-button {
@@ -162,6 +163,7 @@ header {
     background-color: $alt-color;
     background-repeat: no-repeat;
     background-position: center center;
+    pointer-events: auto;
 
     &:focus, &:hover { background-color: darken($alt-color, 5%); }
 

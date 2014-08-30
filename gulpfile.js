@@ -32,7 +32,7 @@ gulp.task("libs", function() {
         "bower_components/handlebars/handlebars.min.js",
         "bower_components/ember/ember.min.js",
         "bower_components/ember-animate/ember-animate.js",
-        "bower_components/velocity/jquery.velocity.min.js"
+        "bower_components/velocity/velocity.min.js"
     ])
     .pipe(sourcemaps.init())
     .pipe(concat("libs.js"))

@@ -2,9 +2,7 @@
 /* global $, Ember, Color, storage, picker */
 
 $(function() {
-    var App = Ember.Application.create(),
-        colors = [],
-        loved = [];
+    var App = Ember.Application.create();
 
     // Convert camelCase to sentence
     function parseCamelCase(text) {
@@ -18,21 +16,39 @@ $(function() {
     }
 
     // Delete a color from the UI and database
-    function deleteColor(color) {
-        if ((!color) || typeof color !== "string") {
+    function deleteItem(palette, color) {
+        var $el, palettes, current;
+
+        if ((!palette) || typeof palette !== "string") {
             return;
         }
 
-        color = new Color(color).tohex();
+        palettes = storage.get("palettes");
 
-        // Drop color from database
-        storage.drop("croma", "colors", color);
-        storage.drop("croma", "loved", color);
-        colors.removeObject(color);
-        loved.removeObject(color);
+        if (color) {
+            if (palettes) {
+                current = palettes[palette];
+            } else {
+                return;
+            }
+
+            if (current) {
+                delete palettes[palette].colors[color];
+            }
+
+            $el = $("[data-palette=" + palette + "][data-color=" + color + "]");
+        } else {
+            if (palettes) {
+                delete palettes[palette];
+            }
+
+            $el = $("[data-palette=" + palette + "]");
+        }
+
+        storage.set("palettes", palettes);
 
         // Swipe out the card
-        $("[data-color=" + color + "]").velocity({
+        $el.velocity({
             translateX: "100%",
             opacity: 0
         }, {
@@ -51,16 +67,23 @@ $(function() {
     }
 
     // Toggle love color in the UI and database
-    function loveColor(color) {
-        var $card, $button;
+    function loveItem(palette) {
+        var $card, $button,
+            palettes, current;
 
-        if ((!color) || typeof color !== "string") {
+        if ((!palette) || typeof palette !== "string") {
             return;
         }
 
-        color = new Color(color).tohex();
+        palettes = storage.get("palettes");
 
-        $card = $("[data-color=" + color + "]");
+        if (palettes) {
+            current = palettes[palette];
+        } else {
+            return;
+        }
+
+        $card = $("[data-palette=" + palette + "]");
 
         $button = $card.find(".card-item-action-love");
 
@@ -72,49 +95,51 @@ $(function() {
         }, 500);
 
         // Toggle love
-        if (loved.indexOf(color) > -1) {
+        if (current.loved) {
             $card.removeClass("card-item-loved");
-            storage.drop("croma", "loved", color);
-            loved.removeObject(color);
+
+            palettes[palette].loved = false;
         } else {
             $card.addClass("card-item-loved");
-            storage.push("croma", "loved", color);
-            loved.pushObject(color);
+
+            palettes[palette].loved = true;
         }
-    }
 
-    // If the database doesn't exist, create one
-    try {
-        storage.query("croma");
-    } catch (err) {
-        storage.create("croma", { colors: [], loved: [] });
+        storage.set("palettes", palettes);
     }
-
-    // Get values from database
-    colors = storage.query("croma", "colors").results;
-    loved = storage.query("croma", "loved").results;
 
     // Add routes
     App.Router.map(function() {
+        this.resource("new");
+        this.resource("colors");
         this.resource("picker");
         this.resource("details");
         this.resource("schemes");
-        this.resource("fullscreen");
     });
 
     // Render the index route
     App.IndexRoute = Ember.Route.extend({
         model: function() {
-            var data = [],
+            var palettes = storage.get("palettes"),
+                arr = [],
+                data = [],
                 color;
 
-            for (var i = 0, l = colors.length; i < l; i++) {
-                color = colors[i];
+            if (!palettes) { return; }
+
+            for (var p in palettes) {
+                arr = [];
+
+                for (var c in palettes[p].colors) {
+                    if (palettes[p].colors[c]) {
+                        arr.push("background-color:" + c + ";");
+                    }
+                }
 
                 data.push({
-                    color: color,
-                    isLoved: (loved.indexOf(color) > -1),
-                    cssStr: "background-color:" + color
+                    name: p,
+                    colors: arr.reverse(),
+                    isLoved: palettes[p].loved
                 });
             }
 
@@ -124,9 +149,51 @@ $(function() {
 
     App.IndexController = Ember.ObjectController.extend({
         actions: {
-            love: loveColor,
-            delete: deleteColor
+            love: loveItem,
+            delete: deleteItem
         }
+    });
+
+    // Render the colors route
+    App.ColorsRoute = Ember.Route.extend({
+        model: function(params) {
+            var name = params.palette,
+                palettes = storage.get("palettes"),
+                current,
+                data = [];
+
+            if (palettes) {
+                current = palettes[name];
+            } else {
+                return;
+            }
+
+            if (current) {
+                for (var c in current.colors) {
+                    data.push({
+                        palette: name,
+                        color: c,
+                        cssStr: "background-color:" + c
+                    });
+                }
+            } else {
+                return;
+            }
+
+            return {
+                name: name,
+                colors: data.reverse()
+            };
+        },
+
+        actions: {
+            delete: deleteItem
+        }
+    });
+
+    App.ColorsController = Ember.ObjectController.extend({
+        queryParams: [ "palette" ],
+        palette: null
     });
 
     // Render the details route
@@ -200,6 +267,48 @@ $(function() {
     });
 
     // Render the picker route
+    App.PickerRoute = Ember.Route.extend({
+        model: function(params) {
+            return params;
+        },
+
+        actions: {
+            add: function(palette) {
+                var color = picker.value,
+                    palettes = storage.get("palettes"),
+                    current;
+
+                if ((!color) || typeof color !== "string") {
+                    return;
+                }
+
+                color = new Color(color).tohex();
+
+                if (palettes) {
+                    current = palettes[palette];
+                } else {
+                    return;
+                }
+
+                if (current) {
+                    palettes[palette].colors[color] = true;
+                }
+
+                storage.set("palettes", palettes);
+
+                App.Router.router.transitionTo("colors", { queryParams: { palette: palette } });
+            },
+
+            cancel: function(palette) {
+                if (palette && palette !== "undefined") {
+                    App.Router.router.transitionTo("colors", { queryParams: { palette: palette } });
+                } else {
+                    App.Router.router.transitionTo("new");
+                }
+            }
+        }
+    });
+
     App.PickerView = Ember.View.extend({
         didInsertElement: function() {
             this._super();
@@ -209,29 +318,8 @@ $(function() {
     });
 
     App.PickerController = Ember.ObjectController.extend({
-        actions: {
-            add: function() {
-                var color = picker.value;
-
-                if ((!color) || typeof color !== "string") {
-                    return;
-                }
-
-                color = new Color(color).tohex();
-
-                if (storage.query("croma", "colors", color).match) {
-                    // Color already in DB
-                } else {
-                    colors.pushObject(color);
-                    storage.push("croma", "colors", color);
-                }
-
-                App.Router.router.transitionTo("index");
-            },
-
-            cancel: function() {
-                App.Router.router.transitionTo("index");
-            }
-        }
+        queryParams: [ "palette" ],
+        palette: null
     });
+
 });

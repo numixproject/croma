@@ -32,7 +32,7 @@
         </header>
         <section class="action-wrapper">
             <div class="section-wrapper">
-                {{#link-to "picker" class="action-button action-button-add"}}
+                {{#link-to "new" class="action-button action-button-add"}}
                 {{/link-to}}
             </div>
         </section>
@@ -42,15 +42,17 @@
                 {{#if model.length}}
                     {{#each model}}
                         {{#with this}}
-                            <div {{bind-attr class=":card-item isLoved:card-item-loved" data-color=color}}>
-                                {{#link-to "details" (query-params color=color)}}
-                                    <span class="card-item-color" {{bind-attr style=cssStr}}></span>
+                            <div {{bind-attr class=":card-item isLoved:card-item-loved" data-palette=name}}>
+                                {{#link-to "colors" (query-params palette=name) class="card-item-color-list"}}
+                                    {{#each colors}}
+                                        <div class="card-item-color-item" {{bind-attr style=this}}></div>
+                                    {{/each}}
                                 {{/link-to}}
                                 <div class="card-item-segment">
-                                    <div class="card-item-text">{{color}}</div>
+                                    <div class="card-item-text">{{name}}</div>
                                     <div class="card-item-actions">
-                                        <div {{action "love" color}} class="card-item-action card-item-action-love"></div>
-                                        <div {{action "delete" color}} class="card-item-action card-item-action-delete"></div>
+                                        <div {{action "love" name}} class="card-item-action card-item-action-love"></div>
+                                        <div {{action "delete" name}} class="card-item-action card-item-action-delete"></div>
                                     </div>
                                 </div>
                             </div>
@@ -58,8 +60,8 @@
                     {{/each}}
                 {{else}}
                     <div class="empty-area">
-                        {{#link-to "picker" class="empty-area-action"}}
-                            No colors present. Add some?
+                        {{#link-to "new" class="empty-area-action"}}
+                            Tap to add palettes.
                         {{/link-to}}
                     </div>
                 {{/if}}
@@ -67,10 +69,92 @@
         </main>
     </script>
 
-    <script type="text/x-handlebars" data-template-name="details">
+    <script type="text/x-handlebars" id="new">
         <header>
             <div class="section-wrapper">
                 {{#link-to "index" class="header-icon header-back"}}{{/link-to}}
+                <h1 class="header-title">
+                    New palette
+                </h1>
+            </div>
+        </header>
+        <section class="action-wrapper">
+            <div class="section-wrapper">
+                {{#link-to "new" class="action-button action-button-add"}}
+                {{/link-to}}
+            </div>
+        </section>
+        <main class="card-area">
+            <div class="cover-image"></div>
+            <div class="section-wrapper">
+                <div class="card-item">
+                    <div class="card-item-button-area">
+                        {{#link-to "picker" (query-params palette=name) class="card-item-button card-item-button-ok"}}
+                            Get from image
+                        {{/link-to}}
+                    </div>
+                </div>
+
+                <div class="card-item">
+                    <div class="card-item-button-area">
+                        {{#link-to "picker" (query-params palette=name) class="card-item-button card-item-button-ok"}}
+                            Add color
+                        {{/link-to}}
+                    </div>
+                </div>
+            </div>
+        </main>
+    </script>
+
+    <script type="text/x-handlebars" id="colors">
+        {{#with model}}
+            <header>
+                <div class="section-wrapper">
+                    {{#link-to "index" class="header-icon header-back"}}{{/link-to}}
+                    <h1 class="header-title">
+                        Colors
+                    </h1>
+                </div>
+            </header>
+            <section class="action-wrapper">
+                <div class="section-wrapper">
+                    {{#link-to "picker" (query-params palette=name) class="action-button action-button-add"}}
+                    {{/link-to}}
+                </div>
+            </section>
+            <main class="card-area">
+                <div class="cover-image"></div>
+                <div class="section-wrapper">
+                    {{#if colors.length}}
+                        {{#each colors}}
+                                <div {{bind-attr class=":card-item isLoved:card-item-loved" data-palette=palette data-color=color}}>
+                                    {{#link-to "details" (query-params color=color)}}
+                                        <span class="card-item-color" {{bind-attr style=cssStr}}></span>
+                                    {{/link-to}}
+                                    <div class="card-item-segment">
+                                        <div class="card-item-text">{{color}}</div>
+                                        <div class="card-item-actions">
+                                            <div {{action "delete" palette color}} class="card-item-action card-item-action-delete"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                        {{/each}}
+                    {{else}}
+                        <div class="empty-area">
+                            {{#link-to "picker" (query-params palette=name) class="empty-area-action"}}
+                                No colors present. Add some?
+                            {{/link-to}}
+                        </div>
+                    {{/if}}
+                </div>
+            </main>
+        {{/with}}
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="details">
+        <header>
+            <div class="section-wrapper">
+                {{#link-to "colors" class="header-icon header-back"}}{{/link-to}}
                 <h1 class="header-title">
                     Details
                 </h1>
@@ -168,8 +252,8 @@
                         <div class="card-item-color-button picker-color-button"></div>
                     </div>
                     <div class="card-item-button-area">
-                        <div {{action "add"}} class="card-item-button card-item-button-ok">Add</div>
-                        <div {{action "cancel"}} class="card-item-button card-item-button-cancel">Cancel</div>
+                        <div {{action "add" model.palette}} class="card-item-button card-item-button-ok">Add</div>
+                        <div {{action "cancel" model.palette}} class="card-item-button card-item-button-cancel">Cancel</div>
                     </div>
                 {{/view}}
             </div>
