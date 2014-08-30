@@ -1,112 +1,8 @@
 /* jshint browser: true */
-/* global $, Ember, Color, storage, picker */
+/* global $, Ember, Color, storage, croma, picker */
 
 $(function() {
     var App = Ember.Application.create();
-
-    // Convert camelCase to sentence
-    function parseCamelCase(text) {
-        if ((!text) || typeof text !== "string") {
-            return "";
-        }
-
-        return text.replace(/([a-z])([A-Z])/g, '$1 $2')
-                    .replace(/\b([A-Z]+)([A-Z])([a-z])/, '$1 $2$3')
-                    .replace(/^./, function(str) { return str.toUpperCase(); });
-    }
-
-    // Delete a color from the UI and database
-    function deleteItem(palette, color) {
-        var $el, palettes, current;
-
-        if ((!palette) || typeof palette !== "string") {
-            return;
-        }
-
-        palettes = storage.get("palettes");
-
-        if (color) {
-            if (palettes) {
-                current = palettes[palette];
-            } else {
-                return;
-            }
-
-            if (current) {
-                delete palettes[palette].colors[color];
-            }
-
-            $el = $("[data-palette=" + palette + "][data-color=" + color + "]");
-        } else {
-            if (palettes) {
-                delete palettes[palette];
-            }
-
-            $el = $("[data-palette=" + palette + "]");
-        }
-
-        storage.set("palettes", palettes);
-
-        // Swipe out the card
-        $el.velocity({
-            translateX: "100%",
-            opacity: 0
-        }, {
-            duration: 300,
-            easing: [ 0.7, 0.1, 0.57, 0.79 ]
-        }).velocity({
-            height: 0,
-            paddingTop: 0,
-            paddingBottom: 0
-        }, {
-            duration: 300,
-            complete: function() {
-                $(this).remove();
-            }
-        });
-    }
-
-    // Toggle love color in the UI and database
-    function loveItem(palette) {
-        var $card, $button,
-            palettes, current;
-
-        if ((!palette) || typeof palette !== "string") {
-            return;
-        }
-
-        palettes = storage.get("palettes");
-
-        if (palettes) {
-            current = palettes[palette];
-        } else {
-            return;
-        }
-
-        $card = $("[data-palette=" + palette + "]");
-
-        $button = $card.find(".card-item-action-love");
-
-        // Add class to animate the click
-        $button.addClass("clicked");
-
-        setTimeout(function() {
-            $button.removeClass("clicked");
-        }, 500);
-
-        // Toggle love
-        if (current.loved) {
-            $card.removeClass("card-item-loved");
-
-            palettes[palette].loved = false;
-        } else {
-            $card.addClass("card-item-loved");
-
-            palettes[palette].loved = true;
-        }
-
-        storage.set("palettes", palettes);
-    }
 
     // Add routes
     App.Router.map(function() {
@@ -149,18 +45,23 @@ $(function() {
 
     App.IndexController = Ember.ObjectController.extend({
         actions: {
-            love: loveItem,
-            delete: deleteItem
+            love: croma.loveItem,
+            delete: croma.deleteItem
         }
     });
 
     // Render the colors route
     App.ColorsRoute = Ember.Route.extend({
         model: function(params) {
-            var name = params.palette,
-                palettes = storage.get("palettes"),
-                current,
+            var name, palettes, current,
                 data = [];
+
+            if (!(params && params.palette)) {
+                App.Router.router.transitionTo("index");
+            }
+
+            name = params.palette;
+            palettes = storage.get("palettes");
 
             if (palettes) {
                 current = palettes[name];
@@ -187,7 +88,7 @@ $(function() {
         },
 
         actions: {
-            delete: deleteItem
+            delete: croma.deleteItem
         }
     });
 
@@ -199,7 +100,13 @@ $(function() {
     // Render the details route
     App.DetailsRoute = Ember.Route.extend({
         model: function(params) {
-            var color = new Color(params.color);
+            var color;
+
+            if (!(params && params.color)) {
+                App.Router.router.transitionTo("index");
+            }
+
+            color = new Color(params.color);
 
             color.hexVal = color.tohex();
             color.cssStr = "background-color:" + color.hexVal;
@@ -228,8 +135,13 @@ $(function() {
     // Render the schemes route
     App.SchemesRoute = Ember.Route.extend({
         model: function(params) {
-            var color = new Color(params.color),
-                name, objs, strs, val;
+            var color, name, objs, strs, val;
+
+            if (!(params && params.color)) {
+                App.Router.router.transitionTo("index");
+            }
+
+            color = new Color(params.color);
 
             color.hexVal = color.tohex();
 
@@ -237,7 +149,7 @@ $(function() {
 
             for (var i in color) {
                 if ((/.*scheme$/i).test(i) && typeof color[i] === "function") {
-                    name = parseCamelCase(i).replace(/scheme/i, "").trim();
+                    name = croma.parseCamelCase(i).replace(/scheme/i, "").trim();
                     objs = color[i]();
                     strs = [];
 
