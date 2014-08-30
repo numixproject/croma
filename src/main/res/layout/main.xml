@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#f06860">
+    android:background="@color/accent"
+    android:fitsSystemWindows="true">
 
     <ImageView
         android:id="@+id/imageView1"

@@ -11,6 +11,7 @@ import android.webkit.WebViewClient;
 import static android.webkit.WebSettings.LOAD_DEFAULT;
 
 public class MainActivity extends Activity {
+
     private WebView webView;
 
     private class webViewClient extends WebViewClient {
