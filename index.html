@@ -72,7 +72,7 @@
     <script type="text/x-handlebars" id="new">
         <header>
             <div class="section-wrapper">
-                {{#link-to "index" class="header-icon header-back"}}{{/link-to}}
+                <a {{action goBack}} class="header-icon header-back"></a>
                 <h1 class="header-title">
                     New palette
                 </h1>
@@ -110,9 +110,9 @@
         {{#with model}}
             <header>
                 <div class="section-wrapper">
-                    {{#link-to "index" class="header-icon header-back"}}{{/link-to}}
+                    <a {{action goBack}} class="header-icon header-back"></a>
                     <h1 class="header-title">
-                        Colors
+                        {{name}}
                     </h1>
                 </div>
             </header>
@@ -152,17 +152,17 @@
     </script>
 
     <script type="text/x-handlebars" data-template-name="details">
-        <header>
-            <div class="section-wrapper">
-                {{#link-to "colors" class="header-icon header-back"}}{{/link-to}}
-                <h1 class="header-title">
-                    Details
-                </h1>
-            </div>
-        </header>
-        <main class="card-area">
-            <div class="section-wrapper">
-                {{#with model.[0]}}
+        {{#with model.[0]}}
+            <header>
+                <div class="section-wrapper">
+                    <a {{action goBack}} class="header-icon header-back"></a>
+                    <h1 class="header-title">
+                        {{hexVal}}
+                    </h1>
+                </div>
+            </header>
+            <main class="card-area">
+                <div class="section-wrapper">
                     <div class="card-item">
                         <div class="card-item-color" {{bind-attr style=cssStr}}></div>
 
@@ -196,7 +196,7 @@
         {{#with model.[0]}}
             <header>
                 <div class="section-wrapper">
-                    {{#link-to "details" (query-params color=hexVal) class="header-icon header-back"}}{{/link-to}}
+                    <a {{action goBack}} class="header-icon header-back"></a>
                     <h1 class="header-title">
                         Color schemes
                     </h1>
@@ -233,7 +233,7 @@
     <script type="text/x-handlebars" data-template-name="picker">
         <header>
             <div class="section-wrapper">
-                {{#link-to "index" class="header-icon header-back"}}{{/link-to}}
+                <a {{action goBack}} class="header-icon header-back"></a>
                 <h1 class="header-title">
                     Pick a color
                 </h1>
