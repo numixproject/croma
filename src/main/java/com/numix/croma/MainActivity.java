@@ -3,6 +3,7 @@ package com.numix.croma;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.KeyEvent;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -10,6 +11,7 @@ import android.webkit.WebViewClient;
 import static android.webkit.WebSettings.LOAD_DEFAULT;
 
 public class MainActivity extends Activity {
+    private WebView webView;
 
     private class webViewClient extends WebViewClient {
         @Override
@@ -25,7 +27,7 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.main);
 
-        final WebView webView = (WebView) findViewById(R.id.webview);
+        webView = (WebView) findViewById(R.id.webview);
 
         WebSettings webSettings = webView.getSettings();
 
@@ -46,5 +48,15 @@ public class MainActivity extends Activity {
         webView.addJavascriptInterface(new Storage(this), "androidStorage");
 
         webView.loadUrl("file:///android_asset/www/index.html");
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK) && webView.canGoBack()) {
+            webView.goBack();
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 }
