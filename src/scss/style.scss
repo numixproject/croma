@@ -133,7 +133,6 @@ header {
     vertical-align: middle;
     text-align: center;
     color: lighten($dark-color, 30%);
-    text-shadow: 0 1px 3px rgba(255,255,255,0.3);
     text-decoration: none;
     font-weight: 700;
     font-size: 1.5em;
@@ -160,12 +159,16 @@ header {
     height: $bar-height;
     width: $bar-height;
     border-radius: 50%;
-    background: $alt-color url(../../src/img/add-circle.svg) no-repeat center center;
+    background-color: $alt-color;
+    background-repeat: no-repeat;
+    background-position: center center;
 
     &:focus, &:hover { background-color: darken($alt-color, 5%); }
 
     &:active { background-color: darken($alt-color, 10%); }
 }
+
+.action-button-add { background-image: url(../../src/img/add-circle.svg); }
 
 
 /************
@@ -356,6 +359,17 @@ $actions: love, delete, share;
     color: #fff;
     text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
 }
+
+.card-item-color-list {
+    @include flexbox;
+    @include flex-direction(row);
+    @include flex-wrap(nowrap);
+
+    height: $bar-height * 2;
+    width: 100%;
+}
+
+.card-item-color-item { @include flex-grow(1); }
 
 /* browser specific styles */
 ::selection {
