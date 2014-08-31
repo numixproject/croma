@@ -871,7 +871,7 @@ var Color = (function() {
         darkness: function() {
             var yiq = (this.rgb[0] * 299 + this.rgb[1] * 587 + this.rgb[2] * 114) / 1000;
 
-            return yiq / 255;
+            return 1 - (yiq / 255);
         },
 
         // Color manipulation

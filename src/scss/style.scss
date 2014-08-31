@@ -165,9 +165,13 @@ header {
     background-position: center center;
     pointer-events: auto;
 
-    &:focus, &:hover { background-color: darken($alt-color, 5%); }
+    &:focus, &:hover { @include dropshadow(4); }
 
-    &:active { background-color: darken($alt-color, 10%); }
+    &:active {
+        @include dropshadow(5);
+
+        background-color: darken($alt-color, 10%);
+    }
 }
 
 .action-button-add { background-image: url(../../src/img/add-circle.svg); }
@@ -315,9 +319,13 @@ $actions: love, delete, share;
     text-transform: uppercase;
     cursor: pointer;
 
-    &:focus, &:hover { background-color: rgba(0,0,0,0.025); }
+    &:focus, &:hover { @include dropshadow(2); }
 
-    &:active { background-color: rgba(0,0,0,0.05); }
+    &:active {
+        @include dropshadow(3);
+
+        background-color: rgba(0,0,0,0.05);
+    }
 
     &:only-of-type, &:last-of-type { border-right-width: 0; }
 }
