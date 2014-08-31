@@ -1,7 +1,7 @@
 /* jshint browser: true */
 /* global $, Color, storage */
 
-window.croma = {
+var croma = {
 
 	// Convert camelCase to sentence
 	parseCamelCase: function(text) {
@@ -14,37 +14,54 @@ window.croma = {
 		.replace(/^./, function(str) { return str.toUpperCase(); });
 	},
 
-	// Delete a color from the UI and database
-	deleteItem: function(palette, color) {
-		var $el, palettes, current;
+	getData: function(palette) {
+		var palettes = storage.get("palettes") || {};
+
+		if (palette) {
+			return palettes[palette];
+		} else {
+			return palettes;
+		}
+	},
+
+	setData: function(palette, data) {
+		var palettes = croma.getData(),
+			current;
 
 		if ((!palette) || typeof palette !== "string") {
 			return;
 		}
 
-		palettes = storage.get("palettes");
+		if (data) {
+			palettes[palette] = data;
+		} else {
+			delete palettes[palette];
+		}
+
+		return storage.set("palettes", palettes);
+	},
+
+	// Delete a color from the UI and database
+	deleteItem: function(palette, color) {
+		var $el, data;
+
+		if ((!palette) || typeof palette !== "string") {
+			return;
+		}
+
+		data = croma.getData(palette);
 
 		if (color) {
-			if (palettes) {
-				current = palettes[palette];
-			} else {
-				return;
-			}
-
-			if (current) {
-				delete palettes[palette].colors[color];
-			}
+			delete data.colors[color];
 
 			$el = $("[data-palette=" + palette + "][data-color=" + color + "]");
 		} else {
-			if (palettes) {
-				delete palettes[palette];
-			}
+			data = null;
 
 			$el = $("[data-palette=" + palette + "]");
 		}
 
-		storage.set("palettes", palettes);
+		croma.setData(palette, data);
 
 		// Swipe out the card
 		$el.velocity({
@@ -68,17 +85,15 @@ window.croma = {
 	// Toggle love color in the UI and database
 	loveItem: function(palette) {
 		var $card, $button,
-			palettes, current;
+			data;
 
 		if ((!palette) || typeof palette !== "string") {
 			return;
 		}
 
-		palettes = storage.get("palettes");
+		data = croma.getData(palette);
 
-		if (palettes) {
-			current = palettes[palette];
-		} else {
+		if (data) {
 			return;
 		}
 
@@ -94,16 +109,18 @@ window.croma = {
 		}, 500);
 
 		// Toggle love
-		if (current.loved) {
+		if (data.loved) {
 			$card.removeClass("card-item-loved");
 
-			palettes[palette].loved = false;
+			data.loved = false;
 		} else {
 			$card.addClass("card-item-loved");
 
-			palettes[palette].loved = true;
+			data.loved = true;
 		}
 
-		storage.set("palettes", palettes);
+		croma.setData(palette, data);
 	}
 };
+
+window.croma = croma;

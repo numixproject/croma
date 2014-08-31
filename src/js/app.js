@@ -1,5 +1,5 @@
 /* jshint browser: true */
-/* global $, Ember, Color, storage, croma, picker */
+/* global $, Ember, Color, croma, picker */
 
 $(function() {
     var App = Ember.Application.create();
@@ -25,7 +25,7 @@ $(function() {
     // Render the index route
     App.IndexRoute = Ember.Route.extend({
         model: function() {
-            var palettes = storage.get("palettes"),
+            var palettes = croma.getData(),
                 arr = [],
                 data = [],
                 color;
@@ -69,22 +69,13 @@ $(function() {
     App.AddpaletteController = Ember.ObjectController.extend({
         actions: {
             done: function() {
-                var palette = this.get("palettename"),
-                    palettes;
+                var palette = this.get("palettename");
 
                 if (!palette) {
                     return;
                 }
 
-                palettes = storage.get("palettes");
-
-                if (palettes) {
-                    palettes[palette] = {};
-                } else {
-                    return;
-                }
-
-                storage.set("palettes", palettes);
+                croma.setData(palette, {});
 
                 App.Router.router.transitionTo("colors", { queryParams: { palette: palette } });
             }
@@ -94,7 +85,7 @@ $(function() {
     // Render the colors route
     App.ColorsRoute = Ember.Route.extend({
         model: function(params) {
-            var name, palettes, current,
+            var name, current,
                 data = [];
 
             if (!(params && params.palette)) {
@@ -102,24 +93,18 @@ $(function() {
             }
 
             name = params.palette;
-            palettes = storage.get("palettes");
+            current = croma.getData(name);
 
-            if (palettes) {
-                current = palettes[name];
-            } else {
+            if (!current) {
                 return;
             }
 
-            if (current) {
-                for (var c in current.colors) {
-                    data.push({
-                        palette: name,
-                        color: c,
-                        cssStr: "background-color:" + c
-                    });
-                }
-            } else {
-                return;
+            for (var c in current.colors) {
+                data.push({
+                    palette: name,
+                    color: c,
+                    cssStr: "background-color:" + c
+                });
             }
 
             return {
@@ -228,26 +213,21 @@ $(function() {
         actions: {
             add: function(palette) {
                 var color = picker.value,
-                    palettes = storage.get("palettes"),
-                    current;
+                    data;
 
                 if ((!color) || typeof color !== "string") {
                     return;
                 }
 
                 color = new Color(color).tohex();
+                data = croma.getData(palette);
 
-                if (palettes) {
-                    current = palettes[palette];
-                } else {
-                    return;
+                if (data) {
+                    data.colors = data.colors || {};
+                    data.colors[color] = true;
                 }
 
-                if (current) {
-                    palettes[palette].colors[color] = true;
-                }
-
-                storage.set("palettes", palettes);
+                croma.setData(palette, data);
 
                 App.Router.router.transitionTo("colors", { queryParams: { palette: palette } });
             },
