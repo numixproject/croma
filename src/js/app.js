@@ -13,15 +13,6 @@ $(function() {
         this.resource("palettes");
     });
 
-    // Implement go back functionality
-    App.ApplicationRoute = Ember.Route.extend({
-        actions: {
-            goBack: function() {
-                window.history.back();
-            }
-        }
-    });
-
     // Render the index route
     App.IndexRoute = Ember.Route.extend({
         model: function() {

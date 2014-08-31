@@ -72,7 +72,7 @@
     <script type="text/x-handlebars" id="addpalette">
         <header>
             <div class="section-wrapper">
-                <a {{action goBack}} class="header-action-icon header-action-back"></a>
+                {{#link-to "index" class="header-action-icon header-action-back"}}{{/link-to}}
                 <a {{action done}} class="header-action-icon header-action-icon-right header-action-done"></a>
             </div>
         </header>
@@ -94,7 +94,7 @@
         {{#with model}}
             <header>
                 <div class="section-wrapper">
-                    <a {{action goBack}} class="header-action-icon header-action-back"></a>
+                    {{#link-to "index" class="header-action-icon header-action-back"}}{{/link-to}}
                     <h1 class="header-title">
                         {{name}}
                     </h1>
@@ -139,7 +139,7 @@
         {{#with model.[0]}}
             <header>
                 <div class="section-wrapper">
-                    <a {{action goBack}} class="header-action-icon header-action-back"></a>
+                    {{#link-to "colors" class="header-action-icon header-action-back"}}{{/link-to}}
                     <h1 class="header-title">
                         {{hexVal}}
                     </h1>
@@ -180,7 +180,7 @@
         {{#with model.[0]}}
             <header>
                 <div class="section-wrapper">
-                    <a {{action goBack}} class="header-action-icon header-action-back"></a>
+                    {{#link-to "details" class="header-action-icon header-action-back"}}{{/link-to}}
                     <h1 class="header-title">
                         Color palettes
                     </h1>
@@ -217,7 +217,7 @@
     <script type="text/x-handlebars" data-template-name="picker">
         <header>
             <div class="section-wrapper">
-                <a {{action goBack}} class="header-action-icon header-action-back"></a>
+                {{#link-to "colors" class="header-action-icon header-action-back"}}{{/link-to}}
                 <h1 class="header-title">
                     Pick a color
                 </h1>
