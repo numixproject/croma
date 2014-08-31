@@ -8,7 +8,12 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.TranslucentDecor">
+        android:theme="@style/Theme.TranslucentDecor"
+        android:backupAgent="MyBackupAgent">
+
+        <meta-data
+            android:name="com.google.android.backup.api_key"
+            android:value="AEdPqrEAAAAIo92l4xJqAJDuqvJlwDPnGYHpD5d_QKu69T_5Yg" />
 
         <activity android:name="MainActivity">
             <intent-filter>
