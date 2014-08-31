@@ -48,6 +48,19 @@ body {
     color: $dark-color;
 }
 
+input[type=text] {
+    padding: ($spacing / 2) 0;
+    border: none;
+    border-bottom: 2px solid darken($light-color, 20%);
+    background-color: $light-color;
+    border-radius: $roundness;
+
+    &:focus, &:active {
+        border-color: $accent-color;
+        outline: none;
+    }
+}
+
 .section-wrapper {
     width: $mobile-width;
     max-width: 100%;
@@ -75,7 +88,7 @@ header {
 
 .header-wrapper { @extend %clearfix; }
 
-.header-icon {
+.header-action-icon {
     float: left;
     height: $bar-height;
     width: $bar-height;
@@ -84,9 +97,13 @@ header {
     background-position: center center;
 }
 
-.header-menu { background-image: url(../../src/img/hamburger.svg); }
+.header-action-icon-right { float: right; }
 
-.header-back { background-image: url(../../src/img/arrow-back.svg); }
+.header-action-menu { background-image: url(../../src/img/hamburger.svg); }
+
+.header-action-back { background-image: url(../../src/img/arrow-back.svg); }
+
+.header-action-done { background-image: url(../../src/img/done.svg); }
 
 .header-title {
     float: left;
@@ -207,6 +224,8 @@ header {
     @include flex-direction(row);
     @include flex-wrap(nowrap);
 }
+
+.card-item-container { padding: $spacing / 2; }
 
 .card-item-header {
     text-transform: uppercase;
@@ -330,24 +349,16 @@ $actions: love, delete, share;
     &:only-of-type, &:last-of-type { border-right-width: 0; }
 }
 
-.card-item-input-wrap {
-    @include flex-grow(1);
-
-    padding: $spacing / 2;
-}
+.card-item-input-wrap { @include flex-grow(1); }
 
 .card-item-input {
     min-width: 12em;
     display: inline-block;
-    padding: $spacing / 2;
-    border: 1px solid darken($light-color, 20%);
-    background-color: $light-color;
-    border-radius: $roundness;
+}
 
-    &:hover, &:focus, &:active {
-        border-color: $accent-color;
-        outline: none;
-    }
+.card-item-input-block {
+    width: 100%;
+    display: block;
 }
 
 .card-item-color-button {

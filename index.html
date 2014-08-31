@@ -24,7 +24,7 @@
     <script type="text/x-handlebars" id="index">
         <header>
             <div class="section-wrapper">
-                <span class="header-icon header-menu"></span>
+                <span class="header-action-icon header-action-menu"></span>
                 <h1 class="header-title">
                     Croma
                 </h1>
@@ -32,7 +32,7 @@
         </header>
         <section class="action-wrapper">
             <div class="section-wrapper">
-                {{#link-to "new" class="action-button action-button-add"}}
+                {{#link-to "addpalette" class="action-button action-button-add"}}
                 {{/link-to}}
             </div>
         </section>
@@ -60,7 +60,7 @@
                     {{/each}}
                 {{else}}
                     <div class="empty-area">
-                        {{#link-to "new" class="empty-area-action"}}
+                        {{#link-to "addpalette" class="empty-area-action"}}
                             Tap to add palettes.
                         {{/link-to}}
                     </div>
@@ -69,37 +69,21 @@
         </main>
     </script>
 
-    <script type="text/x-handlebars" id="new">
+    <script type="text/x-handlebars" id="addpalette">
         <header>
             <div class="section-wrapper">
-                <a {{action goBack}} class="header-icon header-back"></a>
-                <h1 class="header-title">
-                    New palette
-                </h1>
+                <a {{action goBack}} class="header-action-icon header-action-back"></a>
+                <a {{action done}} class="header-action-icon header-action-icon-right header-action-done"></a>
             </div>
         </header>
-        <section class="action-wrapper">
-            <div class="section-wrapper">
-                {{#link-to "new" class="action-button action-button-add"}}
-                {{/link-to}}
-            </div>
-        </section>
         <main class="card-area">
-            <div class="cover-image"></div>
             <div class="section-wrapper">
                 <div class="card-item">
-                    <div class="card-item-button-area">
-                        {{#link-to "picker" (query-params palette=name) class="card-item-button card-item-button-ok"}}
-                            Get from image
-                        {{/link-to}}
-                    </div>
-                </div>
-
-                <div class="card-item">
-                    <div class="card-item-button-area">
-                        {{#link-to "picker" (query-params palette=name) class="card-item-button card-item-button-ok"}}
-                            Add color
-                        {{/link-to}}
+                    <div class="card-item-container">
+                        <div class="card-item-header">
+                            Create new palette
+                        </div>
+                        {{input type="text" valueBinding="palettename" class="card-item-input-block" placeholder="Enter a palette name" autofocus="autofocus"}}
                     </div>
                 </div>
             </div>
@@ -110,7 +94,7 @@
         {{#with model}}
             <header>
                 <div class="section-wrapper">
-                    <a {{action goBack}} class="header-icon header-back"></a>
+                    <a {{action goBack}} class="header-action-icon header-action-back"></a>
                     <h1 class="header-title">
                         {{name}}
                     </h1>
@@ -142,7 +126,7 @@
                     {{else}}
                         <div class="empty-area">
                             {{#link-to "picker" (query-params palette=name) class="empty-area-action"}}
-                                No colors present. Add some?
+                                Tap to add colors.
                             {{/link-to}}
                         </div>
                     {{/if}}
@@ -155,7 +139,7 @@
         {{#with model.[0]}}
             <header>
                 <div class="section-wrapper">
-                    <a {{action goBack}} class="header-icon header-back"></a>
+                    <a {{action goBack}} class="header-action-icon header-action-back"></a>
                     <h1 class="header-title">
                         {{hexVal}}
                     </h1>
@@ -182,8 +166,8 @@
 
                     <div class="card-item">
                         <div class="card-item-button-area">
-                            {{#link-to "schemes" (query-params color=hexVal) class="card-item-button card-item-button-ok"}}
-                            See color schemes
+                            {{#link-to "palettes" (query-params color=hexVal) class="card-item-button card-item-button-ok"}}
+                            See color palettes
                             {{/link-to}}
                         </div>
                     </div>
@@ -192,19 +176,19 @@
         </main>
     </script>
 
-    <script type="text/x-handlebars" data-template-name="schemes">
+    <script type="text/x-handlebars" data-template-name="palettes">
         {{#with model.[0]}}
             <header>
                 <div class="section-wrapper">
-                    <a {{action goBack}} class="header-icon header-back"></a>
+                    <a {{action goBack}} class="header-action-icon header-action-back"></a>
                     <h1 class="header-title">
-                        Color schemes
+                        Color palettes
                     </h1>
                 </div>
             </header>
             <main class="card-area">
                 <div class="section-wrapper">
-                        {{#each schemes}}
+                        {{#each palettes}}
                             <div class="card-item">
                                 <div class="card-item-info">
                                     {{#with this}}
@@ -233,7 +217,7 @@
     <script type="text/x-handlebars" data-template-name="picker">
         <header>
             <div class="section-wrapper">
-                <a {{action goBack}} class="header-icon header-back"></a>
+                <a {{action goBack}} class="header-action-icon header-action-back"></a>
                 <h1 class="header-title">
                     Pick a color
                 </h1>
@@ -246,7 +230,7 @@
                         <canvas></canvas>
                     </div>
                     <div class="card-item-segment">
-                        <div class="card-item-input-wrap">
+                        <div class="card-item-container card-item-input-wrap">
                             <input type="text" class="card-item-input picker-input" placeholder="Enter a color" autofocus>
                         </div>
                         <div class="card-item-color-button picker-color-button"></div>

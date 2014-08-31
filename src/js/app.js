@@ -6,11 +6,11 @@ $(function() {
 
     // Add routes
     App.Router.map(function() {
-        this.resource("new");
+        this.resource("addpalette");
         this.resource("colors");
         this.resource("picker");
         this.resource("details");
-        this.resource("schemes");
+        this.resource("palettes");
     });
 
     // Implement go back functionality
@@ -56,6 +56,38 @@ $(function() {
         actions: {
             love: croma.loveItem,
             delete: croma.deleteItem
+        }
+    });
+
+    // Render the add route
+    App.AddpaletteRoute = Ember.Route.extend({
+        model: function() {
+            return {};
+        }
+    });
+
+    App.AddpaletteController = Ember.ObjectController.extend({
+        actions: {
+            done: function() {
+                var palette = this.get("palettename"),
+                    palettes;
+
+                if (!palette) {
+                    return;
+                }
+
+                palettes = storage.get("palettes");
+
+                if (palettes) {
+                    palettes[palette] = {};
+                } else {
+                    return;
+                }
+
+                storage.set("palettes", palettes);
+
+                App.Router.router.transitionTo("colors", { queryParams: { palette: palette } });
+            }
         }
     });
 
@@ -141,8 +173,8 @@ $(function() {
         color: null
     });
 
-    // Render the schemes route
-    App.SchemesRoute = Ember.Route.extend({
+    // Render the palettes route
+    App.PalettesRoute = Ember.Route.extend({
         model: function(params) {
             var color, name, objs, strs, val;
 
@@ -154,7 +186,7 @@ $(function() {
 
             color.hexVal = color.tohex();
 
-            color.schemes = [];
+            color.palettes = [];
 
             for (var i in color) {
                 if ((/.*scheme$/i).test(i) && typeof color[i] === "function") {
@@ -171,7 +203,7 @@ $(function() {
                         });
                     }
 
-                    color.schemes.push({
+                    color.palettes.push({
                         name: name,
                         colors: strs
                     });
@@ -182,7 +214,7 @@ $(function() {
         }
     });
 
-    App.SchemesController = Ember.ArrayController.extend({
+    App.PalettesController = Ember.ArrayController.extend({
         queryParams: [ "color" ],
         color: null
     });
