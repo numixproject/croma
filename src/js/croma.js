@@ -93,7 +93,7 @@ var croma = {
 
 		data = croma.getData(palette);
 
-		if (data) {
+		if (!data) {
 			return;
 		}
 
