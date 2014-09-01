@@ -1,8 +1,9 @@
 package com.numix.croma;
+
 import android.app.backup.BackupAgentHelper;
 import android.app.backup.SharedPreferencesBackupHelper;
 
-public class MyBackupAgent extends BackupAgentHelper {
+public class BackupAgent extends BackupAgentHelper {
     // The names of the SharedPreferences groups that the application maintains.  These
     // are the same strings that are passed to getSharedPreferences(String, int).
     static final String STORAGE = "Storage";
@@ -16,6 +17,7 @@ public class MyBackupAgent extends BackupAgentHelper {
     public void onCreate() {
         SharedPreferencesBackupHelper helper =
                 new SharedPreferencesBackupHelper(this, STORAGE);
+
         addHelper(MY_PREFS_BACKUP_KEY, helper);
     }
 }
