@@ -54,11 +54,11 @@ var croma = {
 		if (color) {
 			delete data.colors[color];
 
-			$el = $("[data-palette=" + palette + "][data-color=" + color + "]");
+			$el = $("[data-palette='" + palette + "'][data-color='" + color + "']");
 		} else {
 			data = null;
 
-			$el = $("[data-palette=" + palette + "]");
+			$el = $("[data-palette='" + palette + "']");
 		}
 
 		croma.setData(palette, data);
@@ -97,7 +97,7 @@ var croma = {
 			return;
 		}
 
-		$card = $("[data-palette=" + palette + "]");
+		$card = $("[data-palette='" + palette + "']");
 
 		$button = $card.find(".card-item-action-love");
 
