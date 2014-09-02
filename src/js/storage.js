@@ -53,15 +53,19 @@ var Storage = (function() {
          * @return {Object} value
          */
         _this.get = function(key) {
+            var str;
+
             // Parse strings to objects
             try {
-                return JSON.parse(
-                    _localStorage.getItem(
-                        JSON.stringify(key)
-                    )
+                str = _localStorage.getItem(
+                    JSON.stringify(key)
                 );
             } catch (err) {
                 throw err;
+            }
+
+            if (str && typeof str === "string") {
+                return JSON.parse(str);
             }
         };
 
