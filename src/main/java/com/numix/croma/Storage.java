@@ -5,17 +5,20 @@ import android.content.SharedPreferences;
 import android.webkit.JavascriptInterface;
 
 public class Storage {
-    private Context mContext;
+
+    Context mContext;
+
     private SharedPreferences mStorage;
 
+    // Set application context.
     Storage(Context c) {
         mContext = c;
-        mStorage = c.getSharedPreferences("Storage", 0);
+        mStorage = c.getSharedPreferences(c.getResources().getString(R.string.key_file), 0);
     }
 
     @JavascriptInterface
     public String getItem(String key) {
-        return mStorage.getString(key, null);
+        return mStorage.getString(key, "");
     }
 
     @JavascriptInterface

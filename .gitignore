@@ -1,5 +1,5 @@
 *~
-.apk
+*.apk
 .DS_Store
 
 build
