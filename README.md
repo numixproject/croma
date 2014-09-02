@@ -1,7 +1,5 @@
 # Croma
 
-Save your colors!
+Android packaging for Croma, an app for saving and generating color palettes.
 
-Croma is built with web technologies and lots of love :D
-
-This is just the **Android Packaging** for Croma. The full version is available [here!](https://github.com/numixproject/croma)
+The [web app](https://github.com/numixproject/croma) is included as a submodule, which you can clone using `git clone --recursive`.
