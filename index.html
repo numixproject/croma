@@ -82,8 +82,13 @@
                     <div class="card-item-container">
                         <div class="card-item-header">
                             Create new palette
-                        </div>
-                        {{input type="text" valueBinding="palettename" class="card-item-input-block" placeholder="Enter a palette name" autofocus="autofocus"}}
+                                <div class="group">      
+                                    {{input type="text" valueBinding="palettename" required="required"}}
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Enter a palette name</label>
+                            </div>
+                            </div>
                     </div>
                 </div>
             </div>
