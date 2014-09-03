@@ -1,8 +1,7 @@
-/* jshint browser: true */
-
 /**
- * @fileOverview Simple wrapper for localStorage.
- * @author Satyajit Sahoo <satyajit.happy@gmail.com>
+ * @fileOverview - Simple wrapper for localStorage.
+ * @author - Satyajit Sahoo <satyajit.happy@gmail.com>
+ * @license - GPL-3.0+
  */
 
 var Storage = (function() {
@@ -87,4 +86,14 @@ var Storage = (function() {
     };
 }());
 
-window.storage = new Storage();
+if (typeof define === "function" && define.amd) {
+    // Define as AMD module
+    define(function() {
+        return new Storage();
+    });
+} else if (typeof module !== "undefined" && module.exports) {
+    // Export to CommonJS
+    module.exports = new Storage();
+} else {
+    window.storage = new Storage();
+}

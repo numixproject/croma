@@ -1,7 +1,7 @@
 /**
- * @fileOverview Color information and manipulation library.
- * @author Satyajit Sahoo <satyajit.happy@gmail.com>
- * @license GPL-3.0+
+ * @fileOverview - Color information and manipulation library.
+ * @author - Satyajit Sahoo <satyajit.happy@gmail.com>
+ * @license - GPL-3.0+
  */
 
 var Color = (function() {
@@ -1074,3 +1074,15 @@ var Color = (function() {
 
     return ColorConstructor;
 }());
+
+if (typeof define === "function" && define.amd) {
+    // Define as AMD module
+    define(function() {
+        return Color;
+    });
+} else if (typeof module !== "undefined" && module.exports) {
+    // Export to CommonJS
+    module.exports = Color;
+} else {
+    window.Color = Color;
+}
