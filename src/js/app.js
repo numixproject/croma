@@ -4,6 +4,7 @@
 $(function() {
     var croma = require("./croma.js"),
         picker = require("./picker.js"),
+        Color = require("./color.js"),
         App = Ember.Application.create();
 
     // Add routes

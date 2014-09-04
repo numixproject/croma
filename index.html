@@ -168,12 +168,10 @@
                         </div>
                     </div>
 
-                    <div class="card-item">
-                        <div class="card-item-button-area">
-                            {{#link-to "palettes" (query-params color=hexVal) class="card-item-button card-item-button-ok"}}
+                    <div class="paper-button-container">
+                        {{#link-to "palettes" (query-params color=hexVal) class="paper-button paper-button-block paper-ripple"}}
                             See color palettes
-                            {{/link-to}}
-                        </div>
+                        {{/link-to}}
                     </div>
                 {{/with}}
             </div>
@@ -244,8 +242,8 @@
                         <div class="card-item-color-button picker-color-button"></div>
                     </div>
                     <div class="card-item-button-area">
-                        <div {{action "add" model.palette}} class="card-item-button card-item-button-ok">Add</div>
                         <div {{action "cancel" model.palette}} class="card-item-button card-item-button-cancel">Cancel</div>
+                        <div {{action "add" model.palette}} class="card-item-button card-item-button-ok">Add</div>
                     </div>
                 {{/view}}
             </div>
