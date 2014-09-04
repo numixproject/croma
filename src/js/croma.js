@@ -1,13 +1,6 @@
 /* jshint browser: true */
 /* global $ */
 
-var showRipple = require("./ripple.js");
-
-// Add a ripple effect to buttons
-$(document).on("mousedown touchstart", ".paper-ripple", function(e) {
-	showRipple(e);
-});
-
 var croma = (function() {
 	var Color = require("./color.js"),
 		storage = require("./storage");

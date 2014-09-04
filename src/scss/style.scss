@@ -447,15 +447,14 @@ $actions: love, delete, save, share;
 }
 
 .card-item-scheme {
-    @include flexbox;
-    @include flex-direction(row);
-    @include flex-wrap(wrap);
+    @extend %clearfix;
+
+    width: 100%;
 }
 
 .card-item-scheme-item {
-    @include flex-grow(1);
-
-    min-width: 33.33%;
+    float: left;
+    width: 33.33%;
     height: $bar-height;
     line-height: $bar-height;
     font-weight: 700;
