@@ -32,9 +32,9 @@
 }
 
 
-/****************
+/************
 ! Base styles
-****************/
+*************/
 
 html, body { height: 100%; }
 
@@ -48,102 +48,70 @@ body {
     color: $dark-color;
 }
 
-/* Input text style */
-.group 			  { 
-  position:relative;
-    margin-top: 8%;
-  margin-bottom:5%; 
-}
-input 				{
-  font-size:18px;
-  padding:10px 10px 10px 5px;
-  display:block;
-  width:80%;
-  border:none;
-  border-bottom:1px solid #757575;
-}
-input:focus 		{ outline:none; }
+input[type=text] {
+    @extend %transition;
 
-/* LABEL */
-label 				 {
-  color:#999; 
-  font-weight:normal;
-  position:absolute;
-  pointer-events:none;
-  left:5px;
-  top:10px;
-  transition:0.2s ease all; 
-  -moz-transition:0.2s ease all; 
-  -webkit-transition:0.2s ease all;
+    padding: ($spacing / 2) 0;
+    border: none;
+    border-bottom: 1px solid lighten($dark-color, 50%);
+    background-color: $light-color;
+    border-radius: $roundness;
+
+    &:focus, &:active {
+        border-bottom-color: $info-color;
+        outline: none;
+    }
 }
 
-/* active state */
-input:focus ~ label, input:valid ~ label 		{
-  top:-20px;
-  color:#60a1f0;
+
+/************
+! Paper input
+*************/
+
+.paper-input-container { position: relative; }
+
+.paper-input-bar {
+    position: relative;
+    display: block;
+
+    &:before, &:after {
+        @extend %transition;
+
+        content: "";
+        position: absolute;
+        bottom: 0;
+        width: 0;
+        height: 2px;
+        background-color: $info-color;
+    }
+
+    &:before { left: 50%; }
+
+    &:after { right: 50%; }
 }
 
-/* BOTTOM BARS */
-.bar 	{ position:relative; display:block; width:80%; }
-.bar:before, .bar:after 	{
-  content:'';
-  height:2px; 
-  width:0;
-  bottom:0; 
-  position:absolute;
-  background:#5264AE; 
-  transition:0.2s ease all; 
-  -moz-transition:0.2s ease all; 
-  -webkit-transition:0.2s ease all;
-}
-.bar:before {
-  left:50%;
-}
-.bar:after {
-  right:50%; 
+.paper-input-highlight {
+    position: absolute;
+    height: 50%;
+    width: 50%;
+    top: 25%;
+    left: 0;
+    opacity: 0.5;
+    pointer-events: none;
 }
 
-/* active state */
-input:focus ~ .bar:before, input:focus ~ .bar:after {
-  width:50%;
-}
+.paper-input {
+    width: 100%;
 
-/* HIGHLIGHTER */
-.highlight {
-  position:absolute;
-  height:60%; 
-  width:80%; 
-  top:25%; 
-  left:0;
-  pointer-events:none;
-  opacity:0.5;
-}
+    &:focus, &:active {
+        border-bottom-color: darken($light-color, 20%);
 
-/* active state */
-input:focus ~ .highlight {
-  -webkit-animation:inputHighlighter 0.3s ease;
-  -moz-animation:inputHighlighter 0.3s ease;
-  animation:inputHighlighter 0.3s ease;
-}
+        & ~ .paper-input-bar {
+            &:before, &:after { width: 50%; }
+        }
 
-/* ANIMATIONS */
-@-webkit-keyframes inputHighlighter {
-	from { background:#5264AE; }
-  to 	{ width:0; background:transparent; }
-}
-@-moz-keyframes inputHighlighter {
-	from { background:#5264AE; }
-  to 	{ width:0; background:transparent; }
-}
-@keyframes inputHighlighter {
-	from { background:#5264AE; }
-  to 	{ width:0; background:transparent; }
-}
-
-.section-wrapper {
-    width: $mobile-width;
-    max-width: 100%;
-    margin: auto;
+        & ~ .paper-input-highlight { @extend %input-effect; }
+    }
 }
 
 
@@ -208,6 +176,17 @@ header {
 }
 
 
+/*********
+! Sections
+**********/
+
+.section-wrapper {
+    width: $mobile-width;
+    max-width: 100%;
+    margin: auto;
+}
+
+
 /******************
 ! Empty area styles
 *******************/
@@ -256,7 +235,7 @@ header {
     height: $bar-height;
     width: $bar-height;
     border-radius: 50%;
-    background-color: $alt-color;
+    background-color: $warning-color;
     background-repeat: no-repeat;
     background-position: center center;
     pointer-events: auto;
@@ -266,7 +245,7 @@ header {
     &:active {
         @include dropshadow(5);
 
-        background-color: darken($alt-color, 10%);
+        background-color: darken($warning-color, 10%);
     }
 }
 
@@ -441,9 +420,8 @@ $actions: love, delete, share;
 }
 
 .card-item-color-button {
-    width: 6em;
+    width: 8em;
     border-radius: $roundness;
-
     margin: $spacing / 2;
 }
 

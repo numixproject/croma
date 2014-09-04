@@ -28,6 +28,10 @@
     @include prefix(animation, break $args);
 }
 
+@mixin input-effect($args: .3s 1) {
+    @include prefix(animation, input-effect $args);
+}
+
 @mixin transition($duration: .3s, $timing: ease) {
     @include prefix(transition, $duration $timing);
 }
@@ -64,6 +68,20 @@
     }
 
     %break { @include break; }
+
+    @include keyframes(input-effect) {
+        0% {
+            width: 50%;
+            background-color: $info-color;
+        }
+
+        100% {
+            width: 0;
+            background-color: transparent;
+        }
+    }
+
+    %input-effect { @include input-effect; }
 
     %transition { @include transition; }
 
