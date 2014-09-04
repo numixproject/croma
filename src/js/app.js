@@ -1,8 +1,10 @@
 /* jshint browser: true */
-/* global $, Ember, Color, croma, picker */
+/* global $, Ember */
 
 $(function() {
-    var App = Ember.Application.create();
+    var croma = require("./croma.js"),
+        picker = require("./picker.js"),
+        App = Ember.Application.create();
 
     // Add routes
     App.Router.map(function() {

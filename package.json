@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "bower": "latest",
+    "browserify": "latest",
     "gulp": "latest",
     "gulp-concat": "latest",
     "gulp-jshint": "latest",
@@ -28,6 +29,8 @@
     "gulp-sourcemaps": "latest",
     "gulp-uglify": "latest",
     "gulp-util": "latest",
-    "jshint-stylish": "latest"
+    "jshint-stylish": "latest",
+    "vinyl-buffer": "latest",
+    "vinyl-source-stream": "latest"
   }
 }

@@ -1,7 +1,10 @@
 /* jshint browser: true */
-/* global $, Color */
+/* global $ */
 
 var Picker = (function() {
+	var Color = require("./color.js"),
+		getPosition = require("./position.js");
+
 	return function() {
 		var _this = this;
 
@@ -12,16 +15,6 @@ var Picker = (function() {
 				color = "rgb(" + imageData[0] + "," + imageData[1] + "," + imageData[2] + ")";
 
 			return color;
-		};
-
-		_this.getPosition = function(event) {
-			var $element = $(event.currentTarget),
-				startX = event.originalEvent.touches ? event.originalEvent.touches[0].pageX : event.pageX,
-				startY = event.originalEvent.touches ? event.originalEvent.touches[0].pageY : event.pageY,
-				posX = startX - $element.offset().left,
-				posY = startY - $element.offset().top;
-
-			return [ posX, posY ];
 		};
 
 		_this.drawSheet = function(sheet, width, height) {
@@ -77,7 +70,7 @@ var Picker = (function() {
 			});
 
 			$canvas.on("click", function(e) {
-				var value = _this.getColor(_this.getPosition(e), $canvas),
+				var value = _this.getColor(getPosition(e), $canvas),
 					color = new Color(value).tohex();
 
 				_this.setColor(value);
@@ -106,4 +99,4 @@ var Picker = (function() {
 	};
 }());
 
-window.picker = new Picker();
+module.exports = new Picker();

@@ -2,6 +2,9 @@
 
 var gulp = require("gulp"),
     gutil = require("gulp-util"),
+    browserify = require("browserify"),
+    source = require("vinyl-source-stream"),
+    buffer = require('vinyl-buffer'),
     sass = require("gulp-ruby-sass"),
     jshint = require("gulp-jshint"),
     sourcemaps = require("gulp-sourcemaps"),
@@ -36,7 +39,7 @@ gulp.task("libs", function() {
     ])
     .pipe(sourcemaps.init())
     .pipe(concat("libs.js"))
-    .pipe(gutil.env === "production" ? uglify() : gutil.noop())
+    .pipe(gutil.env.production ? uglify() : gutil.noop())
     .pipe(sourcemaps.write())
     .pipe(rename({ suffix: ".min" }))
     .pipe(gulp.dest("dist/js"))
@@ -44,10 +47,14 @@ gulp.task("libs", function() {
 });
 
 gulp.task("scripts", function() {
-    return gulp.src("src/js/*.js")
+    return browserify({
+        entries: "./src/js/app.js",
+        debug: !gutil.env.production
+    }).bundle()
+    .pipe(source("app.js"))
+    .pipe(buffer())
     .pipe(sourcemaps.init())
-    .pipe(concat("scripts.js"))
-    .pipe(gutil.env === "production" ? uglify() : gutil.noop())
+    .pipe(gutil.env.production ? uglify() : gutil.noop())
     .pipe(sourcemaps.write())
     .pipe(rename({ suffix: ".min" }))
     .pipe(gulp.dest("dist/js"))
