@@ -190,6 +190,34 @@ $(function() {
             }
 
             return [ color ];
+        },
+
+        actions: {
+            save: function(palette) {
+                var color, name,
+                    data = {
+                        loved: false,
+                        colors: {}
+                    };
+
+                if (!(palette && palette.colors)) {
+                    return;
+                }
+
+                name = palette.name + " - " + palette.colors[0].value;
+
+                for (var i in palette.colors) {
+                    if (palette.colors.hasOwnProperty(i) && palette.colors[i]) {
+                        color = palette.colors[i].value;
+
+                        if (color) {
+                            data.colors[color] = true;
+                        }
+                    }
+                }
+
+                croma.setData(name, data);
+            }
         }
     });
 

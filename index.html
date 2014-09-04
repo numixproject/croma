@@ -192,21 +192,22 @@
                 <div class="section-wrapper">
                         {{#each palettes}}
                             <div class="card-item">
-                                <div class="card-item-info">
-                                    {{#with this}}
-                                        <div class="card-item-header">
-                                            {{name}}
-                                        </div>
-                                        <div class="card-item-scheme">
-                                            {{#each colors}}
-                                                {{#with this}}
-                                                    <div class="card-item-scheme-item" {{bind-attr style=cssStr}}>
-                                                        {{value}}
-                                                    </div>
-                                                {{/with}}
-                                            {{/each}}
-                                        </div>
-                                    {{/with}}
+                                {{#with this}}
+                                    <div class="card-item-scheme">
+                                        {{#each colors}}
+                                            {{#with this}}
+                                                <div class="card-item-scheme-item" {{bind-attr style=cssStr}}>
+                                                    {{value}}
+                                                </div>
+                                            {{/with}}
+                                        {{/each}}
+                                    </div>
+                                {{/with}}
+                                <div class="card-item-segment">
+                                    <div class="card-item-text">{{name}}</div>
+                                    <div class="card-item-actions">
+                                        <div {{action "save" this}} class="card-item-action card-item-action-save"></div>
+                                    </div>
                                 </div>
                             </div>
                         {{/each}}

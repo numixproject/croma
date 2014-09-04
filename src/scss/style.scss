@@ -361,7 +361,7 @@ header {
     &:last-of-type { margin-right: 0; }
 }
 
-$actions: love, delete, share;
+$actions: love, delete, save, share;
 
 @for $i from 1 through length($actions) {
     $action: nth($actions, $i);
@@ -446,12 +446,17 @@ $actions: love, delete, share;
     margin: $spacing / 2;
 }
 
-.card-item-scheme { @extend %clearfix; }
+.card-item-scheme {
+    @include flexbox;
+    @include flex-direction(row);
+    @include flex-wrap(wrap);
+}
 
 .card-item-scheme-item {
-    float: left;
+    @include flex-grow(1);
+
+    min-width: 33.33%;
     height: $bar-height;
-    width: $bar-height * 2;
     line-height: $bar-height;
     font-weight: 700;
     text-align: center;
