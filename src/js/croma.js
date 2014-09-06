@@ -79,7 +79,7 @@ var croma = (function() {
 				paddingTop: 0,
 				paddingBottom: 0
 			}, {
-				duration: 300,
+				duration: 150,
 				complete: function() {
 					$(this).remove();
 				}

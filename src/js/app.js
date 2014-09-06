@@ -9,7 +9,7 @@ $(function() {
 
     // Add routes
     App.Router.map(function() {
-        this.resource("addpalette");
+        this.resource("add-palette");
         this.resource("colors");
         this.resource("picker");
         this.resource("details");
@@ -54,26 +54,44 @@ $(function() {
     });
 
     // Render the add route
-    App.AddpaletteRoute = Ember.Route.extend({
-        model: function() {
-            return {};
+    App.AddPaletteRoute = Ember.Route.extend({
+        model: function(params) {
+            return params;
         }
     });
 
-    App.AddpaletteController = Ember.ObjectController.extend({
+    App.AddPaletteController = Ember.ObjectController.extend({
         actions: {
             done: function() {
-                var palette = this.get("palettename");
+                var palette = this.get("palettename"),
+                    oldname = this.get("oldname"),
+                    data = {};
 
                 if (!palette) {
                     return;
                 }
 
-                croma.setData(palette, {});
+                if (oldname) {
+                    data = croma.getData(oldname) || {};
+
+                    croma.setData(oldname);
+                }
+
+                croma.setData(palette, data);
 
                 App.Router.router.transitionTo("colors", { queryParams: { palette: palette } });
+            },
+
+            back: function() {
+                var from = this.get("from") || "index";
+
+                App.Router.router.transitionTo(from);
             }
-        }
+        },
+
+        queryParams: [ "from", "oldname" ],
+        from: null,
+        oldname: null
     });
 
     // Render the colors route
@@ -105,14 +123,14 @@ $(function() {
                 name: name,
                 colors: data.reverse()
             };
-        },
-
-        actions: {
-            delete: croma.deleteItem
         }
     });
 
     App.ColorsController = Ember.ObjectController.extend({
+        actions: {
+            delete: croma.deleteItem
+        },
+
         queryParams: [ "palette" ],
         palette: null
     });
@@ -190,8 +208,10 @@ $(function() {
             }
 
             return color;
-        },
+        }
+    });
 
+    App.PalettesController = Ember.ObjectController.extend({
         actions: {
             save: function(palette) {
                 var color, name,
@@ -218,12 +238,10 @@ $(function() {
 
                 croma.setData(name, data);
 
-                App.Router.router.transitionTo("colors", { queryParams: { palette: name } });
+                App.Router.router.transitionTo("add-palette", { queryParams: { oldname: name } });
             }
-        }
-    });
+        },
 
-    App.PalettesController = Ember.ObjectController.extend({
         queryParams: [ "color" ],
         color: null
     });
@@ -232,11 +250,22 @@ $(function() {
     App.PickerRoute = Ember.Route.extend({
         model: function(params) {
             return params;
-        },
+        }
+    });
 
+    App.PickerView = Ember.View.extend({
+        didInsertElement: function() {
+            this._super();
+
+            Ember.run.scheduleOnce("afterRender", this, picker.showPicker);
+        }
+    });
+
+    App.PickerController = Ember.ObjectController.extend({
         actions: {
-            add: function(palette) {
+            add: function() {
                 var color = picker.value,
+                    palette = this.get("palette"),
                     data;
 
                 if ((!color) || typeof color !== "string") {
@@ -256,25 +285,17 @@ $(function() {
                 App.Router.router.transitionTo("colors", { queryParams: { palette: palette } });
             },
 
-            cancel: function(palette) {
+            cancel: function() {
+                var palette = this.get("palette");
+
                 if (palette && palette !== "undefined") {
                     App.Router.router.transitionTo("colors", { queryParams: { palette: palette } });
                 } else {
                     App.Router.router.transitionTo("new");
                 }
             }
-        }
-    });
+        },
 
-    App.PickerView = Ember.View.extend({
-        didInsertElement: function() {
-            this._super();
-
-            Ember.run.scheduleOnce("afterRender", this, picker.showPicker);
-        }
-    });
-
-    App.PickerController = Ember.ObjectController.extend({
         queryParams: [ "palette" ],
         palette: null
     });
