@@ -1,0 +1,24 @@
+<header>
+	<div class="section-wrapper">
+		<div class="header-action-wrapper">
+			{{#link-to "index" class="header-action-icon header-action-back"}}{{/link-to}}
+			<a {{action done}} class="header-action-icon header-action-icon-right header-action-done"></a>
+		</div>
+	</div>
+</header>
+<main class="card-area">
+	<div class="section-wrapper">
+		<div class="card-item">
+			<div class="card-item-container">
+				<div class="card-item-header">
+					Add new palette
+				</div>
+				<div class="paper-input-container">
+					{{input type="text" placeholder="Enter a name for the palette" valueBinding="palettename" autofocus="autofocus" class="card-item-input-block paper-input" }}
+					<span class="paper-input-highlight"></span>
+					<span class="paper-input-bar"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>

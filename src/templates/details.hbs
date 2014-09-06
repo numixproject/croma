@@ -1,0 +1,40 @@
+{{#with model}}
+	<header>
+		<div class="section-wrapper">
+			<div class="header-action-wrapper">
+				{{#link-to "colors" class="header-action-icon header-action-back"}}{{/link-to}}
+			</div>
+			<div class="header-title-wrapper">
+				<h1 class="header-title">
+					{{hexVal}}
+				</h1>
+			</div>
+		</div>
+	</header>
+	<main class="card-area">
+		<div class="section-wrapper">
+			<div class="card-item">
+				<div class="card-item-color" {{bind-attr style=cssStr}}></div>
+
+				<div class="card-item-info-wrap">
+					{{#each strings}}
+						{{#with this}}
+							{{#if value}}
+								<div class="card-item-info">
+									<span class="card-item-label">{{key}}</span>
+									<span class="card-item-value">{{value}}</span>
+								</div>
+							{{/if}}
+						{{/with}}
+					{{/each}}
+				</div>
+			</div>
+
+			<div class="paper-button-container">
+				{{#link-to "palettes" (query-params color=hexVal) class="paper-button paper-button-block paper-ripple"}}
+					See color palettes
+				{{/link-to}}
+			</div>
+		</div>
+	</main>
+{{/with}}

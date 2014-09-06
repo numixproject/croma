@@ -1,0 +1,35 @@
+<header>
+	<div class="section-wrapper">
+		<div class="header-action-wrapper">
+			{{#link-to "colors" class="header-action-icon header-action-back"}}{{/link-to}}
+		</div>
+		<div class="header-title-wrapper">
+			<h1 class="header-title">
+				Pick a color
+			</h1>
+		</div>
+	</div>
+</header>
+<main class="card-area">
+	<div class="section-wrapper">
+		{{#view "picker" class="card-item"}}
+			<div class="card-item-canvas picker-canvas">
+				<canvas></canvas>
+			</div>
+			<div class="card-item-segment">
+				<div class="card-item-container card-item-input-wrap">
+					<div class="paper-input-container">
+						<input type="text" class="card-item-input picker-input paper-input" placeholder="Enter a color" autofocus>
+						<span class="paper-input-highlight"></span>
+						<span class="paper-input-bar"></span>
+					</div>
+				</div>
+				<div class="card-item-color-button picker-color-button"></div>
+			</div>
+			<div class="card-item-button-area">
+				<div {{action "cancel" model.palette}} class="card-item-button card-item-button-cancel">Cancel</div>
+				<div {{action "add" model.palette}} class="card-item-button card-item-button-ok">Add</div>
+			</div>
+		{{/view}}
+	</div>
+</main>

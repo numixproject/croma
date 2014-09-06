@@ -12,16 +12,17 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/satya164/croma.git"
+    "url": "git@github.com:numixproject/croma.git"
   },
   "bugs": {
-    "url": "https://github.com/satya164/croma/issues"
+    "url": "https://github.com/numixproject/croma/issues"
   },
   "devDependencies": {
     "bower": "latest",
     "browserify": "latest",
     "gulp": "latest",
     "gulp-concat": "latest",
+    "gulp-ember-handlebars": "latest",
     "gulp-jshint": "latest",
     "gulp-rename": "latest",
     "gulp-rimraf": "latest",

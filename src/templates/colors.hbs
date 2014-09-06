@@ -1,0 +1,44 @@
+{{#with model}}
+<header>
+	<div class="section-wrapper">
+		<div class="header-action-wrapper">
+			{{#link-to "index" class="header-action-icon header-action-back"}}{{/link-to}}
+		</div>
+		<div class="header-title-wrapper">
+			<h1 class="header-title">
+				{{name}}
+			</h1>
+		</div>
+		<div class="header-button-wrapper">
+			{{#link-to "picker" (query-params palette=name) class="action-button action-button-add"}}
+			{{/link-to}}
+		</div>
+	</div>
+</header>
+<main class="card-area">
+	<div class="cover-image"></div>
+	<div class="section-wrapper">
+		{{#if colors.length}}
+			{{#each colors}}
+				<div {{bind-attr class=":card-item isLoved:card-item-loved" data-palette=palette data-color=color}}>
+					{{#link-to "details" (query-params color=color)}}
+						<span class="card-item-color" {{bind-attr style=cssStr}}></span>
+					{{/link-to}}
+					<div class="card-item-segment">
+						<div class="card-item-text">{{color}}</div>
+						<div class="card-item-actions">
+							<div {{action "delete" palette color}} class="card-item-action card-item-action-delete"></div>
+						</div>
+					</div>
+				</div>
+			{{/each}}
+		{{else}}
+		<div class="empty-area">
+			{{#link-to "picker" (query-params palette=name) class="empty-area-action"}}
+				Tap to add colors.
+			{{/link-to}}
+		</div>
+		{{/if}}
+	</div>
+</main>
+{{/with}}

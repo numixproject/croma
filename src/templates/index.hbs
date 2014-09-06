@@ -1,0 +1,47 @@
+<header>
+	<div class="section-wrapper">
+		<div class="header-action-wrapper">
+			<span class="header-action-icon header-action-menu"></span>
+		</div>
+		<div class="header-title-wrapper">
+			<h1 class="header-title">
+				Croma
+			</h1>
+		</div>
+		<div class="header-button-wrapper">
+			{{#link-to "addpalette" class="action-button action-button-add"}}
+			{{/link-to}}
+		</div>
+	</div>
+</header>
+<main class="card-area">
+	<div class="cover-image"></div>
+	<div class="section-wrapper">
+		{{#if model.length}}
+			{{#each model}}
+				{{#with this}}
+					<div {{bind-attr class=":card-item isLoved:card-item-loved" data-palette=name}}>
+						{{#link-to "colors" (query-params palette=name) class="card-item-color-list"}}
+							{{#each colors}}
+								<div class="card-item-color-item" {{bind-attr style=this}}></div>
+							{{/each}}
+						{{/link-to}}
+						<div class="card-item-segment">
+							<div class="card-item-text">{{name}}</div>
+							<div class="card-item-actions">
+								<div {{action "love" name}} class="card-item-action card-item-action-love"></div>
+								<div {{action "delete" name}} class="card-item-action card-item-action-delete"></div>
+							</div>
+						</div>
+					</div>
+				{{/with}}
+			{{/each}}
+		{{else}}
+		<div class="empty-area">
+			{{#link-to "addpalette" class="empty-area-action"}}
+				Tap to add palettes.
+			{{/link-to}}
+		</div>
+		{{/if}}
+	</div>
+</main>

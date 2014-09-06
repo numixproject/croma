@@ -5,28 +5,32 @@ var gulp = require("gulp"),
     browserify = require("browserify"),
     source = require("vinyl-source-stream"),
     buffer = require('vinyl-buffer'),
-    sass = require("gulp-ruby-sass"),
-    jshint = require("gulp-jshint"),
-    sourcemaps = require("gulp-sourcemaps"),
-    concat = require("gulp-concat"),
-    uglify = require("gulp-uglify"),
     rename = require("gulp-rename"),
-    rimraf = require("gulp-rimraf");
-
-gulp.task("sass", function() {
-    return gulp.src("src/scss/*.scss")
-    .pipe(sass({
-        style: "compressed",
-        sourcemapPath: "../scss"
-    }))
-    .on("error", function(e) { gutil.log(e.message); })
-    .pipe(gulp.dest("dist/css"));
-});
+    rimraf = require("gulp-rimraf"),
+    concat = require("gulp-concat"),
+    sourcemaps = require("gulp-sourcemaps"),
+    jshint = require("gulp-jshint"),
+    uglify = require("gulp-uglify"),
+    handlebars = require("gulp-ember-handlebars"),
+    sass = require("gulp-ruby-sass");
 
 gulp.task("lint", function() {
-    return gulp.src("src/js/*.js")
+    return gulp.src("src/js/**/*.js")
     .pipe(jshint())
     .pipe(jshint.reporter("jshint-stylish"));
+});
+
+gulp.task("templates", function() {
+    gulp.src([ "src/templates/**/*.hbs" ])
+    .pipe(handlebars({
+        outputType: "browser",
+        namespace: "Ember.TEMPLATES"
+    }))
+    .pipe(concat("templates.js"))
+    .pipe(gutil.env.production ? uglify() : gutil.noop())
+    .pipe(sourcemaps.write())
+    .pipe(rename({ suffix: ".min" }))
+    .pipe(gulp.dest("dist/js"));
 });
 
 gulp.task("libs", function() {
@@ -61,19 +65,27 @@ gulp.task("scripts", function() {
     .on("error", gutil.log);
 });
 
+gulp.task("sass", function() {
+    return gulp.src("src/scss/**/*.scss")
+    .pipe(sass({
+        style: "compressed",
+        sourcemapPath: "../scss"
+    }))
+    .on("error", function(e) { gutil.log(e.message); })
+    .pipe(gulp.dest("dist/css"));
+});
+
 gulp.task("clean", function() {
-    return gulp.src([
-        "dist/css",
-        "dist/js"
-    ], { read: false })
+    return gulp.src([ "dist" ], { read: false })
     .pipe(rimraf())
     .on("error", gutil.log);
 });
 
 gulp.task("watch", function() {
-    gulp.watch("src/js/*.js", [ "lint", "libs", "scripts" ]);
-    gulp.watch("src/scss/*.scss", [ "sass" ]);
+    gulp.watch("src/templates/**/*.hbs", [ "templates" ]);
+    gulp.watch("src/js/**/*.js", [ "lint", "libs", "scripts" ]);
+    gulp.watch("src/scss/**/*.scss", [ "sass" ]);
 });
 
 // Default Task
-gulp.task("default", [ "lint", "sass", "libs", "scripts" ]);
+gulp.task("default", [ "lint", "sass", "libs", "scripts", "templates" ]);
