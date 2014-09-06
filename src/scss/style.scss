@@ -180,6 +180,8 @@ header {
 
 .header-action-done { background-image: url(../../src/img/done.svg); }
 
+.header-title-wrapper { margin-left: $spacing; }
+
 .header-title {
     color: $light-color;
     font-weight: 400;
