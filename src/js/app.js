@@ -215,6 +215,7 @@ $(function() {
         actions: {
             save: function(palette) {
                 var color, name,
+                    oldname = this.get("oldname"),
                     data = {
                         loved: false,
                         colors: {}
@@ -224,7 +225,7 @@ $(function() {
                     return;
                 }
 
-                name = palette.name + " - " + palette.colors[0].value;
+                name = oldname || palette.name + " - " + palette.colors[0].value;
 
                 for (var i in palette.colors) {
                     if (palette.colors.hasOwnProperty(i) && palette.colors[i]) {
@@ -238,12 +239,19 @@ $(function() {
 
                 croma.setData(name, data);
 
-                App.Router.router.transitionTo("add-palette", { queryParams: { oldname: name } });
+                data = croma.getData(oldname);
+
+                if (data) {
+                    App.Router.router.transitionTo("colors", { queryParams: { palette: oldname } });
+                } else {
+                    App.Router.router.transitionTo("add-palette", { queryParams: { oldname: name } });
+                }
             }
         },
 
-        queryParams: [ "color" ],
-        color: null
+        queryParams: [ "color", "oldname" ],
+        color: null,
+        oldname: null
     });
 
     // Render the picker route
@@ -266,6 +274,7 @@ $(function() {
             add: function() {
                 var color = picker.value,
                     palette = this.get("palette"),
+                    add = this.get("add"),
                     data;
 
                 if ((!color) || typeof color !== "string") {
@@ -273,16 +282,21 @@ $(function() {
                 }
 
                 color = new Color(color).tohex();
-                data = croma.getData(palette);
 
-                if (data) {
-                    data.colors = data.colors || {};
-                    data.colors[color] = true;
+                if (add === "false") {
+                    App.Router.router.transitionTo("palettes", { queryParams: { color: color, oldname: palette } });
+                } else {
+                    data = croma.getData(palette);
+
+                    if (data) {
+                        data.colors = data.colors || {};
+                        data.colors[color] = true;
+                    }
+
+                    croma.setData(palette, data);
+
+                    App.Router.router.transitionTo("colors", { queryParams: { palette: palette } });
                 }
-
-                croma.setData(palette, data);
-
-                App.Router.router.transitionTo("colors", { queryParams: { palette: palette } });
             },
 
             cancel: function() {
@@ -291,13 +305,14 @@ $(function() {
                 if (palette && palette !== "undefined") {
                     App.Router.router.transitionTo("colors", { queryParams: { palette: palette } });
                 } else {
-                    App.Router.router.transitionTo("new");
+                    App.Router.router.transitionTo("index");
                 }
             }
         },
 
-        queryParams: [ "palette" ],
-        palette: null
+        queryParams: [ "palette", "add" ],
+        palette: null,
+        add: null
     });
 
 });
