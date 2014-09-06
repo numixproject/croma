@@ -24,18 +24,20 @@
     <script type="text/x-handlebars" id="index">
         <header>
             <div class="section-wrapper">
-                <span class="header-action-icon header-action-menu"></span>
-                <h1 class="header-title">
-                    Croma
-                </h1>
+                <div class="header-action-wrapper">
+                    <span class="header-action-icon header-action-menu"></span>
+                </div>
+                <div class="header-title-wrapper">
+                    <h1 class="header-title">
+                        Croma
+                    </h1>
+                </div>
+                <div class="header-button-wrapper">
+                    {{#link-to "addpalette" class="action-button action-button-add"}}
+                    {{/link-to}}
+                </div>
             </div>
         </header>
-        <section class="action-wrapper">
-            <div class="section-wrapper">
-                {{#link-to "addpalette" class="action-button action-button-add"}}
-                {{/link-to}}
-            </div>
-        </section>
         <main class="card-area">
             <div class="cover-image"></div>
             <div class="section-wrapper">
@@ -72,8 +74,10 @@
     <script type="text/x-handlebars" id="addpalette">
         <header>
             <div class="section-wrapper">
-                {{#link-to "index" class="header-action-icon header-action-back"}}{{/link-to}}
-                <a {{action done}} class="header-action-icon header-action-icon-right header-action-done"></a>
+                <div class="header-action-wrapper">
+                    {{#link-to "index" class="header-action-icon header-action-back"}}{{/link-to}}
+                    <a {{action done}} class="header-action-icon header-action-icon-right header-action-done"></a>
+                </div>
             </div>
         </header>
         <main class="card-area">
@@ -98,18 +102,20 @@
         {{#with model}}
             <header>
                 <div class="section-wrapper">
-                    {{#link-to "index" class="header-action-icon header-action-back"}}{{/link-to}}
-                    <h1 class="header-title">
-                        {{name}}
-                    </h1>
+                    <div class="header-action-wrapper">
+                        {{#link-to "index" class="header-action-icon header-action-back"}}{{/link-to}}
+                    </div>
+                    <div class="header-title-wrapper">
+                        <h1 class="header-title">
+                            {{name}}
+                        </h1>
+                    </div>
+                    <div class="header-button-wrapper">
+                        {{#link-to "picker" (query-params palette=name) class="action-button action-button-add"}}
+                        {{/link-to}}
+                    </div>
                 </div>
             </header>
-            <section class="action-wrapper">
-                <div class="section-wrapper">
-                    {{#link-to "picker" (query-params palette=name) class="action-button action-button-add"}}
-                    {{/link-to}}
-                </div>
-            </section>
             <main class="card-area">
                 <div class="cover-image"></div>
                 <div class="section-wrapper">
@@ -140,13 +146,17 @@
     </script>
 
     <script type="text/x-handlebars" data-template-name="details">
-        {{#with model.[0]}}
+        {{#with model}}
             <header>
                 <div class="section-wrapper">
-                    {{#link-to "colors" class="header-action-icon header-action-back"}}{{/link-to}}
-                    <h1 class="header-title">
-                        {{hexVal}}
-                    </h1>
+                    <div class="header-action-wrapper">
+                        {{#link-to "colors" class="header-action-icon header-action-back"}}{{/link-to}}
+                    </div>
+                    <div class="header-title-wrapper">
+                        <h1 class="header-title">
+                            {{hexVal}}
+                        </h1>
+                    </div>
                 </div>
             </header>
             <main class="card-area">
@@ -179,13 +189,17 @@
     </script>
 
     <script type="text/x-handlebars" data-template-name="palettes">
-        {{#with model.[0]}}
+        {{#with model}}
             <header>
                 <div class="section-wrapper">
-                    {{#link-to "details" class="header-action-icon header-action-back"}}{{/link-to}}
-                    <h1 class="header-title">
-                        Color palettes
-                    </h1>
+                    <div class="header-action-wrapper">
+                        {{#link-to "details" class="header-action-icon header-action-back"}}{{/link-to}}
+                    </div>
+                    <div class="header-title-wrapper">
+                        <h1 class="header-title">
+                            Color palettes
+                        </h1>
+                    </div>
                 </div>
             </header>
             <main class="card-area">
@@ -220,10 +234,14 @@
     <script type="text/x-handlebars" data-template-name="picker">
         <header>
             <div class="section-wrapper">
-                {{#link-to "colors" class="header-action-icon header-action-back"}}{{/link-to}}
-                <h1 class="header-title">
-                    Pick a color
-                </h1>
+                <div class="header-action-wrapper">
+                    {{#link-to "colors" class="header-action-icon header-action-back"}}{{/link-to}}
+                </div>
+                <div class="header-title-wrapper">
+                    <h1 class="header-title">
+                        Pick a color
+                    </h1>
+                </div>
             </div>
         </header>
         <main class="card-area">

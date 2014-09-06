@@ -158,7 +158,7 @@ header {
     z-index: 20;
 }
 
-.header-wrapper { @extend %clearfix; }
+.header-action-container { @extend %clearfix; }
 
 .header-action-icon {
     float: left;
@@ -178,7 +178,6 @@ header {
 .header-action-done { background-image: url(../../src/img/done.svg); }
 
 .header-title {
-    float: left;
     color: $light-color;
     font-weight: 400;
     font-size: 1.5em;
@@ -193,10 +192,7 @@ header {
 .cover-image {
     height: $bar-height;
     width: 100%;
-    background: url(../../src/img/cover.png) no-repeat center center;
-    background-size: 100%;
-    background-size: cover;
-    background-attachment: fixed;
+    background: url(../../src/img/cover.png) repeat center center;
     box-shadow: inset 0 -1px 2px rgba(0,0,0,0.24);
 }
 
@@ -242,21 +238,15 @@ header {
 ! Action area styles
 ********************/
 
-.action-wrapper {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    z-index: 30;
-    pointer-events: none;
-}
+.header-button-wrapper { position: relative; }
 
 .action-button {
     @extend %snappy;
     @include dropshadow(3);
 
-    float: right;
-    margin: $spacing;
+    position: absolute;
+    right: $spacing;
+    bottom: - ($bar-height / 2);
     height: $bar-height;
     width: $bar-height;
     border-radius: 50%;
@@ -461,6 +451,12 @@ $actions: love, delete, save, share;
     text-align: center;
     color: #fff;
     text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+
+    &:nth-of-type(3n) { width: 33.34%; }
+
+    &:nth-of-type(3n+1):last-of-type { width: 100%; }
+
+    &:nth-of-type(3n+2):last-of-type { width: 66.67%; }
 }
 
 .card-item-color-list {

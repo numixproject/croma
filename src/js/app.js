@@ -143,11 +143,11 @@ $(function() {
                 { key: "Darkness", value:  parseFloat(color.darkness()).toFixed(2) }
             ];
 
-            return [ color ];
+            return color;
         }
     });
 
-    App.DetailsController = Ember.ArrayController.extend({
+    App.DetailsController = Ember.ObjectController.extend({
         queryParams: [ "color" ],
         color: null
     });
@@ -189,7 +189,7 @@ $(function() {
                 }
             }
 
-            return [ color ];
+            return color;
         },
 
         actions: {
@@ -217,11 +217,13 @@ $(function() {
                 }
 
                 croma.setData(name, data);
+
+                App.Router.router.transitionTo("colors", { queryParams: { palette: name } });
             }
         }
     });
 
-    App.PalettesController = Ember.ArrayController.extend({
+    App.PalettesController = Ember.ObjectController.extend({
         queryParams: [ "color" ],
         color: null
     });
