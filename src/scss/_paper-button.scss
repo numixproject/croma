@@ -1,0 +1,31 @@
+@import "global";
+@import "dropshadow";
+@import "animations";
+
+/*************
+! Paper button
+**************/
+
+.paper-button-container { margin: $spacing; }
+
+.paper-button {
+	@include dropshadow(1);
+	@extend %transition;
+
+	-webkit-appearance: none;
+	-moz-appearance: none;
+
+	padding: $spacing / 2;
+	background-color: $light-color;
+	color: $dark-color;
+	text-decoration: none;
+	text-align: center;
+	text-transform: uppercase;
+	cursor: pointer;
+
+	&:focus, &:hover { @include dropshadow(2); }
+
+	&:active { @include dropshadow(3); }
+}
+
+.paper-button-block { display: block; }
