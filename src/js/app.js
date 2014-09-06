@@ -215,7 +215,7 @@ $(function() {
         actions: {
             save: function(palette) {
                 var color, name,
-                    oldname = this.get("oldname"),
+                    saveas = this.get("saveas"),
                     data = {
                         loved: false,
                         colors: {}
@@ -225,7 +225,7 @@ $(function() {
                     return;
                 }
 
-                name = oldname || palette.name + " - " + palette.colors[0].value;
+                name = saveas || palette.name + " - " + palette.colors[0].value;
 
                 for (var i in palette.colors) {
                     if (palette.colors.hasOwnProperty(i) && palette.colors[i]) {
@@ -239,19 +239,17 @@ $(function() {
 
                 croma.setData(name, data);
 
-                data = croma.getData(oldname);
-
-                if (data) {
-                    App.Router.router.transitionTo("colors", { queryParams: { palette: oldname } });
+                if (saveas) {
+                    App.Router.router.transitionTo("colors", { queryParams: { palette: saveas } });
                 } else {
                     App.Router.router.transitionTo("add-palette", { queryParams: { oldname: name } });
                 }
             }
         },
 
-        queryParams: [ "color", "oldname" ],
+        queryParams: [ "color", "saveas" ],
         color: null,
-        oldname: null
+        saveas: null
     });
 
     // Render the picker route
@@ -271,7 +269,7 @@ $(function() {
 
     App.PickerController = Ember.ObjectController.extend({
         actions: {
-            add: function() {
+            done: function() {
                 var color = picker.value,
                     palette = this.get("palette"),
                     add = this.get("add"),
@@ -284,7 +282,7 @@ $(function() {
                 color = new Color(color).tohex();
 
                 if (add === "false") {
-                    App.Router.router.transitionTo("palettes", { queryParams: { color: color, oldname: palette } });
+                    App.Router.router.transitionTo("palettes", { queryParams: { color: color, saveas: palette } });
                 } else {
                     data = croma.getData(palette);
 

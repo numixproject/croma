@@ -27,8 +27,10 @@
 				<div class="card-item-color-button picker-color-button"></div>
 			</div>
 			<div class="card-item-button-area">
-				<div {{action "cancel" model.palette}} class="card-item-button card-item-button-cancel">Cancel</div>
-				<div {{action "add" model.palette}} class="card-item-button card-item-button-ok">Add</div>
+				{{#with model}}
+					<div {{action "cancel" palette}} class="card-item-button card-item-button-cancel">Cancel</div>
+					<div {{action "done" palette}} class="card-item-button card-item-button-ok">Done</div>
+				{{/with}}
 			</div>
 		{{/view}}
 	</div>
