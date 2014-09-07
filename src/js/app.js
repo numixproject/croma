@@ -67,11 +67,11 @@ $(function() {
                     oldname = this.get("oldname"),
                     data = {};
 
-                if (!palette) {
+                if (!(palette && palette !== "undefined")) {
                     return;
                 }
 
-                if (oldname) {
+                if (oldname && oldname !== "undefined") {
                     data = croma.getData(oldname) || {};
 
                     croma.setData(oldname);
@@ -83,7 +83,9 @@ $(function() {
             },
 
             back: function() {
-                var from = this.get("from") || "index";
+                var from = this.get("from");
+
+                from = (from && from !== "undefined") ? from : "index";
 
                 App.Router.router.transitionTo(from);
             }
@@ -225,7 +227,7 @@ $(function() {
                     return;
                 }
 
-                name = saveas || palette.name + " - " + palette.colors[0].value;
+                name = (saveas && saveas !== "undefined") ? saveas : palette.name + " - " + palette.colors[0].value;
 
                 for (var i in palette.colors) {
                     if (palette.colors.hasOwnProperty(i) && palette.colors[i]) {
@@ -239,10 +241,10 @@ $(function() {
 
                 croma.setData(name, data);
 
-                if (saveas) {
+                if (saveas && saveas !== "undefined") {
                     App.Router.router.transitionTo("colors", { queryParams: { palette: saveas } });
                 } else {
-                    App.Router.router.transitionTo("add-palette", { queryParams: { oldname: name } });
+                    App.Router.router.transitionTo("add-palette", { queryParams: { oldname: name, from: null } });
                 }
             }
         },

@@ -86,7 +86,13 @@ var Picker = (function() {
 		_this.setColor = function(value, update) {
 			var $colorbutton = $(".picker-color-button"),
 				$text = $(".picker-input"),
-				color = new Color(value).tohex();
+				color;
+
+			if (!(value && value !== "undefined")) {
+				return;
+			}
+
+			color = new Color(value).tohex();
 
 			if (update !== false) {
 				$text.val(color);
