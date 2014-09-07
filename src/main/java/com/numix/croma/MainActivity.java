@@ -1,7 +1,7 @@
 package com.numix.croma;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.app.Activity;
 import android.view.View;
 import android.view.KeyEvent;
 import android.webkit.WebSettings;
