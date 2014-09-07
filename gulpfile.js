@@ -1,6 +1,5 @@
-/* jshint node: true */
-
 var gulp = require("gulp"),
+    plumber = require("gulp-plumber"),
     gutil = require("gulp-util"),
     browserify = require("browserify"),
     source = require("vinyl-source-stream"),
@@ -12,16 +11,24 @@ var gulp = require("gulp"),
     jshint = require("gulp-jshint"),
     uglify = require("gulp-uglify"),
     handlebars = require("gulp-ember-handlebars"),
-    sass = require("gulp-ruby-sass");
+    sass = require("gulp-ruby-sass"),
+    webserver = require("gulp-webserver"),
+    opn = require("opn"),
+    server = {
+        host: "localhost",
+        port: "8001"
+    };
 
 gulp.task("lint", function() {
     return gulp.src("src/js/**/*.js")
+    .pipe(plumber())
     .pipe(jshint())
     .pipe(jshint.reporter("jshint-stylish"));
 });
 
 gulp.task("templates", function() {
     gulp.src([ "src/templates/**/*.hbs" ])
+    .pipe(plumber())
     .pipe(handlebars({
         outputType: "browser",
         namespace: "Ember.TEMPLATES"
@@ -41,6 +48,7 @@ gulp.task("libs", function() {
         "bower_components/ember-animate/ember-animate.js",
         "bower_components/velocity/velocity.min.js"
     ])
+    .pipe(plumber())
     .pipe(sourcemaps.init())
     .pipe(concat("libs.js"))
     .pipe(gutil.env.production ? uglify() : gutil.noop())
@@ -57,6 +65,7 @@ gulp.task("scripts", function() {
     }).bundle()
     .pipe(source("app.js"))
     .pipe(buffer())
+    .pipe(plumber())
     .pipe(sourcemaps.init())
     .pipe(gutil.env.production ? uglify() : gutil.noop())
     .pipe(sourcemaps.write())
@@ -67,6 +76,7 @@ gulp.task("scripts", function() {
 
 gulp.task("sass", function() {
     return gulp.src("src/scss/**/*.scss")
+    .pipe(plumber())
     .pipe(sass({
         style: "compressed",
         sourcemapPath: "../scss"
@@ -77,6 +87,7 @@ gulp.task("sass", function() {
 
 gulp.task("clean", function() {
     return gulp.src([ "dist" ], { read: false })
+    .pipe(plumber())
     .pipe(rimraf())
     .on("error", gutil.log);
 });
@@ -87,5 +98,20 @@ gulp.task("watch", function() {
     gulp.watch("src/scss/**/*.scss", [ "sass" ]);
 });
 
+gulp.task("webserver", function() {
+    return gulp.src(".")
+    .pipe(webserver({
+        host: server.host,
+        port: server.port,
+        livereload: true,
+        directoryListing: false
+    }));
+});
+
 // Default Task
 gulp.task("default", [ "lint", "sass", "libs", "scripts", "templates" ]);
+
+// Serve in a web browser
+gulp.task("live", [ "default", "watch", "webserver" ], function() {
+    opn("http://" + server.host + ":" + server.port);
+});
