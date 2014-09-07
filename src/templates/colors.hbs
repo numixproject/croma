@@ -34,6 +34,11 @@
 			{{/each}}
 		{{else}}
 			<div class="paper-button-container">
+				{{#link-to "picker" (query-params palette=name add=null) class="paper-button paper-button-block paper-ripple"}}
+					Add colors manually
+				{{/link-to}}
+			</div>
+			<div class="paper-button-container">
 				{{#link-to "picker" (query-params palette=name add="false") class="paper-button paper-button-block paper-ripple"}}
 					Get palette from color
 				{{/link-to}}
