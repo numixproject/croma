@@ -321,7 +321,7 @@ $actions: love, delete, save, share;
 .card-item-input-wrap { @include flex-grow(1); }
 
 .card-item-input {
-    min-width: 12em;
+    min-width: 8em;
     display: inline-block;
 }
 
@@ -376,6 +376,8 @@ $actions: love, delete, save, share;
 **************/
 
 .picker-wrapper {
+    @extend %clearfix;
+
     width: 100%;
     height: 20em;
 }

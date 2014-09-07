@@ -63,36 +63,23 @@ var Picker = (function() {
 
 			_this.setColor(_this.value);
 
-			$text.focus();
-
 			$hues.empty().append(renderHues());
 			$shades.empty().append(renderShades(348));
 
 			$picker.on(startEvent, function(e) {
-				var color = $(e.target).css("background-color");
-
-				_this.setColor(color);
+				_this.updateColor(e.target);
 
 				$(this).on(moveEvent, function(e) {
-					color = $(e.target).css("background-color");
-
-					_this.setColor(color);
+					_this.updateColor(e.target);
 				});
-			}).on(endEvent, function(e) {
+			}).on(endEvent, function() {
 				$(this).off(moveEvent);
 
 				clearInterval(colorTimer);
 			});
 
 			$picker.on("click", ".picker-color-cell", function() {
-				var hue = $(this).data("hue"),
-					color = $(this).css("background-color");
-
-				_this.setColor(color);
-
-				if (hue) {
-					$shades.empty().append(renderShades(hue));
-				}
+				_this.updateColor(this);
 			});
 
 			$text.on("DOMSubtreeModified input paste change", function() {
@@ -100,6 +87,18 @@ var Picker = (function() {
 
 				_this.setColor(value, false);
 			});
+		};
+
+		_this.updateColor = function(target) {
+			var $shades = $(".picker-shades"),
+				hue = $(target).data("hue"),
+				color = $(target).css("background-color");
+
+			_this.setColor(color);
+
+			if (hue) {
+				$shades.empty().append(renderShades(hue));
+			}
 		};
 
 		_this.setColor = function(value, update) {
