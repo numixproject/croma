@@ -299,7 +299,7 @@ $(function() {
                 }
             },
 
-            cancel: function() {
+            back: function() {
                 var palette = this.get("palette");
 
                 if (palette && palette !== "undefined") {

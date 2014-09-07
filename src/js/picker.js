@@ -2,78 +2,97 @@
 /* global $ */
 
 var Picker = (function() {
-	var Color = require("./color.js"),
-		getPosition = require("./position.js");
+	var Color = require("./color.js");
+
+	function renderHues() {
+		var vals = [ 288, 312, 348, 36, 60, 96, 144, 180, 204, 264, 300, 336, 24, 48, 84, 120, 156, 192, 216, 276 ],
+			h = 0, s = 100, l = 50,
+			color, divs = "";
+
+		for (var i = 0; i < 20; i++) {
+			h = vals[i];
+
+			color = new Color({
+				hsl: [ h, s, l ]
+			}).tohex();
+
+			divs += '<div class="picker-color-cell" style="background-color: ' + color + '" data-hue="' + h + '"></div>';
+		}
+
+		return divs;
+	}
+
+	function renderShades(h) {
+		var s = 100, l,
+			color,
+			divs = "";
+
+		for (var i = 0; i < 8; i++) {
+			l = 10;
+
+			for (var j = 0; j < 10; j++) {
+				color = new Color({
+					hsl: [ h, s, l ]
+				}).tohex();
+
+				divs += '<div class="picker-color-cell" style="background-color: ' + color + '"></div>';
+
+				l += 9;
+			}
+
+			s = s - 12;
+		}
+
+		return divs;
+	}
 
 	return function() {
 		var _this = this;
 
 		_this.value = "#f06860";
 
-		_this.getColor = function(position, canvas) {
-			var imageData = $(canvas).get(0).getContext("2d").getImageData(position[0], position[1], 1, 1).data,
-				color = "rgb(" + imageData[0] + "," + imageData[1] + "," + imageData[2] + ")";
-
-			return color;
-		};
-
-		_this.drawSheet = function(sheet, width, height) {
-			var gradient = sheet.createLinearGradient(0, 0, width, 0);
-
-			sheet.canvas.width = width;
-			sheet.canvas.height = height;
-
-			gradient.addColorStop(0.00, "rgb(255,   0,   0)");
-			gradient.addColorStop(0.15, "rgb(255,   0, 255)");
-			gradient.addColorStop(0.33, "rgb(0,     0, 255)");
-			gradient.addColorStop(0.49, "rgb(0,   255, 255)");
-			gradient.addColorStop(0.67, "rgb(0,   255,   0)");
-			gradient.addColorStop(0.84, "rgb(255, 255,   0)");
-			gradient.addColorStop(1.00, "rgb(255,   0,   0)");
-
-			sheet.fillStyle = gradient;
-			sheet.fillRect(0, 0, sheet.canvas.width, sheet.canvas.height);
-
-			gradient = sheet.createLinearGradient(0, 0, 0, height);
-			gradient.addColorStop(0,   "rgba(255, 255, 255, 1)");
-			gradient.addColorStop(0.5, "rgba(255, 255, 255, 0)");
-			gradient.addColorStop(0.5, "rgba(0,     0,   0, 0)");
-			gradient.addColorStop(1,   "rgba(0,     0,   0, 1)");
-
-			sheet.fillStyle = gradient;
-			sheet.fillRect(0, 0, sheet.canvas.width, sheet.canvas.height);
-		};
-
 		_this.showPicker = function() {
-			var $picker = $(".picker-canvas"),
+			var $picker = $(".picker-wrapper"),
+				$hues = $picker.find(".picker-hues"),
+				$shades = $picker.find(".picker-shades"),
 				$text = $(".picker-input"),
-				$canvas = $picker.find("canvas"),
-				$parent = $canvas.parent(),
-				sheet, gradient;
-
-			sheet = $canvas.get(0).getContext("2d");
-
-			_this.drawSheet(sheet, $parent.innerWidth(), $parent.innerHeight());
+				startEvent = "touchstart mousedown pointerdown",
+				moveEvent = "touchmove mousemove pointermove",
+				endEvent = "touchend touchleave touchcancel mouseup pointerup",
+				colorTimer;
 
 			_this.setColor(_this.value);
 
 			$text.focus();
 
-			$(window).on("resize", function() {
-				clearTimeout($(this).data("resizeTimer"));
+			$hues.empty().append(renderHues());
+			$shades.empty().append(renderShades(348));
 
-				$(this).data("resizeTimer", setTimeout(function() {
-					$parent = $canvas.parent();
+			$picker.on(startEvent, function(e) {
+				var color = $(e.target).css("background-color");
 
-					_this.drawSheet(sheet, $parent.innerWidth(), $parent.innerHeight());
-				}, 250));
+				_this.setColor(color);
+
+				$(this).on(moveEvent, function(e) {
+					color = $(e.target).css("background-color");
+
+					_this.setColor(color);
+				});
+			}).on(endEvent, function(e) {
+				$(this).off(moveEvent);
+
+				clearInterval(colorTimer);
 			});
 
-			$canvas.on("click", function(e) {
-				var value = _this.getColor(getPosition(e), $canvas),
-					color = new Color(value).tohex();
+			$picker.on("click", ".picker-color-cell", function() {
+				var hue = $(this).data("hue"),
+					color = $(this).css("background-color");
 
-				_this.setColor(value);
+				_this.setColor(color);
+
+				if (hue) {
+					$shades.empty().append(renderShades(hue));
+				}
 			});
 
 			$text.on("DOMSubtreeModified input paste change", function() {

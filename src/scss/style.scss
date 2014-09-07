@@ -370,7 +370,41 @@ $actions: love, delete, save, share;
 
 .card-item-color-item { @include flex-grow(1); }
 
-/* browser specific styles */
+
+/*************
+! Color picker
+**************/
+
+.picker-wrapper {
+    width: 100%;
+    height: 20em;
+}
+
+.picker-color-cell {
+    float: left;
+    width: 10%;
+    height: 10%;
+}
+
+.picker-hues {
+    width: 100%;
+    height: 20%;
+
+    .picker-color-cell { height: 50%; }
+}
+
+.picker-shades {
+    width: 100%;
+    height: 80%;
+
+    .picker-color-cell { height: 12.5%; }
+}
+
+
+/************************
+! Browser specific styles
+*************************/
+
 ::selection {
     background-color: $accent-color;
     color: $light-color;

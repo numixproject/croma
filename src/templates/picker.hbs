@@ -1,20 +1,23 @@
 <header>
 	<div class="section-wrapper">
-		<div class="header-action-wrapper">
-			{{#link-to "colors" class="header-action-icon header-action-back"}}{{/link-to}}
-		</div>
-		<div class="header-title-wrapper">
-			<h1 class="header-title">
-				Pick a color
-			</h1>
+		<div class="section-wrapper">
+			<div class="header-action-wrapper">
+				{{#with model}}
+					<a {{action back palette}} class="header-action-icon header-action-back"></a>
+					<a {{action done palette}} class="header-action-icon header-action-icon-right header-action-done"></a>
+				{{/with}}
+			</div>
 		</div>
 	</div>
 </header>
 <main class="card-area">
 	<div class="section-wrapper">
 		{{#view "picker" class="card-item"}}
-			<div class="card-item-canvas picker-canvas">
-				<canvas></canvas>
+			<div class="card-item-picker">
+				<div class="picker-wrapper">
+					<div class="picker-hues"></div>
+					<div class="picker-shades"></div>
+				</div>
 			</div>
 			<div class="card-item-segment">
 				<div class="card-item-container card-item-input-wrap">
@@ -25,12 +28,6 @@
 					</div>
 				</div>
 				<div class="card-item-color-button picker-color-button"></div>
-			</div>
-			<div class="card-item-button-area">
-				{{#with model}}
-					<div {{action "cancel" palette}} class="card-item-button card-item-button-cancel">Cancel</div>
-					<div {{action "done" palette}} class="card-item-button card-item-button-ok">Done</div>
-				{{/with}}
 			</div>
 		{{/view}}
 	</div>
