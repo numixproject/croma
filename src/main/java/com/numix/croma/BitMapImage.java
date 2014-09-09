@@ -9,30 +9,26 @@ import me.croma.image.Color;
 import me.croma.image.Image;
 
 
-public class BitmapImage extends Image {
+public class BitMapImage extends Image {
     private Bitmap image;
 
-    public BitmapImage(Bitmap b) {
+    public BitMapImage(Bitmap b) {
         super(b.getWidth(), b.getHeight());
-
         this.image = b;
     }
-
-    public BitmapImage(File f) {
-        this(BitmapImage.create(f));
+    public BitMapImage(File f) {
+        this(BitMapImage.create(f));
     }
 
     private static Bitmap create(File f) {
-
         Bitmap image;
         BitmapFactory.Options options = new BitmapFactory.Options();
-
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-
         image = BitmapFactory.decodeFile(f.getAbsolutePath(), options);
 
         return image;
     }
+
 
     @Override
     public Color getColor(int x, int y) {
@@ -40,9 +36,8 @@ public class BitmapImage extends Image {
     }
 
     @Override
-    public Image getScaledInstance(int width, int height) {
+    public BitMapImage getScaledInstance(int width, int height) {
         Bitmap resized = Bitmap.createScaledBitmap(this.image, width , height, true);
-
-        return new BitmapImage(resized);
+        return new BitMapImage(resized);
     }
 }
