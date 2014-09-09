@@ -1,0 +1,35 @@
+{{#with model}}
+    <header>
+        <div class="section-wrapper">
+            <div class="header-action-wrapper">
+                {{#link-to "index" class="header-action-icon header-action-back"}}{{/link-to}}
+            </div>
+            <div class="header-title-wrapper">
+                <h1 class="header-title">
+                    Extracted colors
+                </h1>
+            </div>
+        </div>
+    </header>
+    <main class="card-area">
+        <div class="section-wrapper">
+            <div class="card-item">
+                <div class="card-item-scheme">
+                    {{#each this}}
+                        {{#with this}}
+                            <div class="card-item-scheme-item" {{bind-attr style=cssStr}}>
+                                {{value}}
+                            </div>
+                        {{/with}}
+                    {{/each}}
+                </div>
+            </div>
+
+            <div class="paper-button-container">
+                <a {{action "save" this}} class="paper-button paper-button-block paper-ripple">
+                    Save palette
+                </a>
+            </div>
+        </div>
+    </main>
+{{/with}}

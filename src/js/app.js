@@ -14,6 +14,7 @@ $(function() {
         this.resource("picker");
         this.resource("details");
         this.resource("palettes");
+        this.resource("show-palette");
     });
 
     // Render the index route
@@ -130,7 +131,12 @@ $(function() {
 
     App.ColorsController = Ember.ObjectController.extend({
         actions: {
-            delete: croma.deleteItem
+            delete: croma.deleteItem,
+            getcolors: function() {
+                if ("cromaImage" in window && cromaImage.getColors) {
+                    cromaImage.getColors();
+                }
+            }
         },
 
         queryParams: [ "palette" ],
@@ -252,6 +258,68 @@ $(function() {
         queryParams: [ "color", "saveas" ],
         color: null,
         saveas: null
+    });
+
+    // Render the show palette route
+    App.ShowPaletteRoute = Ember.Route.extend({
+        model: function(params) {
+            var palette = [],
+                rgbvals, c;
+
+            if (!(params && params.palette)) {
+                App.Router.router.transitionTo("index");
+            }
+
+            rgbvals = decodeURIComponent(params.palette).split("|");
+
+            for (var i = 0, l = rgbvals.length; i < l; i++) {
+                c = new Color({
+                    rgb: rgbvals[i].split(",")
+                }).tohex();
+
+                palette.push({
+                    cssStr: "background-color:" + c,
+                    value: c
+                });
+            }
+
+            return palette;
+        }
+    });
+
+    App.ShowPaletteController = Ember.ObjectController.extend({
+        actions: {
+            save: function(palette) {
+                var color, name,
+                    suggested = this.get("suggested"),
+                    data = {
+                        loved: false,
+                        colors: {}
+                    };
+
+                if (!(palette && palette instanceof Array)) {
+                    return;
+                }
+
+                name = (suggested && suggested !== "undefined") ? suggested : "Extracted" + new Date().getTime();
+
+                for (var i = 0, l = palette.length; i < l; i++) {
+                    color = palette[i].value;
+
+                    if (color) {
+                        data.colors[color] = true;
+                    }
+                }
+
+                croma.setData(name, data);
+
+                App.Router.router.transitionTo("add-palette", { queryParams: { oldname: name, from: null } });
+            }
+        },
+
+        queryParams: [ "palette", "suggested" ],
+        palette: null,
+        suggested: null
     });
 
     // Render the picker route

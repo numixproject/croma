@@ -64,7 +64,9 @@ var Picker = (function() {
 			_this.setColor(_this.value);
 
 			$hues.empty().append(renderHues());
-			$shades.empty().append(renderShades(348));
+			$shades.empty().append(renderShades(
+				new Color(_this.value).hsl[0]
+			));
 
 			$picker.on(startEvent, function(e) {
 				_this.updateColor(e.target);
