@@ -124,7 +124,8 @@ $(function() {
 
             return {
                 name: name,
-                colors: data.reverse()
+                colors: data.reverse(),
+                cromaImage: ("cromaImage" in window && cromaImage.getColors)
             };
         }
     });
@@ -135,9 +136,7 @@ $(function() {
             getcolors: function() {
                 var saveas = this.get("saveas") || "New palette";
 
-                if ("cromaImage" in window && cromaImage.getColors) {
-                    cromaImage.getColors(saveas);
-                }
+                cromaImage.getColors(saveas);
             }
         },
 
