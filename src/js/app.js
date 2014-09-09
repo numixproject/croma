@@ -80,7 +80,7 @@ $(function() {
 
                 croma.setData(palette, data);
 
-                App.Router.router.transitionTo("colors", { queryParams: { palette: palette } });
+                App.Router.router.transitionTo("colors", { queryParams: { palette: palette, saveas: palette } });
             },
 
             back: function() {
@@ -133,14 +133,17 @@ $(function() {
         actions: {
             delete: croma.deleteItem,
             getcolors: function() {
+                var saveas = this.get("saveas") || "New palette";
+
                 if ("cromaImage" in window && cromaImage.getColors) {
-                    cromaImage.getColors();
+                    cromaImage.getColors(saveas);
                 }
             }
         },
 
-        queryParams: [ "palette" ],
-        palette: null
+        queryParams: [ "palette", "saveas" ],
+        palette: null,
+        saveas: null
     });
 
     // Render the details route
@@ -248,7 +251,7 @@ $(function() {
                 croma.setData(name, data);
 
                 if (saveas && saveas !== "undefined") {
-                    App.Router.router.transitionTo("colors", { queryParams: { palette: saveas } });
+                    App.Router.router.transitionTo("colors", { queryParams: { palette: saveas, saveas: saveas } });
                 } else {
                     App.Router.router.transitionTo("add-palette", { queryParams: { oldname: name, from: null } });
                 }
@@ -270,7 +273,7 @@ $(function() {
                 App.Router.router.transitionTo("index");
             }
 
-            rgbvals = decodeURIComponent(params.palette).split("|");
+            rgbvals = decodeURIComponent(params.palette).replace(/\|$/, "").split("|");
 
             for (var i = 0, l = rgbvals.length; i < l; i++) {
                 c = new Color({
@@ -291,7 +294,7 @@ $(function() {
         actions: {
             save: function(palette) {
                 var color, name,
-                    suggested = this.get("suggested"),
+                    saveas = this.get("saveas"),
                     data = {
                         loved: false,
                         colors: {}
@@ -301,7 +304,7 @@ $(function() {
                     return;
                 }
 
-                name = (suggested && suggested !== "undefined") ? suggested : "Extracted" + new Date().getTime();
+                name = (saveas && saveas !== "undefined" && saveas !== "null") ? saveas : "Extracted" + new Date().getTime();
 
                 for (var i = 0, l = palette.length; i < l; i++) {
                     color = palette[i].value;
@@ -313,13 +316,17 @@ $(function() {
 
                 croma.setData(name, data);
 
-                App.Router.router.transitionTo("add-palette", { queryParams: { oldname: name, from: null } });
+                if (saveas && saveas !== "undefined") {
+                    App.Router.router.transitionTo("colors", { queryParams: { palette: saveas, saveas: saveas } });
+                } else {
+                    App.Router.router.transitionTo("add-palette", { queryParams: { oldname: name, from: null } });
+                }
             }
         },
 
-        queryParams: [ "palette", "suggested" ],
+        queryParams: [ "palette", "saveas" ],
         palette: null,
-        suggested: null
+        saveas: null
     });
 
     // Render the picker route
@@ -363,7 +370,7 @@ $(function() {
 
                     croma.setData(palette, data);
 
-                    App.Router.router.transitionTo("colors", { queryParams: { palette: palette } });
+                    App.Router.router.transitionTo("colors", { queryParams: { palette: palette, saveas: palette } });
                 }
             },
 
@@ -371,7 +378,7 @@ $(function() {
                 var palette = this.get("palette");
 
                 if (palette && palette !== "undefined") {
-                    App.Router.router.transitionTo("colors", { queryParams: { palette: palette } });
+                    App.Router.router.transitionTo("colors", { queryParams: { palette: palette, saveas: palette } });
                 } else {
                     App.Router.router.transitionTo("index");
                 }
