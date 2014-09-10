@@ -36,4 +36,12 @@ public class Storage {
         e.remove(key);
         e.apply();
     }
+
+    @JavascriptInterface
+    public void clear() {
+        SharedPreferences.Editor e = mStorage.edit();
+
+        e.clear();
+        e.apply();
+    }
 }
