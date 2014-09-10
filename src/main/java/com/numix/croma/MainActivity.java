@@ -53,12 +53,13 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.main);
 
+        // Check if you're opening Croma or you come from the Share menu
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         String action = intent.getAction();
 
-// if this is from the share menu
+        // If you opened Croma from the share menù...
         if (Intent.ACTION_SEND.equals(action)) {
             if (extras.containsKey(Intent.EXTRA_STREAM)) {
                 // Get resource path
@@ -115,7 +116,7 @@ public class MainActivity extends Activity {
                 webView.loadUrl(URL);
             }
         } else {
-
+            // What if you opened Croma from the drawer?
             webView = (WebView) findViewById(R.id.webview);
 
             WebSettings webSettings = webView.getSettings();
@@ -138,11 +139,12 @@ public class MainActivity extends Activity {
             webView.addJavascriptInterface(new Storage(this), "androidStorage");
             webView.addJavascriptInterface(new CromaImage(this), "cromaImage");
 
-            // Load the page to WebView
+            // Load the page to import the colors!
             webView.loadUrl(index);
         }
     }
 
+    // Convert URI to String to get full image path
     public String parseUriToFilename(Uri uri) {
         String selectedImagePath = null;
         String filemanagerPath = uri.getPath();
