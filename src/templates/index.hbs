@@ -6,7 +6,7 @@
 			</h1>
 		</div>
 		<div class="header-button-wrapper">
-			{{#link-to "add-palette" (query-params oldname=null from="index") class="action-button action-button-add"}}
+			{{#link-to "palette.new" class="action-button action-button-add"}}
 			{{/link-to}}
 		</div>
 	</div>
@@ -34,11 +34,11 @@
 				{{/with}}
 			{{/each}}
 		{{else}}
-		<div class="empty-area">
-			{{#link-to "add-palette" (query-params oldname=null from="index") class="empty-area-action"}}
-				Tap to add palette.
-			{{/link-to}}
-		</div>
+			<div class="empty-area">
+				{{#link-to "palette.new" class="empty-area-action"}}
+					Tap to add palette.
+				{{/link-to}}
+			</div>
 		{{/if}}
 	</div>
 </main>

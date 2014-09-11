@@ -1,0 +1,36 @@
+{{#with model}}
+	<header>
+		<div class="section-wrapper">
+			<div class="header-action-wrapper">
+				{{#link-to "index" class="header-action-icon header-action-back"}}{{/link-to}}
+			</div>
+			<div class="header-title-wrapper">
+				<h1 class="header-title">
+					New palette
+				</h1>
+			</div>
+		</div>
+	</header>
+	<main class="card-area">
+		<div class="cover-image"></div>
+		<div class="section-wrapper">
+			<div class="paper-button-container">
+				{{#link-to "palette.name" (query-params oldname=null from="palette.new")  class="paper-button paper-button-block paper-ripple"}}
+					Add colors manually
+				{{/link-to}}
+			</div>
+			<div class="paper-button-container">
+				{{#link-to "picker" (query-params palette=null from=palette.new) class="paper-button paper-button-block paper-ripple"}}
+					Get palette from color
+				{{/link-to}}
+			</div>
+			{{#if cromaImage}}
+				<div class="paper-button-container">
+					<a {{action "getcolors"}} class="paper-button paper-button-block paper-ripple">
+						Get palette from image
+					</a>
+				</div>
+			{{/if}}
+		</div>
+	</main>
+{{/with}}

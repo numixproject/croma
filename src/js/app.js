@@ -9,12 +9,15 @@ $(function() {
 
     // Add routes
     App.Router.map(function() {
-        this.resource("add-palette");
+        this.resource("palette", function() {
+            this.route("new");
+            this.route("name");
+            this.route("show");
+        });
         this.resource("colors");
         this.resource("picker");
         this.resource("details");
         this.resource("palettes");
-        this.resource("show-palette");
     });
 
     // Render the index route
@@ -55,13 +58,13 @@ $(function() {
     });
 
     // Render the add route
-    App.AddPaletteRoute = Ember.Route.extend({
+    App.PaletteNameRoute = Ember.Route.extend({
         model: function(params) {
             return params;
         }
     });
 
-    App.AddPaletteController = Ember.ObjectController.extend({
+    App.PaletteNameController = Ember.ObjectController.extend({
         actions: {
             done: function() {
                 var palette = this.get("palettename"),
@@ -80,7 +83,7 @@ $(function() {
 
                 croma.setData(palette, data);
 
-                App.Router.router.transitionTo("colors", { queryParams: { palette: palette, saveas: palette } });
+                App.Router.router.transitionTo("colors", { queryParams: { palette: palette } });
             },
 
             back: function() {
@@ -95,6 +98,85 @@ $(function() {
         queryParams: [ "from", "oldname" ],
         from: null,
         oldname: null
+    });
+
+    // Render the colors route
+    App.PaletteNewRoute = Ember.Route.extend({
+        model: function() {
+            return {
+                cromaImage: ("cromaImage" in window && cromaImage.getColors)
+            };
+        }
+    });
+
+    App.PaletteNewController = Ember.ObjectController.extend({
+        actions: {
+            getcolors: function() {
+                if (this.get("cromaImage")) {
+                    cromaImage.getColors();
+                }
+            }
+        }
+    });
+
+    // Render the show palette route
+    App.PaletteShowRoute = Ember.Route.extend({
+        model: function(params) {
+            var palette = [],
+                rgbvals, c;
+
+            if (!(params && params.palette)) {
+                App.Router.router.transitionTo("index");
+            }
+
+            rgbvals = decodeURIComponent(params.palette).replace(/\|$/, "").split("|");
+
+            for (var i = 0, l = rgbvals.length; i < l; i++) {
+                c = new Color({
+                    rgb: rgbvals[i].split(",")
+                }).tohex();
+
+                palette.push({
+                    cssStr: "background-color:" + c,
+                    value: c
+                });
+            }
+
+            return palette;
+        }
+    });
+
+    App.PaletteShowController = Ember.ObjectController.extend({
+        actions: {
+            save: function(palette) {
+                var color, name,
+                    data = {
+                        loved: false,
+                        colors: {}
+                    };
+
+                if (!(palette && palette instanceof Array)) {
+                    return;
+                }
+
+                name = "Extracted" + new Date().getTime();
+
+                for (var i = 0, l = palette.length; i < l; i++) {
+                    color = palette[i].value;
+
+                    if (color) {
+                        data.colors[color] = true;
+                    }
+                }
+
+                croma.setData(name, data);
+
+                App.Router.router.transitionTo("palette.name", { queryParams: { oldname: name, from: null } });
+            }
+        },
+
+        queryParams: [ "palette" ],
+        palette: null
     });
 
     // Render the colors route
@@ -124,25 +206,18 @@ $(function() {
 
             return {
                 name: name,
-                colors: data.reverse(),
-                cromaImage: ("cromaImage" in window && cromaImage.getColors)
+                colors: data.reverse()
             };
         }
     });
 
     App.ColorsController = Ember.ObjectController.extend({
         actions: {
-            delete: croma.deleteItem,
-            getcolors: function() {
-                var saveas = this.get("saveas") || "New palette";
-
-                cromaImage.getColors(saveas);
-            }
+            delete: croma.deleteItem
         },
 
-        queryParams: [ "palette", "saveas" ],
-        palette: null,
-        saveas: null
+        queryParams: [ "palette" ],
+        palette: null
     });
 
     // Render the details route
@@ -250,81 +325,15 @@ $(function() {
                 croma.setData(name, data);
 
                 if (saveas && saveas !== "undefined") {
-                    App.Router.router.transitionTo("colors", { queryParams: { palette: saveas, saveas: saveas } });
+                    App.Router.router.transitionTo("colors", { queryParams: { palette: saveas } });
                 } else {
-                    App.Router.router.transitionTo("add-palette", { queryParams: { oldname: name, from: null } });
+                    App.Router.router.transitionTo("palette.name", { queryParams: { oldname: name, from: null } });
                 }
             }
         },
 
         queryParams: [ "color", "saveas" ],
         color: null,
-        saveas: null
-    });
-
-    // Render the show palette route
-    App.ShowPaletteRoute = Ember.Route.extend({
-        model: function(params) {
-            var palette = [],
-                rgbvals, c;
-
-            if (!(params && params.palette)) {
-                App.Router.router.transitionTo("index");
-            }
-
-            rgbvals = decodeURIComponent(params.palette).replace(/\|$/, "").split("|");
-
-            for (var i = 0, l = rgbvals.length; i < l; i++) {
-                c = new Color({
-                    rgb: rgbvals[i].split(",")
-                }).tohex();
-
-                palette.push({
-                    cssStr: "background-color:" + c,
-                    value: c
-                });
-            }
-
-            return palette;
-        }
-    });
-
-    App.ShowPaletteController = Ember.ObjectController.extend({
-        actions: {
-            save: function(palette) {
-                var color, name,
-                    saveas = this.get("saveas"),
-                    data = {
-                        loved: false,
-                        colors: {}
-                    };
-
-                if (!(palette && palette instanceof Array)) {
-                    return;
-                }
-
-                name = (saveas && saveas !== "undefined" && saveas !== "null") ? saveas : "Extracted" + new Date().getTime();
-
-                for (var i = 0, l = palette.length; i < l; i++) {
-                    color = palette[i].value;
-
-                    if (color) {
-                        data.colors[color] = true;
-                    }
-                }
-
-                croma.setData(name, data);
-
-                if (saveas && saveas !== "undefined") {
-                    App.Router.router.transitionTo("colors", { queryParams: { palette: saveas, saveas: saveas } });
-                } else {
-                    App.Router.router.transitionTo("add-palette", { queryParams: { oldname: name, from: null } });
-                }
-            }
-        },
-
-        queryParams: [ "palette", "saveas" ],
-        palette: null,
         saveas: null
     });
 
@@ -348,7 +357,6 @@ $(function() {
             done: function() {
                 var color = picker.value,
                     palette = this.get("palette"),
-                    add = this.get("add"),
                     data;
 
                 if ((!color) || typeof color !== "string") {
@@ -357,9 +365,7 @@ $(function() {
 
                 color = new Color(color).tohex();
 
-                if (add === "false") {
-                    App.Router.router.transitionTo("palettes", { queryParams: { color: color, saveas: palette } });
-                } else {
+                if (palette && palette !== "undefined") {
                     data = croma.getData(palette);
 
                     if (data) {
@@ -369,24 +375,27 @@ $(function() {
 
                     croma.setData(palette, data);
 
-                    App.Router.router.transitionTo("colors", { queryParams: { palette: palette, saveas: palette } });
+                    App.Router.router.transitionTo("colors", { queryParams: { palette: palette } });
+                } else {
+                    App.Router.router.transitionTo("palettes", { queryParams: { color: color, saveas: palette } });
                 }
             },
 
             back: function() {
-                var palette = this.get("palette");
+                var palette = this.get("palette"),
+                    from = this.get("from");
 
-                if (palette && palette !== "undefined") {
-                    App.Router.router.transitionTo("colors", { queryParams: { palette: palette, saveas: palette } });
+                if (from && from !== "undefined") {
+                    App.Router.router.transitionTo(from, { queryParams: { palette: palette } });
                 } else {
                     App.Router.router.transitionTo("index");
                 }
             }
         },
 
-        queryParams: [ "palette", "add" ],
+        queryParams: [ "palette", "from" ],
         palette: null,
-        add: null
+        from: null
     });
 
 });
