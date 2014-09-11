@@ -1,6 +1,7 @@
 package com.numix.croma;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -60,7 +61,7 @@ public class MainActivity extends Activity {
 
     // Get color palette from image
     private String getPalette(Uri imageUri) {
-        String url = "#/palette/show?palette=";
+        String url = INDEX + "#/palette/show?palette=";
 
         try {
             final InputStream imageStream = getContentResolver().openInputStream(imageUri);
@@ -84,6 +85,35 @@ public class MainActivity extends Activity {
         }
 
         return url;
+    }
+
+
+    // Show a progress dialog when processing image
+    public void processImage(final Uri imageUri) {
+        final ProgressDialog progress = ProgressDialog.show(
+                MainActivity.this, null, "Hold my beer...", true);
+
+        // Process the image in a new thread
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    final String URL = getPalette(imageUri);
+
+                    // Return to the UI thread
+                    MainActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            webView.loadUrl(URL);
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                progress.dismiss();
+            }
+        }).start();
     }
 
 
@@ -125,11 +155,7 @@ public class MainActivity extends Activity {
                 // Get resource path
                 final Uri imageUri = extras.getParcelable(Intent.EXTRA_STREAM);
 
-                String url = INDEX;
-
-                url += getPalette(imageUri);
-
-                webView.loadUrl(url);
+                processImage(imageUri);
             }
         } else {
             // Load the start page
@@ -149,11 +175,7 @@ public class MainActivity extends Activity {
 
                     final Uri imageUri = imageReturnedIntent.getData();
 
-                    String url = INDEX;
-
-                    url += getPalette(imageUri);
-
-                    webView.loadUrl(url);
+                    processImage(imageUri);
                 }
         }
     }
