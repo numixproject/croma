@@ -60,7 +60,7 @@ public class MainActivity extends Activity {
 
     // Get color palette from image
     private String getPalette(Uri imageUri) {
-        String url = "#/show-palette?palette=";
+        String url = "#/palette/show?palette=";
 
         try {
             final InputStream imageStream = getContentResolver().openInputStream(imageUri);
@@ -141,8 +141,6 @@ public class MainActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
 
-        final String SAVE_AS = imageReturnedIntent.getStringExtra("saveas");
-
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
 
         switch(requestCode) {
@@ -171,11 +169,10 @@ public class MainActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void getColors(String saveas) {
+        public void getColors() {
             Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
 
             photoPickerIntent.setType("image/*");
-            photoPickerIntent.putExtra("saveas", saveas);
 
             ((Activity) mContext).startActivityForResult(photoPickerIntent, SELECT_PHOTO);
         }
