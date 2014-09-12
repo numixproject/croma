@@ -2,12 +2,18 @@ package com.numix.croma;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
@@ -15,9 +21,11 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import me.croma.image.Color;
@@ -59,28 +67,37 @@ public class MainActivity extends Activity {
     }
 
 
+    // Get bitmap from Uri
+    private Bitmap getBitmap(Uri uri) {
+        try {
+            final InputStream stream = getContentResolver().openInputStream(uri);
+
+            final Bitmap selectedImage = BitmapFactory.decodeStream(stream);
+
+            return selectedImage;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
     // Get color palette from image
-    private String getPalette(Uri imageUri) {
+    private String getPalette(Bitmap bitmap) {
         String url = INDEX + "#/palette/show?palette=";
 
+        BitMapImage b = new BitMapImage(bitmap);
+
+        KMeansColorPicker k = new KMeansColorPicker();
+
         try {
-            final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-            final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+            List<Color> l = k.getUsefulColors(b, 6);
 
-            BitMapImage b = new BitMapImage(selectedImage);
-
-            KMeansColorPicker k = new KMeansColorPicker();
-
-            try {
-                List<Color> l = k.getUsefulColors(b, 6);
-
-                for (Color c: l) {
-                    url += c.getRed() + "," + c.getGreen() + "," + c.getBlue() + "|";
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+            for (Color c: l) {
+                url += c.getRed() + "," + c.getGreen() + "," + c.getBlue() + "|";
             }
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -89,16 +106,16 @@ public class MainActivity extends Activity {
 
 
     // Show a progress dialog when processing image
-    public void processImage(final Uri imageUri) {
+    public void processImage(final Bitmap bitmap) {
         final ProgressDialog progress = ProgressDialog.show(
-                MainActivity.this, null, "Hold my beer...", true);
+                MainActivity.this, null, getString(R.string.wait_label), true);
 
         // Process the image in a new thread
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    final String URL = getPalette(imageUri);
+                    final String URL = getPalette(bitmap);
 
                     // Return to the UI thread
                     MainActivity.this.runOnUiThread(new Runnable() {
@@ -154,8 +171,9 @@ public class MainActivity extends Activity {
             if (extras.containsKey(Intent.EXTRA_STREAM)) {
                 // Get resource path
                 final Uri imageUri = extras.getParcelable(Intent.EXTRA_STREAM);
+                final Bitmap bitmap = getBitmap(imageUri);
 
-                processImage(imageUri);
+                processImage(bitmap);
             }
         } else {
             // Load the start page
@@ -171,11 +189,22 @@ public class MainActivity extends Activity {
 
         switch(requestCode) {
             case SELECT_PHOTO:
+
                 if (resultCode == RESULT_OK) {
+                    Bitmap bitmap;
 
-                    final Uri imageUri = imageReturnedIntent.getData();
+                    if (imageReturnedIntent.getData() != null) {
+                        final Uri uri = imageReturnedIntent.getData();
 
-                    processImage(imageUri);
+                        bitmap = getBitmap(uri);
+
+                        processImage(bitmap);
+
+                    } else if (imageReturnedIntent.getExtras().get("data") != null) {
+                        bitmap = (Bitmap) imageReturnedIntent.getExtras().get("data");
+
+                        processImage(bitmap);
+                    }
                 }
         }
     }
@@ -192,11 +221,39 @@ public class MainActivity extends Activity {
 
         @JavascriptInterface
         public void getColors() {
-            Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+            // Determine Uri of camera image to save.
+            final File file = new File(Environment.getExternalStorageDirectory(), "_$tmp.jpg");
 
-            photoPickerIntent.setType("image/*");
+            // Camera.
+            final List<Intent> cameraIntents = new ArrayList<Intent>();
+            final Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            final PackageManager packageManager = mContext.getPackageManager();
+            final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
 
-            ((Activity) mContext).startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+            for (ResolveInfo res : listCam) {
+                final String packageName = res.activityInfo.packageName;
+                final Intent intent = new Intent(captureIntent);
+
+                intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
+                intent.setPackage(packageName);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+
+                cameraIntents.add(intent);
+            }
+
+            // Filesystem.
+            final Intent galleryIntent = new Intent(Intent.ACTION_PICK);
+
+            galleryIntent.setType("image/*");
+
+            // Chooser of filesystem options.
+            final Intent chooserIntent = Intent.createChooser(galleryIntent,
+                    mContext.getString(R.string.select_label));
+
+            // Add the camera options.
+            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[]{}));
+
+            ((Activity) mContext).startActivityForResult(chooserIntent, SELECT_PHOTO);
         }
     }
 

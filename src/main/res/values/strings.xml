@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Croma</string>
     <string name="share_label">Extract colors</string>
+    <string name="wait_label">Hold my beer...</string>
+    <string name="select_label">Select image</string>
     <string name="key_file">Store</string>
 </resources>
