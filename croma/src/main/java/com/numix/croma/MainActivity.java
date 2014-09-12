@@ -11,9 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Parcelable;
-import android.provider.MediaStore;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
@@ -21,7 +19,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -221,9 +218,6 @@ public class MainActivity extends Activity {
 
         @JavascriptInterface
         public void getColors() {
-            // Determine Uri of camera image to save.
-            final File file = new File(Environment.getExternalStorageDirectory(), "_$tmp.jpg");
-
             // Camera.
             final List<Intent> cameraIntents = new ArrayList<Intent>();
             final Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
@@ -236,7 +230,6 @@ public class MainActivity extends Activity {
 
                 intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
                 intent.setPackage(packageName);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
 
                 cameraIntents.add(intent);
             }
