@@ -1,5 +1,11 @@
 *~
 *.apk
+*.jks
 .DS_Store
+
+.gradle
+.idea
+
+local.properties
 
 build

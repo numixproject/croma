@@ -1,4 +1,4 @@
-apply plugin: 'com.android.application'
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
     repositories {
@@ -6,33 +6,14 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:0.12.+'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
     }
 }
 
-android {
-    compileSdkVersion 20
-    buildToolsVersion '20.0.0'
-    defaultConfig {
-        applicationId 'com.numix.croma'
-        minSdkVersion 15
-        targetSdkVersion 20
-        versionCode 1
-        versionName '1.0'
+allprojects {
+    repositories {
+        mavenCentral()
     }
-    buildTypes {
-        release {
-            runProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-    productFlavors {
-    }
-    aaptOptions {
-        ignoreAssetsPattern 'node_modules:bower_components:.*'
-    }
-}
-
-dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile files('libs/croma.jar')
 }
