@@ -31,6 +31,11 @@ $(function() {
             if (!palettes) { return; }
 
             for (var p in palettes) {
+                // Exclude names beginning with "_$"
+                if ((/^_\$.*/).test(p)) {
+                    continue;
+                }
+
                 arr = [];
 
                 for (var c in palettes[p].colors) {
@@ -149,7 +154,8 @@ $(function() {
     App.PaletteShowController = Ember.ObjectController.extend({
         actions: {
             save: function(palette) {
-                var color, name,
+                var color,
+                    name = "_$extracted",
                     data = {
                         loved: false,
                         colors: {}
@@ -158,8 +164,6 @@ $(function() {
                 if (!(palette && palette instanceof Array)) {
                     return;
                 }
-
-                name = "Extracted" + new Date().getTime();
 
                 for (var i = 0, l = palette.length; i < l; i++) {
                     color = palette[i].value;
@@ -299,8 +303,8 @@ $(function() {
     App.PalettesController = Ember.ObjectController.extend({
         actions: {
             save: function(palette) {
-                var color, name,
-                    saveas = this.get("saveas"),
+                var color,
+                    name = "_$generated",
                     data = {
                         loved: false,
                         colors: {}
@@ -309,8 +313,6 @@ $(function() {
                 if (!(palette && palette.colors)) {
                     return;
                 }
-
-                name = (saveas && saveas !== "undefined") ? saveas : palette.name + " - " + palette.colors[0].value;
 
                 for (var i in palette.colors) {
                     if (palette.colors.hasOwnProperty(i) && palette.colors[i]) {
@@ -324,17 +326,12 @@ $(function() {
 
                 croma.setData(name, data);
 
-                if (saveas && saveas !== "undefined") {
-                    App.Router.router.transitionTo("colors", { queryParams: { palette: saveas } });
-                } else {
-                    App.Router.router.transitionTo("palette.name", { queryParams: { oldname: name, from: null } });
-                }
+                App.Router.router.transitionTo("palette.name", { queryParams: { oldname: name, from: null } });
             }
         },
 
-        queryParams: [ "color", "saveas" ],
-        color: null,
-        saveas: null
+        queryParams: [ "color" ],
+        color: null
     });
 
     // Render the picker route
@@ -377,7 +374,7 @@ $(function() {
 
                     App.Router.router.transitionTo("colors", { queryParams: { palette: palette } });
                 } else {
-                    App.Router.router.transitionTo("palettes", { queryParams: { color: color, saveas: palette } });
+                    App.Router.router.transitionTo("palettes", { queryParams: { color: color } });
                 }
             },
 
