@@ -14,23 +14,23 @@
 	<main class="card-area">
 		<div class="cover-image"></div>
 		<div class="section-wrapper">
+			{{#if cromaImage}}
 			<div class="paper-button-container">
-				{{#link-to "palette.name" (query-params oldname=null from="palette.new")  class="paper-button paper-button-block paper-ripple"}}
-					Add colors manually
-				{{/link-to}}
+				<a {{action "getcolors"}} class="paper-button paper-button-block paper-ripple">
+					Get palette from image
+				</a>
 			</div>
+			{{/if}}
 			<div class="paper-button-container">
 				{{#link-to "picker" (query-params palette=null from="palette.new") class="paper-button paper-button-block paper-ripple"}}
 					Get palette from color
 				{{/link-to}}
 			</div>
-			{{#if cromaImage}}
-				<div class="paper-button-container">
-					<a {{action "getcolors"}} class="paper-button paper-button-block paper-ripple">
-						Get palette from image
-					</a>
-				</div>
-			{{/if}}
+			<div class="paper-button-container">
+				{{#link-to "palette.name" (query-params oldname=null from="palette.new")  class="paper-button paper-button-block paper-ripple"}}
+				Add colors manually
+				{{/link-to}}
+			</div>
 		</div>
 	</main>
 {{/with}}
