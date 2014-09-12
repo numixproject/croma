@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Croma</string>
+    <string name="share_label">Extract colors</string>
     <string name="key_file">Store</string>
 </resources>
