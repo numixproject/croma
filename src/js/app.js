@@ -109,18 +109,14 @@ $(function() {
     App.PaletteNewRoute = Ember.Route.extend({
         model: function() {
             return {
-                cromaImage: ("cromaImage" in window && cromaImage.getColors)
+                cromaImage: croma.getPalette(true)
             };
         }
     });
 
     App.PaletteNewController = Ember.ObjectController.extend({
         actions: {
-            getcolors: function() {
-                if (this.get("cromaImage")) {
-                    cromaImage.getColors();
-                }
-            }
+            getpalette: croma.getPalette
         }
     });
 

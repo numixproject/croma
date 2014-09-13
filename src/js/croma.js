@@ -124,6 +124,19 @@ var croma = (function() {
 			}
 
 			croma.setData(palette, data);
+		},
+
+		// Get palette from an image
+		getPalette: function(check) {
+				var supported = ("imageUtils" in window && imageUtils.getPalette);
+
+				if (check) {
+				return supported;
+			}
+
+			if (supported) {
+				imageUtils.getPalette();
+			}
 		}
 	};
 }());
