@@ -81,7 +81,7 @@ public class MainActivity extends Activity {
 
 
     // Get color palette from image
-    private String getPalette(Bitmap bitmap) {
+    private String getColors(Bitmap bitmap) {
         String url = INDEX + "#/palette/show?palette=";
 
         BitMapImage b = new BitMapImage(bitmap);
@@ -112,7 +112,7 @@ public class MainActivity extends Activity {
             @Override
             public void run() {
                 try {
-                    final String URL = getPalette(bitmap);
+                    final String URL = getColors(bitmap);
 
                     // Return to the UI thread
                     MainActivity.this.runOnUiThread(new Runnable() {
@@ -157,7 +157,8 @@ public class MainActivity extends Activity {
 
         // Expose Java methods as JavaScript interfaces
         webView.addJavascriptInterface(new Storage(this), "androidStorage");
-        webView.addJavascriptInterface(new CromaImage(this), "cromaImage");
+        webView.addJavascriptInterface(new Utils(this), "androidUtils");
+        webView.addJavascriptInterface(new ImageUtils(this), "imageUtils");
 
         // Check if called from share menu
         Intent intent = getIntent();
@@ -207,17 +208,17 @@ public class MainActivity extends Activity {
     }
 
 
-    public class CromaImage extends MainActivity {
+    public class ImageUtils extends MainActivity {
 
         Context mContext;
 
         // Set application context.
-        CromaImage(Context c) {
+        ImageUtils(Context c) {
             mContext = c;
         }
 
         @JavascriptInterface
-        public void getColors() {
+        public void getPalette() {
             // Camera.
             final List<Intent> cameraIntents = new ArrayList<Intent>();
             final Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
