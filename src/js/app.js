@@ -57,6 +57,7 @@ $(function() {
 
     App.IndexController = Ember.ObjectController.extend({
         actions: {
+            share: croma.shareItem,
             love: croma.loveItem,
             delete: croma.deleteItem
         }

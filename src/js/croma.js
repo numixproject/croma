@@ -126,6 +126,67 @@ var croma = (function() {
 			croma.setData(palette, data);
 		},
 
+		// Trigger a file download
+		downloadFile: function(filename, content) {
+			var el = document.createElement("a");
+
+			el.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(content));
+			el.setAttribute("download", filename);
+			el.click();
+		},
+
+		// Convert color hashmap to human readable text
+		paletteToText: function(palette, colors) {
+			var content = [
+				"Name: " + palette + "\n",
+				"Colors:"
+			];
+
+			for (var c in colors) {
+				content.push(c);
+			}
+
+			return content.join("\n") + "\n";
+		},
+
+		// Convert colors hashmap to GIMP Palette
+		paletteToGPL: function(palette, colors) {
+			var rgb,
+				content = [
+				"GIMP Palette",
+				"Name: " + palette,
+				"Columns: 4",
+				"#"
+			];
+
+			for (var c in colors) {
+				rgb = new Color(c).rgb;
+
+				content.push(
+					rgb.join("\t") + "\t" + c
+				);
+			}
+
+			return content.join("\n") + "\n";
+		},
+
+		// Share a palette
+		shareItem: function(palette) {
+			var data;
+
+			if ((!palette) || typeof palette !== "string") {
+				return;
+			}
+
+			data = croma.getData(palette);
+
+			if ("androidUtils" in window && androidUtils.shareItem) {
+				androidUtils.shareItem("Share palette", croma.paletteToText(palette, data.colors));
+			} else {
+				croma.downloadFile(palette + ".gpl", croma.paletteToGPL(palette, data.colors));
+			}
+		},
+
 		// Get palette from an image
 		getPalette: function(check) {
 				var supported = ("imageUtils" in window && imageUtils.getPalette);
