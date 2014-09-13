@@ -107,6 +107,19 @@ header {
     margin: auto;
 }
 
+.section-wrapper-full { height: 100%; }
+
+.section-content-center {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+.section-content-center-inner {
+    display: table-cell;
+    vertical-align: middle;
+}
 
 /******************
 ! Empty area styles
