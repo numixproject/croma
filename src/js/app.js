@@ -78,6 +78,18 @@ $(function() {
                     data = {};
 
                 if (!croma.validateName(palette)) {
+                    croma.showToast({
+                        body: "Invalid palette name " + palette
+                    });
+
+                    return;
+                }
+
+                if (croma.getData(palette)) {
+                    croma.showToast({
+                        body: "A palette with same name already exists."
+                    });
+
                     return;
                 }
 

@@ -47,27 +47,41 @@ var croma = (function() {
 
 		// Remove a color from the UI and database
 		removeItem: function(palette, color) {
-			var $el, olddata, data;
+			var $el, olddata, data, toast;
 
 			if ((!palette) || typeof palette !== "string") {
 				return;
 			}
 
-			olddata = croma.getData(palette);
+			data = croma.getData(palette);
 
-			data = $.extend({}, olddata);
+			olddata = $.extend(true, {}, data);
 
 			if (color) {
 				delete data.colors[color];
 
 				$el = $("[data-palette='" + palette + "'][data-color='" + color + "']");
+
+				toast = "Deleted " + color;
 			} else {
 				data = null;
 
 				$el = $("[data-palette='" + palette + "']");
+
+				toast = "Deleted " + palette;
 			}
 
 			croma.setData(palette, data);
+
+			// Show a notification
+			croma.showToast({
+				body: toast,
+				actions: {
+					undo: function() {
+						croma.setData(palette, olddata);
+					}
+				}
+			});
 
 			// Swipe out the card
 			$el.velocity({
@@ -84,15 +98,6 @@ var croma = (function() {
 				duration: 150,
 				complete: function() {
 					$(this).remove();
-				}
-			});
-
-			croma.showToast({
-				body: "Deleted " + palette,
-				actions: {
-					undo: function() {
-						croma.setData(palette, olddata);
-					}
 				}
 			});
 		},

@@ -87,6 +87,10 @@ var Picker = (function() {
 			$text.on("DOMSubtreeModified input paste change", function() {
 				var value = $(this).val();
 
+				if (!(value && value.length > 2)) {
+					return;
+				}
+
 				_this.setColor(value, false);
 			});
 		};
