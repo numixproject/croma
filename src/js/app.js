@@ -58,8 +58,53 @@ $(function() {
     App.IndexController = Ember.ObjectController.extend({
         actions: {
             share: croma.shareItem,
-            love: croma.loveItem,
-            remove: croma.removeItem
+            love: function(palette) {
+                var data;
+
+                if (!palette) {
+                    return;
+                }
+
+                data = croma.getData(palette);
+
+                if (!data) {
+                    return;
+                }
+
+                // Toggle love
+                data.loved = !(data.loved);
+
+                croma.setData(palette, data);
+
+                croma.loveItem(palette);
+            },
+            remove: function(palette) {
+                var olddata,
+                    _this = this;
+
+                if (!palette) {
+                    return;
+                }
+
+                olddata = croma.getData(palette);
+
+                croma.removeItem(palette, false, function() {
+                    croma.setData(palette, null);
+
+                    _this.get("target.router").refresh();
+
+                    croma.showToast({
+                        body: "Deleted " + palette,
+                        actions: {
+                            undo: function() {
+                                croma.setData(palette, olddata);
+
+                                _this.get("target.router").refresh();
+                            }
+                        }
+                    });
+                });
+            }
         }
     });
 
@@ -226,7 +271,37 @@ $(function() {
 
     App.ColorsController = Ember.ObjectController.extend({
         actions: {
-            remove: croma.removeItem
+            remove: function(palette, color) {
+                var olddata, data,
+                    _this = this;
+
+                if (!(palette && color)) {
+                    return;
+                }
+
+                data = croma.getData(palette);
+
+                olddata = $.extend(true, {}, data);
+
+                delete data.colors[color];
+
+                croma.removeItem(palette, color, function() {
+                    croma.setData(palette, data);
+
+                    _this.get("target.router").refresh();
+
+                    croma.showToast({
+                        body: "Deleted " + color,
+                        actions: {
+                           undo: function() {
+                                croma.setData(palette, olddata);
+
+                                _this.get("target.router").refresh();
+                            }
+                        }
+                    });
+                });
+            }
         },
 
         queryParams: [ "palette" ],

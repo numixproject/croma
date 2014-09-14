@@ -32,7 +32,7 @@ var croma = (function() {
 			var palettes = croma.getData(),
 				current;
 
-			if ((!palette) || typeof palette !== "string") {
+			if (!palette) {
 				return;
 			}
 
@@ -46,42 +46,18 @@ var croma = (function() {
 		},
 
 		// Remove a color from the UI and database
-		removeItem: function(palette, color) {
-			var $el, olddata, data, toast;
+		removeItem: function(palette, color, callback) {
+			var $el;
 
-			if ((!palette) || typeof palette !== "string") {
+			if (!palette) {
 				return;
 			}
 
-			data = croma.getData(palette);
-
-			olddata = $.extend(true, {}, data);
-
 			if (color) {
-				delete data.colors[color];
-
 				$el = $("[data-palette='" + palette + "'][data-color='" + color + "']");
-
-				toast = "Deleted " + color;
 			} else {
-				data = null;
-
 				$el = $("[data-palette='" + palette + "']");
-
-				toast = "Deleted " + palette;
 			}
-
-			croma.setData(palette, data);
-
-			// Show a notification
-			croma.showToast({
-				body: toast,
-				actions: {
-					undo: function() {
-						croma.setData(palette, olddata);
-					}
-				}
-			});
 
 			// Swipe out the card
 			$el.velocity({
@@ -98,22 +74,19 @@ var croma = (function() {
 				duration: 150,
 				complete: function() {
 					$(this).remove();
+
+					if (callback && typeof callback === "function") {
+						callback();
+					}
 				}
 			});
 		},
 
 		// Toggle love color in the UI and database
 		loveItem: function(palette) {
-			var $card, $button,
-				data;
+			var $card, $button;
 
-			if ((!palette) || typeof palette !== "string") {
-				return;
-			}
-
-			data = croma.getData(palette);
-
-			if (!data) {
+			if (!palette) {
 				return;
 			}
 
@@ -129,17 +102,7 @@ var croma = (function() {
 			}, 500);
 
 			// Toggle love
-			if (data.loved) {
-				$card.removeClass("card-item-loved");
-
-				data.loved = false;
-			} else {
-				$card.addClass("card-item-loved");
-
-				data.loved = true;
-			}
-
-			croma.setData(palette, data);
+			$card.toggleClass("card-item-loved");
 		},
 
 		// Trigger a file download
