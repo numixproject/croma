@@ -31,6 +31,20 @@
             </intent-filter>
 
             <intent-filter
+                android:label="@string/view_label">
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="croma" />
+                <data android:scheme="http" android:host="@string/app_host" />
+                <data android:scheme="https" android:host="@string/app_host" />
+
+            </intent-filter>
+
+            <intent-filter
                 android:label="@string/share_label">
 
                 <action android:name="android.intent.action.SEND" />

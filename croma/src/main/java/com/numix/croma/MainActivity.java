@@ -162,17 +162,20 @@ public class MainActivity extends Activity {
 
         // Check if called from share menu
         Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
         String action = intent.getAction();
+        Bundle extras = intent.getExtras();
+        Uri data = intent.getData();
 
-        if (Intent.ACTION_SEND.equals(action)) {
-            if (extras.containsKey(Intent.EXTRA_STREAM)) {
-                // Get resource path
-                final Uri imageUri = extras.getParcelable(Intent.EXTRA_STREAM);
-                final Bitmap bitmap = getBitmap(imageUri);
+        if (Intent.ACTION_SEND.equals(action) && extras.containsKey(Intent.EXTRA_STREAM)) {
+            // Get resource path
+            final Uri imageUri = extras.getParcelable(Intent.EXTRA_STREAM);
+            final Bitmap bitmap = getBitmap(imageUri);
 
-                processImage(bitmap);
-            }
+            processImage(bitmap);
+        } else if (Intent.ACTION_VIEW.equals(action) && data != null) {
+            final String URL = data.toString().replaceAll("(^https?://" + getString(R.string.app_host) + "/|^croma://)", INDEX);
+
+            webView.loadUrl(URL);
         } else {
             // Load the start page
             webView.loadUrl(INDEX);

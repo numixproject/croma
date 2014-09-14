@@ -25,4 +25,11 @@ public class Utils {
 
         mContext.startActivity(Intent.createChooser(sharingIntent, title));
     }
+
+    @JavascriptInterface
+    public void shareWithLink(String title, String content, String path) {
+        String url = "http://" + mContext.getString(R.string.app_host) + "/" + path;
+
+        shareItem(title, content + "\n" + url);
+    }
 }
