@@ -32,7 +32,7 @@ $(function() {
 
             for (var p in palettes) {
                 // Exclude names beginning with "_$"
-                if ((/^_\$.*/).test(p)) {
+                if (!croma.validateName(p)) {
                     continue;
                 }
 
@@ -77,11 +77,11 @@ $(function() {
                     oldname = this.get("oldname"),
                     data = {};
 
-                if (!(palette && palette !== "undefined")) {
+                if (!croma.validateName(palette)) {
                     return;
                 }
 
-                if (oldname && oldname !== "undefined") {
+                if (croma.validateName(oldname, true)) {
                     data = croma.getData(oldname) || {};
 
                     croma.setData(oldname);
@@ -95,7 +95,7 @@ $(function() {
             back: function() {
                 var from = this.get("from");
 
-                from = (from && from !== "undefined") ? from : "index";
+                from = croma.validateName(from) ? from : "index";
 
                 App.Router.router.transitionTo(from);
             }
@@ -359,7 +359,7 @@ $(function() {
 
                 color = new Color(color).tohex();
 
-                if (palette && palette !== "undefined") {
+                if (croma.validateName(palette)) {
                     data = croma.getData(palette);
 
                     if (data) {
@@ -379,7 +379,7 @@ $(function() {
                 var palette = this.get("palette"),
                     from = this.get("from");
 
-                if (from && from !== "undefined") {
+                if (croma.validateName(from)) {
                     App.Router.router.transitionTo(from, { queryParams: { palette: palette } });
                 } else {
                     App.Router.router.transitionTo("index");

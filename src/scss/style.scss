@@ -209,6 +209,7 @@ header {
     @include flexbox;
     @include flex-direction(row);
     @include flex-wrap(nowrap);
+    @include align-items(center);
 }
 
 .card-item-container { padding: $spacing / 2; }

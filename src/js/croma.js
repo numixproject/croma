@@ -198,6 +198,11 @@ var croma = (function() {
 			if (supported) {
 				imageUtils.getPalette();
 			}
+		},
+
+		// Validate name
+		validateName: function(name, tmp) {
+			return ((name && name !== "undefined" && name !== "null") && (tmp || !(/^_\$.*/).test(name)));
 		}
 	};
 }());
