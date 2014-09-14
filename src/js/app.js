@@ -59,7 +59,7 @@ $(function() {
         actions: {
             share: croma.shareItem,
             love: croma.loveItem,
-            delete: croma.deleteItem
+            remove: croma.removeItem
         }
     });
 
@@ -214,7 +214,7 @@ $(function() {
 
     App.ColorsController = Ember.ObjectController.extend({
         actions: {
-            delete: croma.deleteItem
+            remove: croma.removeItem
         },
 
         queryParams: [ "palette" ],

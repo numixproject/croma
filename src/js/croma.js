@@ -45,8 +45,8 @@ var croma = (function() {
 			return storage.set("palettes", palettes);
 		},
 
-		// Delete a color from the UI and database
-		deleteItem: function(palette, color) {
+		// Remove a color from the UI and database
+		removeItem: function(palette, color) {
 			var $el, data;
 
 			if ((!palette) || typeof palette !== "string") {
@@ -149,6 +149,20 @@ var croma = (function() {
 			return content.join("\n") + "\n";
 		},
 
+		// Convert color hashmap to link
+		paletteToPath: function(colors) {
+			var rgb,
+				path = "#/palette/show?palette=";
+
+			for (var c in colors) {
+				rgb = new Color(c).rgb;
+
+				path += rgb.join(",") + "|";
+			}
+
+			return path;
+		},
+
 		// Convert colors hashmap to GIMP Palette
 		paletteToGPL: function(palette, colors) {
 			var rgb,
@@ -180,8 +194,8 @@ var croma = (function() {
 
 			data = croma.getData(palette);
 
-			if ("androidUtils" in window && androidUtils.shareItem) {
-				androidUtils.shareItem("Share palette", croma.paletteToText(palette, data.colors));
+			if ("androidUtils" in window && androidUtils.shareWithLink) {
+				androidUtils.shareWithLink("Share palette", croma.paletteToText(palette, data.colors), croma.paletteToPath(data.colors));
 			} else {
 				croma.downloadFile(palette + ".gpl", croma.paletteToGPL(palette, data.colors));
 			}
