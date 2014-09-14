@@ -1,25 +1,28 @@
 @import "global";
 @import "animations";
 
+
 /************
 ! Basic input
 *************/
 
-input[type=text] {
-	@extend %transition;
+@include exports("input") {
+	input[type=text] {
+		@extend %transition;
 
-	-webkit-appearance: none;
-	-moz-appearance: none;
+		-webkit-appearance: none;
+		-moz-appearance: none;
 
-	padding: ($spacing / 2) 0;
-	border: none;
-	border-bottom: 1px solid lighten($dark-color, 50%);
-	background-color: transparent;
-	border-radius: $roundness;
+		padding: ($spacing / 2) 0;
+		border: none;
+		border-bottom: 1px solid lighten($dark-color, 50%);
+		background-color: transparent;
+		border-radius: $roundness;
 
-	&:focus, &:active {
-		border-bottom-color: $info-color;
-		outline: none;
+		&:focus, &:active {
+			border-bottom-color: $info-color;
+			outline: none;
+		}
 	}
 }
 
@@ -28,48 +31,50 @@ input[type=text] {
 ! Paper input
 *************/
 
-.paper-input-container { position: relative; }
+@include exports("paper-input") {
+	.paper-input-container { position: relative; }
 
-.paper-input-bar {
-	position: relative;
-	display: block;
+	.paper-input-bar {
+		position: relative;
+		display: block;
 
-	&:before, &:after {
-		@extend %transition;
+		&:before, &:after {
+			@extend %transition;
 
-		content: "";
-		position: absolute;
-		bottom: 0;
-		width: 0;
-		height: 2px;
-		background-color: $info-color;
-	}
-
-	&:before { left: 50%; }
-
-	&:after { right: 50%; }
-}
-
-.paper-input-highlight {
-	position: absolute;
-	height: 50%;
-	width: 50%;
-	top: 25%;
-	left: 0;
-	opacity: 0.5;
-	pointer-events: none;
-}
-
-.paper-input {
-	width: 100%;
-
-	&:focus, &:active {
-		border-bottom-color: darken($light-color, 20%);
-
-		& ~ .paper-input-bar {
-			&:before, &:after { width: 50%; }
+			content: "";
+			position: absolute;
+			bottom: 0;
+			width: 0;
+			height: 2px;
+			background-color: $info-color;
 		}
 
-		& ~ .paper-input-highlight { @extend %input-effect; }
+		&:before { left: 50%; }
+
+		&:after { right: 50%; }
+	}
+
+	.paper-input-highlight {
+		position: absolute;
+		height: 50%;
+		width: 50%;
+		top: 25%;
+		left: 0;
+		opacity: 0.5;
+		pointer-events: none;
+	}
+
+	.paper-input {
+		width: 100%;
+
+		&:focus, &:active {
+			border-bottom-color: darken($light-color, 20%);
+
+			& ~ .paper-input-bar {
+				&:before, &:after { width: 50%; }
+			}
+
+			& ~ .paper-input-highlight { @extend %input-effect; }
+		}
 	}
 }

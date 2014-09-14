@@ -47,13 +47,15 @@ var croma = (function() {
 
 		// Remove a color from the UI and database
 		removeItem: function(palette, color) {
-			var $el, data;
+			var $el, olddata, data;
 
 			if ((!palette) || typeof palette !== "string") {
 				return;
 			}
 
-			data = croma.getData(palette);
+			olddata = croma.getData(palette);
+
+			data = $.extend({}, olddata);
 
 			if (color) {
 				delete data.colors[color];
@@ -82,6 +84,15 @@ var croma = (function() {
 				duration: 150,
 				complete: function() {
 					$(this).remove();
+				}
+			});
+
+			croma.showToast({
+				body: "Deleted " + palette,
+				actions: {
+					undo: function() {
+						croma.setData(palette, olddata);
+					}
 				}
 			});
 		},
@@ -217,6 +228,56 @@ var croma = (function() {
 		// Validate name
 		validateName: function(name, tmp) {
 			return ((name && name !== "undefined" && name !== "null") && (tmp || !(/^_\$.*/).test(name)));
+		},
+
+		// Show a toast
+		// @param {{ body: String, actions: Object, timeout: Number }} options
+		showToast: function(options) {
+			var $toast,
+				$wrapper = $(".toast-notification-wrapper"),
+				$container = $wrapper.find(".toast-notification-container"),
+				$segment;
+
+			if (!$wrapper.length) {
+				$wrapper = $("<div>").addClass("toast-notification-wrapper");
+				$wrapper.appendTo("body");
+			}
+
+			if (!$container.length) {
+				$container = $("<div>").addClass("toast-notification-container");
+				$container.appendTo($wrapper);
+			}
+
+			$toast = $("<div>")
+			.addClass("toast-notification");
+
+			$segment = $("<div>").addClass("toast-notification-segment").html(options.body).appendTo($toast);
+
+			if (options.actions) {
+				for (var action in options.actions) {
+					if (typeof options.actions[action] === "function") {
+						$toast.append(
+							$("<div>").addClass("toast-notification-segment toast-notification-action toast-notification-action-" + action)
+							.text(action)
+							.on("click", options.actions[action])
+						);
+					}
+				}
+			}
+
+			$toast.find(".toast-notification-segment").on("click", function() {
+				$toast.remove();
+			});
+
+			$toast.appendTo($container);
+
+			if (options.timeout) {
+				setTimeout(function() {
+					$toast.remove();
+				}, options.timeout);
+			}
+
+			return $toast;
 		}
 	};
 }());

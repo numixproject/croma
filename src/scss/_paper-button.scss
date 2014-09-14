@@ -2,30 +2,33 @@
 @import "dropshadow";
 @import "animations";
 
+
 /*************
 ! Paper button
 **************/
 
-.paper-button-container { margin: $spacing; }
+@include exports("paper-button") {
+	.paper-button-container { margin: $spacing; }
 
-.paper-button {
-	@include dropshadow(1);
-	@extend %snappy;
+	.paper-button {
+		@include dropshadow(1);
+		@extend %snappy;
 
-	-webkit-appearance: none;
-	-moz-appearance: none;
+		-webkit-appearance: none;
+		-moz-appearance: none;
 
-	padding: $spacing / 2;
-	background-color: $light-color;
-	color: $dark-color;
-	text-decoration: none;
-	text-align: center;
-	text-transform: uppercase;
-	cursor: pointer;
+		padding: $spacing / 2;
+		background-color: $light-color;
+		color: $dark-color;
+		text-decoration: none;
+		text-align: center;
+		text-transform: uppercase;
+		cursor: pointer;
 
-	&:focus, &:hover { @include dropshadow(2); }
+		&:focus, &:hover { @include dropshadow(2); }
 
-	&:active { @include dropshadow(3); }
+		&:active { @include dropshadow(3); }
+	}
+
+	.paper-button-block { display: block; }
 }
-
-.paper-button-block { display: block; }

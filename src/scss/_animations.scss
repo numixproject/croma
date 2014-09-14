@@ -20,6 +20,10 @@
     @keyframes #{$animation} { @content; }
 }
 
+@mixin slideup($args: .3s 1) {
+    @include prefix(animation, slideup $args);
+}
+
 @mixin love($args: .3s 1) {
     @include prefix(animation, love $args);
 }
@@ -37,6 +41,22 @@
 }
 
 @include exports("animations") {
+    @include keyframes(slideup) {
+        0% {
+            @include transform(translate3d(0, 100%, 0));
+
+            opacity: 0;
+        }
+
+        100% {
+            @include transform(translate3d(0, 0, 0));
+
+            opacity: 1;
+        }
+    }
+
+    %slideup { @include slideup; }
+
     @include keyframes(love) {
         0% {
             @include transform(scale(5));

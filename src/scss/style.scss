@@ -6,6 +6,7 @@
 @import "dropshadow";
 @import "paper-input";
 @import "paper-button";
+@import "toast-notification";
 
 
 /*******************
@@ -346,6 +347,7 @@ $actions: love, remove, save, download, share;
 
 .card-item-color-button {
     width: 8em;
+    height: 3em;
     border-radius: $roundness;
     margin: $spacing / 2;
 }

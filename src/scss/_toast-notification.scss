@@ -1,0 +1,61 @@
+@import "global";
+@import "dropshadow";
+@import "animations";
+
+
+/*************
+! Paper button
+**************/
+
+@include exports("toast-notifications") {
+    .toast-notification-wrapper {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        z-index: 100;
+    }
+
+    .toast-notification-container {
+        width: $mobile-width;
+        max-height: 100%;
+        max-width: 100%;
+        margin: auto;
+        padding: $spacing;
+    }
+
+    .toast-notification {
+        @include flexbox;
+        @include flex-direction(row);
+        @include justify-content(space-between);
+        @include align-items(stretch);
+        @include slideup;
+
+        margin: ($spacing / 2) 0;
+        border-radius: $roundness;
+        background-color: $dark-color;
+        color: $light-color;
+    }
+
+    .toast-notification-segment {
+        @include dropshadow(3);
+
+        border-right: 1px solid fade-out($light-color, .8);
+        padding: $spacing / 2;
+
+        &:only-of-type, &:last-of-type { border-right: none; }
+
+        &:first-of-type { @include flex-grow(1); }
+    }
+
+    .toast-notification-action {
+        @extend %snappy;
+
+        text-transform: uppercase;
+        cursor: pointer;
+
+        &:hover, &:active {
+            background-color: darken($dark-color, 10%);
+        }
+    }
+}
