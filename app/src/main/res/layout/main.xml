@@ -7,16 +7,16 @@
 
     <ImageView
         android:id="@+id/imageView1"
-        android:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/dots" />
+        android:layout_centerVertical="true"
+        android:src="@drawable/dots"
+        android:visibility="visible" />
 
     <WebView
         android:id="@+id/webview"
-        android:visibility="gone"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"></WebView>
+        android:layout_height="fill_parent"
+        android:visibility="gone"></WebView>
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package com.numix.croma;
+package org.numixproject.croma;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -32,24 +32,11 @@ import static android.webkit.WebSettings.LOAD_DEFAULT;
 
 public class MainActivity extends Activity {
 
-    public WebView webView;
-
     // Start page
     private final String INDEX = "file:///android_asset/www/index.html";
-
     // Arbitrary integer to check request code
     private final int SELECT_PHOTO = 1;
-
-
-    private class webViewClient extends WebViewClient {
-        // Show a splash screen until the WebView is ready
-        @Override
-        public void onPageFinished(WebView view, String url) {
-            findViewById(R.id.imageView1).setVisibility(View.GONE);
-            findViewById(R.id.webview).setVisibility(View.VISIBLE);
-        }
-    }
-
+    public WebView webView;
 
     // Handle back button press
     @Override
@@ -62,7 +49,6 @@ public class MainActivity extends Activity {
 
         return super.onKeyDown(keyCode, event);
     }
-
 
     // Get bitmap from Uri
     private Bitmap getBitmap(Uri uri) {
@@ -79,7 +65,6 @@ public class MainActivity extends Activity {
         return null;
     }
 
-
     // Get color palette from image
     private String getColors(Bitmap bitmap) {
         String url = INDEX + "#/palette/show?palette=";
@@ -91,7 +76,7 @@ public class MainActivity extends Activity {
         try {
             List<Color> l = k.getUsefulColors(b, 6);
 
-            for (Color c: l) {
+            for (Color c : l) {
                 url += c.getRed() + "," + c.getGreen() + "," + c.getBlue() + "|";
             }
         } catch (IOException e) {
@@ -100,7 +85,6 @@ public class MainActivity extends Activity {
 
         return url;
     }
-
 
     // Show a progress dialog when processing image
     public void processImage(final Bitmap bitmap) {
@@ -129,7 +113,6 @@ public class MainActivity extends Activity {
             }
         }).start();
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,13 +165,12 @@ public class MainActivity extends Activity {
         }
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
 
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
 
-        switch(requestCode) {
+        switch (requestCode) {
             case SELECT_PHOTO:
 
                 if (resultCode == RESULT_OK) {
@@ -210,6 +192,14 @@ public class MainActivity extends Activity {
         }
     }
 
+    private class webViewClient extends WebViewClient {
+        // Show a splash screen until the WebView is ready
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            findViewById(R.id.imageView1).setVisibility(View.GONE);
+            findViewById(R.id.webview).setVisibility(View.VISIBLE);
+        }
+    }
 
     public class ImageUtils extends MainActivity {
 

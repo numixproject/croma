@@ -1,4 +1,4 @@
-package com.numix.croma;
+package org.numixproject.croma;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -22,7 +22,7 @@ public class Storage {
     }
 
     @JavascriptInterface
-    public void setItem(String key, String value){
+    public void setItem(String key, String value) {
         SharedPreferences.Editor e = mStorage.edit();
 
         e.putString(key, value);

@@ -1,4 +1,4 @@
-package com.numix.croma;
+package org.numixproject.croma;
 
 import android.app.backup.BackupAgentHelper;
 import android.app.backup.SharedPreferencesBackupHelper;

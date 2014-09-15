@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.numix.croma"
+    package="org.numixproject.croma"
     android:installLocation="preferExternal">
 
     <uses-permission android:name="android.permission.CAMERA" />
@@ -23,15 +23,14 @@
 
         <activity
             android:name=".MainActivity"
-            android:configChanges="orientation|screenSize" >
+            android:configChanges="orientation|screenSize">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <intent-filter
-                android:label="@string/view_label">
+            <intent-filter android:label="@string/view_label">
 
                 <action android:name="android.intent.action.VIEW" />
 
@@ -39,13 +38,16 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="croma" />
-                <data android:scheme="http" android:host="@string/app_host" />
-                <data android:scheme="https" android:host="@string/app_host" />
+                <data
+                    android:host="@string/app_host"
+                    android:scheme="http" />
+                <data
+                    android:host="@string/app_host"
+                    android:scheme="https" />
 
             </intent-filter>
 
-            <intent-filter
-                android:label="@string/share_label">
+            <intent-filter android:label="@string/share_label">
 
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />

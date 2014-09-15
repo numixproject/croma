@@ -1,4 +1,4 @@
-package com.numix.croma;
+package org.numixproject.croma;
 
 import android.content.Context;
 import android.content.Intent;

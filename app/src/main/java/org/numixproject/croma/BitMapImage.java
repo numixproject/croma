@@ -1,4 +1,4 @@
-package com.numix.croma;
+package org.numixproject.croma;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,6 +16,7 @@ public class BitMapImage extends Image {
         super(b.getWidth(), b.getHeight());
         this.image = b;
     }
+
     public BitMapImage(File f) {
         this(BitMapImage.create(f));
     }
@@ -37,7 +38,7 @@ public class BitMapImage extends Image {
 
     @Override
     public BitMapImage getScaledInstance(int width, int height) {
-        Bitmap resized = Bitmap.createScaledBitmap(this.image, width , height, true);
+        Bitmap resized = Bitmap.createScaledBitmap(this.image, width, height, true);
         return new BitMapImage(resized);
     }
 }
