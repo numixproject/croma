@@ -40,8 +40,8 @@
     .toast-notification-segment {
         @include dropshadow(3);
 
-        border-right: 1px solid fade-out($light-color, .8);
-        padding: $spacing / 2;
+        border-right: 1px solid fade-out($light-color, .9);
+        padding: ($spacing / 1.5) ($spacing / 2);
 
         &:only-of-type, &:last-of-type { border-right: none; }
 
@@ -54,8 +54,6 @@
         text-transform: uppercase;
         cursor: pointer;
 
-        &:hover, &:active {
-            background-color: darken($dark-color, 10%);
-        }
+        &:hover, &:active { background-color: darken($dark-color, 10%); }
     }
 }

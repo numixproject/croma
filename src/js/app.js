@@ -79,27 +79,27 @@ $(function() {
                 croma.loveItem(palette);
             },
             remove: function(palette) {
-                var olddata,
-                    _this = this;
+                var data,
+                    router = this.get("target.router");
 
                 if (!palette) {
                     return;
                 }
 
-                olddata = croma.getData(palette);
+                data = croma.getData(palette);
 
                 croma.removeItem(palette, false, function() {
                     croma.setData(palette, null);
 
-                    _this.get("target.router").refresh();
+                    router.refresh();
 
                     croma.showToast({
                         body: "Deleted " + palette,
                         actions: {
                             undo: function() {
-                                croma.setData(palette, olddata);
+                                croma.setData(palette, data);
 
-                                _this.get("target.router").refresh();
+                                router.refresh();
                             }
                         }
                     });
@@ -272,31 +272,33 @@ $(function() {
     App.ColorsController = Ember.ObjectController.extend({
         actions: {
             remove: function(palette, color) {
-                var olddata, data,
-                    _this = this;
+                var data,
+                    router = this.get("target.router");
 
                 if (!(palette && color)) {
                     return;
                 }
 
-                data = croma.getData(palette);
-
-                olddata = $.extend(true, {}, data);
-
-                delete data.colors[color];
-
                 croma.removeItem(palette, color, function() {
+                    data = croma.getData(palette);
+
+                    delete data.colors[color];
+
                     croma.setData(palette, data);
 
-                    _this.get("target.router").refresh();
+                    router.refresh();
 
                     croma.showToast({
                         body: "Deleted " + color,
                         actions: {
-                           undo: function() {
-                                croma.setData(palette, olddata);
+                            undo: function() {
+                                data = croma.getData(palette);
 
-                                _this.get("target.router").refresh();
+                                data.colors[color] = true;
+
+                                croma.setData(palette, data);
+
+                                router.refresh();
                             }
                         }
                     });
