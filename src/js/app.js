@@ -5,7 +5,16 @@ $(function() {
     var croma = require("./croma.js"),
         picker = require("./picker.js"),
         Color = require("./color.js"),
-        App = Ember.Application.create();
+        App = Ember.Application.create(),
+        bydate = function(a, b) {
+            if (a.created > b.created) {
+                return -1;
+            } else if (a.created < b.created) {
+                return 1;
+            } else {
+                return 0;
+            }
+        };
 
     // Add routes
     App.Router.map(function() {
@@ -46,12 +55,13 @@ $(function() {
 
                 data.push({
                     name: p,
-                    colors: arr.reverse(),
-                    isLoved: palettes[p].loved
+                    colors: arr,
+                    isLoved: palettes[p].loved,
+                    created: palettes[p].created
                 });
             }
 
-            return data.reverse();
+            return data.sort(bydate);
         }
     });
 
@@ -210,7 +220,9 @@ $(function() {
             save: function(palette) {
                 var color,
                     name = "_$extracted",
+                    count = 0,
                     data = {
+                        created: new Date().getTime(),
                         loved: false,
                         colors: {}
                     };
@@ -223,8 +235,12 @@ $(function() {
                     color = palette[i].value;
 
                     if (color) {
-                        data.colors[color] = true;
+                        data.colors[color] = {
+                            created: new Date().getTime() + count
+                        };
                     }
+
+                    count++;
                 }
 
                 croma.setData(name, data);
@@ -258,13 +274,14 @@ $(function() {
                 data.push({
                     palette: name,
                     color: c,
-                    cssStr: "background-color:" + c
+                    cssStr: "background-color:" + c,
+                    created: current.colors[c].created
                 });
             }
 
             return {
                 name: name,
-                colors: data.reverse()
+                colors: data.sort(bydate)
             };
         }
     });
@@ -272,7 +289,7 @@ $(function() {
     App.ColorsController = Ember.ObjectController.extend({
         actions: {
             remove: function(palette, color) {
-                var data,
+                var data, oldcolor,
                     router = this.get("target.router");
 
                 if (!(palette && color)) {
@@ -281,6 +298,8 @@ $(function() {
 
                 croma.removeItem(palette, color, function() {
                     data = croma.getData(palette);
+
+                    oldcolor = data.colors[color];
 
                     delete data.colors[color];
 
@@ -294,7 +313,7 @@ $(function() {
                             undo: function() {
                                 data = croma.getData(palette);
 
-                                data.colors[color] = true;
+                                data.colors[color] = oldcolor;
 
                                 croma.setData(palette, data);
 
@@ -391,7 +410,9 @@ $(function() {
             save: function(palette) {
                 var color,
                     name = "_$generated",
+                    count = 0,
                     data = {
+                        created: new Date().getTime(),
                         loved: false,
                         colors: {}
                     };
@@ -405,8 +426,12 @@ $(function() {
                         color = palette.colors[i].value;
 
                         if (color) {
-                            data.colors[color] = true;
+                            data.colors[color] = {
+                                created: new Date().getTime() + count
+                            };
                         }
+
+                        count++;
                     }
                 }
 
@@ -453,7 +478,9 @@ $(function() {
 
                     if (data) {
                         data.colors = data.colors || {};
-                        data.colors[color] = true;
+                        data.colors[color] = {
+                            created: new Date().getTime()
+                        };
                     }
 
                     croma.setData(palette, data);
