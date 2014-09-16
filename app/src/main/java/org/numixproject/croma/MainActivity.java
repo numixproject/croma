@@ -142,6 +142,7 @@ public class MainActivity extends Activity {
         webView.addJavascriptInterface(new Storage(this), "androidStorage");
         webView.addJavascriptInterface(new Utils(this), "androidUtils");
         webView.addJavascriptInterface(new ImageUtils(this), "imageUtils");
+        webView.addJavascriptInterface(new InAppBilling(), "inAppBilling");
 
         // Check if called from share menu
         Intent intent = getIntent();
