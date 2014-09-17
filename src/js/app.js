@@ -2,7 +2,8 @@
 /* global $, Ember */
 
 $(function() {
-    var croma = require("./croma.js"),
+    var material = require("./material.js"),
+        croma = require("./croma.js"),
         picker = require("./picker.js"),
         Color = require("./color.js"),
         App = Ember.Application.create(),
@@ -15,6 +16,18 @@ $(function() {
                 return 0;
             }
         };
+
+    // Animate content in
+    Ember.View.reopen({
+        didInsertElement: function() {
+            this._super();
+
+            Ember.run.scheduleOnce('afterRender', this, this.afterRenderEvent);
+        },
+        afterRenderEvent: function() {
+            material.animateIn(".fx-animate-in");
+        }
+    });
 
     // Add routes
     App.Router.map(function() {
