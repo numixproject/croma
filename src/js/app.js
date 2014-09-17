@@ -101,7 +101,7 @@ $(function() {
                 croma.removeItem(palette, false, function() {
                     croma.setData(palette, null);
 
-//                    router.refresh();
+                    router.refresh();
 
                     croma.showToast({
                         body: "Deleted " + palette,
@@ -109,7 +109,7 @@ $(function() {
                             undo: function() {
                                 croma.setData(palette, data);
 
-//                                router.refresh();
+                                router.refresh();
                             }
                         }
                     });
@@ -134,7 +134,8 @@ $(function() {
 
                 if (!croma.validateName(palette)) {
                     croma.showToast({
-                        body: "Invalid palette name " + palette
+                        body: "Invalid palette name " + palette,
+                        timeout: 3000
                     });
 
                     return;
@@ -142,7 +143,8 @@ $(function() {
 
                 if (croma.getData(palette)) {
                     croma.showToast({
-                        body: "A palette with same name already exists."
+                        body: "A palette with same name already exists.",
+                        timeout: 3000
                     });
 
                     return;
