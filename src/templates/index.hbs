@@ -6,7 +6,7 @@
 			</h1>
 		</div>
 		<div class="header-button-wrapper">
-			{{#link-to "palette.new" class="action-button action-button-add fx-animate-in"}}
+			{{#link-to "palette.new" class="action-button action-button-add"}}
 			{{/link-to}}
 		</div>
 	</div>
@@ -17,7 +17,7 @@
 		{{#if model.length}}
 			{{#each model}}
 				{{#with this}}
-					<div {{bind-attr class=":card-item :fx-animate-in isLoved:card-item-loved" data-palette=name}}>
+					<div {{bind-attr class=":card-item isLoved:card-item-loved" data-palette=name}}>
 						{{#link-to "colors" (query-params palette=name saveas=name) class="card-item-color-list"}}
 							{{#each colors}}
 								<div class="card-item-color-item" {{bind-attr style=this}}></div>

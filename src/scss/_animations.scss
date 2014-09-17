@@ -24,6 +24,14 @@
     @include prefix(animation, slideup $args);
 }
 
+@mixin slidedown($args: .3s 1) {
+    @include prefix(animation, slidedown $args);
+}
+
+@mixin scalein($args: .3s 1) {
+    @include prefix(animation, scalein $args);
+}
+
 @mixin love($args: .3s 1) {
     @include prefix(animation, love $args);
 }
@@ -57,15 +65,47 @@
 
     %slideup { @include slideup; }
 
-    @include keyframes(love) {
+    @include keyframes(slidedown) {
         0% {
-            @include transform(scale(5));
+            @include transform(translate3d(0, -100%, 0));
+
+            opacity: 0;
+        }
+
+        100% {
+            @include transform(translate3d(0, 0, 0));
+
+            opacity: 1;
+        }
+    }
+
+    %slidedown { @include slidedown; }
+
+    @include keyframes(scalein) {
+        0% {
+            @include transform(scale(0));
 
             opacity: 0;
         }
 
         100% {
             @include transform(scale(1));
+
+            opacity: 1;
+        }
+    }
+
+    %scalein { @include scalein; }
+
+    @include keyframes(love) {
+        0% {
+            @include transform(scale(5) translateZ(0));
+
+            opacity: 0;
+        }
+
+        100% {
+            @include transform(scale(1) translateZ(0));
 
             opacity: 1;
         }

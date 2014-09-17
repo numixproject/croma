@@ -2,8 +2,7 @@
 /* global $, Ember */
 
 $(function() {
-    var material = require("./material.js"),
-        croma = require("./croma.js"),
+    var croma = require("./croma.js"),
         picker = require("./picker.js"),
         Color = require("./color.js"),
         App = Ember.Application.create(),
@@ -16,18 +15,6 @@ $(function() {
                 return 0;
             }
         };
-
-    // Animate content in
-    Ember.View.reopen({
-        didInsertElement: function() {
-            this._super();
-
-            Ember.run.scheduleOnce('afterRender', this, this.afterRenderEvent);
-        },
-        afterRenderEvent: function() {
-            material.animateIn(".fx-animate-in");
-        }
-    });
 
     // Add routes
     App.Router.map(function() {
@@ -75,7 +62,7 @@ $(function() {
             }
 
             return data.sort(bydate);
-        }
+        }.observes("content")
     });
 
     App.IndexController = Ember.ObjectController.extend({
@@ -114,7 +101,7 @@ $(function() {
                 croma.removeItem(palette, false, function() {
                     croma.setData(palette, null);
 
-                    router.refresh();
+//                    router.refresh();
 
                     croma.showToast({
                         body: "Deleted " + palette,
@@ -122,7 +109,7 @@ $(function() {
                             undo: function() {
                                 croma.setData(palette, data);
 
-                                router.refresh();
+//                                router.refresh();
                             }
                         }
                     });
