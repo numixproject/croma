@@ -10,6 +10,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.KeyEvent;
@@ -18,6 +19,9 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.anjlab.android.iab.v3.BillingProcessor;
+import com.anjlab.android.iab.v3.TransactionDetails;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -30,13 +34,14 @@ import me.croma.image.KMeansColorPicker;
 
 import static android.webkit.WebSettings.LOAD_DEFAULT;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements BillingProcessor.IBillingHandler {
 
     // Start page
     private final String INDEX = "file:///android_asset/www/index.html";
     // Arbitrary integer to check request code
     private final int SELECT_PHOTO = 1;
     public WebView webView;
+    BillingProcessor bp;
 
     // Handle back button press
     @Override
@@ -117,6 +122,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        bp = new BillingProcessor(this, null, this);
 
         setContentView(R.layout.main);
 
@@ -138,11 +144,15 @@ public class MainActivity extends Activity {
 
         webView.setWebViewClient(new webViewClient());
 
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            WebView.setWebContentsDebuggingEnabled(true);
+        }
+
         // Expose Java methods as JavaScript interfaces
         webView.addJavascriptInterface(new Storage(this), "androidStorage");
         webView.addJavascriptInterface(new Utils(this), "androidUtils");
         webView.addJavascriptInterface(new ImageUtils(this), "imageUtils");
-        webView.addJavascriptInterface(new InAppBilling(), "inAppBilling");
+        webView.addJavascriptInterface(new InAppBilling(this), "inAppBilling");
 
         // Check if called from share menu
         Intent intent = getIntent();
@@ -166,10 +176,56 @@ public class MainActivity extends Activity {
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+    // Android InAppBilling things
+    // PLEASE SEE https://github.com/anjlab/android-inapp-billing-v3 FOR MORE INFORMATION.
 
-        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+    // IBillingHandler implementation
+    @Override
+    public void onBillingInitialized() {
+        /*
+         * Called then BillingProcessor was initialized and its ready to purchase
+         */
+    }
+
+    @Override
+    public void onProductPurchased(String productId, TransactionDetails details) {
+        /*
+         * Called then requested PRODUCT ID was successfully purchased
+         */
+    }
+
+    @Override
+    public void onBillingError(int errorCode, Throwable error) {
+        /*
+         * Called then some error occured. See Constants class for more details
+         */
+    }
+
+    @Override
+    public void onPurchaseHistoryRestored() {
+        /*
+         * Called then purchase history was restored and the list of all owned PRODUCT ID's
+         * was loaded from Google Play
+         */
+    }
+
+    // Unbind IInAppBilling on close
+    @Override
+    public void onDestroy() {
+        if (bp != null)
+            bp.release();
+
+        super.onDestroy();
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (!bp.handleActivityResult(requestCode, resultCode, data))
+            super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
             case SELECT_PHOTO:
@@ -177,21 +233,23 @@ public class MainActivity extends Activity {
                 if (resultCode == RESULT_OK) {
                     Bitmap bitmap;
 
-                    if (imageReturnedIntent.getData() != null) {
-                        final Uri uri = imageReturnedIntent.getData();
+                    if (data.getData() != null) {
+                        final Uri uri = data.getData();
 
                         bitmap = getBitmap(uri);
 
                         processImage(bitmap);
 
-                    } else if (imageReturnedIntent.getExtras().get("data") != null) {
-                        bitmap = (Bitmap) imageReturnedIntent.getExtras().get("data");
+                    } else if (data.getExtras().get("data") != null) {
+                        bitmap = (Bitmap) data.getExtras().get("data");
 
                         processImage(bitmap);
                     }
                 }
         }
+
     }
+
 
     private class webViewClient extends WebViewClient {
         // Show a splash screen until the WebView is ready
