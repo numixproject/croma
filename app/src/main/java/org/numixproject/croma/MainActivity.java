@@ -3,7 +3,6 @@ package org.numixproject.croma;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -20,8 +19,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.anjlab.android.iab.v3.BillingProcessor;
-import com.anjlab.android.iab.v3.TransactionDetails;
+import com.anjlab.android.iab.v3.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -38,10 +36,12 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
 
     // Start page
     private final String INDEX = "file:///android_asset/www/index.html";
+
     // Arbitrary integer to check request code
     private final int SELECT_PHOTO = 1;
-    public WebView webView;
-    BillingProcessor bp;
+
+    private WebView webView;
+    private BillingProcessor bp;
 
     // Handle back button press
     @Override
@@ -122,8 +122,11 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        bp = new BillingProcessor(this, null, this);
 
+        // Initialize billing processor
+        bp = new BillingProcessor(this, getString(R.string.license_key), this);
+
+        // Set webview options
         setContentView(R.layout.main);
 
         webView = (WebView) findViewById(R.id.webview);
@@ -144,15 +147,16 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
 
         webView.setWebViewClient(new webViewClient());
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            WebView.setWebContentsDebuggingEnabled(true);
+        // Enable debugging in webview
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            WebView.setWebContentsDebuggingEnabled(BuildConfig.DEBUG);
         }
 
         // Expose Java methods as JavaScript interfaces
         webView.addJavascriptInterface(new Storage(this), "androidStorage");
         webView.addJavascriptInterface(new Utils(this), "androidUtils");
-        webView.addJavascriptInterface(new ImageUtils(this), "imageUtils");
-        webView.addJavascriptInterface(new InAppBilling(this), "inAppBilling");
+        webView.addJavascriptInterface(new ImageUtils(), "imageUtils");
+        webView.addJavascriptInterface(new InAppBilling(), "inAppBilling");
 
         // Check if called from share menu
         Intent intent = getIntent();
@@ -182,38 +186,31 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
     // IBillingHandler implementation
     @Override
     public void onBillingInitialized() {
-        /*
-         * Called then BillingProcessor was initialized and its ready to purchase
-         */
+        // Called when BillingProcessor was initialized and its ready to purchase
     }
 
     @Override
     public void onProductPurchased(String productId, TransactionDetails details) {
-        /*
-         * Called then requested PRODUCT ID was successfully purchased
-         */
+        // Called when requested PRODUCT ID was successfully purchased
     }
 
     @Override
     public void onBillingError(int errorCode, Throwable error) {
-        /*
-         * Called then some error occured. See Constants class for more details
-         */
+        // Called when some error occured. See Constants class for more details
     }
 
     @Override
     public void onPurchaseHistoryRestored() {
-        /*
-         * Called then purchase history was restored and the list of all owned PRODUCT ID's
-         * was loaded from Google Play
-         */
+        // Called when purchase history was restored and the list of all owned PRODUCT IDs
+        // was loaded from Google Play
     }
 
     // Unbind IInAppBilling on close
     @Override
     public void onDestroy() {
-        if (bp != null)
+        if (bp != null) {
             bp.release();
+        }
 
         super.onDestroy();
     }
@@ -260,21 +257,48 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
         }
     }
 
-    public class ImageUtils extends MainActivity {
-
-        Context mContext;
-
-        // Set application context.
-        ImageUtils(Context c) {
-            mContext = c;
+    public class InAppBilling {
+        @JavascriptInterface
+        public void purchase(String productId) {
+            bp.purchase(productId);
         }
 
+        @JavascriptInterface
+        public String getPurchaseListingDetails(String productId) {
+            SkuDetails details = bp.getPurchaseListingDetails(productId);
+
+            return "{" +
+                    "\'productId\':" + details.productId +
+                    "\'title\':" + details.title +
+                    "\'description\':" + details.description +
+                    "\'isSubscription\':" + details.isSubscription +
+                    "\'currency\':" + details.currency +
+                    "\'priceValue\':" + details.priceValue +
+                    "\'priceText\':" + details.priceText +
+                    "}";
+        }
+
+        @JavascriptInterface
+        public String getPurchaseTransactionDetails(String productId) {
+            TransactionDetails details = bp.getPurchaseTransactionDetails(productId);
+
+            return "{" +
+                    "\'productId\':" + details.productId +
+                    "\'orderId\':" + details.orderId +
+                    "\'purchaseToken\':" + details.purchaseToken +
+                    "\'purchaseTime\':" + details.purchaseTime +
+                    "\'purchaseInfo\':" + details.purchaseInfo +
+                    "}";
+        }
+    }
+
+    public class ImageUtils {
         @JavascriptInterface
         public void getPalette() {
             // Camera.
             final List<Intent> cameraIntents = new ArrayList<Intent>();
             final Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-            final PackageManager packageManager = mContext.getPackageManager();
+            final PackageManager packageManager = MainActivity.this.getPackageManager();
             final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
 
             for (ResolveInfo res : listCam) {
@@ -294,12 +318,12 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
 
             // Chooser of filesystem options.
             final Intent chooserIntent = Intent.createChooser(galleryIntent,
-                    mContext.getString(R.string.select_label));
+                    MainActivity.this.getString(R.string.select_label));
 
             // Add the camera options.
             chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[]{}));
 
-            ((Activity) mContext).startActivityForResult(chooserIntent, SELECT_PHOTO);
+            MainActivity.this.startActivityForResult(chooserIntent, SELECT_PHOTO);
         }
     }
 
