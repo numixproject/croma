@@ -16,11 +16,11 @@
 			<div class="section-content-center">
 				<div class="section-content-center-inner">
 					{{#if cromaImage}}
-					<div class="paper-button-container">
-						<a {{action "getpalette"}} class="paper-button paper-button-block paper-ripple">
-							Get palette from image
-						</a>
-					</div>
+						<div class="paper-button-container">
+							<a {{action "getpalette"}} class="paper-button paper-button-block paper-ripple">
+								Get palette from image
+							</a>
+						</div>
 					{{/if}}
 					<div class="paper-button-container">
 						{{#link-to "picker" (query-params palette=null from="palette.new") class="paper-button paper-button-block paper-ripple"}}
@@ -32,6 +32,13 @@
 						Add colors manually
 						{{/link-to}}
 					</div>
+					{{#if unlockPro}}
+						<div class="paper-button-container unlock">
+							<a {{action "unlockpro"}} class="paper-button paper-button-block paper-ripple">
+								Unlock pro
+							</a>
+						</div>
+					{{/if}}
 				</div>
 			</div>
 		</div>
