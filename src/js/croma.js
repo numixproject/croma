@@ -3,7 +3,8 @@
 
 var croma = (function() {
 	var Color = require("./color.js"),
-		storage = require("./storage");
+		storage = require("./storage"),
+		productId = "ultimate";
 
 	return {
 
@@ -174,7 +175,14 @@ var croma = (function() {
 			data = croma.getData(palette);
 
 			if ("androidUtils" in window && androidUtils.shareWithLink) {
-				androidUtils.shareWithLink("Share palette", croma.paletteToText(palette, data.colors), croma.paletteToPath(data.colors));
+				try {
+					androidUtils.shareWithLink("Share palette", croma.paletteToText(palette, data.colors), croma.paletteToPath(data.colors));
+				} catch (e) {
+					croma.showToast({
+						body: e,
+						timeout: 3000
+					});
+				}
 			} else {
 				croma.downloadFile(palette + ".gpl", croma.paletteToGPL(palette, data.colors));
 			}
@@ -182,14 +190,54 @@ var croma = (function() {
 
 		// Get palette from an image
 		getPalette: function(check) {
-				var supported = ("imageUtils" in window && imageUtils.getPalette);
+			var supported = ("imageUtils" in window && imageUtils.getPalette);
 
-				if (check) {
+			if (check) {
 				return supported;
 			}
 
 			if (supported) {
-				imageUtils.getPalette();
+				try {
+					imageUtils.getPalette();
+				} catch (e) {
+					croma.showToast({
+						body: e,
+						timeout: 3000
+					});
+				}
+			}
+		},
+
+		// Check if pro version
+		isPro: function() {
+			var purchased = false;
+
+			if ("inAppBilling" in window && inAppBilling.isPurchased) {
+				try {
+					purchased = inAppBilling.isPurchased(productId);
+				} catch (e) {
+					purchased = false;
+				}
+			}
+
+			return purchased;
+		},
+
+		// Unlock pro version with IAP
+		unlockPro: function() {
+			var supported = ("inAppBilling" in window && inAppBilling.purchase);
+
+			if (supported) {
+				try {
+					inAppBilling.purchase(productId);
+				} catch (e) {
+					croma.showToast({
+						body: e,
+						timeout: 3000
+					});
+				}
+			} else {
+				location.href = "https://play.google.com/store/apps/details?id=org.numixproject.croma";
 			}
 		},
 

@@ -179,14 +179,16 @@ $(function() {
     App.PaletteNewRoute = Ember.Route.extend({
         model: function() {
             return {
-                cromaImage: croma.getPalette(true)
+                cromaImage: croma.getPalette(true),
+                unlockPro: !croma.isPro()
             };
         }
     });
 
     App.PaletteNewController = Ember.ObjectController.extend({
         actions: {
-            getpalette: croma.getPalette
+            getpalette: croma.getPalette,
+            unlockpro: croma.unlockPro
         }
     });
 
@@ -290,6 +292,29 @@ $(function() {
 
     App.ColorsController = Ember.ObjectController.extend({
         actions: {
+            add: function(palette) {
+                var data;
+
+                if (!palette) {
+                    return;
+                }
+
+                data = croma.getData(palette);
+
+                if (!croma.isPro() && data && data.colors && Object.getOwnPropertyNames(data.colors).length >= 3) {
+                    croma.showToast({
+                        body: "Unlock pro to add more colors",
+                        actions: {
+                            unlock: croma.unlockPro
+                        },
+                        timeout: 3000
+                    });
+
+                    return;
+                }
+
+                App.Router.router.transitionTo("picker", { queryParams: { palette: palette, from: "colors" } });
+            },
             remove: function(palette, color) {
                 var data, oldcolor,
                     router = this.get("target.router");

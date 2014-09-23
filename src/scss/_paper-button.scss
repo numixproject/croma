@@ -28,6 +28,11 @@
 		&:focus, &:hover { @include dropshadow(2); }
 
 		&:active { @include dropshadow(3); }
+
+		.unlock & {
+			background-color: $accent-color;
+			color: $light-color;
+		}
 	}
 
 	.paper-button-block { display: block; }
