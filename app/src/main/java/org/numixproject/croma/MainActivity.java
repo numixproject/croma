@@ -221,8 +221,9 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
 
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (!bp.handleActivityResult(requestCode, resultCode, data))
+        if (!bp.handleActivityResult(requestCode, resultCode, data)) {
             super.onActivityResult(requestCode, resultCode, data);
+        }
 
         switch (requestCode) {
             case SELECT_PHOTO:
@@ -289,6 +290,11 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
                     "\'purchaseTime\':" + details.purchaseTime +
                     "\'purchaseInfo\':" + details.purchaseInfo +
                     "}";
+        }
+
+        @JavascriptInterface
+        public Boolean isPurchased(String productId) {
+            return true;
         }
     }
 
