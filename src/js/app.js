@@ -6,6 +6,7 @@ $(function() {
         picker = require("./picker.js"),
         Color = require("./color.js"),
         App = Ember.Application.create(),
+        max = 4,
         bydate = function(a, b) {
             if (a.created > b.created) {
                 return -1;
@@ -236,6 +237,18 @@ $(function() {
                 }
 
                 for (var i = 0, l = palette.length; i < l; i++) {
+                    if (!croma.isPro() && i === max) {
+                        croma.showToast({
+                            body: "Unlock pro to save more than " + max + " colors",
+                            actions: {
+                                unlock: croma.unlockPro
+                            },
+                            timeout: 3000
+                        });
+
+                        break;
+                    }
+
                     color = palette[i].value;
 
                     if (color) {
@@ -301,9 +314,9 @@ $(function() {
 
                 data = croma.getData(palette);
 
-                if (!croma.isPro() && data && data.colors && Object.getOwnPropertyNames(data.colors).length >= 3) {
+                if (!croma.isPro() && data && data.colors && Object.getOwnPropertyNames(data.colors).length >= 4) {
                     croma.showToast({
-                        body: "Unlock pro to add more colors",
+                        body: "Unlock pro to add more than " + max + " colors",
                         actions: {
                             unlock: croma.unlockPro
                         },
@@ -408,8 +421,13 @@ $(function() {
 
             for (var i in color) {
                 if ((/.*scheme$/i).test(i) && typeof color[i] === "function") {
-                    name = croma.parseCamelCase(i).replace(/scheme/i, "").trim();
                     objs = color[i]();
+
+                    if (!croma.isPro() && objs.length > 4) {
+                        continue;
+                    }
+
+                    name = croma.parseCamelCase(i).replace(/scheme/i, "").trim();
                     strs = [];
 
                     for (var j = 0; j < objs.length; j++) {
