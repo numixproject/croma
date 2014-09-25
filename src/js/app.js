@@ -2,7 +2,8 @@
 /* global $, Ember */
 
 $(function() {
-    var croma = require("./croma.js"),
+    var material = require("./material.js"),
+        croma = require("./croma.js"),
         picker = require("./picker.js"),
         Color = require("./color.js"),
         App = Ember.Application.create(),
@@ -15,7 +16,8 @@ $(function() {
             } else {
                 return 0;
             }
-        };
+        },
+        animated = {};
 
     // Implement go back functionality
     App.ApplicationRoute = Ember.Route.extend({
@@ -23,6 +25,27 @@ $(function() {
             goBack: function() {
                 window.history.back();
             }
+        }
+    });
+
+    // Animate content in
+    Ember.View.reopen({
+        didInsertElement: function() {
+            this._super();
+
+            Ember.run.scheduleOnce('afterRender', this, this.afterRenderEvent);
+        },
+        afterRenderEvent: function() {
+            var url = location.href;
+
+            // Don't reanimate the same view
+            if (animated[url]) {
+                return;
+            }
+
+            animated[url] = true;
+
+            material.animateIn(".fx-animate-in");
         }
     });
 

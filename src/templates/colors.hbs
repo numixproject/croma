@@ -19,7 +19,7 @@
 		<div class="section-wrapper">
 			{{#if colors.length}}
 				{{#each colors}}
-					<div {{bind-attr class=":card-item isLoved:card-item-loved" data-palette=palette data-color=color}}>
+					<div {{bind-attr class=":card-item :fx-animate-in isLoved:card-item-loved" data-palette=palette data-color=color}}>
 						{{#link-to "details" (query-params color=color)}}
 							<span class="card-item-color" {{bind-attr style=cssStr}}></span>
 						{{/link-to}}
