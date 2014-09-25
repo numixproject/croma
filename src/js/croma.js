@@ -220,7 +220,7 @@ var croma = (function() {
 				}
 			}
 
-			return purchased;
+			return (purchased === true || purchased === "true");
 		},
 
 		// Unlock pro version with IAP
