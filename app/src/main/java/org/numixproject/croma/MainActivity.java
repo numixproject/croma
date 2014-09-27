@@ -19,6 +19,7 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.anjlab.android.iab.v3.*;
 
@@ -191,11 +192,14 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
 
     @Override
     public void onProductPurchased(String productId, TransactionDetails details) {
+        webView.loadUrl(webView.getUrl());
+        Toast.makeText(this, R.string.purchase_success, Toast.LENGTH_LONG).show();
         // Called when requested PRODUCT ID was successfully purchased
     }
 
     @Override
     public void onBillingError(int errorCode, Throwable error) {
+        Toast.makeText(this, R.string.purchase_fail, Toast.LENGTH_LONG).show();
         // Called when some error occured. See Constants class for more details
     }
 
@@ -260,13 +264,13 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
         }
         @JavascriptInterface
         public void purchase(String productId) {
-            Log.d("purchase", productId);
+            Log.d("purchase:", productId);
             bp.purchase(productId);
         }
 
         @JavascriptInterface
         public String isPurchased(String productId) {
-            System.out.println("product ID" + productId);
+            Log.d("product ID: ", productId);
             return bp.isPurchased(productId) ? "true": "false";
         }
     }
