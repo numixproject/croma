@@ -19,15 +19,6 @@ $(function() {
         },
         animated = {};
 
-    // Implement go back functionality
-    App.ApplicationRoute = Ember.Route.extend({
-        actions: {
-            goBack: function() {
-                window.history.back();
-            }
-        }
-    });
-
     // Animate content in
     Ember.View.reopen({
         didInsertElement: function() {
@@ -192,10 +183,19 @@ $(function() {
                 croma.setData(palette, data);
 
                 App.Router.router.transitionTo("colors", { queryParams: { palette: palette } });
+            },
+
+            back: function() {
+                var from = this.get("from");
+
+                from = croma.validateName(from) ? from : "index";
+
+                App.Router.router.transitionTo(from);
             }
         },
 
-        queryParams: [ "oldname" ],
+        queryParams: [ "from", "oldname" ],
+        from: null,
         oldname: null
     });
 
@@ -285,7 +285,7 @@ $(function() {
 
                 croma.setData(name, data);
 
-                App.Router.router.transitionTo("palette.name", { queryParams: { oldname: name } });
+                App.Router.router.transitionTo("palette.name", { queryParams: { oldname: name, from: null } });
             }
         },
 
@@ -349,7 +349,7 @@ $(function() {
                     return;
                 }
 
-                App.Router.router.transitionTo("picker", { queryParams: { palette: palette } });
+                App.Router.router.transitionTo("picker", { queryParams: { palette: palette, from: "colors" } });
             },
             remove: function(palette, color) {
                 var data, oldcolor,
@@ -505,7 +505,7 @@ $(function() {
 
                 croma.setData(name, data);
 
-                App.Router.router.transitionTo("palette.name", { queryParams: { oldname: name } });
+                App.Router.router.transitionTo("palette.name", { queryParams: { oldname: name, from: null } });
             }
         },
 
@@ -557,11 +557,23 @@ $(function() {
                 } else {
                     App.Router.router.transitionTo("palettes", { queryParams: { color: color } });
                 }
+            },
+
+            back: function() {
+                var palette = this.get("palette"),
+                    from = this.get("from");
+
+                if (croma.validateName(from)) {
+                    App.Router.router.transitionTo(from, { queryParams: { palette: palette } });
+                } else {
+                    App.Router.router.transitionTo("index");
+                }
             }
         },
 
-        queryParams: [ "palette" ],
-        palette: null
+        queryParams: [ "palette", "from" ],
+        palette: null,
+        from: null
     });
 
 });
