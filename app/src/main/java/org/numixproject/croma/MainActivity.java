@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
@@ -125,7 +126,7 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
 
         // Initialize billing processor
         bp = new BillingProcessor(this, getString(R.string.license_key), this);
-
+        bp.loadOwnedPurchasesFromGoogle();
         // Set webview options
         setContentView(R.layout.main);
 
@@ -254,14 +255,19 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
     }
 
     public class InAppBilling {
+        public InAppBilling() {
+
+        }
         @JavascriptInterface
         public void purchase(String productId) {
+            Log.d("purchase", productId);
             bp.purchase(productId);
         }
 
         @JavascriptInterface
         public String isPurchased(String productId) {
-            return "true";
+            System.out.println("product ID" + productId);
+            return bp.isPurchased(productId) ? "true": "false";
         }
     }
 
