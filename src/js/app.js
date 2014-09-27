@@ -475,6 +475,28 @@ $(function() {
 
     App.PalettesController = Ember.ObjectController.extend({
         actions: {
+            show: function(palette) {
+                var query, color,
+                    colors = {};
+
+                if (!(palette && palette.colors)) {
+                    return;
+                }
+
+                for (var i in palette.colors) {
+                    if (palette.colors.hasOwnProperty(i) && palette.colors[i]) {
+                        color = palette.colors[i].value;
+
+                        if (color) {
+                            colors[color] = true;
+                        }
+                    }
+                }
+
+                query = croma.paletteToQuery(colors);
+
+                App.Router.router.transitionTo("palette.show", { queryParams: { palette: query } });
+            },
             save: function(palette) {
                 var color,
                     name = "_$generated",

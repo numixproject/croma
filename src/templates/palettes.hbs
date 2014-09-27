@@ -15,17 +15,19 @@
 		<div class="section-wrapper">
 			{{#each palettes}}
 				<div class="card-item fx-animate-in">
-					{{#with this}}
-						<div class="card-item-scheme">
-							{{#each colors}}
-								{{#with this}}
-									<div class="card-item-scheme-item" {{bind-attr style=cssStr}}>
-										{{value}}
-									</div>
-								{{/with}}
-							{{/each}}
-						</div>
-					{{/with}}
+					<div {{action "show" this}} class="card-item-segment">
+						{{#with this}}
+							<div class="card-item-scheme">
+								{{#each colors}}
+									{{#with this}}
+										<div class="card-item-scheme-item" {{bind-attr style=cssStr}}>
+											{{value}}
+										</div>
+									{{/with}}
+								{{/each}}
+							</div>
+						{{/with}}
+					</div>
 					<div class="card-item-segment">
 						<div class="card-item-text">{{name}}</div>
 						<div class="card-item-actions">

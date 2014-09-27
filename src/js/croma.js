@@ -129,16 +129,24 @@ var croma = (function() {
 			return content.join("\n") + "\n";
 		},
 
-		// Convert color hashmap to link
-		paletteToPath: function(colors) {
-			var rgb,
-				path = "#/palette/show?palette=";
+		// Convert color hashmap to query parameter
+		paletteToQuery: function(colors) {
+			var rgb, query = "";
 
 			for (var c in colors) {
 				rgb = new Color(c).rgb;
 
-				path += rgb.join(",") + "|";
+				query += rgb.join(",") + "|";
 			}
+
+			return query;
+		},
+
+		// Convert color hashmap to link
+		paletteToPath: function(colors) {
+			var path = "#/palette/show?palette=";
+
+			path += croma.paletteToQuery(colors);
 
 			return path;
 		},
