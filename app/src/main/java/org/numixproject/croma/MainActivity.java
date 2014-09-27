@@ -21,7 +21,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import com.anjlab.android.iab.v3.*;
+import com.anjlab.android.iab.v3.BillingProcessor;
+import com.anjlab.android.iab.v3.TransactionDetails;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -127,7 +128,10 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
 
         // Initialize billing processor
         bp = new BillingProcessor(this, getString(R.string.license_key), this);
+
+        // Restore purchases
         bp.loadOwnedPurchasesFromGoogle();
+
         // Set webview options
         setContentView(R.layout.main);
 
@@ -259,9 +263,6 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
     }
 
     public class InAppBilling {
-        public InAppBilling() {
-
-        }
         @JavascriptInterface
         public void purchase(String productId) {
             Log.d("purchase:", productId);
