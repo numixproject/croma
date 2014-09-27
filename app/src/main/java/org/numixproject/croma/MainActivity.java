@@ -293,8 +293,8 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
         }
 
         @JavascriptInterface
-        public Boolean isPurchased(String productId) {
-            return true;
+        public String isPurchased(String productId) {
+            return "true";
         }
     }
 

@@ -7,22 +7,13 @@ android {
         applicationId 'org.numixproject.croma'
         minSdkVersion 14
         targetSdkVersion 19
-        versionCode 1
-        versionName '1.0'
+        versionName '1.1'
+        versionCode 3
     }
     buildTypes {
         release {
-            runProguard true
+            runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            applicationIdSuffix 'pro'
-            versionNameSuffix 'pro'
-        }
-        pro {
-            debuggable false
-            jniDebugBuild false
-            renderscriptDebugBuild false
-            renderscriptOptimLevel 3
-            runProguard true
         }
     }
     aaptOptions {
