@@ -180,7 +180,6 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
         }
     }
 
-    // Android InAppBilling things
     // PLEASE SEE https://github.com/anjlab/android-inapp-billing-v3 FOR MORE INFORMATION.
 
     // IBillingHandler implementation
@@ -221,10 +220,6 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
 
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (!bp.handleActivityResult(requestCode, resultCode, data)) {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-
         switch (requestCode) {
             case SELECT_PHOTO:
 
@@ -262,34 +257,6 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
         @JavascriptInterface
         public void purchase(String productId) {
             bp.purchase(productId);
-        }
-
-        @JavascriptInterface
-        public String getPurchaseListingDetails(String productId) {
-            SkuDetails details = bp.getPurchaseListingDetails(productId);
-
-            return "{" +
-                    "\'productId\':" + details.productId +
-                    "\'title\':" + details.title +
-                    "\'description\':" + details.description +
-                    "\'isSubscription\':" + details.isSubscription +
-                    "\'currency\':" + details.currency +
-                    "\'priceValue\':" + details.priceValue +
-                    "\'priceText\':" + details.priceText +
-                    "}";
-        }
-
-        @JavascriptInterface
-        public String getPurchaseTransactionDetails(String productId) {
-            TransactionDetails details = bp.getPurchaseTransactionDetails(productId);
-
-            return "{" +
-                    "\'productId\':" + details.productId +
-                    "\'orderId\':" + details.orderId +
-                    "\'purchaseToken\':" + details.purchaseToken +
-                    "\'purchaseTime\':" + details.purchaseTime +
-                    "\'purchaseInfo\':" + details.purchaseInfo +
-                    "}";
         }
 
         @JavascriptInterface
