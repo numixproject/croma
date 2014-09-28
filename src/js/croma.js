@@ -222,13 +222,15 @@ var croma = (function() {
 
 			if ("inAppBilling" in window && inAppBilling.isPurchased) {
 				try {
-					purchased = inAppBilling.isPurchased(productId);
+					purchased = (inAppBilling.isPurchased(productId) === "true") ? true : false;
 				} catch (e) {
 					purchased = false;
 				}
+			} else {
+				purchased = true;
 			}
 
-			return (purchased === true || purchased === "true");
+			return purchased;
 		},
 
 		// Unlock pro version with IAP
