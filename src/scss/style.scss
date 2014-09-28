@@ -60,12 +60,18 @@ header {
 .header-action-container { @extend %clearfix; }
 
 .header-action-icon {
+    @extend %snappy;
+
     float: left;
     height: $bar-height;
     width: $bar-height;
     margin: 0 .25em;
     background-repeat: no-repeat;
     background-position: center center;
+
+    &:focus, &:hover { background-color: rgba(0,0,0,0.05); }
+
+    &:active { background-color: rgba(0,0,0,0.1); }
 }
 
 .header-action-icon-right { float: right; }
