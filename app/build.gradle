@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 20
+    compileSdkVersion 19
     buildToolsVersion '20.0.0'
     defaultConfig {
         applicationId 'org.numixproject.croma'
         minSdkVersion 14
         targetSdkVersion 19
-        versionName '1.1'
-        versionCode 3
+        versionName '1.0'
+        versionCode 5
     }
     buildTypes {
         release {

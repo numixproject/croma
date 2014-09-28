@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
@@ -196,15 +195,17 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
 
     @Override
     public void onProductPurchased(String productId, TransactionDetails details) {
-        webView.loadUrl(webView.getUrl());
-        Toast.makeText(this, R.string.purchase_success, Toast.LENGTH_LONG).show();
         // Called when requested PRODUCT ID was successfully purchased
+        Toast.makeText(this, R.string.purchase_success, Toast.LENGTH_SHORT).show();
+
+        // Refresh webview
+        webView.loadUrl(webView.getUrl().toString());
     }
 
     @Override
     public void onBillingError(int errorCode, Throwable error) {
-        Toast.makeText(this, R.string.purchase_fail, Toast.LENGTH_LONG).show();
         // Called when some error occured. See Constants class for more details
+        Toast.makeText(this, R.string.purchase_fail, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -265,13 +266,11 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
     public class InAppBilling {
         @JavascriptInterface
         public void purchase(String productId) {
-            Log.d("purchase:", productId);
             bp.purchase(productId);
         }
 
         @JavascriptInterface
         public String isPurchased(String productId) {
-            Log.d("product ID: ", productId);
             return bp.isPurchased(productId) ? "true": "false";
         }
     }
