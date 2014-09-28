@@ -7,7 +7,6 @@ var gulp = require("gulp"),
     rename = require("gulp-rename"),
     rimraf = require("gulp-rimraf"),
     concat = require("gulp-concat"),
-    sourcemaps = require("gulp-sourcemaps"),
     jshint = require("gulp-jshint"),
     uglify = require("gulp-uglify"),
     handlebars = require("gulp-ember-handlebars"),
@@ -35,7 +34,6 @@ gulp.task("templates", function() {
     }))
     .pipe(concat("templates.js"))
     .pipe(gutil.env.production ? uglify() : gutil.noop())
-    .pipe(sourcemaps.write())
     .pipe(rename({ suffix: ".min" }))
     .pipe(gulp.dest("dist/js"));
 });
@@ -49,10 +47,8 @@ gulp.task("libs", function() {
         "bower_components/velocity/velocity.min.js"
     ])
     .pipe(plumber())
-    .pipe(sourcemaps.init())
     .pipe(concat("libs.js"))
     .pipe(gutil.env.production ? uglify() : gutil.noop())
-    .pipe(sourcemaps.write())
     .pipe(rename({ suffix: ".min" }))
     .pipe(gulp.dest("dist/js"))
     .on("error", gutil.log);
@@ -66,9 +62,7 @@ gulp.task("scripts", function() {
     .pipe(source("app.js"))
     .pipe(buffer())
     .pipe(plumber())
-    .pipe(sourcemaps.init())
     .pipe(gutil.env.production ? uglify() : gutil.noop())
-    .pipe(sourcemaps.write())
     .pipe(rename({ suffix: ".min" }))
     .pipe(gulp.dest("dist/js"))
     .on("error", gutil.log);
