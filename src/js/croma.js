@@ -135,8 +135,6 @@ var croma = (function() {
 
 			query = decodeURIComponent(query);
 
-			console.log(query);
-
 			if ((/^(([0-9]{1,3},){2}[0-9]{1,3}[\:])+[\:]?$/).test(query + ":")) {
 				colors = query.replace(/\:$/, "").split(":");
 
@@ -205,9 +203,9 @@ var croma = (function() {
 
 			data = croma.getData(palette);
 
-			if ("androidUtils" in window && androidUtils.shareWithLink) {
+			if ("androidTools" in window && androidTools.shareWithLink) {
 				try {
-					androidUtils.shareWithLink("Share palette", croma.paletteToText(palette, data.colors), croma.paletteToPath(data.colors));
+					androidTools.shareWithLink("Share palette", croma.paletteToText(palette, data.colors), croma.paletteToPath(data.colors));
 				} catch (e) {
 					croma.showToast({
 						body: e,
