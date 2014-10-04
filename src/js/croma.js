@@ -129,6 +129,11 @@ var croma = (function() {
 			return content.join("\n") + "\n";
 		},
 
+		// Convert query parameter to array
+		queryToPalette: function(query) {
+			return decodeURI(query).replace(/\:$/, "").split(":");
+		},
+
 		// Convert color hashmap to query parameter
 		paletteToQuery: function(colors) {
 			var rgb, query = "";
@@ -136,10 +141,10 @@ var croma = (function() {
 			for (var c in colors) {
 				rgb = new Color(c).rgb;
 
-				query += rgb.join(",") + "|";
+				query += rgb.join(",") + ":";
 			}
 
-			return query;
+			return encodeURI(query);
 		},
 
 		// Convert color hashmap to link

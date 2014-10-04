@@ -2,6 +2,7 @@ var material = (function() {
 
     var animateIn = function(el) {
         var delay, item, offset,
+            duration = 150,
             $el = $(el);
 
         // Return if no element found
@@ -24,8 +25,7 @@ var material = (function() {
 
             $(item).css({
                 "transition-delay": delay + "ms",
-                "transition-duration": "150ms",
-                "transition-timing-function": "ease-out"
+                "transition-duration": duration + "ms"
             });
         }
 
@@ -44,7 +44,7 @@ var material = (function() {
                 "transition-duration": "",
                 "transition-timing-function": ""
             });
-        }, (delay + 150));
+        }, (delay + duration));
     };
 
     return {

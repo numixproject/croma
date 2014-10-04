@@ -24,7 +24,7 @@ $(function() {
         didInsertElement: function() {
             this._super();
 
-            Ember.run.scheduleOnce('afterRender', this, this.afterRenderEvent);
+            Ember.run.scheduleOnce("afterRender", this, this.afterRenderEvent);
         },
         afterRenderEvent: function() {
             var url = location.href;
@@ -226,7 +226,7 @@ $(function() {
                 App.Router.router.transitionTo("index");
             }
 
-            rgbvals = decodeURIComponent(params.palette).replace(/\|$/, "").split("|");
+            rgbvals = croma.queryToPalette(params.palette);
 
             for (var i = 0, l = rgbvals.length; i < l; i++) {
                 c = new Color({
