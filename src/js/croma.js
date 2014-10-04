@@ -256,23 +256,6 @@ var croma = (function() {
 			return ((name && name !== "undefined" && name !== "null") && (tmp || !(/^_\$.*/).test(name)));
 		},
 
-		// Fade out an element
-		fadeOut: function(el, duration) {
-			var $el = $(el);
-
-			duration = duration || 300;
-
-			$el.css({
-				"transition-duration": duration + "ms",
-				"transition-timing-function": "ease-out",
-				"opacity": 0
-			});
-
-			setTimeout(function() {
-				$el.remove();
-			}, duration);
-		},
-
 		// Show a toast
 		// @param {{ body: String, actions: Object, timeout: Number }} options
 		showToast: function(options) {
@@ -308,16 +291,39 @@ var croma = (function() {
 			}
 
 			$toast.on("click", function() {
-				croma.fadeOut(this);
+				croma.hideToast(this);
 			}).appendTo($container);
 
 			if (options.timeout) {
 				setTimeout(function() {
-					croma.fadeOut($toast);
+					croma.hideToast($toast);
 				}, options.timeout);
 			}
 
 			return $toast;
+		},
+
+		// Hide toast
+		hideToast: function(el, duration) {
+			var $el = $(el);
+
+			duration = duration || 300;
+
+			if ($.fn.velocity) {
+				$el.velocity({
+					opacity: 0
+				}, (duration / 2)).velocity({
+					height: 0,
+					paddingTop: 0,
+					paddingBottom: 0,
+					marginTop: 0,
+					marginBottom: 0
+				}, (duration / 2), function() {
+					$(this).remove();
+				});
+			} else {
+				$el.remove();
+			}
 		}
 	};
 }());
