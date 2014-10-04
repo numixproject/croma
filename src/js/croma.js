@@ -131,7 +131,25 @@ var croma = (function() {
 
 		// Convert query parameter to array
 		queryToPalette: function(query) {
-			return decodeURI(query).replace(/\:$/, "").split(":");
+			var colors, objs = [];
+
+			query = decodeURIComponent(query);
+
+			console.log(query);
+
+			if ((/^(([0-9]{1,3},){2}[0-9]{1,3}[\:])+[\:]?$/).test(query + ":")) {
+				colors = query.replace(/\:$/, "").split(":");
+
+				for (var i = 0, l = colors.length; i < l; i++) {
+					objs.push(new Color({
+						rgb: colors[i].split(",")
+					}));
+				}
+
+				return objs;
+			} else {
+				return Color.parse(query);
+			}
 		},
 
 		// Convert color hashmap to query parameter
