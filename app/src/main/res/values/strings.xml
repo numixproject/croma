@@ -5,6 +5,7 @@
     <string name="share_label">Extract colors</string>
     <string name="wait_label">Hold my beer...</string>
     <string name="select_label">Select image</string>
+    <string name="parse_error">An error occured while parsing the data</string>
     <string name="key_file">Store</string>
     <string name="purchase_success">Purchase successful</string>
     <string name="purchase_fail">Purchase failed</string>

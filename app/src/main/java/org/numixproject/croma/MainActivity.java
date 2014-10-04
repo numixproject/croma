@@ -26,6 +26,7 @@ import com.anjlab.android.iab.v3.TransactionDetails;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,9 +73,13 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
         return null;
     }
 
+    private String makePaletteUrl(String query) {
+        return INDEX + "#/palette/show?palette=" + query;
+    }
+
     // Get color palette from image
     private String getColors(Bitmap bitmap) {
-        String url = INDEX + "#/palette/show?palette=";
+        String query = "";
 
         BitMapImage b = new BitMapImage(bitmap);
 
@@ -84,13 +89,13 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
             List<Color> l = k.getUsefulColors(b, 6);
 
             for (Color c : l) {
-                url += c.getRed() + "," + c.getGreen() + "," + c.getBlue() + "|";
+                query += c.getRed() + "," + c.getGreen() + "," + c.getBlue() + ":";
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return url;
+        return makePaletteUrl(query);
     }
 
     // Show a progress dialog when processing image
@@ -165,16 +170,38 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
 
         // Check if called from share menu
         Intent intent = getIntent();
+        String type = intent.getType();
         String action = intent.getAction();
         Bundle extras = intent.getExtras();
         Uri data = intent.getData();
 
-        if (Intent.ACTION_SEND.equals(action) && extras.containsKey(Intent.EXTRA_STREAM)) {
-            // Get resource path
-            final Uri imageUri = extras.getParcelable(Intent.EXTRA_STREAM);
-            final Bitmap bitmap = getBitmap(imageUri);
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if ("text/plain".equals(type) && extras.containsKey(Intent.EXTRA_TEXT)) {
+                // Handle text being sent
+                try {
+                    // Ember crashes if there is percentage sign in decoded URL, so let's strip them
+                    final String QUERY = URLEncoder.encode(intent.getStringExtra(Intent.EXTRA_TEXT).replaceAll("%", ""), "UTF-8")
+                            .replaceAll("\\+", "%20")
+                            .replaceAll("\\%0A", "%20")
+                            .replaceAll("\\%21", "!")
+                            .replaceAll("\\%27", "'")
+                            .replaceAll("\\%28", "(")
+                            .replaceAll("\\%29", ")")
+                            .replaceAll("\\%7E", "~");
 
-            processImage(bitmap);
+                    webView.loadUrl(makePaletteUrl(QUERY));
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (type.startsWith("image/") && extras.containsKey(Intent.EXTRA_STREAM)) {
+                // Get resource path
+                final Uri imageUri = extras.getParcelable(Intent.EXTRA_STREAM);
+                final Bitmap bitmap = getBitmap(imageUri);
+
+                processImage(bitmap);
+            } else {
+                Toast.makeText(this, R.string.parse_error, Toast.LENGTH_SHORT).show();
+            }
         } else if (Intent.ACTION_VIEW.equals(action) && data != null) {
             final String URL = data.toString().replaceAll("(^https?://" + getString(R.string.app_host) + "/|^croma://)", INDEX);
 
