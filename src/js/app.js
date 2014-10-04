@@ -27,7 +27,7 @@ $(function() {
             Ember.run.scheduleOnce("afterRender", this, this.afterRenderEvent);
         },
         afterRenderEvent: function() {
-            var url = location.href;
+            var url = location.href.replace(/(#\/)$/, "");
 
             // Don't reanimate the same view
             if (animated[url]) {
