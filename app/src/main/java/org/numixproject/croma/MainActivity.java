@@ -30,6 +30,7 @@ import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import me.croma.image.Color;
 import me.croma.image.KMeansColorPicker;
@@ -206,17 +207,10 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
             if ("text/plain".equals(type) && extras.containsKey(Intent.EXTRA_TEXT)) {
                 // Handle text being sent
                 try {
-                    // Ember crashes if there is percentage sign in decoded URL, so let's strip them
-                    final String QUERY = URLEncoder.encode(intent.getStringExtra(Intent.EXTRA_TEXT).replaceAll("%", ""), "UTF-8")
-                            .replaceAll("\\+", "%20")
-                            .replaceAll("\\%0A", "%20")
-                            .replaceAll("\\%21", "!")
-                            .replaceAll("\\%27", "'")
-                            .replaceAll("\\%28", "(")
-                            .replaceAll("\\%29", ")")
-                            .replaceAll("\\%7E", "~");
+                    final String query = intent.getStringExtra(Intent.EXTRA_TEXT);
 
-                    webView.loadUrl(makePaletteUrl(QUERY));
+                    System.out.println("results: "  + Utils.getEncodedString(query));
+                    webView.loadUrl(makePaletteUrl(Utils.getEncodedString(query)));
                 } catch(Exception e) {
                     e.printStackTrace();
                 }

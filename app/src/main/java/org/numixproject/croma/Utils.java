@@ -5,9 +5,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.webkit.JavascriptInterface;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Utils {
 
-    Context mContext;
+    private Context mContext;
 
     private SharedPreferences mStorage;
 
@@ -31,5 +36,38 @@ public class Utils {
         String url = "http://" + mContext.getString(R.string.app_host) + "/" + path;
 
         shareItem(title, content + "\n" + url);
+    }
+
+
+    /**
+     * Format and encode the string
+     * @param s Input
+     * @return Formatted URL encoded String.
+     */
+    public static String getEncodedString(String s) {
+        String regex = "(#[0-9a-f]{6})|(#[0-9a-f]{3})|(((rgba?)|(cmyk)|(lab))([\\s+]?\\([\\s+]?(\\d+)[\\s+]?,[\\s+]?(\\d+)[\\s+]?,[\\s+]?(\\d+)[\\s+]?[)]))|(((hsva?)|(hsla?))([\\s+]?\\([\\s+]?(\\d+)[\\s+]?,[\\s+]?(\\d+)[%+]?[\\s+]?,[\\s+]?(\\d+)[%+]?[\\s+]?[)]))";
+        Pattern pattern = Pattern.compile(regex);
+        StringBuilder sb = new StringBuilder();
+        Matcher m = pattern.matcher(s);
+        while (m.find()) {
+            int si = m.start();
+            int ei = m.end();
+            sb.append(s.substring(si, ei) + " ");
+        }
+        String r = "";
+        try {
+            r = URLEncoder.encode(sb.toString().replaceAll("\\+", "%20")
+                    .replaceAll("\\%0A", "%20")
+                    .replaceAll("\\+", "%20")
+                    .replaceAll("\\%21", "!")
+                    .replaceAll("\\%27", "'")
+                    .replaceAll("\\%28", "(")
+                    .replaceAll("\\%29", ")")
+                    .replaceAll("\\%7E", "~"), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            //UTF-8 is supported.
+            r = "";
+        }
+        return r;
     }
 }
