@@ -220,18 +220,16 @@ $(function() {
     App.PaletteShowRoute = Ember.Route.extend({
         model: function(params) {
             var palette = [],
-                rgbvals, c;
+                colors, c;
 
             if (!(params && params.palette)) {
                 App.Router.router.transitionTo("index");
             }
 
-            rgbvals = croma.queryToPalette(params.palette);
+            colors = croma.queryToPalette(params.palette);
 
-            for (var i = 0, l = rgbvals.length; i < l; i++) {
-                c = new Color({
-                    rgb: rgbvals[i].split(",")
-                }).tohex();
+            for (var i = 0, l = colors.length; i < l; i++) {
+                c = colors[i].tohex();
 
                 palette.push({
                     cssStr: "background-color:" + c,

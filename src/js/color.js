@@ -803,14 +803,22 @@ var Color = (function() {
     // Provide method to parse colors from a string
     ColorConstructor.parse = function(str) {
         var colors = [],
-            objs = [];
+            objs = [],
+            c, hex, map = {};
 
         if (typeof str === "string") {
             colors = str.match(/(#[0-9a-f]{6})|(#[0-9a-f]{3})|(((rgba?)|(cmyk)|(lab))([\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?[)]))|(((hsva?)|(hsla?))([\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[%+]?[\s+]?,[\s+]?(\d+)[%+]?[\s+]?[)]))/gi);
 
             for (var i = 0, l = colors.length; i < l; i++) {
                 if (colors[i]) {
-                    objs.push(_fn.colorObj(colors[i]));
+                    c = _fn.colorObj(colors[i]);
+                    hex = c.tohex();
+
+                    // Only list unique colors
+                    if (!map[hex]) {
+                        map[hex] = true;
+                        objs.push(c);
+                    }
                 }
             }
         }
