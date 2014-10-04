@@ -27,10 +27,8 @@ import com.anjlab.android.iab.v3.TransactionDetails;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import me.croma.image.Color;
 import me.croma.image.KMeansColorPicker;
@@ -192,7 +190,7 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
 
         // Expose Java methods as JavaScript interfaces
         webView.addJavascriptInterface(new Storage(this), "androidStorage");
-        webView.addJavascriptInterface(new Utils(this), "androidUtils");
+        webView.addJavascriptInterface(new Tools(this), "androidTools");
         webView.addJavascriptInterface(new ImageUtils(), "imageUtils");
         webView.addJavascriptInterface(new InAppBilling(), "inAppBilling");
 

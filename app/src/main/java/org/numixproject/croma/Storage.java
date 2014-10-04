@@ -6,24 +6,21 @@ import android.webkit.JavascriptInterface;
 
 public class Storage {
 
-    Context mContext;
-
-    private SharedPreferences mStorage;
+    private SharedPreferences storage;
 
     // Set application context.
     Storage(Context c) {
-        mContext = c;
-        mStorage = c.getSharedPreferences(c.getResources().getString(R.string.key_file), 0);
+        storage = c.getSharedPreferences(c.getResources().getString(R.string.key_file), 0);
     }
 
     @JavascriptInterface
     public String getItem(String key) {
-        return mStorage.getString(key, "");
+        return storage.getString(key, "");
     }
 
     @JavascriptInterface
     public void setItem(String key, String value) {
-        SharedPreferences.Editor e = mStorage.edit();
+        SharedPreferences.Editor e = storage.edit();
 
         e.putString(key, value);
         e.apply();
@@ -31,7 +28,7 @@ public class Storage {
 
     @JavascriptInterface
     public void removeItem(String key) {
-        SharedPreferences.Editor e = mStorage.edit();
+        SharedPreferences.Editor e = storage.edit();
 
         e.remove(key);
         e.apply();
@@ -39,7 +36,7 @@ public class Storage {
 
     @JavascriptInterface
     public void clear() {
-        SharedPreferences.Editor e = mStorage.edit();
+        SharedPreferences.Editor e = storage.edit();
 
         e.clear();
         e.apply();
