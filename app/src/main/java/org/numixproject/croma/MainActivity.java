@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.view.KeyEvent;
 import android.view.View;
@@ -46,11 +47,37 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
     private WebView webView;
     private BillingProcessor bp;
 
+    private boolean doubleBackToExitPressedOnce = false;
+
     // Handle back button press
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ((keyCode == KeyEvent.KEYCODE_BACK) && webView.canGoBack()) {
-            webView.goBack();
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            final String URL = webView.getUrl().replaceAll("#/", "").replaceAll("#", "");
+
+            if (URL.equals(INDEX) || !webView.canGoBack()) {
+
+                if (this.doubleBackToExitPressedOnce) {
+                    finish();
+
+                    return true;
+                }
+
+                this.doubleBackToExitPressedOnce = true;
+
+                Toast.makeText(this, R.string.exit_tip, Toast.LENGTH_SHORT).show();
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        doubleBackToExitPressedOnce = false;
+                    }
+                }, 2000);
+
+            } else if (webView.canGoBack()) {
+                webView.goBack();
+            }
 
             return true;
         }
@@ -203,7 +230,7 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
                 Toast.makeText(this, R.string.parse_error, Toast.LENGTH_SHORT).show();
             }
         } else if (Intent.ACTION_VIEW.equals(action) && data != null) {
-            final String URL = data.toString().replaceAll("(^https?://" + getString(R.string.app_host) + "/|^croma://)", INDEX);
+            final String URL = data.toString().replaceAll("(^https?://" + R.string.app_host + "/|^croma://)", INDEX);
 
             webView.loadUrl(URL);
         } else {
