@@ -28,7 +28,7 @@
         @include flexbox;
         @include flex-direction(row);
         @include justify-content(space-between);
-        @include align-items(stretch);
+        @include align-items(center);
         @include slideup;
 
         margin: ($spacing / 2) 0;
@@ -46,11 +46,14 @@
         &:only-of-type, &:last-of-type { border-right: none; }
 
         &:first-of-type { @include flex-grow(1); }
+
+        &:not(.toast-notification-action) {  word-wrap: break-word; }
     }
 
     .toast-notification-action {
         @extend %snappy;
 
+        min-width: 4.2em;
         text-transform: uppercase;
         cursor: pointer;
 

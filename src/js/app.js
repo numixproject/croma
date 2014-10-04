@@ -128,7 +128,7 @@ $(function() {
                     router.refresh();
 
                     croma.showToast({
-                        body: "Deleted " + palette,
+                        body: "Deleted " + palette + ". Tap to dismiss.",
                         actions: {
                             undo: function() {
                                 croma.setData(palette, data);
@@ -158,7 +158,7 @@ $(function() {
 
                 if (!croma.validateName(palette)) {
                     croma.showToast({
-                        body: "Invalid palette name " + palette,
+                        body: "Invalid palette name " + palette + ".",
                         timeout: 3000
                     });
 
@@ -262,7 +262,7 @@ $(function() {
                 for (var i = 0, l = palette.length; i < l; i++) {
                     if (!croma.isPro() && i === max) {
                         croma.showToast({
-                            body: "Unlock pro to save more than " + max + " colors",
+                            body: "Unlock pro to save more than " + max + " colors.",
                             actions: {
                                 unlock: croma.unlockPro
                             },
@@ -339,7 +339,7 @@ $(function() {
 
                 if (!croma.isPro() && data && data.colors && Object.getOwnPropertyNames(data.colors).length >= 4) {
                     croma.showToast({
-                        body: "Unlock pro to add more than " + max + " colors",
+                        body: "Unlock pro to add more than " + max + " colors.",
                         actions: {
                             unlock: croma.unlockPro
                         },
@@ -371,7 +371,7 @@ $(function() {
                     router.refresh();
 
                     croma.showToast({
-                        body: "Deleted " + color,
+                        body: "Deleted " + color + ". Tap to dismiss.",
                         actions: {
                             undo: function() {
                                 data = croma.getData(palette);
