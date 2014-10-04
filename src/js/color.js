@@ -513,8 +513,8 @@ var Color = (function() {
                     rgb: /^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i,
                     hsl: /^hsla?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[%+]?[\s+]?,[\s+]?(\d+)[%+]?[\s+]?/i,
                     hsv: /^hsva?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[%+]?[\s+]?,[\s+]?(\d+)[%+]?[\s+]?/i,
-                    cmyk: /^cmyk?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i,
-                    lab: /^lab?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)?[\s+]?,[\s+]?(\d+)?[\s+]?/i,
+                    cmyk: /^cmyk[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i,
+                    lab: /^lab[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)?[\s+]?,[\s+]?(\d+)?[\s+]?/i,
                     name: function(color) {
                         if (color && typeof color == "string") {
                             color = color.toLowerCase();
@@ -799,6 +799,24 @@ var Color = (function() {
             }
         }
     }
+
+    // Provide method to parse colors from a string
+    ColorConstructor.parse = function(str) {
+        var colors = [],
+            objs = [];
+
+        if (typeof str === "string") {
+            colors = str.match(/(#[0-9a-f]{6})|(#[0-9a-f]{3})|(((rgba?)|(cmyk)|(lab))([\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?[)]))|(((hsva?)|(hsla?))([\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[%+]?[\s+]?,[\s+]?(\d+)[%+]?[\s+]?[)]))/gi);
+
+            for (var i = 0, l = colors.length; i < l; i++) {
+                if (colors[i]) {
+                    objs.push(_fn.colorObj(colors[i]));
+                }
+            }
+        }
+
+        return objs;
+    };
 
     // Methods
     ColorConstructor.prototype = {
