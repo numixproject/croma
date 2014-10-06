@@ -511,10 +511,10 @@ var Color = (function() {
                 var models = {
                     hex: /(^#[0-9a-f]{6}$)|(^#[0-9a-f]{3}$)/i,
                     rgb: /^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i,
-                    hsl: /^hsla?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[%+]?[\s+]?,[\s+]?(\d+)[%+]?[\s+]?/i,
-                    hsv: /^hsva?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[%+]?[\s+]?,[\s+]?(\d+)[%+]?[\s+]?/i,
+                    hsl: /^hsla?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[%]?[\s+]?,[\s+]?(\d+)[%]?[\s+]?/i,
+                    hsv: /^hsva?|hsba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[%]?[\s+]?,[\s+]?(\d+)[%]?[\s+]?/i,
                     cmyk: /^cmyk[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i,
-                    lab: /^lab[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)?[\s+]?,[\s+]?(\d+)?[\s+]?/i,
+                    lab: /^l[\*]?a[\*]?b[\*]?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?[-]?[\s+]?(\d+)?[\s+]?,[\s+]?[-]?[\s+]?(\d+)?[\s+]?/i,
                     name: function(color) {
                         if (color && typeof color == "string") {
                             color = color.toLowerCase();
@@ -690,7 +690,7 @@ var Color = (function() {
             parseHSV: function(color) {
                 var arr, hsv, rgb, alpha;
 
-                arr = color.replace(/[hsva()]/g, "").split(",");
+                arr = color.replace(/[hsbva()]/g, "").split(",");
 
                 hsv = [
                     parseInt(arr[0], 10),
@@ -727,7 +727,7 @@ var Color = (function() {
             parseLAB: function(color) {
                 var arr, lab, rgb, alpha;
 
-                arr = color.replace(/[lab()]/g, "").split(",");
+                arr = color.replace(/[lab\*()]/g, "").split(",");
 
                 lab = [
                     parseInt(arr[0], 10),
@@ -807,7 +807,7 @@ var Color = (function() {
             c, hex, map = {};
 
         if (typeof str === "string") {
-            colors = str.match(/(#[0-9a-f]{6})|(#[0-9a-f]{3})|(((rgba?)|(cmyk)|(lab))([\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?[)]))|(((hsva?)|(hsla?))([\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[%+]?[\s+]?,[\s+]?(\d+)[%+]?[\s+]?[)]))/gi);
+            colors = str.match(/((#([0-9a-f]{6}))|(#([0-9a-f]{3})))|(((rgba?)|(cmyk)|(lab))([\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?[)]))|((l[\*]?a[\*]?b[\*]?)([\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?[-]?[\s+]?(\d+)[\s+]?,[\s+]?[-]?[\s+]?(\d+)[\s+]?[)]))|(((hsva?)|(hsba?)|(hsla?))([\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[%]?[\s+]?,[\s+]?(\d+)[%]?[\s+]?[)]))/gi);
 
             for (var i = 0, l = colors.length; i < l; i++) {
                 if (colors[i]) {
