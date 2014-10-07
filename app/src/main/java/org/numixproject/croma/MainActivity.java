@@ -204,14 +204,9 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if ("text/plain".equals(type) && extras.containsKey(Intent.EXTRA_TEXT)) {
                 // Handle text being sent
-                try {
-                    final String query = intent.getStringExtra(Intent.EXTRA_TEXT);
+                final String query = intent.getStringExtra(Intent.EXTRA_TEXT);
 
-                    System.out.println("results: "  + Utils.getEncodedString(query));
-                    webView.loadUrl(makePaletteUrl(Utils.getEncodedString(query)));
-                } catch(Exception e) {
-                    e.printStackTrace();
-                }
+                webView.loadUrl(makePaletteUrl(Utils.getEncodedString(query)));
             } else if (type.startsWith("image/") && extras.containsKey(Intent.EXTRA_STREAM)) {
                 // Get resource path
                 final Uri imageUri = extras.getParcelable(Intent.EXTRA_STREAM);
@@ -222,7 +217,7 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
                 Toast.makeText(this, R.string.parse_error, Toast.LENGTH_SHORT).show();
             }
         } else if (Intent.ACTION_VIEW.equals(action) && data != null) {
-            final String URL = data.toString().replaceAll("(^https?://" + R.string.app_host + "/|^croma://)", INDEX);
+            final String URL = data.toString().replaceAll("(^https?://" + getString(R.string.app_host) + "/|^croma://)", INDEX);
 
             webView.loadUrl(URL);
         } else {
