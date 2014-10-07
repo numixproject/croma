@@ -12,7 +12,7 @@
 
 	.paper-button {
 		@include dropshadow(1);
-		@extend %snappy;
+		@extend %transition;
 
 		-webkit-appearance: none;
 		-moz-appearance: none;

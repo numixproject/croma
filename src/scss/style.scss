@@ -44,7 +44,7 @@ body {
  ****************/
 
 header {
-    @include dropshadow(2);
+    @include dropshadow(1);
 
     position: fixed;
     top: 0;
@@ -69,9 +69,7 @@ header {
     background-repeat: no-repeat;
     background-position: center center;
 
-    &:focus, &:hover { background-color: rgba(0,0,0,0.05); }
-
-    &:active { background-color: rgba(0,0,0,0.1); }
+    &:active { background-color: rgba(255,255,255,0.16); }
 }
 
 .header-action-icon-right { float: right; }
@@ -100,7 +98,7 @@ header {
     height: $bar-height;
     width: 100%;
     background: url(../../img/cover.png) repeat center center;
-    box-shadow: inset 0 -1px 2px rgba(0,0,0,0.24);
+    box-shadow: inset 0 -1px 1px rgba(0,0,0,0.12);
 }
 
 
@@ -161,8 +159,8 @@ header {
 .header-button-wrapper { position: relative; }
 
 .action-button {
-    @extend %snappy;
-    @include dropshadow(3);
+    @include dropshadow(2);
+    @extend %transition;
 
     position: absolute;
     right: $spacing;
@@ -175,13 +173,13 @@ header {
     background-position: center center;
     pointer-events: auto;
 
-    &:focus, &:hover { @include dropshadow(4); }
+    &:focus, &:hover {
+        background-color: lighten($warning-color, 5%);
 
-    &:active {
-        @include dropshadow(5);
-
-        background-color: darken($warning-color, 10%);
+        @include dropshadow(3);
     }
+
+    &:active { @include dropshadow(4); }
 }
 
 .action-button-add { background-image: url(../../img/add-circle.svg); }
@@ -204,12 +202,11 @@ header {
 }
 
 .card-item {
-    @include dropshadow(1);
-
     background-color: $light-color;
     color: $dark-color;
     margin: $spacing;
     border-radius: $roundness;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.12);
 }
 
 .card-item-segment {
@@ -320,7 +317,7 @@ $actions: love, remove, download, share;
 
 .card-item-button {
     @include flex-grow(1);
-    @extend %snappy;
+    @extend %transition;
 
     border-color: rgba(0,0,0,0.1);
     border-width: 1px 1px 0 0;
