@@ -26,8 +26,14 @@
             </div>
 
             <div class="paper-button-container fx-animate-in">
-                <a {{action "save" this}} class="paper-button paper-button-block paper-ripple">
-                    Save palette
+                <a {{action "save" this "save"}} class="paper-button paper-button-block paper-ripple">
+                    Save as palette
+                </a>
+            </div>
+
+            <div class="paper-button-container fx-animate-in">
+                <a {{action "save" this "add"}} class="paper-button paper-button-block paper-ripple">
+                    Add to palette
                 </a>
             </div>
         </div>

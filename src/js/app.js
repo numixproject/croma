@@ -44,6 +44,7 @@ $(function() {
     App.Router.map(function() {
         this.resource("palette", function() {
             this.route("new");
+            this.route("list");
             this.route("name");
             this.route("show");
         });
@@ -243,7 +244,7 @@ $(function() {
 
     App.PaletteShowController = Ember.ObjectController.extend({
         actions: {
-            save: function(palette) {
+            save: function(palette, action) {
                 var color,
                     name = "_$extracted",
                     count = 0,
@@ -283,11 +284,60 @@ $(function() {
 
                 croma.setData(name, data);
 
-                App.Router.router.transitionTo("palette.name", { queryParams: { oldname: name, from: null } });
+                if (action === "save") {
+                    App.Router.router.transitionTo("palette.name", { queryParams: { oldname: name, from: null } });
+                } else if (action === "add") {
+                    App.Router.router.transitionTo("palette.list", { queryParams: { oldname: name, from: null } });
+                }
             }
         },
 
         queryParams: [ "palette" ],
+        palette: null
+    });
+
+    // Render the list route
+    App.PaletteListRoute = Ember.Route.extend({
+        model: function() {
+            var palettes = croma.getData(),
+                data = [];
+
+            if (!palettes) { return; }
+
+            for (var p in palettes) {
+                // Exclude names beginning with "_$"
+                if (!croma.validateName(p)) {
+                    continue;
+                }
+
+                data.push(p);
+            }
+
+            return data.sort(bydate);
+        }
+    });
+
+    App.PaletteListController = Ember.ObjectController.extend({
+        actions: {
+            add: function(palette) {
+                var oldname = this.get("oldname"),
+                    olddata, currdata, oldcolors, currcolors;
+
+                olddata = croma.getData(oldname) || {};
+                currdata = croma.getData(palette) || {};
+                oldcolors = olddata.colors;
+                currcolors = currdata.colors;
+
+                currdata.colors = $.extend(true, {}, currcolors, oldcolors);
+
+                croma.setData(palette, currdata);
+
+                App.Router.router.transitionTo("colors", { queryParams: { palette: palette } });
+            }
+        },
+
+        queryParams: [ "oldname", "palette" ],
+        oldname: null,
         palette: null
     });
 

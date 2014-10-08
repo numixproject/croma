@@ -1,0 +1,27 @@
+<header>
+	<div class="section-wrapper">
+		<div class="header-action-wrapper">
+			{{#link-to "palette.show" class="header-action-icon header-action-back"}}{{/link-to}}
+		</div>
+		<div class="header-title-wrapper">
+			<h1 class="header-title">
+				Select a palette
+			</h1>
+		</div>
+	</div>
+</header>
+<main class="card-area">
+	<div class="section-wrapper">
+		<ul class="card-item card-item-select-list fx-animate-in">
+			{{#if model.length}}
+				{{#each model}}
+					<li {{action "add" this}}>{{this}}</li>
+				{{/each}}
+			{{else}}
+				<div class="empty-area">
+					No palettes found
+				</div>
+			{{/if}}
+		</ul>
+	</div>
+</main>
