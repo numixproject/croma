@@ -21,7 +21,7 @@
 				{{#each colors}}
 					<div {{bind-attr class=":card-item :fx-animate-in isLoved:card-item-loved" data-palette=palette data-color=color}}>
 						{{#link-to "details" (query-params color=color)}}
-							<span class="card-item-color" {{bind-attr style=cssStr}}></span>
+							<div class="card-item-color-item-large" {{bind-attr style=cssStr}}></div>
 						{{/link-to}}
 						<div class="card-item-segment">
 							<div class="card-item-text">{{color}}</div>

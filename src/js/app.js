@@ -478,7 +478,7 @@ $(function() {
     // Render the palettes route
     App.PalettesRoute = Ember.Route.extend({
         model: function(params) {
-            var color, name, objs, strs, val;
+            var color, name, objs, strs, cssStr;
 
             if (!(params && params.color)) {
                 App.Router.router.transitionTo("index");
@@ -502,12 +502,9 @@ $(function() {
                     strs = [];
 
                     for (var j = 0; j < objs.length; j++) {
-                        val = objs[j].tohex();
+                        cssStr = "background-color:" + objs[j].tohex();
 
-                        strs.push({
-                            value: val,
-                            cssStr: "background-color:" + val
-                        });
+                        strs.push(cssStr);
                     }
 
                     color.palettes.push({
@@ -524,14 +521,8 @@ $(function() {
     App.PalettesController = Ember.ObjectController.extend({
         actions: {
             save: function(palette) {
-                var color,
-                    name = "_$generated",
-                    count = 0,
-                    data = {
-                        created: new Date().getTime(),
-                        loved: false,
-                        colors: {}
-                    };
+                var colors = {},
+                    value, query;
 
                 if (!(palette && palette.colors)) {
                     return;
@@ -539,21 +530,17 @@ $(function() {
 
                 for (var i in palette.colors) {
                     if (palette.colors.hasOwnProperty(i) && palette.colors[i]) {
-                        color = palette.colors[i].value;
+                        value = palette.colors[i];
 
-                        if (color) {
-                            data.colors[color] = {
-                                created: new Date().getTime() + count
-                            };
+                        if (value) {
+                            colors[value.match(/#.*/)[0]] = true;
                         }
-
-                        count++;
                     }
                 }
 
-                croma.setData(name, data);
+                query = croma.paletteToQuery(colors);
 
-                App.Router.router.transitionTo("palette.name", { queryParams: { oldname: name, from: null } });
+                App.Router.router.transitionTo("palette.show", { queryParams: { palette: query } });
             }
         },
 

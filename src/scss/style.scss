@@ -207,6 +207,7 @@ header {
     margin: $spacing;
     border-radius: $roundness;
     box-shadow: 0 0 1px 1px rgba(0,0,0,0.12);
+    overflow: hidden;
 }
 
 .card-item-select-list {
@@ -256,13 +257,6 @@ header {
         padding: 0 .5em;
         color: lighten($dark-color, 50%);
     }
-}
-
-.card-item-color {
-    display: block;
-    height: $bar-height * 2;
-    border-radius: $roundness $roundness 0 0;
-    cursor: pointer;
 }
 
 .card-item-text {
@@ -371,17 +365,7 @@ $actions: love, remove, download, share;
     margin: $spacing / 2;
 }
 
-.card-item-scheme-container { cursor: pointer; }
-
-.card-item-scheme {
-    @extend %clearfix;
-
-    width: 100%;
-}
-
-.card-item-scheme-item {
-    float: left;
-    width: 33.33%;
+.card-item-color-item {
     height: $bar-height;
     line-height: $bar-height;
     font-weight: 700;
@@ -389,11 +373,7 @@ $actions: love, remove, download, share;
     color: #fff;
     text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
 
-    &:nth-of-type(3n) { width: 33.34%; }
-
-    &:nth-of-type(3n+1):last-of-type { width: 100%; }
-
-    &:nth-of-type(3n+2):last-of-type { width: 66.67%; }
+    &-large { height: $bar-height * 2; }
 }
 
 .card-item-color-list {
@@ -405,7 +385,9 @@ $actions: love, remove, download, share;
     width: 100%;
 }
 
-.card-item-color-item { @include flex-grow(1); }
+.card-item-color-list-item { @include flex-grow(1); }
+
+.card-item-action-container { cursor: pointer; }
 
 
 /*************

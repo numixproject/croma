@@ -14,15 +14,13 @@
     <main class="card-area">
         <div class="section-wrapper">
             <div class="card-item fx-animate-in">
-                <div class="card-item-scheme">
-                    {{#each this}}
-                        {{#with this}}
-                            <div class="card-item-scheme-item" {{bind-attr style=cssStr}}>
-                                {{value}}
-                            </div>
-                        {{/with}}
-                    {{/each}}
-                </div>
+                {{#each this}}
+                    {{#with this}}
+                        <div class="card-item-color-item" {{bind-attr style=cssStr}}>
+                            {{value}}
+                        </div>
+                    {{/with}}
+                {{/each}}
             </div>
 
             <div class="paper-button-container fx-animate-in">

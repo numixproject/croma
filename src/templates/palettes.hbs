@@ -14,16 +14,12 @@
 	<main class="card-area">
 		<div class="section-wrapper">
 			{{#each palettes}}
-				<div {{action "save" this}} class="card-item card-item-scheme-container fx-animate-in">
+				<div {{action "save" this}} class="card-item card-item-action-container fx-animate-in">
 					<div class="card-item-segment">
 						{{#with this}}
-							<div class="card-item-scheme">
+							<div class="card-item-color-list">
 								{{#each colors}}
-									{{#with this}}
-										<div class="card-item-scheme-item" {{bind-attr style=cssStr}}>
-											{{value}}
-										</div>
-									{{/with}}
+									<div class="card-item-color-list-item" {{bind-attr style=this}}></div>
 								{{/each}}
 							</div>
 						{{/with}}
