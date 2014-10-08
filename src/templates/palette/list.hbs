@@ -12,16 +12,18 @@
 </header>
 <main class="card-area">
 	<div class="section-wrapper">
-		<ul class="card-item card-item-select-list fx-animate-in">
-			{{#if model.length}}
+		{{#if model.length}}
+			<ul class="card-item card-item-select-list fx-animate-in">
 				{{#each model}}
-					<li {{action "add" this}}>{{this}}</li>
+						<li {{action "add" this}}>{{this}}</li>
 				{{/each}}
-			{{else}}
-				<div class="empty-area">
+			</ul>
+		{{else}}
+			<div class="empty-area">
+				<div class="empty-area-action">
 					No palettes found
 				</div>
-			{{/if}}
-		</ul>
+			</div>
+		{{/if}}
 	</div>
 </main>
