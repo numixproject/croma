@@ -17,16 +17,7 @@ $(function() {
                 return 0;
             }
         },
-        animated = {};
-
-    // Implement go back functionality
-    App.ApplicationRoute = Ember.Route.extend({
-        actions: {
-            goBack: function() {
-                window.history.back();
-            }
-        }
-    });
+        animated = {}, routes = [];
 
     // Animate content in
     Ember.View.reopen({
@@ -36,7 +27,16 @@ $(function() {
             Ember.run.scheduleOnce("afterRender", this, this.afterRenderEvent);
         },
         afterRenderEvent: function() {
-            var url = location.href.replace(/(#\/)$/, "");
+            var url = location.href;
+
+            if (!url.test(/#\//)) {
+                url += "#/";
+            }
+
+            // Add item to routes list
+            if (routes[routes.length - 1] !== url) {
+                routes.push(url);
+            }
 
             // Don't reanimate the same view
             if (animated[url]) {
@@ -61,6 +61,23 @@ $(function() {
         this.resource("picker");
         this.resource("details");
         this.resource("palettes");
+    });
+
+    // Implement go back functionality
+    App.ApplicationRoute = Ember.Route.extend({
+        actions: {
+            goBack: function() {
+                if (routes.length > 1) {
+                    // Remove the current location from routes
+                    routes.splice(-1, 1);
+
+                    // Go to previous route
+                    location.href = routes[routes.length - 1];
+                } else {
+                    App.Router.router.transitionTo("index");
+                }
+            }
+        }
     });
 
     // Render the index route
