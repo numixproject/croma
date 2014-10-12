@@ -225,7 +225,7 @@ $(function() {
     // Render the show palette route
     App.PaletteShowRoute = Ember.Route.extend({
         model: function(params) {
-            var palette = [],
+            var palettes = [],
                 colors, c;
 
             if (!(params && params.palette)) {
@@ -237,13 +237,16 @@ $(function() {
             for (var i = 0, l = colors.length; i < l; i++) {
                 c = colors[i].tohex();
 
-                palette.push({
+                palettes.push({
                     cssStr: "background-color:" + c,
                     value: c
                 });
             }
 
-            return palette;
+            return {
+                palettes: palettes,
+                addTo: croma.isPro()
+            };
         }
     });
 
