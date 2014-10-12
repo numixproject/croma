@@ -1,9 +1,10 @@
 var gulp = require("gulp"),
-    plumber = require("gulp-plumber"),
-    gutil = require("gulp-util"),
+    bower = require("bower"),
     browserify = require("browserify"),
     source = require("vinyl-source-stream"),
-    buffer = require('vinyl-buffer'),
+    buffer = require("vinyl-buffer"),
+    plumber = require("gulp-plumber"),
+    gutil = require("gulp-util"),
     rename = require("gulp-rename"),
     rimraf = require("gulp-rimraf"),
     concat = require("gulp-concat"),
@@ -17,6 +18,11 @@ var gulp = require("gulp"),
         host: "localhost",
         port: "8001"
     };
+
+gulp.task("bower", function() {
+    return bower.commands.install([], { save: true }, {})
+    .on("error", gutil.log);
+});
 
 gulp.task("lint", function() {
     return gulp.src("src/js/**/*.js")
@@ -35,7 +41,7 @@ gulp.task("templates", function() {
     .pipe(gulp.dest("dist/js"));
 });
 
-gulp.task("libs", function() {
+gulp.task("libs", [ "bower" ], function() {
     return gulp.src([
         "bower_components/jquery/dist/jquery.min.js",
         "bower_components/handlebars/handlebars.min.js",
