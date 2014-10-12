@@ -29,7 +29,7 @@ $(function() {
         afterRenderEvent: function() {
             var url = location.href;
 
-            if (!url.test(/#\//)) {
+            if (!/#\//.test(url)) {
                 url += "#/";
             }
 
