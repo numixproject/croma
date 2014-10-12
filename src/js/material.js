@@ -1,8 +1,8 @@
 var material = (function() {
 
-    var animateIn = function(el) {
-        var delay, item, offset,
-            duration = 150,
+    var animate = function(el, initial, final, reset, delay) {
+        var item, offset,
+            duration = 300,
             $el = $(el);
 
         // Return if no element found
@@ -10,18 +10,17 @@ var material = (function() {
             return;
         }
 
-        // Set initial opacity and enable hardware acceleration
-        $el.css({
-            "opacity": 0,
-            "transform": "scale(0) translateZ(0)"
-        });
+        // Set initial states
+        $el.css(initial);
+
+        delay = (typeof delay === "number" && !isNaN(delay)) ? delay : 0;
 
         // Set transition properties for each element
         for (var i = 0, l = $el.length; i < l; i++) {
             item = $el[i];
 
             offset = item.offsetLeft + item.offsetTop;
-            delay = offset * 0.5;
+            delay += offset * 0.5;
 
             $(item).css({
                 "transition-delay": delay + "ms",
@@ -30,25 +29,43 @@ var material = (function() {
         }
 
         // Transition the element
-        $el.css({
-            "opacity": 1,
-            "transform": "scale(1) translateZ(0)"
-        });
+        $el.css(final);
 
         // Reset CSS properties after transition
         setTimeout(function() {
-            $el.css({
-                "opacity": "",
-                "transform": "",
+            $el.css(reset).css({
                 "transition-delay": "",
-                "transition-duration": "",
-                "transition-timing-function": ""
+                "transition-duration": ""
             });
         }, (delay + duration));
     };
 
     return {
-        animateIn: animateIn
+        slideIn: function(el, delay) {
+            animate(el, {
+                "opacity": 0,
+                "transform": "translate3d(0,50px,0)"
+            }, {
+                "opacity": 1,
+                "transform": "translate3d(0,0,0)"
+            }, {
+                "opacity": "",
+                "transform": ""
+            }, delay);
+        },
+
+        animateIn: function(el, delay) {
+            animate(el, {
+                "opacity": 0,
+                "transform": "scale(0) translateZ(0)"
+            }, {
+                "opacity": 1,
+                "transform": "scale(1) translateZ(0)"
+            }, {
+                "opacity": "",
+                "transform": ""
+            }, delay);
+        }
     };
 
 }());

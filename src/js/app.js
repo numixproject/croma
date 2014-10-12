@@ -7,7 +7,7 @@ $(function() {
         picker = require("./picker.js"),
         Color = require("./color.js"),
         App = Ember.Application.create(),
-        max = 4,
+        max = 4, currUrl,
         bydate = function(a, b) {
             if (a.created > b.created) {
                 return -1;
@@ -34,13 +34,14 @@ $(function() {
             }
 
             // Don't reanimate the same view
-            if (animated[url]) {
+            if (url === currUrl) {
                 return;
             }
 
-            animated[url] = true;
+            currUrl = url;
 
-            material.animateIn(".fx-animate-in");
+            material.animateIn(".fx-animate-in", 150);
+            material.slideIn(".fx-slide-in");
         }
     });
 

@@ -13,7 +13,7 @@
     </header>
     <main class="card-area">
         <div class="section-wrapper">
-            <div class="card-item fx-animate-in">
+            <div class="card-item fx-slide-in">
                 {{#each this}}
                     {{#with this}}
                         <div class="card-item-color-item" {{bind-attr style=cssStr}}>
@@ -23,13 +23,13 @@
                 {{/each}}
             </div>
 
-            <div class="paper-button-container fx-animate-in">
+            <div class="paper-button-container fx-slide-in">
                 <a {{action "save" this "save"}} class="paper-button paper-button-block paper-ripple">
                     Save as new palette
                 </a>
             </div>
 
-            <div class="paper-button-container fx-animate-in">
+            <div class="paper-button-container fx-slide-in">
                 <a {{action "save" this "add"}} class="paper-button paper-button-block paper-ripple">
                     Add to existing palette
                 </a>

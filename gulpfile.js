@@ -27,8 +27,8 @@ gulp.task("lint", function() {
 
 gulp.task("templates", function() {
     gulp.src([ "src/templates/**/*.hbs" ])
-	.pipe(plumber())
-	.pipe(templates())
+    .pipe(plumber())
+    .pipe(templates())
     .pipe(concat("templates.js"))
     .pipe(gutil.env.production ? uglify() : gutil.noop())
     .pipe(rename({ suffix: ".min" }))
@@ -40,7 +40,6 @@ gulp.task("libs", function() {
         "bower_components/jquery/dist/jquery.min.js",
         "bower_components/handlebars/handlebars.min.js",
         "bower_components/ember/ember.min.js",
-        "bower_components/ember-animate/ember-animate.js",
         "bower_components/velocity/velocity.min.js"
     ])
     .pipe(plumber())
@@ -69,8 +68,8 @@ gulp.task("sass", function() {
     return gulp.src("src/scss/**/*.scss")
     .pipe(plumber())
     .pipe(sass({
-        style: "compressed",
-        sourcemapPath: "../scss"
+        style: gutil.env.production ? "compressed" : "expanded",
+        sourcemapPath: "../../src/scss"
     }))
     .on("error", function(e) { gutil.log(e.message); })
     .pipe(gulp.dest("dist/css"));
