@@ -22,7 +22,7 @@
     "browserify": "latest",
     "gulp": "latest",
     "gulp-concat": "latest",
-    "gulp-ember-handlebars": "latest",
+    "gulp-ember-templates": "latest",
     "gulp-jshint": "latest",
     "gulp-plumber": "latest",
     "gulp-rename": "latest",

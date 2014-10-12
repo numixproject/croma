@@ -9,7 +9,7 @@ var gulp = require("gulp"),
     concat = require("gulp-concat"),
     jshint = require("gulp-jshint"),
     uglify = require("gulp-uglify"),
-    handlebars = require("gulp-ember-handlebars"),
+    templates = require("gulp-ember-templates"),
     sass = require("gulp-ruby-sass"),
     webserver = require("gulp-webserver"),
     opn = require("opn"),
@@ -27,11 +27,8 @@ gulp.task("lint", function() {
 
 gulp.task("templates", function() {
     gulp.src([ "src/templates/**/*.hbs" ])
-    .pipe(plumber())
-    .pipe(handlebars({
-        outputType: "browser",
-        namespace: "Ember.TEMPLATES"
-    }))
+	.pipe(plumber())
+	.pipe(templates())
     .pipe(concat("templates.js"))
     .pipe(gutil.env.production ? uglify() : gutil.noop())
     .pipe(rename({ suffix: ".min" }))
