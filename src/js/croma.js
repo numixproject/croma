@@ -321,10 +321,6 @@ var croma = (function() {
 				}, options.timeout);
 			}
 
-			$(window).on("popstate", function() {
-				croma.hideToast($toast);
-			});
-
 			return $toast;
 		},
 
