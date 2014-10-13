@@ -189,16 +189,17 @@ header {
 ! Card styles
 *************/
 
-.card-area {
+.content-area {
     position: fixed;
     top: $bar-height;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: darken($light-color, 5%);
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling : touch;
+
+    &.card-area { background-color: darken($light-color, 5%); }
 }
 
 .card-item {

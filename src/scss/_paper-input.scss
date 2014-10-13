@@ -17,7 +17,6 @@
 		border: none;
 		border-bottom: 1px solid lighten($dark-color, 50%);
 		background-color: transparent;
-		border-radius: $roundness;
 
 		&:focus, &:active {
 			border-bottom-color: $info-color;

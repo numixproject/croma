@@ -48,7 +48,7 @@
     @include prefix(animation, input-effect $args);
 }
 
-@mixin transition($duration: .15s, $timing: ease) {
+@mixin transition($duration: .05s, $timing: ease) {
     @include prefix(transition, $duration $timing);
 }
 
