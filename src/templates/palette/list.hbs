@@ -13,11 +13,11 @@
 <main class="card-area">
 	<div class="section-wrapper">
 		{{#if model.length}}
-			<ul class="card-item card-item-select-list fx-slide-in">
-				{{#each model}}
-					<li {{action "add" this}}>{{this}}</li>
-				{{/each}}
-			</ul>
+			{{#each model}}
+				<div class="card-item card-item-select-item fx-slide-in" {{action "add" this}}>
+					{{this}}
+				</div>
+			{{/each}}
 		{{else}}
 			<div class="empty-area">
 				<div class="empty-area-action">
