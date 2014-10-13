@@ -40,7 +40,6 @@ $(function() {
 
             currUrl = url;
 
-            material.animateIn(".fx-animate-in", 150);
             material.slideIn(".fx-slide-in");
         }
     });

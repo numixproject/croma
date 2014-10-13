@@ -20,16 +20,20 @@
     @keyframes #{$animation} { @content; }
 }
 
+@mixin fadein($args: .3s 1) {
+    @include prefix(animation, fadein $args);
+}
+
+@mixin scalein($args: .5s 1) {
+    @include prefix(animation, scalein $args);
+}
+
 @mixin slideup($args: .3s 1) {
     @include prefix(animation, slideup $args);
 }
 
 @mixin slidedown($args: .3s 1) {
     @include prefix(animation, slidedown $args);
-}
-
-@mixin scalein($args: .3s 1) {
-    @include prefix(animation, scalein $args);
 }
 
 @mixin love($args: .3s 1) {
@@ -44,11 +48,29 @@
     @include prefix(animation, input-effect $args);
 }
 
-@mixin transition($duration: .3s, $timing: ease) {
+@mixin transition($duration: .15s, $timing: ease) {
     @include prefix(transition, $duration $timing);
 }
 
 @include exports("animations") {
+    @include keyframes(fadein) {
+        0% { opacity: 0; }
+
+        100% { opacity: 1; }
+    }
+
+    %fadein { @include fadein; }
+
+    @include keyframes(scalein) {
+        0% { @include transform(translateZ(0) scale(0.5)); }
+
+        60% { @include transform(translateZ(0) scale(1.1)); }
+
+        100% { @include transform(translateZ(0) scale(1)); }
+    }
+
+    %scalein { @include scalein; }
+
     @include keyframes(slideup) {
         0% {
             @include transform(translate3d(0, 100%, 0));
@@ -80,22 +102,6 @@
     }
 
     %slidedown { @include slidedown; }
-
-    @include keyframes(scalein) {
-        0% {
-            @include transform(scale(0));
-
-            opacity: 0;
-        }
-
-        100% {
-            @include transform(scale(1));
-
-            opacity: 1;
-        }
-    }
-
-    %scalein { @include scalein; }
 
     @include keyframes(love) {
         0% {

@@ -174,7 +174,7 @@ header {
     pointer-events: auto;
 
     &:focus, &:hover {
-        background-color: lighten($warning-color, 5%);
+        background-color: lighten($warning-color, 10%);
 
         @include dropshadow(3);
     }
@@ -206,7 +206,7 @@ header {
     color: $dark-color;
     margin: $spacing;
     border-radius: $roundness;
-    box-shadow: 0 0 1px 1px rgba(0,0,0,0.12);
+    box-shadow: 0 0 1px 0 rgba(0,0,0,0.3);
     overflow: hidden;
 }
 
@@ -420,6 +420,15 @@ $actions: love, remove, download, share;
 
     .picker-color-cell { height: 12.5%; }
 }
+
+
+/******************
+! Animation effects
+*******************/
+
+.fx-fade-in { @extend %fadein; }
+
+.fx-animate-in { @extend %scalein; }
 
 
 /************************
