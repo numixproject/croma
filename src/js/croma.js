@@ -3,6 +3,7 @@
 
 var croma = (function() {
 	var Color = require("./color.js"),
+		fxos = require("./fxos.js"),
 		storage = require("./storage"),
 		productId = "ultimate";
 
@@ -212,6 +213,8 @@ var croma = (function() {
 						timeout: 3000
 					});
 				}
+			} else if (fxos.supported) {
+				fxos.shareWithLink("Share palette", croma.paletteToText(palette, data.colors), croma.paletteToPath(data.colors));
 			} else {
 				croma.downloadFile(palette + ".gpl", croma.paletteToGPL(palette, data.colors));
 			}
