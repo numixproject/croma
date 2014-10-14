@@ -1,4 +1,5 @@
 var gulp = require("gulp"),
+    del = require("del"),
     bower = require("bower"),
     browserify = require("browserify"),
     source = require("vinyl-source-stream"),
@@ -6,7 +7,6 @@ var gulp = require("gulp"),
     plumber = require("gulp-plumber"),
     gutil = require("gulp-util"),
     rename = require("gulp-rename"),
-    rimraf = require("gulp-rimraf"),
     concat = require("gulp-concat"),
     jshint = require("gulp-jshint"),
     uglify = require("gulp-uglify"),
@@ -82,10 +82,7 @@ gulp.task("sass", function() {
 });
 
 gulp.task("clean", function() {
-    return gulp.src([ "dist" ], { read: false })
-    .pipe(plumber())
-    .pipe(rimraf())
-    .on("error", gutil.log);
+    return del([ "dist" ]);
 });
 
 gulp.task("watch", function() {
