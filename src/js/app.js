@@ -27,7 +27,8 @@ $(function() {
             Ember.run.scheduleOnce("afterRender", this, this.afterRenderEvent);
         },
         afterRenderEvent: function() {
-            var url = location.href;
+            var cls = [ "fade-in", "scale-in" ],
+                url = location.href;
 
             if (!/#\//.test(url)) {
                 url += "#/";
@@ -40,7 +41,13 @@ $(function() {
 
             currUrl = url;
 
+            // Slide in cards
             material.slideIn(".fx-slide-in");
+
+            // Animate elements
+            cls.forEach(function(c) {
+                $(".fx-" + c).addClass(c);
+            });
         }
     });
 

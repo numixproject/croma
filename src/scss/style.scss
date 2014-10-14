@@ -422,9 +422,9 @@ $actions: love, remove, download, share;
 ! Animation effects
 *******************/
 
-.fx-fade-in { @extend %fadein; }
+.fade-in { @extend %fadein; }
 
-.fx-animate-in { @extend %scalein; }
+.scale-in { @extend %scalein; }
 
 
 /************************
