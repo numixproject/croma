@@ -11,7 +11,7 @@ var material = (function() {
     }
 
     var animate = function(el, initial, final, reset, delay) {
-        var offset, duration = 300,
+        var offset, duration = 150,
             $item, $el = $(el);
 
         // Return if no element found
@@ -34,7 +34,7 @@ var material = (function() {
             }
 
             offset = $item.offset().left + $item.offset().top;
-            delay += offset * 0.5;
+            delay += offset * 0.25;
 
             $item.css({
                 "transition-delay": delay + "ms",
