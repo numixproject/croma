@@ -324,12 +324,16 @@ var croma = (function() {
 				}, options.timeout);
 			}
 
+			$(window).off("popstate.toast").on("popstate.toast", function() {
+				croma.hideToast();
+			});
+
 			return $toast;
 		},
 
 		// Hide toast
 		hideToast: function(el, duration) {
-			var $el = $(el);
+			var $el = el ? $(el) : $(".toast-notification");
 
 			duration = duration || 300;
 
