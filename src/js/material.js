@@ -5,7 +5,7 @@ var material = (function() {
             viewTop = $(window).scrollTop(),
             viewBottom = viewTop + $(window).height(),
             compareTop = $el.offset().top,
-            compareBottom = compareTop + $el.height();
+            compareBottom = compareTop + $el.outerHeight();
 
         return ((compareTop <= viewBottom) && (compareBottom >= viewTop));
     }
