@@ -8,6 +8,7 @@ $(function() {
         Color = require("./color.js"),
         App = Ember.Application.create(),
         max = 4, currUrl,
+        isPro = croma.isPro(),
         bydate = function(a, b) {
             if (a.created > b.created) {
                 return -1;
@@ -216,7 +217,7 @@ $(function() {
         model: function() {
             return {
                 cromaImage: croma.getPalette(true),
-                unlockPro: !croma.isPro()
+                unlockPro: !isPro
             };
         }
     });
@@ -251,7 +252,7 @@ $(function() {
 
             return {
                 palettes: palettes,
-                addTo: croma.isPro()
+                addTo: isPro
             };
         }
     });
@@ -273,7 +274,7 @@ $(function() {
                 }
 
                 for (var i = 0, l = palette.length; i < l; i++) {
-                    if (!croma.isPro() && i === max) {
+                    if (!isPro && i === max) {
                         croma.showToast({
                             body: "Unlock pro to save more than " + max + " colors.",
                             actions: {
@@ -399,7 +400,7 @@ $(function() {
 
                 data = croma.getData(palette);
 
-                if (!croma.isPro() && data && data.colors && Object.getOwnPropertyNames(data.colors).length >= 4) {
+                if (!isPro && data && data.colors && Object.getOwnPropertyNames(data.colors).length >= 4) {
                     croma.showToast({
                         body: "Unlock pro to add more than " + max + " colors.",
                         actions: {
@@ -506,9 +507,9 @@ $(function() {
 
             for (var i in color) {
                 if ((/.*scheme$/i).test(i) && typeof color[i] === "function") {
-                    objs = color[i]();
+                    objs = (!isPro && i.toLowerCase() === "monochromaticscheme") ? color[i](max) : color[i]();
 
-                    if (!croma.isPro() && objs.length > 4) {
+                    if (!isPro && objs.length > 4) {
                         continue;
                     }
 

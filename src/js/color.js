@@ -766,7 +766,7 @@ var Color = (function() {
 
             getScheme: function(hsl, degrees) {
                 var scheme = [],
-                    hue, color;
+                    hue;
 
                 for (var i = 0, l = degrees.length; i < l; i++) {
                     hue = (hsl[0] + degrees[i]) % 360;
@@ -1095,6 +1095,30 @@ var Color = (function() {
 
         sixToneCCWScheme: function() {
             return _fn.getScheme(this.hsl, [ 0, 90, 120, 210, 240, 330 ]);
+        },
+
+        monochromaticScheme: function(n) {
+            var scheme = [],
+                lumas = [],
+                hsl = this.hsl;
+
+            n = (n && typeof n === "number") ? n : 10;
+
+            for (var i = 0; i < n; i++) {
+                lumas.push((hsl[2] + (i * n)) % 100);
+            }
+
+            lumas.sort(function(a, b) {
+                return a - b;
+            });
+
+            for (var j = 0, l = lumas.length; j < l; j++) {
+                scheme.push({
+                    hsl: [ hsl[0], hsl[1], lumas[j] ]
+                });
+            }
+
+            return _fn.colorObj(scheme);
         }
     };
 
