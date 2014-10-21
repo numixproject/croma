@@ -2,8 +2,7 @@
 /* global $, Ember */
 
 $(function() {
-    var material = require("./material.js"),
-        croma = require("./croma.js"),
+    var croma = require("./croma.js"),
         picker = require("./picker.js"),
         Color = require("./color.js"),
         App = Ember.Application.create(),
@@ -28,7 +27,7 @@ $(function() {
             Ember.run.scheduleOnce("afterRender", this, this.afterRenderEvent);
         },
         afterRenderEvent: function() {
-            var cls = [ "fade-in", "scale-in" ],
+            var cls = [ "animate-in", "fade-in", "scale-in" ],
                 url = location.href;
 
             if (!/#\//.test(url)) {
@@ -42,12 +41,15 @@ $(function() {
 
             currUrl = url;
 
-            // Slide in cards
-            material.slideIn(".fx-slide-in");
-
             // Animate elements
             cls.forEach(function(c) {
-                $(".fx-" + c).addClass(c);
+                var $el = $(".fx-" + c);
+
+                $el.addClass(c);
+
+                setTimeout(function() {
+                    $el.removeClass(c);
+                }, 1000);
             });
         }
     });
