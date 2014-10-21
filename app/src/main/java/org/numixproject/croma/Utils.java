@@ -22,7 +22,7 @@ public class Utils {
             int si = m.start();
             int ei = m.end();
 
-            sb.append(text.substring(si, ei) + " ");
+            sb.append(text.substring(si, ei)).append(" ");
         }
 
         String query = "";
