@@ -23,7 +23,11 @@ $(function() {
     App.ApplicationRoute = Ember.Route.extend({
         actions: {
             goBack: function() {
-                window.history.back();
+                if (window.history.length > 1) {
+                    window.history.back();
+                } else {
+                    App.Router.router.transitionTo("index");
+                }
             }
         }
     });

@@ -428,7 +428,7 @@ $actions: love, remove, download, share;
 
     @for $i from 0 through ($n - 1) {
         &:nth-of-type(#{$n}n - #{$i}) {
-            @include fadein(#{random($t) / $t}s);
+            @include fadein(#{random($t) / ($t * 2)}s);
         }
     }
 }
