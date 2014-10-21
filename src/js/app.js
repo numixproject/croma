@@ -19,6 +19,15 @@ $(function() {
         },
         animated = {};
 
+    // Implement go back functionality
+    App.ApplicationRoute = Ember.Route.extend({
+        actions: {
+            goBack: function() {
+                window.history.back();
+            }
+        }
+    });
+
     // Animate content in
     Ember.View.reopen({
         didInsertElement: function() {
@@ -198,19 +207,10 @@ $(function() {
                 croma.setData(palette, data);
 
                 App.Router.router.transitionTo("colors", { queryParams: { palette: palette } });
-            },
-
-            back: function() {
-                var from = this.get("from");
-
-                from = croma.validateName(from) ? from : "index";
-
-                App.Router.router.transitionTo(from);
             }
         },
 
-        queryParams: [ "from", "oldname" ],
-        from: null,
+        queryParams: [ "oldname" ],
         oldname: null
     });
 
@@ -414,7 +414,7 @@ $(function() {
                     return;
                 }
 
-                App.Router.router.transitionTo("picker", { queryParams: { palette: palette, from: "colors" } });
+                App.Router.router.transitionTo("picker", { queryParams: { palette: palette } });
             },
             remove: function(palette, color) {
                 var data, oldcolor,
@@ -609,23 +609,11 @@ $(function() {
                 } else {
                     App.Router.router.transitionTo("palettes", { queryParams: { color: color } });
                 }
-            },
-
-            back: function() {
-                var palette = this.get("palette"),
-                    from = this.get("from");
-
-                if (croma.validateName(from)) {
-                    App.Router.router.transitionTo(from, { queryParams: { palette: palette } });
-                } else {
-                    App.Router.router.transitionTo("index");
-                }
             }
         },
 
-        queryParams: [ "palette", "from" ],
-        palette: null,
-        from: null
+        queryParams: [ "palette" ],
+        palette: null
     });
 
 });
