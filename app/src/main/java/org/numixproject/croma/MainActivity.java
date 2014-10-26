@@ -277,7 +277,7 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
         // Show a splash screen until the WebView is ready
         @Override
         public void onPageFinished(WebView view, String url) {
-            findViewById(R.id.imageView1).setVisibility(View.GONE);
+            findViewById(R.id.imageview).setVisibility(View.GONE);
             findViewById(R.id.webview).setVisibility(View.VISIBLE);
         }
     }
