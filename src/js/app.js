@@ -16,8 +16,7 @@ $(function() {
             } else {
                 return 0;
             }
-        },
-        animated = {};
+        };
 
     // Implement go back functionality
     App.ApplicationRoute = Ember.Route.extend({

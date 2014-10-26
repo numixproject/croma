@@ -21,6 +21,16 @@
     }
 }
 
+%noselect {
+    outline: 0;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
 
 /************
 ! Base styles
@@ -45,6 +55,7 @@ body {
 
 header {
     @include dropshadow(1);
+    @extend %noselect;
 
     position: fixed;
     top: 0;
@@ -131,6 +142,8 @@ header {
 *******************/
 
 .empty-area {
+    @extend %noselect;
+
     position: absolute;
     display: table;
     table-layout: fixed;
@@ -323,6 +336,7 @@ $actions: love, remove, download, share;
 
 .card-item-button {
     @include flex-grow(1);
+    @extend %noselect;
     @extend %transition;
 
     border-color: rgba(0,0,0,0.1);
