@@ -5,4 +5,6 @@
     <integer-array name="androidcolors">
         <item>@color/accent</item>
     </integer-array>
+
+    <color name="color_picker_background_done_view">#000000</color>
 </resources>
