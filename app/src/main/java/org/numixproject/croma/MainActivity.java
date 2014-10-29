@@ -254,7 +254,6 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
 
                 if (resultCode == RESULT_OK) {
                     Bitmap bitmap;
-
                     String type = intent.getType();
                     Bundle extras = intent.getExtras();
                     Uri uri = intent.getData();
@@ -264,9 +263,21 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
 
                         processImage(bitmap);
 
-                    } else if (type.startsWith("image/") && extras.get("data") != null) {
+                    } else if (intent.hasExtra("colors")){
+                        final ArrayList<Integer> colors = intent.getIntegerArrayListExtra("colors");
+                        MainActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                StringBuilder cs = new StringBuilder();
+                                for (Integer c : colors) {
+                                    Color cc = new Color(c);
+                                    cs.append(cc.getRed() +"," + cc.getGreen() + "," + cc.getBlue()+ ":");
+                                }
+                                webView.loadUrl(makePaletteUrl(cs.substring(0, cs.length() - 1)));
+                            }
+                        });
+                    } else if (intent.hasExtra("data")) {
                         bitmap = (Bitmap) extras.get("data");
-
                         processImage(bitmap);
                     }
                 }
@@ -306,7 +317,6 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
             final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
 
             cameraIntents.add(new Intent(MainActivity.this, ColorPickerActivity.class));
-
             for (ResolveInfo res : listCam) {
                 final String packageName = res.activityInfo.packageName;
                 final Intent intent = new Intent(captureIntent);
