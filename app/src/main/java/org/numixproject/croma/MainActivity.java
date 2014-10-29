@@ -81,25 +81,33 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
         return INDEX + "#/palette/show?palette=" + query;
     }
 
+    private String makePaletteQuery(List<Color> colors) {
+        StringBuilder query = new StringBuilder();
+
+        for (Color c : colors) {
+            query.append(c.getRed() + "," + c.getGreen() + "," + c.getBlue() + ":");
+        }
+
+        return query.substring(0, query.length() - 1);
+    }
+
     // Get color palette from image
     private String getColors(Bitmap bitmap) {
-        String query = "";
+        String url = INDEX;
 
         BitMapImage b = new BitMapImage(bitmap);
 
         KMeansColorPicker k = new KMeansColorPicker();
 
         try {
-            List<Color> l = k.getUsefulColors(b, 6);
+            List<Color> colors = k.getUsefulColors(b, 6);
 
-            for (Color c : l) {
-                query += c.getRed() + "," + c.getGreen() + "," + c.getBlue() + ":";
-            }
+            url = makePaletteUrl(makePaletteQuery(colors));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return makePaletteUrl(query);
+        return url;
     }
 
     // Show a progress dialog when processing image
@@ -254,8 +262,7 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
 
                 if (resultCode == RESULT_OK) {
                     Bitmap bitmap;
-                    String type = intent.getType();
-                    Bundle extras = intent.getExtras();
+
                     Uri uri = intent.getData();
 
                     if (uri != null) {
@@ -265,6 +272,7 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
 
                     } else if (intent.hasExtra("colors")){
                         final ArrayList<Integer> colors = intent.getIntegerArrayListExtra("colors");
+
                         MainActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -273,11 +281,12 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
                                     Color cc = new Color(c);
                                     cs.append(cc.getRed() +"," + cc.getGreen() + "," + cc.getBlue()+ ":");
                                 }
+
                                 webView.loadUrl(makePaletteUrl(cs.substring(0, cs.length() - 1)));
                             }
                         });
                     } else if (intent.hasExtra("data")) {
-                        bitmap = (Bitmap) extras.get("data");
+                        bitmap = (Bitmap) intent.getExtras().get("data");
                         processImage(bitmap);
                     }
                 }
