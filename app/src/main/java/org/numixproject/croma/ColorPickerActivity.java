@@ -1,4 +1,4 @@
-package org.numixproject.croma.colorpicker;
+package org.numixproject.croma;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,8 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
-import org.numixproject.croma.R;
 
 import java.util.List;
 

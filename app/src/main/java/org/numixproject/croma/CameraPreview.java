@@ -1,4 +1,4 @@
-package org.numixproject.croma.colorpicker;
+package org.numixproject.croma;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,14 +19,11 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import org.numixproject.croma.R;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/** A basic Camera preview class */
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback,View.OnTouchListener {
     private SurfaceHolder mHolder;
     private Camera mCamera;
@@ -140,29 +137,4 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         Bitmap bmp = BitmapFactory.decodeByteArray(jdata, 0, jdata.length);
         return bmp;
     }
-}
-
-
-class DrawColorDiv extends View {
-    Context context;
-    int color;
-    public DrawColorDiv(Context mContext, int color) {
-        super(mContext);
-        context = mContext;
-        this.color = color;
-    }
-
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        Paint paint = new Paint();
-        paint.setColor(Color.argb(80, 255,255,255));
-       /* paint.setStrokeWidth(3.0f);
-        paint.setStyle(Paint.Style.STROKE);*/
-        canvas.drawCircle(25, 25, 25, paint);
-        paint.setColor(this.color);
-        paint.setAlpha(255);
-        canvas.drawCircle(25, 25,22, paint);
-        invalidate();
-    }
-
 }

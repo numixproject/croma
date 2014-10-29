@@ -63,7 +63,7 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".colorpicker.ColorPickerActivity" android:label="@string/title_color_picker" android:configChanges="orientation|screenSize|keyboardHidden">
+        <activity android:name=".ColorPickerActivity" android:label="@string/title_color_picker" android:configChanges="orientation|screenSize|keyboardHidden">
         </activity>
     </application>
 

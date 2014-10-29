@@ -103,7 +103,7 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
     }
 
     // Show a progress dialog when processing image
-    public void processImage(final Bitmap bitmap) {
+    private void processImage(final Bitmap bitmap) {
         final ProgressDialog progress = ProgressDialog.show(
                 MainActivity.this, null, getString(R.string.wait_label), true);
 
@@ -177,7 +177,7 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
         String type = intent.getType();
         String action = intent.getAction();
         Bundle extras = intent.getExtras();
-        Uri data = intent.getData();
+        Uri uri = intent.getData();
 
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if ("text/plain".equals(type) && extras.containsKey(Intent.EXTRA_TEXT)) {
@@ -194,8 +194,8 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
             } else {
                 Toast.makeText(this, R.string.parse_error, Toast.LENGTH_SHORT).show();
             }
-        } else if (Intent.ACTION_VIEW.equals(action) && data != null) {
-            final String URL = data.toString().replaceAll("(^https?://" + getString(R.string.app_host) + "/|^croma://)", INDEX);
+        } else if (Intent.ACTION_VIEW.equals(action) && uri != null) {
+            final String URL = uri.toString().replaceAll("(^https?://" + getString(R.string.app_host) + "/|^croma://)", INDEX);
 
             webView.loadUrl(URL);
         } else {
@@ -245,9 +245,9 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
 
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 
-        super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, intent);
 
         switch (requestCode) {
             case SELECT_PHOTO:
@@ -255,15 +255,17 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
                 if (resultCode == RESULT_OK) {
                     Bitmap bitmap;
 
-                    if (data.getData() != null) {
-                        final Uri uri = data.getData();
+                    String type = intent.getType();
+                    Bundle extras = intent.getExtras();
+                    Uri uri = intent.getData();
 
+                    if (uri != null) {
                         bitmap = getBitmap(uri);
 
                         processImage(bitmap);
 
-                    } else if (data.getExtras().get("data") != null) {
-                        bitmap = (Bitmap) data.getExtras().get("data");
+                    } else if (type.startsWith("image/") && extras.get("data") != null) {
+                        bitmap = (Bitmap) extras.get("data");
 
                         processImage(bitmap);
                     }
@@ -302,6 +304,8 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
             final Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
             final PackageManager packageManager = MainActivity.this.getPackageManager();
             final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
+
+            cameraIntents.add(new Intent(MainActivity.this, ColorPickerActivity.class));
 
             for (ResolveInfo res : listCam) {
                 final String packageName = res.activityInfo.packageName;
