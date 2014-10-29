@@ -71,6 +71,8 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
 
             return BitmapFactory.decodeStream(stream);
         } catch (FileNotFoundException e) {
+            Toast.makeText(this, R.string.io_error, Toast.LENGTH_LONG).show();
+
             e.printStackTrace();
         }
 
@@ -104,6 +106,8 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
 
             url = makePaletteUrl(makePaletteQuery(colors));
         } catch (IOException e) {
+            Toast.makeText(this, R.string.generic_error, Toast.LENGTH_LONG).show();
+
             e.printStackTrace();
         }
 
@@ -276,18 +280,20 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
                         MainActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                StringBuilder cs = new StringBuilder();
+                                List<Color> list = new ArrayList<Color>();
+
                                 for (Integer c : colors) {
-                                    Color cc = new Color(c);
-                                    cs.append(cc.getRed() +"," + cc.getGreen() + "," + cc.getBlue()+ ":");
+                                    list.add(new Color(c));
                                 }
 
-                                webView.loadUrl(makePaletteUrl(cs.substring(0, cs.length() - 1)));
+                                webView.loadUrl(makePaletteUrl(makePaletteQuery(list)));
                             }
                         });
                     } else if (intent.hasExtra("data")) {
                         bitmap = (Bitmap) intent.getExtras().get("data");
                         processImage(bitmap);
+                    } else {
+                        Toast.makeText(this, R.string.parse_error, Toast.LENGTH_LONG).show();
                     }
                 }
         }
@@ -326,6 +332,7 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
             final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
 
             cameraIntents.add(new Intent(MainActivity.this, ColorPickerActivity.class));
+
             for (ResolveInfo res : listCam) {
                 final String packageName = res.activityInfo.packageName;
                 final Intent intent = new Intent(captureIntent);

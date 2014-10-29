@@ -3,11 +3,13 @@
     package="org.numixproject.croma"
     android:installLocation="preferExternal">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.android.vending.BILLING" />
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-feature android:name="android.hardware.camera"/>
-    <uses-feature android:name="android.hardware.camera.autofocus"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <supports-screens
         android:anyDensity="true"
         android:smallScreens="true"
@@ -63,8 +65,12 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".ColorPickerActivity" android:label="@string/title_color_picker" android:configChanges="orientation|screenSize|keyboardHidden">
-        </activity>
+
+        <activity
+            android:name=".ColorPickerActivity"
+            android:label="@string/picker_label"
+            android:configChanges="orientation|screenSize" />
+
     </application>
 
 </manifest>

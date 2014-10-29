@@ -1,15 +1,16 @@
 <resources>
     <string name="app_name">Croma</string>
     <string name="app_host">croma.numixproject.org</string>
+    <string name="picker_label">Pick colors</string>
     <string name="view_label">View palette</string>
     <string name="share_label">Extract colors</string>
     <string name="wait_label">Just a sec…</string>
     <string name="select_label">Select image</string>
+    <string name="generic_error">An unknown error occured</string>
+    <string name="io_error">An error occured while reading the file</string>
     <string name="parse_error">An error occured while parsing the data</string>
     <string name="purchase_success">Purchase successful</string>
     <string name="purchase_fail">Purchase failed</string>
     <string name="key_file">Store</string>
     <string name="license_key">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2AWSWgeFDdZwWlrpLAYU9DY1P558KmkELhGl1efyplLdk0D2bhZFw0Op+I+AGhJyFIBdfc4Dbd/eMMp0ZkYfwMILe124bTpiMzRaXb26fwxCf4PmDoYV2P+G1pRXehQ9BUthoYnDxHorifjU/yHFYHMeELLHbQsu0QpE2nZBLiyVNJoh73QDqrbZ4imyvUDgfZULZqdgEYioF0teZard7hbc2X3qm0zK3zw5kD83kd+cy1ty9bSzkctTiU1/k4EYrwIJs0MDHs8qDHBvT6QUnWjWJawgdIwbJWuiEFL7hYU2UBtrW9squk5C2oYg2RBJkW6/vkAqg5cx8os/dL4nWwIDAQAB</string>
-    <string name="title_color_picker">Pick Colors</string>
-    <string name="done_text">✔</string>
 </resources>

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="accent" type="color">#fff06860</item>
+    <item name="success" type="color">#ff65f060</item>
+    <item name="dark" type="color">#ff333333</item>
 
     <integer-array name="androidcolors">
         <item>@color/accent</item>
+        <item>@color/success</item>
+        <item>@color/dark</item>
     </integer-array>
-
-    <color name="color_picker_background_done_view">#000000</color>
 </resources>

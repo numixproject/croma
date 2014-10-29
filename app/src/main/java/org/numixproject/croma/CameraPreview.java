@@ -22,25 +22,27 @@ import android.widget.RelativeLayout;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback,View.OnTouchListener {
     private SurfaceHolder mHolder;
     private Camera mCamera;
     private RelativeLayout cameraPreview;
     private ArrayList<Integer> colors;
+
     public CameraPreview(Activity activity,Camera camera) {
         super(activity);
+
         mCamera = camera;
-        colors = new ArrayList<Integer>();
+
         this.cameraPreview = (RelativeLayout) activity.findViewById(R.id.camera_preview);
+
+        colors = new ArrayList<Integer>();
+
         mHolder = getHolder();
         mHolder.addCallback(this);
-        // deprecated setting, but required on Android versions prior to 3.0
-        mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
     }
 
-    public List<Integer> getColors() {
+    public ArrayList<Integer> getColors() {
         return colors;
     }
 
@@ -70,38 +72,56 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
             System.out.println("Removed...");
         }
+
         System.out.println("Motion event :" +  motionEvent.getX() + "," + motionEvent.getY());
+
         final int x = (int)motionEvent.getX();
         final int y = (int)motionEvent.getY();
+
         mCamera.setPreviewCallback(new Camera.PreviewCallback() {
 
             @Override
             public void onPreviewFrame(byte[] bytes, Camera camera) {
                 camera.setPreviewCallback(null);
+
                 Log.d("View Dimension:", view.getWidth() + "," + view.getHeight());
+
                 Bitmap bitmap = getBitmap(bytes, camera);
                 bitmap = rotate(bitmap, 90);
+
                 Log.d("Image Dimension:", bitmap.getWidth() + "," + bitmap.getHeight());
+
                 bitmap = Bitmap.createScaledBitmap(bitmap, view.getWidth() , view.getHeight(), true);
+
                 System.out.println("Motion event :->" +  motionEvent.getX() + "," + motionEvent.getY());
+
                 Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+
                 //mutableBitmap = rotate(mutableBitmap, 90);
                 int color = mutableBitmap.getPixel(x, y);
+
                 Paint paint = new Paint();
                 paint.setAntiAlias(true);
                 paint.setColor(Color.RED);
-                Bitmap cpBitmap = Bitmap.createBitmap(cameraPreview.getWidth(), cameraPreview.getHeight(), Bitmap.Config.ARGB_8888);
-                Canvas cc = new Canvas(cpBitmap);
 
+                Bitmap cpBitmap = Bitmap.createBitmap(cameraPreview.getWidth(), cameraPreview.getHeight(), Bitmap.Config.ARGB_8888);
+
+                Canvas cc = new Canvas(cpBitmap);
                 Canvas canvas = new Canvas(mutableBitmap);
+
                 canvas.drawCircle(x, y, 10, paint);
                 cc.drawCircle(x, y, 10, paint);
+
                 cameraPreview.draw(cc);
+
                 View vc = getColorView(getContext(), x, y, color);
+
                 colors.add(color);
+
                 cameraPreview.addView(vc);
             }
         });
+
         return true;
     }
 
@@ -109,20 +129,28 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     private View getColorView(Context ct,int x, int y, int color) {
         RelativeLayout.LayoutParams params;
+
         params = new RelativeLayout.LayoutParams(50, 50);
+
         params.leftMargin = x - 25;
         params.topMargin = y - 25;
+
         RelativeLayout r = new RelativeLayout(ct);
+
         r.setLayoutParams(params);
+
         DrawColorDiv dc = new DrawColorDiv(ct, color);
         r.addView(dc);
+
         return r;
     }
 
     private Bitmap rotate(Bitmap b, int a) {
         Matrix matrix = new Matrix();
         matrix.postRotate(90);
+
         Bitmap rotatedBitmap = Bitmap.createBitmap(b , 0, 0, b.getWidth(), b.getHeight(), matrix, true);
+
         return rotatedBitmap;
     }
 
@@ -132,9 +160,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         YuvImage yuvimage=new YuvImage(data, ImageFormat.NV21, previewSize.width, previewSize.height, null);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         yuvimage.compressToJpeg(new Rect(0, 0, previewSize.width, previewSize.height), 80, baos);
+
         byte[] jdata = baos.toByteArray();
+
         // Convert to Bitmap
         Bitmap bmp = BitmapFactory.decodeByteArray(jdata, 0, jdata.length);
+
         return bmp;
     }
 }
