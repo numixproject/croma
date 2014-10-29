@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/accent"
     android:fitsSystemWindows="true">
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/imageview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -18,5 +19,5 @@
         android:id="@+id/webview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:visibility="gone"></WebView>
+        android:visibility="gone" />
 </RelativeLayout>
