@@ -68,61 +68,61 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public boolean onTouch(final View view, final MotionEvent motionEvent) {
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-            System.out.println("Touched...");
+            return true;
         } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
             System.out.println("Removed...");
+
+
+            System.out.println("Motion event :" + motionEvent.getX() + "," + motionEvent.getY());
+
+            final int x = (int) motionEvent.getX();
+            final int y = (int) motionEvent.getY();
+
+            mCamera.setPreviewCallback(new Camera.PreviewCallback() {
+
+                @Override
+                public void onPreviewFrame(byte[] bytes, Camera camera) {
+                    camera.setPreviewCallback(null);
+
+                    Log.d("View Dimension:", view.getWidth() + "," + view.getHeight());
+
+                    Bitmap bitmap = getBitmap(bytes, camera);
+                    bitmap = rotate(bitmap, 90);
+
+                    Log.d("Image Dimension:", bitmap.getWidth() + "," + bitmap.getHeight());
+
+                    bitmap = Bitmap.createScaledBitmap(bitmap, view.getWidth(), view.getHeight(), true);
+
+                    System.out.println("Motion event :->" + motionEvent.getX() + "," + motionEvent.getY());
+
+                    Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+
+                    //mutableBitmap = rotate(mutableBitmap, 90);
+                    int color = mutableBitmap.getPixel(x, y);
+
+                    Paint paint = new Paint();
+                    paint.setAntiAlias(true);
+                    paint.setColor(Color.RED);
+
+                    Bitmap cpBitmap = Bitmap.createBitmap(cameraPreview.getWidth(), cameraPreview.getHeight(), Bitmap.Config.ARGB_8888);
+
+                    Canvas cc = new Canvas(cpBitmap);
+                    Canvas canvas = new Canvas(mutableBitmap);
+
+                    canvas.drawCircle(x, y, 10, paint);
+                    cc.drawCircle(x, y, 10, paint);
+
+                    cameraPreview.draw(cc);
+
+                    View vc = getColorView(getContext(), x, y, color);
+
+                    colors.add(color);
+
+                    cameraPreview.addView(vc);
+                }
+            });
         }
-
-        System.out.println("Motion event :" +  motionEvent.getX() + "," + motionEvent.getY());
-
-        final int x = (int)motionEvent.getX();
-        final int y = (int)motionEvent.getY();
-
-        mCamera.setPreviewCallback(new Camera.PreviewCallback() {
-
-            @Override
-            public void onPreviewFrame(byte[] bytes, Camera camera) {
-                camera.setPreviewCallback(null);
-
-                Log.d("View Dimension:", view.getWidth() + "," + view.getHeight());
-
-                Bitmap bitmap = getBitmap(bytes, camera);
-                bitmap = rotate(bitmap, 90);
-
-                Log.d("Image Dimension:", bitmap.getWidth() + "," + bitmap.getHeight());
-
-                bitmap = Bitmap.createScaledBitmap(bitmap, view.getWidth() , view.getHeight(), true);
-
-                System.out.println("Motion event :->" +  motionEvent.getX() + "," + motionEvent.getY());
-
-                Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
-
-                //mutableBitmap = rotate(mutableBitmap, 90);
-                int color = mutableBitmap.getPixel(x, y);
-
-                Paint paint = new Paint();
-                paint.setAntiAlias(true);
-                paint.setColor(Color.RED);
-
-                Bitmap cpBitmap = Bitmap.createBitmap(cameraPreview.getWidth(), cameraPreview.getHeight(), Bitmap.Config.ARGB_8888);
-
-                Canvas cc = new Canvas(cpBitmap);
-                Canvas canvas = new Canvas(mutableBitmap);
-
-                canvas.drawCircle(x, y, 10, paint);
-                cc.drawCircle(x, y, 10, paint);
-
-                cameraPreview.draw(cc);
-
-                View vc = getColorView(getContext(), x, y, color);
-
-                colors.add(color);
-
-                cameraPreview.addView(vc);
-            }
-        });
-
-        return true;
+        return false;
     }
 
 
