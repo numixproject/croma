@@ -125,21 +125,21 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         return false;
     }
 
-
-
     private View getColorView(Context ct,int x, int y, int color) {
+        int radius = 36;
+
         RelativeLayout.LayoutParams params;
 
-        params = new RelativeLayout.LayoutParams(50, 50);
+        params = new RelativeLayout.LayoutParams(radius * 2, radius * 2);
 
-        params.leftMargin = x - 25;
-        params.topMargin = y - 25;
+        params.leftMargin = x - radius;
+        params.topMargin = y - radius;
 
         RelativeLayout r = new RelativeLayout(ct);
 
         r.setLayoutParams(params);
 
-        DrawColorDiv dc = new DrawColorDiv(ct, color);
+        DrawColorDiv dc = new DrawColorDiv(ct, color, radius);
         r.addView(dc);
 
         return r;
