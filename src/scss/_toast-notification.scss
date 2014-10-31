@@ -21,7 +21,6 @@
         max-height: 100%;
         max-width: 100%;
         margin: auto;
-        padding: $spacing;
     }
 
     .toast-notification {
@@ -30,20 +29,19 @@
         @include justify-content(space-between);
         @include align-items(center);
         @include slideup;
+        @include dropshadow(2);
 
-        margin: ($spacing / 2) 0;
-        border-radius: $roundness;
         background-color: $dark-color;
         color: $light-color;
+
+        @media screen and (min-width: $mobile-width) {
+            margin: ($spacing / 2) 0;
+            border-radius: $roundness;
+        }
     }
 
     .toast-notification-segment {
-        @include dropshadow(2);
-
-        border-right: 1px solid fade-out($light-color, .9);
         padding: ($spacing / 1.5) ($spacing / 2);
-
-        &:only-of-type, &:last-of-type { border-right: none; }
 
         &:first-of-type { @include flex-grow(1); }
 
@@ -55,8 +53,9 @@
 
         min-width: 4.2em;
         text-transform: uppercase;
+        color: $warning-color;
         cursor: pointer;
 
-        &:hover, &:active { background-color: darken($dark-color, 10%); }
+        &:hover, &:active { color: darken($warning-color, 20%); }
     }
 }
