@@ -66,6 +66,7 @@
 
 	.paper-input {
 		width: 100%;
+		border-radius: 0;
 
 		&:focus, &:active {
 			border-bottom-color: darken($light-color, 20%);
