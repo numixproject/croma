@@ -6,6 +6,10 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.view.View;
@@ -21,14 +25,16 @@ public class ColorPickerActivity extends Activity {
     private Camera mCamera;
     private CameraPreview mPreview;
     private ImageButton doneButton;
-
+    private Orientation orientation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.picker);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         doneButton = (ImageButton) findViewById(R.id.done_button);
+        orientation = new Orientation(this, doneButton);
+        if (orientation.canDetectOrientation()) orientation.enable();
 
         // Create an instance of Camera
         mCamera = getCameraInstance();
@@ -78,31 +84,9 @@ public class ColorPickerActivity extends Activity {
 
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-
-        // Checks the orientation of the screen
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-            Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
-        }
-
-        // Checks the orientation of the screen for landscape and portrait and set portrait mode always
-        if (newConfig.orientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
-            mCamera.setDisplayOrientation(0);
-            setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        } else if (newConfig.orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT){
-            mCamera.setDisplayOrientation(90);
-            setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        } else if (newConfig.orientation == ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT){
-            mCamera.setDisplayOrientation(270);
-            setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        } else if (newConfig.orientation == ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE){
-            mCamera.setDisplayOrientation(180);
-            setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
-
+    public void onDestroy() {
+        super.onDestroy();
+        orientation.disable();
     }
 
     /** A safe way to get an instance of the Camera object. */

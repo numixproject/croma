@@ -1,5 +1,8 @@
 package org.numixproject.croma;
 
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
+
 import java.net.URLEncoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -38,5 +41,15 @@ public class Utils {
         }
 
         return query;
+    }
+
+
+    public static Bitmap rotate(Bitmap b, int a) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(a);
+
+        Bitmap rotatedBitmap = Bitmap.createBitmap(b , 0, 0, b.getWidth(), b.getHeight(), matrix, true);
+
+        return rotatedBitmap;
     }
 }

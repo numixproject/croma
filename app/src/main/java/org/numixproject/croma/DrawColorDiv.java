@@ -8,14 +8,13 @@ import android.graphics.Paint;
 import android.view.View;
 
 public class DrawColorDiv extends View {
-    int color;
-    int radius;
-
-    Paint paint = new Paint();
+    private int color;
+    private int radius;
+    private Paint paint;
 
     DrawColorDiv(Context c, int color, int radius) {
         super(c);
-
+        paint = new Paint();
         this.color = color;
         this.radius = radius;
     }
