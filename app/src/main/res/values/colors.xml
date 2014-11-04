@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="accent" type="color">#fff06860</item>
+    <item name="navigation" type="color">#ff222222</item>
 
     <integer-array name="androidcolors">
         <item>@color/accent</item>

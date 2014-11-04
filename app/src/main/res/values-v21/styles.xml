@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.TranslucentDecor" parent="android:Theme.Material.NoActionBar">
+        <!-- Main theme colors -->
+        <!--  color for the status bar and contextual app bars -->
+        <item name="android:colorPrimaryDark">@color/accent</item>
+        <!--   theme UI controls like checkboxes and text fields -->
+        <item name="android:colorAccent">@color/accent</item>
+        <item name="android:navigationBarColor">@color/navigation</item>
+    </style>
+</resources>
