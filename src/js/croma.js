@@ -165,10 +165,14 @@ var croma = (function() {
 		},
 
 		// Convert color hashmap to link
-		paletteToPath: function(colors) {
-			var path = "#/palette/show?palette=";
+		paletteToPath: function(colors, name) {
+			var path = "#/palette/show?";
 
-			path += croma.paletteToQuery(colors);
+			if (name) {
+				path += "name=" + encodeURIComponent(name) + "&";
+			}
+
+			path += "palette=" + croma.paletteToQuery(colors);
 
 			return path;
 		},
@@ -206,7 +210,7 @@ var croma = (function() {
 
 			if ("androidTools" in window && androidTools.shareWithLink) {
 				try {
-					androidTools.shareWithLink("Share palette", croma.paletteToText(palette, data.colors), croma.paletteToPath(data.colors));
+					androidTools.shareWithLink("Share palette", croma.paletteToText(palette, data.colors), croma.paletteToPath(data.colors, palette));
 				} catch (e) {
 					croma.showToast({
 						body: e,
@@ -214,7 +218,7 @@ var croma = (function() {
 					});
 				}
 			} else if (fxos.supported) {
-				fxos.shareWithLink("Share palette", croma.paletteToText(palette, data.colors), croma.paletteToPath(data.colors));
+				fxos.shareWithLink("Share palette", croma.paletteToText(palette, data.colors), croma.paletteToPath(data.colors, palette));
 			} else {
 				croma.downloadFile(palette + ".gpl", croma.paletteToGPL(palette, data.colors));
 			}

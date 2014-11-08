@@ -6,7 +6,11 @@
             </div>
             <div class="header-title-wrapper">
                 <h1 class="header-title">
-                    Colors
+                    {{#if name}}
+                        {{name}}
+                    {{else}}
+                        Colors
+                    {{/if}}
                 </h1>
             </div>
         </div>
@@ -30,11 +34,11 @@
             </div>
 
             {{#if addTo}}
-            <div class="paper-button-container fx-animate-in">
-                <a {{action "save" palettes "add"}} class="paper-button paper-button-block fx-ripple">
-                    Add to existing palette
-                </a>
-            </div>
+                <div class="paper-button-container fx-animate-in">
+                    <a {{action "save" palettes "add"}} class="paper-button paper-button-block fx-ripple">
+                        Add to existing palette
+                    </a>
+                </div>
             {{/if}}
         </div>
     </main>

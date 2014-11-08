@@ -185,7 +185,7 @@ $(function() {
     App.PaletteNameController = Ember.ObjectController.extend({
         actions: {
             done: function() {
-                var palette = this.get("palettename"),
+                var palette = this.get("model.suggested"),
                     oldname = this.get("oldname"),
                     data = {};
 
@@ -217,12 +217,13 @@ $(function() {
 
                 actiondone = true;
 
-                App.Router.router.transitionTo("colors", { queryParams: { palette: palette } });
+                App.Router.router.transitionTo("colors", { queryParams: { palette: palette, oldname: null, suggested: null } });
             }
         },
 
-        queryParams: [ "oldname" ],
-        oldname: null
+        queryParams: [ "oldname", "suggested" ],
+        oldname: null,
+        suggested: null
     });
 
     // Render the colors route
@@ -264,6 +265,7 @@ $(function() {
             }
 
             return {
+                name: params.name,
                 palettes: palettes,
                 addTo: isPro
             };
@@ -274,6 +276,7 @@ $(function() {
         actions: {
             save: function(palette, action) {
                 var color,
+                    suggested = this.get("name"),
                     name = "_$extracted",
                     count = 0,
                     data = {
@@ -313,15 +316,16 @@ $(function() {
                 croma.setData(name, data);
 
                 if (action === "save") {
-                    App.Router.router.transitionTo("palette.name", { queryParams: { oldname: name, from: null } });
+                    App.Router.router.transitionTo("palette.name", { queryParams: { oldname: name, suggested: suggested } });
                 } else if (action === "add") {
-                    App.Router.router.transitionTo("palette.list", { queryParams: { oldname: name, from: null } });
+                    App.Router.router.transitionTo("palette.list", { queryParams: { oldname: name, suggested: suggested } });
                 }
             }
         },
 
-        queryParams: [ "palette" ],
-        palette: null
+        queryParams: [ "palette", "name" ],
+        palette: null,
+        name: null
     });
 
     // Render the list route
