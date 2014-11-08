@@ -1,7 +1,7 @@
 <header>
 	<div class="section-wrapper fx-fade-in">
 		<div class="header-action-wrapper">
-			{{#link-to "palette.show" class="header-action-icon header-action-back"}}{{/link-to}}
+			{{#link-to "palette.show" class="header-action-icon header-action-back fx-ripple"}}{{/link-to}}
 		</div>
 		<div class="header-title-wrapper">
 			<h1 class="header-title">
@@ -14,7 +14,7 @@
 	<div class="section-wrapper">
 		{{#if model.length}}
 			{{#each model}}
-				<div class="card-item card-item-select-item fx-animate-in" {{action "add" this}}>
+				<div class="card-item card-item-select-item fx-animate-in fx-ripple" {{action "add" this}}>
 					{{this}}
 				</div>
 			{{/each}}

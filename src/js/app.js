@@ -4,6 +4,7 @@
 $(function() {
     var croma = require("./croma.js"),
         picker = require("./picker.js"),
+        ripple = require("./ripple.js"),
         Color = require("./color.js"),
         App = Ember.Application.create(),
         max = 4, currUrl,
@@ -63,6 +64,9 @@ $(function() {
                     $el.removeClass(c);
                 }, 1000);
             });
+
+            // Show ripple
+            ripple(".fx-ripple");
         }
     });
 

@@ -2,7 +2,7 @@
     <header>
         <div class="section-wrapper fx-fade-in">
             <div class="header-action-wrapper">
-                <a {{action "goBack"}} class="header-action-icon header-action-back"></a>
+                <a {{action "goBack"}} class="header-action-icon header-action-back fx-ripple"></a>
             </div>
             <div class="header-title-wrapper">
                 <h1 class="header-title">
@@ -24,14 +24,14 @@
             </div>
 
             <div class="paper-button-container fx-animate-in">
-                <a {{action "save" palettes "save"}} class="paper-button paper-button-block paper-ripple">
+                <a {{action "save" palettes "save"}} class="paper-button paper-button-block fx-ripple">
                     Save as new palette
                 </a>
             </div>
 
             {{#if addTo}}
             <div class="paper-button-container fx-animate-in">
-                <a {{action "save" palettes "add"}} class="paper-button paper-button-block paper-ripple">
+                <a {{action "save" palettes "add"}} class="paper-button paper-button-block fx-ripple">
                     Add to existing palette
                 </a>
             </div>

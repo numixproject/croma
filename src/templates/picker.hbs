@@ -3,8 +3,8 @@
 		<div class="section-wrapper">
 			<div class="header-action-wrapper">
 				{{#with model}}
-					<a {{action "goBack"}} class="header-action-icon header-action-back"></a>
-					<a {{action "done" palette}} class="header-action-icon header-action-icon-right header-action-done"></a>
+					<a {{action "goBack"}} class="header-action-icon header-action-back fx-ripple"></a>
+					<a {{action "done" palette}} class="header-action-icon header-action-icon-right header-action-done fx-ripple"></a>
 				{{/with}}
 			</div>
 		</div>
@@ -13,7 +13,7 @@
 <main class="content-area card-area">
 	<div class="section-wrapper">
 		{{#view "picker" class="card-item fx-animate-in"}}
-			<div class="card-item-picker">
+			<div class="card-item-picker fx-ripple">
 				<div class="picker-wrapper">
 					<div class="picker-hues"></div>
 					<div class="picker-shades"></div>

@@ -44,6 +44,10 @@
     @include prefix(animation, break $args);
 }
 
+@mixin ripple($args: .5s ease-out) {
+    @include prefix(animation, ripple $args);
+}
+
 @mixin input-effect($args: .3s 1) {
     @include prefix(animation, input-effect $args);
 }
@@ -134,6 +138,19 @@
     }
 
     %break { @include break; }
+
+
+    @include keyframes(ripple) {
+        0% { @include transform(scale(0) translateZ(0)); }
+
+        100% {
+            @include transform(scale(5) translateZ(0));
+
+            opacity: 0;
+        }
+    }
+
+    %ripple { @include ripple; }
 
     @include keyframes(input-effect) {
         0% {
