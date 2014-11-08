@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -23,17 +24,17 @@ public class ColorPickerActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.picker);
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        if (!Utils.checkCameraHardware(this)) {
+            Toast.makeText(this, R.string.no_camera_message, Toast.LENGTH_LONG).show();
+            this.finish();
+            return;
+        }
 
         doneButton = (ImageButton) findViewById(R.id.done_button);
         orientation = new Orientation(this, doneButton);
-
-        if (orientation.canDetectOrientation()) {
-            orientation.enable();
-        }
-
+        if (orientation.canDetectOrientation()) orientation.enable();
         // Create an instance of Camera
         mCamera = getCameraInstance();
 
@@ -68,23 +69,12 @@ public class ColorPickerActivity extends Activity {
         });
     }
 
-    /** Check if this device has a camera */
-    private boolean checkCameraHardware(Context context) {
-        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
-            // This device has a camera
-            return true;
-        } else {
-            // No camera on this device
-            return false;
-        }
-    }
-
 
     @Override
     public void onDestroy() {
         super.onDestroy();
 
-        orientation.disable();
+        if (orientation != null) orientation.disable();
     }
 
     // Safely way get an instance of the Camera object.

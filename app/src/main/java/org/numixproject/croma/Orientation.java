@@ -1,8 +1,6 @@
 package org.numixproject.croma;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.OrientationEventListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -12,10 +10,10 @@ import android.widget.ImageButton;
 
 
 class Orientation extends OrientationEventListener {
-    Bitmap icon;
-    Context context;
 
     private ImageButton doneButton;
+
+    private Context context;
     private int preAngle = 90;
 
     public Orientation(Context context, ImageButton doneButton) {
@@ -23,7 +21,6 @@ class Orientation extends OrientationEventListener {
 
         this.context = context;
         this.doneButton = doneButton;
-        this.icon = BitmapFactory.decodeResource(context.getResources(), R.drawable.done);
     }
 
     @Override

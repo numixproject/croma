@@ -326,12 +326,15 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
         @JavascriptInterface
         public void getPalette() {
             // Camera.
+            boolean isCamera = Utils.checkCameraHardware(MainActivity.this);
             final List<Intent> cameraIntents = new ArrayList<Intent>();
             final Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
             final PackageManager packageManager = MainActivity.this.getPackageManager();
             final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
 
-            cameraIntents.add(new Intent(MainActivity.this, ColorPickerActivity.class));
+            if (isCamera) {
+                cameraIntents.add(new Intent(MainActivity.this, ColorPickerActivity.class));
+            }
 
             for (ResolveInfo res : listCam) {
                 final String packageName = res.activityInfo.packageName;
