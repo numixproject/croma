@@ -43,6 +43,9 @@ $(function() {
             var cls = [ "animate-in", "fade-in", "scale-in" ],
                 url = location.href;
 
+            // Add ripple animation
+            ripple(".fx-ripple");
+
             if (!/#\//.test(url)) {
                 url += "#/";
             }
@@ -64,9 +67,6 @@ $(function() {
                     $el.removeClass(c);
                 }, 1000);
             });
-
-            // Show ripple
-            ripple(".fx-ripple");
         }
     });
 
