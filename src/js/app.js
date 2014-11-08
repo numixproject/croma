@@ -9,6 +9,7 @@ $(function() {
         App = Ember.Application.create(),
         max = 4, currUrl,
         isPro = croma.isPro(),
+        actiondone = false,
         bydate = function(a, b) {
             if (a.created > b.created) {
                 return -1;
@@ -23,9 +24,10 @@ $(function() {
     App.ApplicationRoute = Ember.Route.extend({
         actions: {
             goBack: function() {
-                if (window.history.length > 1) {
+                if (window.history.length > 1 && !actiondone) {
                     window.history.back();
                 } else {
+                    actiondone = false;
                     App.Router.router.transitionTo("index");
                 }
             }
@@ -213,6 +215,8 @@ $(function() {
 
                 croma.setData(palette, data);
 
+                actiondone = true;
+
                 App.Router.router.transitionTo("colors", { queryParams: { palette: palette } });
             }
         },
@@ -355,6 +359,8 @@ $(function() {
                 currdata.colors = $.extend(true, {}, currcolors, oldcolors);
 
                 croma.setData(palette, currdata);
+
+                actiondone = true;
 
                 App.Router.router.transitionTo("colors", { queryParams: { palette: palette } });
             }
@@ -611,6 +617,8 @@ $(function() {
                     }
 
                     croma.setData(palette, data);
+
+                    actiondone = true;
 
                     App.Router.router.transitionTo("colors", { queryParams: { palette: palette } });
                 } else {
