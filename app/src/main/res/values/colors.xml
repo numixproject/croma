@@ -2,11 +2,13 @@
 <resources>
     <item name="accent" type="color">#fff06860</item>
     <item name="success" type="color">#ff65f060</item>
-    <item name="dark" type="color">#ff333333</item>
+    <item name="primarydark" type="color">#ffc0534D</item>
+    <item name="navigation" type="color">#ff222222</item>
 
     <integer-array name="androidcolors">
         <item>@color/accent</item>
         <item>@color/success</item>
-        <item>@color/dark</item>
+        <item>@color/primarydark</item>
+        <item>@color/navigation</item>
     </integer-array>
 </resources>

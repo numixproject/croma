@@ -18,7 +18,7 @@
         android:layout_height="96dp"
         android:gravity="center"
         android:id="@+id/button_view"
-        android:background="@color/dark">
+        android:background="@color/navigation">
 
         <ImageButton
             android:id="@+id/done_button"

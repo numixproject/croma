@@ -34,6 +34,16 @@
             android:name=".MainActivity"
             android:configChanges="orientation|screenSize">
 
+                <intent-filter android:label="@string/app_name">
+                    <action android:name="android.intent.action.VIEW" />
+
+                    <!-- Accepts URIs that begin with "http://croma.numixproject.org” -->
+                    <data android:scheme="http"
+                        android:host="croma.numixproject.org" />
+                    <category android:name="android.intent.category.DEFAULT" />
+                    <category android:name="android.intent.category.BROWSABLE" />
+                </intent-filter>
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
