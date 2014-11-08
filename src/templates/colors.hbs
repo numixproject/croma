@@ -21,8 +21,8 @@
 		<div class="section-wrapper">
 			{{#if colors.length}}
 				{{#each colors}}
-					<div {{bind-attr class=":card-item :fx-animate-in :fx-ripple isLoved:card-item-loved" data-palette=palette data-color=color}}>
-						{{#link-to "details" (query-params color=color)}}
+					<div {{bind-attr class=":card-item :fx-animate-in isLoved:card-item-loved" data-palette=palette data-color=color}}>
+						{{#link-to "details" (query-params color=color) class="fx-ripple"}}
 							<div class="card-item-color-item-large" {{bind-attr style=cssStr}}></div>
 						{{/link-to}}
 						<div class="card-item-segment">
@@ -35,7 +35,7 @@
 				{{/each}}
 			{{else}}
 				<div class="empty-area">
-					{{#link-to "picker" (query-params palette=name from="colors") class="empty-area-action fx-ripple"}}
+					{{#link-to "picker" (query-params palette=name from="colors") class="empty-area-action"}}
 						Tap to add color.
 					{{/link-to}}
 				</div>
