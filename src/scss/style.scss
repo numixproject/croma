@@ -79,8 +79,6 @@ header {
     margin: 0 .25em;
     background-repeat: no-repeat;
     background-position: center center;
-
-    &:active { background-color: rgba(255,255,255,0.16); }
 }
 
 .header-action-icon-right { float: right; }
