@@ -26,15 +26,21 @@ public class ColorPickerActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.picker);
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         if (!Utils.checkCameraHardware(this)) {
             Toast.makeText(this, R.string.no_camera_message, Toast.LENGTH_LONG).show();
+
             this.finish();
             return;
         }
 
         doneButton = (ImageButton) findViewById(R.id.done_button);
         orientation = new Orientation(this, doneButton);
-        if (orientation.canDetectOrientation()) orientation.enable();
+
+        if (orientation.canDetectOrientation()) {
+            orientation.enable();
+        }
+
         // Create an instance of Camera
         mCamera = getCameraInstance();
 
@@ -74,7 +80,9 @@ public class ColorPickerActivity extends Activity {
     public void onDestroy() {
         super.onDestroy();
 
-        if (orientation != null) orientation.disable();
+        if (orientation != null) {
+            orientation.disable();
+        }
     }
 
     // Safely way get an instance of the Camera object.

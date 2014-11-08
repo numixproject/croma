@@ -3,8 +3,6 @@ package org.numixproject.croma;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Matrix;
 
 import java.net.URLEncoder;
 import java.util.regex.Matcher;
@@ -41,14 +39,12 @@ public class Utils {
         return query;
     }
 
-    /** Check if this device has a camera */
+    // Check if device has a camera
     public static boolean checkCameraHardware(Context context) {
         if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
-            // this device has a camera
-            return true;
+            return true; // Camera present
         } else {
-            // no camera on this device
-            return false;
+            return false; // Camera absent
         }
     }
 

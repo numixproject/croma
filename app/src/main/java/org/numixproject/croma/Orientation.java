@@ -9,11 +9,11 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageButton;
 
 
-class Orientation extends OrientationEventListener {
+public class Orientation extends OrientationEventListener {
+    private Context context;
 
     private ImageButton doneButton;
 
-    private Context context;
     private int preAngle = 90;
 
     public Orientation(Context context, ImageButton doneButton) {
