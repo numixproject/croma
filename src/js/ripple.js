@@ -11,6 +11,10 @@ var ripple = function(el) {
 			$ripple = $("<div>").addClass("ripple"),
 			position = getPostion(e);
 
+		if ($this.data("ripple-animating")) {
+			return;
+		}
+
 		$this.find(".ripple").remove();
 
 		$this.css({
@@ -24,7 +28,11 @@ var ripple = function(el) {
 			top: position[1] + "px"
 		}).addClass("ripple-animate");
 
-		$this.append($ripple);
+		$this.data("ripple-animating", true).append($ripple);
+
+		setTimeout(function() {
+			$this.data("ripple-animating", false);
+		}, 500);
 	});
 };
 
