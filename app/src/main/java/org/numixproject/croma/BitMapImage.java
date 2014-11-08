@@ -39,6 +39,7 @@ public class BitMapImage extends Image {
     @Override
     public BitMapImage getScaledInstance(int width, int height) {
         Bitmap resized = Bitmap.createScaledBitmap(this.image, width, height, true);
+
         return new BitMapImage(resized);
     }
 }

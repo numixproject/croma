@@ -84,10 +84,10 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
     }
 
     private String makePaletteQuery(List<Color> colors) {
-        StringBuilder query = new StringBuilder();
+        String query = "";
 
         for (Color c : colors) {
-            query.append(c.getRed() + "," + c.getGreen() + "," + c.getBlue() + ":");
+            query += c.getRed() + "," + c.getGreen() + "," + c.getBlue() + ":";
         }
 
         return query.substring(0, query.length() - 1);

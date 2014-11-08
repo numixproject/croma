@@ -5,18 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -26,15 +19,20 @@ public class ColorPickerActivity extends Activity {
     private CameraPreview mPreview;
     private ImageButton doneButton;
     private Orientation orientation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.picker);
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         doneButton = (ImageButton) findViewById(R.id.done_button);
         orientation = new Orientation(this, doneButton);
-        if (orientation.canDetectOrientation()) orientation.enable();
+
+        if (orientation.canDetectOrientation()) {
+            orientation.enable();
+        }
 
         // Create an instance of Camera
         mCamera = getCameraInstance();
@@ -65,7 +63,6 @@ public class ColorPickerActivity extends Activity {
                 Intent intent = new Intent();
                 intent.putIntegerArrayListExtra("colors", mPreview.getColors());
                 setResult(RESULT_OK, intent);
-                System.out.println("Done....");
                 finish();
             }
         });
@@ -74,10 +71,10 @@ public class ColorPickerActivity extends Activity {
     /** Check if this device has a camera */
     private boolean checkCameraHardware(Context context) {
         if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
-            // this device has a camera
+            // This device has a camera
             return true;
         } else {
-            // no camera on this device
+            // No camera on this device
             return false;
         }
     }
@@ -86,20 +83,22 @@ public class ColorPickerActivity extends Activity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
         orientation.disable();
     }
 
-    /** A safe way to get an instance of the Camera object. */
+    // Safely way get an instance of the Camera object.
     public static Camera getCameraInstance(){
         Camera c = null;
+
         try {
-            c = Camera.open(); // attempt to get a Camera instance
+            c = Camera.open(); // Attempt to get a Camera instance
         } catch (Exception e){
-            System.out.println("Error: Unable to open camera " + e);
             // Camera is not available (in use or does not exist)
+            e.printStackTrace();
         }
 
-        return c; // returns null if camera is unavailable
+        return c; // Returns null if camera is unavailable
     }
 
 }

@@ -12,7 +12,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.hardware.Camera;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -52,7 +51,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             mCamera.setPreviewDisplay(holder);
             mCamera.startPreview();
         } catch (IOException e) {
-            Log.d("CameraPreview", "Error setting camera preview: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -70,10 +69,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
             return true;
         } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-            System.out.println("Removed...");
-
-
-            System.out.println("Motion event :" + motionEvent.getX() + "," + motionEvent.getY());
 
             final int x = (int) motionEvent.getX();
             final int y = (int) motionEvent.getY();
@@ -84,20 +79,13 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 public void onPreviewFrame(byte[] bytes, Camera camera) {
                     camera.setPreviewCallback(null);
 
-                    Log.d("View Dimension:", view.getWidth() + "," + view.getHeight());
-
                     Bitmap bitmap = getBitmap(bytes, camera);
                     bitmap = rotate(bitmap, 90);
 
-                    Log.d("Image Dimension:", bitmap.getWidth() + "," + bitmap.getHeight());
-
                     bitmap = Bitmap.createScaledBitmap(bitmap, view.getWidth(), view.getHeight(), true);
-
-                    System.out.println("Motion event :->" + motionEvent.getX() + "," + motionEvent.getY());
 
                     Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
 
-                    //mutableBitmap = rotate(mutableBitmap, 90);
                     int color = mutableBitmap.getPixel(x, y);
 
                     Paint paint = new Paint();
@@ -122,6 +110,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 }
             });
         }
+
         return false;
     }
 
@@ -139,7 +128,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         r.setLayoutParams(params);
 
-        DrawColorDiv dc = new DrawColorDiv(ct, color, radius);
+        DrawTouchDot dc = new DrawTouchDot(ct, color, radius);
         r.addView(dc);
 
         return r;

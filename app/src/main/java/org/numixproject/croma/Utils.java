@@ -1,20 +1,12 @@
 package org.numixproject.croma;
 
-import android.graphics.Bitmap;
-import android.graphics.Matrix;
-
 import java.net.URLEncoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Utils {
 
-    /**
-     * Format and encode the string
-     * @param text Input
-     * @return Formatted URL encoded query parameter.
-     */
-
+    // Format and encode the string
     public static String getEncodedString(String text) {
         String regex = "((#([0-9a-f]{6}))|(#([0-9a-f]{3})))|(((rgba?)|(cmyk)|(lab))([\\s+]?\\([\\s+]?(\\d+)[\\s+]?,[\\s+]?(\\d+)[\\s+]?,[\\s+]?(\\d+)[\\s+]?[)]))|((l[\\*]?a[\\*]?b[\\*]?)([\\s+]?\\([\\s+]?(\\d+)[\\s+]?,[\\s+]?[-]?[\\s+]?(\\d+)[\\s+]?,[\\s+]?[-]?[\\s+]?(\\d+)[\\s+]?[)]))|(((hsva?)|(hsba?)|(hsla?))([\\s+]?\\([\\s+]?(\\d+)[\\s+]?,[\\s+]?(\\d+)[%]?[\\s+]?,[\\s+]?(\\d+)[%]?[\\s+]?[)]))";
         Pattern pattern = Pattern.compile(regex);
@@ -41,15 +33,5 @@ public class Utils {
         }
 
         return query;
-    }
-
-
-    public static Bitmap rotate(Bitmap b, int a) {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(a);
-
-        Bitmap rotatedBitmap = Bitmap.createBitmap(b , 0, 0, b.getWidth(), b.getHeight(), matrix, true);
-
-        return rotatedBitmap;
     }
 }

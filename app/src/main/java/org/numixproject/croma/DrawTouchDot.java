@@ -7,14 +7,16 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 
-public class DrawColorDiv extends View {
+public class DrawTouchDot extends View {
     private int color;
     private int radius;
     private Paint paint;
 
-    DrawColorDiv(Context c, int color, int radius) {
+    DrawTouchDot(Context c, int color, int radius) {
         super(c);
+
         paint = new Paint();
+
         this.color = color;
         this.radius = radius;
     }
@@ -28,7 +30,6 @@ public class DrawColorDiv extends View {
         canvas.drawCircle(radius, radius, radius, paint);
 
         paint.setColor(color);
-        paint.setAlpha(255);
 
         canvas.drawCircle(radius, radius, radius - 4, paint);
         invalidate();
