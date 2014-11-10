@@ -5,7 +5,8 @@
  */
 
 var Color = (function() {
-    var _names = {
+    var _cache = {},
+        _names = {
             aliceblue: [ 240, 248, 255 ],
             antiquewhite: [ 250, 235, 215 ],
             aqua: [ 0, 255, 255 ],
@@ -777,17 +778,32 @@ var Color = (function() {
                 }
 
                 return _fn.colorObj(scheme);
+            },
+
+            cacheItem: function(namespace, key, value) {
+                if (typeof key !== "string") {
+                    key = JSON.stringify(key);
+                }
+
+                if (typeof value !== "undefined") {
+                    _cache[namespace + ":" + key] = value;
+
+                    return value;
+                }
+
+                return _cache[namespace + ":" + key];
             }
         };
 
     function ColorConstructor(color) {
-        var components;
+        var components,
+            namespace = "components";
 
         // Set a random color if no color was given
         color = color || "#" + ((1 << 24) * Math.random() | 0).toString(16);
 
-        // Properties
-        components = _fn.getComponents(color);
+        // Check if color is in cache
+        components = _fn.cacheItem(namespace, color) || _fn.cacheItem(namespace, color, _fn.getComponents(color));
 
         for (var c in components) {
             if (components.hasOwnProperty(c)) {
