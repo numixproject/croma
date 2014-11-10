@@ -489,9 +489,29 @@ var Color = (function() {
         },
 
         _fn = {
+            cacheItem: function(namespace, key, value) {
+                if (typeof key !== "string") {
+                    key = JSON.stringify(key);
+                }
+
+                if (typeof value !== "undefined") {
+                    _cache[namespace + ":" + key] = value;
+
+                    return value;
+                }
+
+                return _cache[namespace + ":" + key];
+            },
+
             colorObj: function(colors) {
                 var objs = [],
-                    c;
+                    c, data;
+
+                data = _fn.cacheItem("obj", colors);
+
+                if (data) {
+                    return data;
+                }
 
                 if (colors instanceof Array) {
                     for (var i = 0, l = colors.length; i < l; i++) {
@@ -500,16 +520,24 @@ var Color = (function() {
                         objs.push(c);
                     }
 
-                    return objs;
+                    data = objs;
                 } else {
-                    c = new ColorConstructor(colors);
-
-                    return c;
+                    data = new ColorConstructor(colors);
                 }
+
+                return _fn.cacheItem("obj", colors, data);
             },
 
             getType: function(color) {
-                var models = {
+                var models, data;
+
+                data = _fn.cacheItem("type", color);
+
+                if (data) {
+                    return data;
+                }
+
+                models = {
                     hex: /(^#[0-9a-f]{6}$)|(^#[0-9a-f]{3}$)/i,
                     rgb: /^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i,
                     hsl: /^hsla?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[%]?[\s+]?,[\s+]?(\d+)[%]?[\s+]?/i,
@@ -528,9 +556,12 @@ var Color = (function() {
                 for (var t in models) {
                     if ((typeof models[t] === "function" && models[t](color)) ||
                         (models[t] instanceof RegExp && models[t].test(color))) {
-                        return t;
+                        data = t;
+                        break;
                     }
                 }
+
+                return _fn.cacheItem("type", color, data);
             },
 
             normalizeColor: function(c) {
@@ -566,7 +597,14 @@ var Color = (function() {
             },
 
             parseObj: function(c) {
-                var rgb, hsl, hsv, cmyk, lab, alpha;
+                var rgb, hsl, hsv, cmyk, lab, alpha,
+                    data;
+
+                data = _fn.cacheItem("parse", c);
+
+                if (data) {
+                    return data;
+                }
 
                 if (c.rgb && c.rgb instanceof Array) {
                     rgb =  c.rgb;
@@ -608,14 +646,14 @@ var Color = (function() {
 
                 alpha = isNaN(c.alpha) ? 1 : c.alpha;
 
-                return _fn.normalizeColor({
+                return _fn.cacheItem("parse", c, _fn.normalizeColor({
                     rgb: rgb,
                     hsl: hsl,
                     hsv: hsv,
                     cmyk: cmyk,
                     lab: lab,
                     alpha: alpha
-                });
+                }));
             },
 
             parseName: function(color) {
@@ -743,31 +781,54 @@ var Color = (function() {
             },
 
             getComponents: function(color) {
-                var type = _fn.getType(color);
+                var type, data;
+
+                data = _fn.cacheItem("components", color);
+
+                if (data) {
+                    return data;
+                }
+
+                type = _fn.getType(color);
 
                 switch (type) {
                     case "name":
-                        return _fn.parseName(color);
+                        data = _fn.parseName(color);
+                        break;
                     case "hex":
-                        return _fn.parseHex(color);
+                        data = _fn.parseHex(color);
+                        break;
                     case "rgb":
-                        return _fn.parseRGB(color);
+                        data = _fn.parseRGB(color);
+                        break;
                     case "hsl":
-                        return _fn.parseHSL(color);
+                        data = _fn.parseHSL(color);
+                        break;
                     case "hsv":
-                        return _fn.parseHSV(color);
+                        data = _fn.parseHSV(color);
+                        break;
                     case "cmyk":
-                        return _fn.parseCMYK(color);
+                        data = _fn.parseCMYK(color);
+                        break;
                     case "lab":
-                        return _fn.parseLAB(color);
+                        data = _fn.parseLAB(color);
+                        break;
                     default:
-                        return _fn.parseObj(color);
+                        data = _fn.parseObj(color);
                 }
+
+                return _fn.cacheItem("components", color, data);
             },
 
             getScheme: function(hsl, degrees) {
                 var scheme = [],
-                    hue;
+                    hue, data;
+
+                data = _fn.cacheItem("scheme", { hsl: degrees });
+
+                if (data) {
+                    return data;
+                }
 
                 for (var i = 0, l = degrees.length; i < l; i++) {
                     hue = (hsl[0] + degrees[i]) % 360;
@@ -777,33 +838,20 @@ var Color = (function() {
                     });
                 }
 
-                return _fn.colorObj(scheme);
-            },
+                data = _fn.cacheItem("scheme", { hsl: degrees }, _fn.colorObj(scheme));
 
-            cacheItem: function(namespace, key, value) {
-                if (typeof key !== "string") {
-                    key = JSON.stringify(key);
-                }
-
-                if (typeof value !== "undefined") {
-                    _cache[namespace + ":" + key] = value;
-
-                    return value;
-                }
-
-                return _cache[namespace + ":" + key];
+                return data;
             }
         };
 
     function ColorConstructor(color) {
-        var components,
-            namespace = "components";
+        var components;
 
         // Set a random color if no color was given
         color = color || "#" + ((1 << 24) * Math.random() | 0).toString(16);
 
         // Check if color is in cache
-        components = _fn.cacheItem(namespace, color) || _fn.cacheItem(namespace, color, _fn.getComponents(color));
+        components = _fn.getComponents(color);
 
         for (var c in components) {
             if (components.hasOwnProperty(c)) {
@@ -1116,9 +1164,16 @@ var Color = (function() {
         monochromaticScheme: function(n) {
             var scheme = [],
                 lumas = [],
-                hsl = this.hsl;
+                hsl = this.hsl,
+                data;
 
             n = (n && typeof n === "number") ? n : 10;
+
+            data = _fn.cacheItem("monochromatic", { n: hsl });
+
+            if (data) {
+                return data;
+            }
 
             for (var i = 0; i < n; i++) {
                 lumas.push((hsl[2] + (i * n)) % 100);
@@ -1134,7 +1189,7 @@ var Color = (function() {
                 });
             }
 
-            return _fn.colorObj(scheme);
+            return _fn.cacheItem("monochromatic", { n: hsl }, _fn.colorObj(scheme));
         }
     };
 
