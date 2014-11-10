@@ -43,16 +43,16 @@ var Storage = (function() {
          * @param {Object} value
          */
         _this.set = function(key, value) {
-            // Set the key in the cache first
+            // Convert the key to string
+            key = JSON.stringify(key);
+
+            // Set the key in the cache
             _cacheStorage[key] = value;
 
             // Convert objects to strings and store asynchronously
             setTimeout(function() {
                 try {
-                    _localStorage.setItem(
-                        JSON.stringify(key),
-                        JSON.stringify(value)
-                    );
+                    _localStorage.setItem(key, JSON.stringify(value));
                 } catch (err) {
                     throw err;
                 }
@@ -68,6 +68,9 @@ var Storage = (function() {
         _this.get = function(key) {
             var value;
 
+            // Convert the key to string
+            key = JSON.stringify(key);
+
             // If key is in cache return it
             value = _cacheStorage[key];
 
@@ -77,15 +80,17 @@ var Storage = (function() {
 
             // Parse strings to objects
             try {
-                value = _localStorage.getItem(
-                    JSON.stringify(key)
-                );
+                value = _localStorage.getItem(key);
             } catch (err) {
                 throw err;
             }
 
             if (value && typeof value === "string") {
-                return JSON.parse(value);
+                value = JSON.parse(value);
+
+                _cacheStorage[key] = value;
+
+                return value;
             }
         };
 
@@ -95,15 +100,16 @@ var Storage = (function() {
          * @param {Object} key
          */
         _this.remove = function(key) {
-            // Remove the key in cache first
+            // Convert the key to string
+            key = JSON.stringify(key);
+
+            // Remove the key in cache
             _cacheStorage[key] = null;
 
             // Remove stringified object asynchronously
             setTimeout(function() {
                 try {
-                    _localStorage.removeItem(
-                        JSON.stringify(key)
-                    );
+                    _localStorage.removeItem(key);
                 } catch (err) {
                     throw err;
                 }
