@@ -108,15 +108,17 @@ $(function() {
 
             for (var p in palettes) {
                 // Exclude names beginning with "_$"
-                if (!(croma.validateName(p) && palettes[p] && palettes[p].colors)) {
+                if (!(palettes.hasOwnProperty(p) && palettes[p] && croma.validateName(p))) {
                     continue;
                 }
 
                 arr = [];
 
-                for (var c in palettes[p].colors) {
-                    if (palettes[p].colors[c]) {
-                        arr.push("background-color:" + c + ";");
+                if (palettes[p].colors) {
+                    for (var c in palettes[p].colors) {
+                        if (palettes[p].colors[c]) {
+                            arr.push("background-color:" + c + ";");
+                        }
                     }
                 }
 
@@ -343,7 +345,9 @@ $(function() {
         model: function() {
             var data = [];
 
-            if (!palettes) { return; }
+            if (!palettes) {
+                return;
+            }
 
             for (var p in palettes) {
                 // Exclude names beginning with "_$"
@@ -397,7 +401,7 @@ $(function() {
             name = params.palette;
             current = palettes.get(name);
 
-            if (!(current && current.colors)) {
+            if (!current) {
                 return;
             }
 
