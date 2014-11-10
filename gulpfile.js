@@ -43,10 +43,10 @@ gulp.task("templates", function() {
 
 gulp.task("libs", [ "bower" ], function() {
     return gulp.src([
-        "bower_components/jquery/dist/jquery.min.js",
-        "bower_components/handlebars/handlebars.min.js",
-        "bower_components/ember/ember.min.js",
-        "bower_components/velocity/velocity.min.js"
+        "bower_components/jquery/dist/jquery" + (gutil.env.production ? ".min" : "") + ".js",
+        "bower_components/handlebars/handlebars" + (gutil.env.production ? ".min" : "") + ".js",
+        "bower_components/ember/ember" + (gutil.env.production ? ".min" : "") + ".js",
+        "bower_components/velocity/velocity" + (gutil.env.production ? ".min" : "") + ".js"
     ])
     .pipe(plumber())
     .pipe(concat("libs.js"))
