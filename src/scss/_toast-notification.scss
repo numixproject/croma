@@ -54,6 +54,7 @@
         min-width: 4.2em;
         text-transform: uppercase;
         color: $warning-color;
+        font-weight: 700;
         cursor: pointer;
 
         &:hover, &:active { color: darken($warning-color, 20%); }
