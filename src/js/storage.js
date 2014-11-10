@@ -6,7 +6,16 @@
 
 var Storage = (function() {
 
-    var _localStorage = ("androidStorage" in window) ? window.androidStorage : window.localStorage;
+    var _localStorage = ("androidStorage" in window) ? window.androidStorage : window.localStorage,
+        _cacheStorage = {};
+
+    // Listen to localStorage changes and update cache
+    window.addEventListener("storage", function(e) {
+        if (e && e.key) {
+            // Invalidate the key in cache
+            _cacheStorage[e.key] = null;
+        }
+    }, false);
 
     /**
      * Return the constructor function.
@@ -34,15 +43,20 @@ var Storage = (function() {
          * @param {Object} value
          */
         _this.set = function(key, value) {
-            // Convert objects to strings and store
-            try {
-                _localStorage.setItem(
-                    JSON.stringify(key),
-                    JSON.stringify(value)
-                );
-            } catch (err) {
-                throw err;
-            }
+            // Set the key in the cache first
+            _cacheStorage[key] = value;
+
+            // Convert objects to strings and store asynchronously
+            setTimeout(function() {
+                try {
+                    _localStorage.setItem(
+                        JSON.stringify(key),
+                        JSON.stringify(value)
+                    );
+                } catch (err) {
+                    throw err;
+                }
+            }, 0);
         };
 
         /**
@@ -52,19 +66,26 @@ var Storage = (function() {
          * @return {Object} value
          */
         _this.get = function(key) {
-            var str;
+            var value;
+
+            // If key is in cache return it
+            value = _cacheStorage[key];
+
+            if (value) {
+                return value;
+            }
 
             // Parse strings to objects
             try {
-                str = _localStorage.getItem(
+                value = _localStorage.getItem(
                     JSON.stringify(key)
                 );
             } catch (err) {
                 throw err;
             }
 
-            if (str && typeof str === "string") {
-                return JSON.parse(str);
+            if (value && typeof value === "string") {
+                return JSON.parse(value);
             }
         };
 
@@ -74,14 +95,19 @@ var Storage = (function() {
          * @param {Object} key
          */
         _this.remove = function(key) {
-            // Remove stringified object
-            try {
-                _localStorage.removeItem(
-                    JSON.stringify(key)
-                );
-            } catch (err) {
-                throw err;
-            }
+            // Remove the key in cache first
+            _cacheStorage[key] = null;
+
+            // Remove stringified object asynchronously
+            setTimeout(function() {
+                try {
+                    _localStorage.removeItem(
+                        JSON.stringify(key)
+                    );
+                } catch (err) {
+                    throw err;
+                }
+            }, 0);
         };
     };
 }());
