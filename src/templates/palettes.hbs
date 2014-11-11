@@ -14,15 +14,9 @@
 	<main class="content-area card-area">
 		<div class="section-wrapper">
 			{{#each palettes}}
-				<div {{action "save" this}} class="card-item card-item-action-container fx-animate-in fx-ripple">
+				<div {{action "save" colors}} class="card-item card-item-action-container fx-animate-in fx-ripple">
 					<div class="card-item-segment">
-						{{#with this}}
-							<div class="card-item-color-list">
-								{{#each colors}}
-									<div class="card-item-color-list-item" {{bind-attr style=this}}></div>
-								{{/each}}
-							</div>
-						{{/with}}
+						<div class="card-item-color-item-large fx-ripple" {{bind-attr style=cssStr}}></div>
 					</div>
 					<div class="card-item-segment">
 						<div class="card-item-text">{{name}}</div>

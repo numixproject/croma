@@ -19,10 +19,8 @@
 			{{#each model}}
 				{{#with this}}
 					<div {{bind-attr class=":card-item :fx-animate-in isLoved:card-item-loved" data-palette=name}}>
-						{{#link-to "colors" (query-params palette=name saveas=name) class="card-item-color-list fx-ripple"}}
-							{{#each colors}}
-								<div class="card-item-color-list-item" {{bind-attr style=this}}></div>
-							{{/each}}
+						{{#link-to "colors" (query-params palette=name saveas=name) class="card-item-segment"}}
+							<div class="card-item-color-item-large fx-ripple" {{bind-attr style=cssStr}}></div>
 						{{/link-to}}
 						<div class="card-item-segment">
 							<div class="card-item-text">{{name}}</div>

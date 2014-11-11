@@ -328,6 +328,59 @@ var croma = (function() {
 			} else {
 				$el.remove();
 			}
+		},
+
+		// Genrate legacy webkit gradient
+		makeWebkitGradient: function(colors, direction) {
+			var css;
+
+			css = "-webkit-gradient(linear," + ((direction === "to bottom") ? "left top,left bottom" : "left top,right top") + ",";
+
+			for (var i = 0, l = colors.length; i < l; i++) {
+				css += "color-stop(" + ((i / l) * 100) + "%," + colors[i] + ")," + "color-stop(" + (((i + 1) / l) * 100) + "%," +
+						colors[i] + ")" + ((i === (l - 1)) ? "" : ",");
+			}
+
+			css += ")";
+
+			return css;
+
+		},
+
+		// Generate CSS gradient
+		makeGradient: function(colors, direction) {
+			var css;
+
+			css = "linear-gradient(" + (direction ? direction : "to right") + ",";
+
+			for (var i = 0, l = colors.length; i < l; i++) {
+				css += colors[i] + " " + ((i / l) * 100) + "%," + colors[i] + " " + (((i + 1) / l) * 100) + "%" + ((i === (l - 1)) ? "" : ",");
+			}
+
+			css += ")";
+
+			return css;
+		},
+
+		// Prefix CSS properties
+		prefixCss: function(property, value) {
+			var prefixes = [ "-webkit-", "-moz-", "-o-", "" ],
+				css = "";
+
+			for (var i = 0, l = prefixes.length; i < l; i++) {
+				css += property + ":" + prefixes[i] + value + ";";
+			}
+
+			return css;
+		},
+
+		generateBackground: function(colors, direction) {
+			if (!colors instanceof Array) {
+				return;
+			}
+
+			return "background-image:" + croma.makeWebkitGradient(colors, direction) + ";" +
+					croma.prefixCss("background-image", croma.makeGradient(colors, direction)) + ";";
 		}
 	};
 }());

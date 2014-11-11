@@ -395,19 +395,11 @@ $actions: love, remove, download, share;
     color: #fff;
     text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
 
-    &-large { height: $bar-height * 2; }
+    &-large {
+        height: $bar-height * 2;
+        width: 100%;
+    }
 }
-
-.card-item-color-list {
-    @include flexbox;
-    @include flex-direction(row);
-    @include flex-wrap(nowrap);
-
-    height: $bar-height * 2;
-    width: 100%;
-}
-
-.card-item-color-list-item { @include flex-grow(1); }
 
 .card-item-action-container { cursor: pointer; }
 

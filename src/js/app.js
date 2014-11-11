@@ -117,14 +117,14 @@ $(function() {
                 if (palettes[p].colors) {
                     for (var c in palettes[p].colors) {
                         if (palettes[p].colors[c]) {
-                            arr.push("background-color:" + c + ";");
+                            arr.push(c);
                         }
                     }
                 }
 
                 data.push({
                     name: p,
-                    colors: arr,
+                    cssStr: croma.generateBackground(arr),
                     isLoved: palettes[p].loved,
                     created: palettes[p].created
                 });
@@ -525,7 +525,7 @@ $(function() {
     // Render the palettes route
     App.PalettesRoute = Ember.Route.extend({
         model: function(params) {
-            var color, name, objs, strs, cssStr;
+            var color, name, objs, arr;
 
             if (!(params && params.color)) {
                 App.Router.router.transitionTo("index");
@@ -546,17 +546,16 @@ $(function() {
                     }
 
                     name = croma.parseCamelCase(i).replace(/scheme/i, "").trim();
-                    strs = [];
+                    arr = [];
 
                     for (var j = 0; j < objs.length; j++) {
-                        cssStr = "background-color:" + objs[j].tohex();
-
-                        strs.push(cssStr);
+                        arr.push(objs[j].tohex());
                     }
 
                     color.palettes.push({
-                        name: name,
-                        colors: strs
+                        cssStr: croma.generateBackground(arr),
+                        colors: arr,
+                        name: name
                     });
                 }
             }
@@ -567,25 +566,19 @@ $(function() {
 
     App.PalettesController = Ember.ObjectController.extend({
         actions: {
-            save: function(palette) {
-                var colors = {},
-                    value, query;
+            save: function(colors) {
+                var map = {},
+                    query;
 
-                if (!(palette && palette.colors)) {
+                if (!colors instanceof Array) {
                     return;
                 }
 
-                for (var i in palette.colors) {
-                    if (palette.colors.hasOwnProperty(i) && palette.colors[i]) {
-                        value = palette.colors[i];
-
-                        if (value) {
-                            colors[value.match(/#.*/)[0]] = true;
-                        }
-                    }
+                for (var i = 0, l = colors.length; i < l; i++) {
+                    map[colors[i]] = true;
                 }
 
-                query = croma.paletteToQuery(colors);
+                query = croma.paletteToQuery(map);
 
                 App.Router.router.transitionTo("palette.show", { queryParams: { palette: query } });
             }
