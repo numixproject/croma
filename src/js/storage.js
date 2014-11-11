@@ -11,9 +11,9 @@ var Storage = (function() {
 
     // Listen to localStorage changes and update cache
     window.addEventListener("storage", function(e) {
-        if (e && e.key) {
-            // Invalidate the key in cache
-            _cacheStorage[e.key] = null;
+        if (e && typeof e.key !== "undefined") {
+            // Deelete the key in cache
+            delete _cacheStorage[e.key];
         }
     }, false);
 
@@ -74,7 +74,7 @@ var Storage = (function() {
             // If key is in cache return it
             value = _cacheStorage[key];
 
-            if (value) {
+            if (typeof value !== "undefined") {
                 return value;
             }
 
@@ -85,7 +85,7 @@ var Storage = (function() {
                 throw err;
             }
 
-            if (value && typeof value === "string") {
+            if (typeof value === "string") {
                 value = JSON.parse(value);
 
                 _cacheStorage[key] = value;
@@ -104,7 +104,7 @@ var Storage = (function() {
             key = JSON.stringify(key);
 
             // Remove the key in cache
-            _cacheStorage[key] = null;
+            delete _cacheStorage[key];
 
             // Remove stringified object asynchronously
             setTimeout(function() {

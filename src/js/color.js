@@ -491,7 +491,11 @@ var Color = (function() {
         _fn = {
             cacheItem: function(namespace, key, value) {
                 if (typeof key !== "string") {
-                    key = JSON.stringify(key);
+                    if (key instanceof Array) {
+                        key = key.join(",");
+                    } else {
+                        key = JSON.stringify(key);
+                    }
                 }
 
                 if (typeof value !== "undefined") {
