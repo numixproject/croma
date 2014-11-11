@@ -490,12 +490,12 @@ var Color = (function() {
 
         _fn = {
             cacheItem: function(namespace, key, value) {
+                if (typeof key === "undefined") {
+                    return;
+                }
+
                 if (typeof key !== "string") {
-                    if (key instanceof Array) {
-                        key = key.join(",");
-                    } else {
-                        key = JSON.stringify(key);
-                    }
+                    key = JSON.stringify(key);
                 }
 
                 if (typeof value !== "undefined") {
