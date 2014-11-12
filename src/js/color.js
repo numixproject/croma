@@ -509,13 +509,7 @@ var Color = (function() {
 
             colorObj: function(colors) {
                 var objs = [],
-                    c, data;
-
-                data = _fn.cacheItem("obj", colors);
-
-                if (data) {
-                    return data;
-                }
+                    c;
 
                 if (colors instanceof Array) {
                     for (var i = 0, l = colors.length; i < l; i++) {
@@ -524,22 +518,14 @@ var Color = (function() {
                         objs.push(c);
                     }
 
-                    data = objs;
+                    return objs;
                 } else {
-                    data = new ColorConstructor(colors);
+                    return new ColorConstructor(colors);
                 }
-
-                return _fn.cacheItem("obj", colors, data);
             },
 
             getType: function(color) {
-                var models, data;
-
-                data = _fn.cacheItem("type", color);
-
-                if (data) {
-                    return data;
-                }
+                var models;
 
                 models = {
                     hex: /(^#[0-9a-f]{6}$)|(^#[0-9a-f]{3}$)/i,
@@ -560,12 +546,9 @@ var Color = (function() {
                 for (var t in models) {
                     if ((typeof models[t] === "function" && models[t](color)) ||
                         (models[t] instanceof RegExp && models[t].test(color))) {
-                        data = t;
-                        break;
+                        return t;
                     }
                 }
-
-                return _fn.cacheItem("type", color, data);
             },
 
             normalizeColor: function(c) {
@@ -826,13 +809,7 @@ var Color = (function() {
 
             getScheme: function(hsl, degrees) {
                 var scheme = [],
-                    hue, data;
-
-                data = _fn.cacheItem("scheme", { hsl: degrees });
-
-                if (data) {
-                    return data;
-                }
+                    hue;
 
                 for (var i = 0, l = degrees.length; i < l; i++) {
                     hue = (hsl[0] + degrees[i]) % 360;
@@ -842,9 +819,7 @@ var Color = (function() {
                     });
                 }
 
-                data = _fn.cacheItem("scheme", { hsl: degrees }, _fn.colorObj(scheme));
-
-                return data;
+                return _fn.colorObj(scheme);
             }
         };
 
@@ -880,6 +855,7 @@ var Color = (function() {
             for (var i = 0, l = colors.length; i < l; i++) {
                 if (colors[i]) {
                     c = _fn.colorObj(colors[i]);
+
                     hex = c.tohex();
 
                     // Only list unique colors
@@ -1168,16 +1144,9 @@ var Color = (function() {
         monochromaticScheme: function(n) {
             var scheme = [],
                 lumas = [],
-                hsl = this.hsl,
-                data;
+                hsl = this.hsl;
 
             n = (n && typeof n === "number") ? n : 10;
-
-            data = _fn.cacheItem("monochromatic", { n: hsl });
-
-            if (data) {
-                return data;
-            }
 
             for (var i = 0; i < n; i++) {
                 lumas.push((hsl[2] + (i * n)) % 100);
@@ -1193,7 +1162,7 @@ var Color = (function() {
                 });
             }
 
-            return _fn.cacheItem("monochromatic", { n: hsl }, _fn.colorObj(scheme));
+            return _fn.colorObj(scheme);
         }
     };
 
