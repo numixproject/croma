@@ -50,7 +50,6 @@ gulp.task("libs", [ "bower" ], function() {
     ])
     .pipe(plumber())
     .pipe(concat("libs.js"))
-    .pipe(gutil.env.production ? uglify() : gutil.noop())
     .pipe(rename({ suffix: ".min" }))
     .pipe(gulp.dest("dist/js"))
     .on("error", gutil.log);
