@@ -98,7 +98,7 @@ $(function() {
 
             for (var p in palettes) {
                 // Exclude names beginning with "_$"
-                if (!croma.validateName(p)) {
+                if (!(palettes[p] && croma.validateName(p))) {
                     continue;
                 }
 

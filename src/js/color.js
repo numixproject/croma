@@ -494,17 +494,20 @@ var Color = (function() {
                     return;
                 }
 
-                if (typeof key !== "string") {
+                // Convert object to string to use as key
+                if (typeof key !== "string" && typeof key !== "number") {
                     key = JSON.stringify(key);
                 }
 
-                if (typeof value !== "undefined") {
-                    _cache[namespace + ":" + key] = value;
-
-                    return value;
+                // If no value is specified, return value from cache
+                if (typeof value === "undefined") {
+                    return _cache[namespace + ":" + key];
                 }
 
-                return _cache[namespace + ":" + key];
+                // If value is specified, set the value
+                _cache[namespace + ":" + key] = value;
+
+                return value;
             },
 
             colorObj: function(colors) {
@@ -825,6 +828,11 @@ var Color = (function() {
 
     function ColorConstructor(color) {
         var components;
+
+        // Handle situation where called without "new" keyword
+        if (false === (this instanceof ColorConstructor)) {
+            return new ColorConstructor(color);
+        }
 
         // Set a random color if no color was given
         color = color || "#" + ((1 << 24) * Math.random() | 0).toString(16);

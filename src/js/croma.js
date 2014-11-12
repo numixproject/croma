@@ -38,10 +38,10 @@ var croma = (function() {
 				return;
 			}
 
-			if (typeof data !== "undefined") {
-				palettes[palette] = data;
-			} else {
+			if (typeof data === "undefined" || data === null) {
 				delete palettes[palette];
+			} else {
+				palettes[palette] = data;
 			}
 
 			return storage.set("palettes", palettes);

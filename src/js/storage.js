@@ -74,7 +74,7 @@ var Storage = (function() {
             // If key is in cache return it
             value = _cacheStorage[key];
 
-            if (typeof value !== "undefined") {
+            if (typeof value !== "undefined" && value !== null) {
                 return value;
             }
 
