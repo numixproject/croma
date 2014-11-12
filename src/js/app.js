@@ -2,22 +2,11 @@
 /* global $, Ember */
 
 $(function() {
-    var storage = require("./storage"),
-        croma = require("./croma.js"),
+    var croma = require("./croma.js"),
         picker = require("./picker.js"),
         ripple = require("./ripple.js"),
         Color = require("./color.js"),
         App = Ember.Application.create(),
-        Palettes = Ember.Object.extend({
-            palettes: null,
-
-            set: function(palette, data) {
-                this._super(palette, data);
-
-                storage.set("palettes", palettes);
-            }
-        }),
-        palettes = Palettes.create(storage.get("palettes")),
         max = 4, currUrl,
         isPro = croma.isPro(),
         actiondone = false,
@@ -100,7 +89,8 @@ $(function() {
     // Render the index route
     App.IndexRoute = Ember.Route.extend({
         model: function() {
-            var arr = [],
+            var palettes = croma.getData(),
+                arr = [],
                 data = [],
                 color;
 
@@ -108,7 +98,7 @@ $(function() {
 
             for (var p in palettes) {
                 // Exclude names beginning with "_$"
-                if (!(palettes.hasOwnProperty(p) && palettes[p] && croma.validateName(p))) {
+                if (!croma.validateName(p)) {
                     continue;
                 }
 
@@ -131,7 +121,7 @@ $(function() {
             }
 
             return data.sort(bydate);
-        }.observes("palettes")
+        }
     });
 
     App.IndexController = Ember.ObjectController.extend({
@@ -144,7 +134,7 @@ $(function() {
                     return;
                 }
 
-                data = palettes.get(palette);
+                data = croma.getData(palette);
 
                 if (!data) {
                     return;
@@ -153,7 +143,7 @@ $(function() {
                 // Toggle love
                 data.loved = !(data.loved);
 
-                palettes.set(palette, data);
+                croma.setData(palette, data);
 
                 croma.loveItem(palette);
             },
@@ -165,10 +155,10 @@ $(function() {
                     return;
                 }
 
-                data = palettes.get(palette);
+                data = croma.getData(palette);
 
                 croma.removeItem(palette, false, function() {
-                    palettes.set(palette, null);
+                    croma.setData(palette);
 
                     router.refresh();
 
@@ -176,7 +166,7 @@ $(function() {
                         body: "Deleted " + palette + ". Tap to dismiss.",
                         actions: {
                             undo: function() {
-                                palettes.set(palette, data);
+                                croma.setData(palette, data);
 
                                 router.refresh();
                             }
@@ -210,7 +200,7 @@ $(function() {
                     return;
                 }
 
-                if (palettes.get(palette)) {
+                if (croma.getData(palette)) {
                     croma.showToast({
                         body: "A palette with same name already exists.",
                         timeout: 3000
@@ -220,12 +210,12 @@ $(function() {
                 }
 
                 if (croma.validateName(oldname, true)) {
-                    data = palettes.get(oldname) || {};
+                    data = croma.getData(oldname) || {};
 
-                    palettes.set(oldname, null);
+                    croma.setData(oldname);
                 }
 
-                palettes.set(palette, data);
+                croma.setData(palette, data);
 
                 actiondone = true;
 
@@ -325,7 +315,7 @@ $(function() {
                     count++;
                 }
 
-                palettes.set(name, data);
+                croma.setData(name, data);
 
                 if (action === "save") {
                     App.Router.router.transitionTo("palette.name", { queryParams: { oldname: name, suggested: suggested } });
@@ -343,7 +333,8 @@ $(function() {
     // Render the list route
     App.PaletteListRoute = Ember.Route.extend({
         model: function() {
-            var data = [];
+            var palettes = croma.getData(),
+                data = [];
 
             if (!palettes) {
                 return;
@@ -368,14 +359,14 @@ $(function() {
                 var oldname = this.get("oldname"),
                     olddata, currdata, oldcolors, currcolors;
 
-                olddata = palettes.get(oldname) || {};
-                currdata = palettes.get(palette) || {};
+                olddata = croma.getData(oldname) || {};
+                currdata = croma.getData(palette) || {};
                 oldcolors = olddata.colors;
                 currcolors = currdata.colors;
 
                 currdata.colors = $.extend(true, {}, currcolors, oldcolors);
 
-                palettes.set(palette, currdata);
+                croma.setData(palette, currdata);
 
                 actiondone = true;
 
@@ -399,7 +390,7 @@ $(function() {
             }
 
             name = params.palette;
-            current = palettes.get(name);
+            current = croma.getData(name);
 
             if (!current) {
                 return;
@@ -418,7 +409,7 @@ $(function() {
                 name: name,
                 colors: data.sort(bydate)
             };
-        }.observes("palettes")
+        }
     });
 
     App.ColorsController = Ember.ObjectController.extend({
@@ -430,7 +421,7 @@ $(function() {
                     return;
                 }
 
-                data = palettes.get(palette);
+                data = croma.getData(palette);
 
                 if (!isPro && data && data.colors && Object.getOwnPropertyNames(data.colors).length >= 4) {
                     croma.showToast({
@@ -455,13 +446,13 @@ $(function() {
                 }
 
                 croma.removeItem(palette, color, function() {
-                    data = palettes.get(palette);
+                    data = croma.getData(palette);
 
                     oldcolor = data.colors[color];
 
                     delete data.colors[color];
 
-                    palettes.set(palette, data);
+                    croma.setData(palette, data);
 
                     router.refresh();
 
@@ -469,11 +460,11 @@ $(function() {
                         body: "Deleted " + color + ". Tap to dismiss.",
                         actions: {
                             undo: function() {
-                                data = palettes.get(palette);
+                                data = croma.getData(palette);
 
                                 data.colors[color] = oldcolor;
 
-                                palettes.set(palette, data);
+                                croma.setData(palette, data);
 
                                 router.refresh();
                             }
@@ -617,7 +608,7 @@ $(function() {
                 color = new Color(color).tohex();
 
                 if (croma.validateName(palette)) {
-                    data = palettes.get(palette);
+                    data = croma.getData(palette);
 
                     if (data) {
                         data.colors = data.colors || {};
@@ -626,7 +617,7 @@ $(function() {
                         };
                     }
 
-                    palettes.set(palette, data);
+                    croma.setData(palette, data);
 
                     actiondone = true;
 
