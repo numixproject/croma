@@ -631,7 +631,7 @@ var Color = (function() {
                     lab =  [ 0, 0, 0 ];
                 }
 
-                alpha = isNaN(c.alpha) ? 1 : c.alpha;
+                alpha = (typeof c.alpha !== "number" || isNaN(c.alpha)) ? 1 : c.alpha;
 
                 return _fn.cacheItem("parse", c, _fn.normalizeColor({
                     rgb: rgb,
@@ -913,16 +913,11 @@ var Color = (function() {
         },
 
         name: function() {
-            var name;
-
-            for (var n in _names) {
-                if (_names.hasOwnProperty(n) && _names[n].join(",") === this.rgb.join(",")) {
-                    name = n;
-                    break;
+            for (var name in _names) {
+                if (_names.hasOwnProperty(name) && _names[name].join(",") === this.rgb.join(",")) {
+                    return name;
                 }
             }
-
-            return name;
         },
 
         luminance: function() {

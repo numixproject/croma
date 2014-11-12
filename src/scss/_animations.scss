@@ -144,7 +144,7 @@
         0% { @include transform(scale(0) translateZ(0)); }
 
         100% {
-            @include transform(scale(5) translateZ(0));
+            @include transform(scale(2.5) translateZ(0));
 
             opacity: 0;
         }

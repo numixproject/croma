@@ -456,7 +456,7 @@ $actions: love, remove, download, share;
 .scale-in { @extend %scalein; }
 
 .ripple {
-    @include transform(scale(0));
+    @include transform(scale(0) translateZ(0));
 
     position: absolute;
     width: 100%;
