@@ -7,7 +7,8 @@ $(function() {
         ripple = require("./ripple.js"),
         Color = require("./color.js"),
         App = Ember.Application.create(),
-        max = 4, currUrl,
+        max = 4,
+        currHash,
         isPro = croma.isPro(),
         actiondone = false,
         bydate = function(a, b) {
@@ -43,21 +44,17 @@ $(function() {
         },
         afterRenderEvent: function() {
             var cls = [ "animate-in", "fade-in", "scale-in" ],
-                url = location.href;
+                hash = window.location.hash.replace(/^#\//, "");
 
             // Add ripple animation
             ripple(".fx-ripple");
 
-            if (!/#\//.test(url)) {
-                url += "#/";
-            }
-
             // Don't reanimate the same view
-            if (url === currUrl) {
+            if (hash === currHash) {
                 return;
             }
 
-            currUrl = url;
+            currHash = hash;
 
             // Animate elements
             cls.forEach(function(c) {
@@ -302,6 +299,7 @@ $(function() {
                             actions: {
                                 unlock: croma.unlockPro
                             },
+                            persistent: true,
                             timeout: 3000
                         });
 
@@ -433,6 +431,7 @@ $(function() {
                         actions: {
                             unlock: croma.unlockPro
                         },
+                        persistent: true,
                         timeout: 3000
                     });
 

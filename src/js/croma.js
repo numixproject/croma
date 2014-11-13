@@ -286,7 +286,7 @@ var croma = (function() {
 		},
 
 		// Show a toast
-		// @param {{ body: String, actions: Object, timeout: Number }} options
+		// @param {{ body: String, actions: Object, timeout: Number, persistent: Boolean }} options
 		showToast: function(options) {
 			var $toast,
 				$wrapper = $(".toast-notification-wrapper"),
@@ -319,6 +319,10 @@ var croma = (function() {
 				}
 			}
 
+			if (options.persistent) {
+				$toast.addClass("toast-persistent");
+			}
+
 			$toast.on("click", function() {
 				croma.hideToast(this);
 			}).appendTo($container);
@@ -329,8 +333,14 @@ var croma = (function() {
 				}, options.timeout);
 			}
 
-			$(window).off("popstate.toast").on("popstate.toast", function() {
-				croma.hideToast();
+			$(window).off("hashchange.toast").on("hashchange.toast", function(e) {
+				var event = e.originalEvent;
+
+				this.source = e.type;
+
+				if (event && event.oldURL.replace("#/", "") !== event.newURL.replace("#/", "")) {
+					croma.hideToast.apply(this);
+				}
 			});
 
 			return $toast;
@@ -338,7 +348,7 @@ var croma = (function() {
 
 		// Hide toast
 		hideToast: function(el, duration) {
-			var $el = el ? $(el) : $(".toast-notification");
+			var $el = el ? $(el) : (this.source === "hashchange") ? $(".toast-notification:not(.toast-persistent)") : $(".toast-notification");
 
 			duration = duration || 300;
 
