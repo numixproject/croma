@@ -11,7 +11,7 @@ var croma = (function() {
 
 		// Convert camelCase to sentence
 		parseCamelCase: function(text) {
-				if ((!text) || typeof text !== "string") {
+			if (typeof text !== "string") {
 				return "";
 			}
 
@@ -31,12 +31,13 @@ var croma = (function() {
 		},
 
 		setData: function(palette, data) {
-			var palettes = croma.getData(),
-				current;
+			var palettes;
 
 			if (!palette) {
 				return;
 			}
+
+			palettes = croma.getData();
 
 			if (typeof data === "undefined" || data === null) {
 				delete palettes[palette];
@@ -51,14 +52,14 @@ var croma = (function() {
 		removeItem: function(palette, color, callback) {
 			var $el;
 
-			if (!palette) {
+			if (typeof palette !== "string") {
 				return;
 			}
 
 			if (color) {
-				$el = $("[data-palette='" + palette + "'][data-color='" + color + "']");
+				$el = $('[data-palette="' + palette + '"][data-color="' + color + '"]');
 			} else {
-				$el = $("[data-palette='" + palette + "']");
+				$el = $('[data-palette="' + palette + '"]');
 			}
 
 			// Swipe out the card
@@ -88,11 +89,11 @@ var croma = (function() {
 		loveItem: function(palette) {
 			var $card, $button;
 
-			if (!palette) {
+			if (typeof palette !== "string") {
 				return;
 			}
 
-			$card = $("[data-palette='" + palette + "']");
+			$card = $('[data-palette="' + palette + '"]');
 
 			$button = $card.find(".card-item-action-love");
 
@@ -281,7 +282,7 @@ var croma = (function() {
 
 		// Validate name
 		validateName: function(name, tmp) {
-			return ((name && name !== "undefined" && name !== "null") && (tmp || !(/^_\$.*/).test(name)));
+			return ((name && typeof name === "string" && !(/^(null|undefined)$/).test(name)) && (tmp || !(/(^_\$.*|")/).test(name)));
 		},
 
 		// Show a toast

@@ -191,6 +191,10 @@ $(function() {
                     oldname = this.get("oldname"),
                     data = {};
 
+                if (typeof palette === "string") {
+                    palette = palette.replace(/^(null|undefined)$/, "");
+                }
+
                 if (!croma.validateName(palette)) {
                     croma.showToast({
                         body: "Invalid palette name " + palette + ".",
