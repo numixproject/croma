@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.numixproject.croma"
-    android:installLocation="preferExternal">
+    android:installLocation="preferExternal" >
 
     <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -10,42 +10,38 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
-
     <uses-feature
         android:name="android.hardware.camera.autofocus"
         android:required="false" />
 
     <supports-screens
         android:anyDensity="true"
-        android:smallScreens="true"
-        android:normalScreens="true"
         android:largeScreens="true"
-        android:xlargeScreens="true"
-        android:resizeable="true" />
+        android:normalScreens="true"
+        android:resizeable="true"
+        android:smallScreens="true"
+        android:xlargeScreens="true" />
 
     <application
         android:allowBackup="true"
+        android:backupAgent="org.numixproject.croma.BackupAgent"
         android:hardwareAccelerated="true"
-        android:backupAgent=".BackupAgent"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.TranslucentDecor">
-
+        android:theme="@style/Theme.TranslucentDecor" >
         <meta-data
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAIo92l4xJqAJDuqvJlwDPnGYHpD5d_QKu69T_5Yg" />
 
         <activity
-            android:name=".MainActivity"
-            android:configChanges="orientation|screenSize">
-
+            android:name="org.numixproject.croma.MainActivity"
+            android:configChanges="orientation|screenSize" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-            <intent-filter android:label="@string/view_label">
-
+            <intent-filter android:label="@string/view_label" >
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -58,25 +54,30 @@
                 <data
                     android:host="@string/app_host"
                     android:scheme="https" />
-
             </intent-filter>
-
-            <intent-filter android:label="@string/share_label">
-
+            <intent-filter android:label="@string/share_label" >
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/plain" />
                 <data android:mimeType="image/*" />
-
             </intent-filter>
-
         </activity>
-
         <activity
-            android:name=".ColorPickerActivity"
-            android:label="@string/picker_label"
-            android:configChanges="orientation|screenSize" />
+            android:name="org.numixproject.croma.ColorPickerActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/picker_label" />
+        <activity
+            android:name="org.numixproject.croma.PickColorActivity"
+            android:label="@string/title_activity_pick_color"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

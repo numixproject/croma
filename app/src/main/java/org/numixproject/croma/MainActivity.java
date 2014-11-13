@@ -79,19 +79,9 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
         return null;
     }
 
-    private String makePaletteUrl(String query) {
-        return INDEX + "#/palette/show?palette=" + query;
-    }
 
-    private String makePaletteQuery(List<Color> colors) {
-        String query = "";
 
-        for (Color c : colors) {
-            query += c.getRed() + "," + c.getGreen() + "," + c.getBlue() + ":";
-        }
 
-        return query.substring(0, query.length() - 1);
-    }
 
     // Get color palette from image
     private String getColors(Bitmap bitmap) {
@@ -104,7 +94,7 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
         try {
             List<Color> colors = k.getUsefulColors(b, 6);
 
-            url = makePaletteUrl(makePaletteQuery(colors));
+            url = Utils.makePaletteUrl(Utils.makePaletteQuery(colors));
         } catch (IOException e) {
             Toast.makeText(this, R.string.generic_error, Toast.LENGTH_LONG).show();
 
@@ -196,7 +186,7 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
                 // Handle text being sent
                 final String query = intent.getStringExtra(Intent.EXTRA_TEXT);
 
-                webView.loadUrl(makePaletteUrl(Utils.getEncodedString(query)));
+                webView.loadUrl(Utils.makePaletteUrl(Utils.getEncodedString(query)));
             } else if (type.startsWith("image/") && extras.containsKey(Intent.EXTRA_STREAM)) {
                 // Get resource path
                 final Uri imageUri = extras.getParcelable(Intent.EXTRA_STREAM);
@@ -286,7 +276,7 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
                                     list.add(new Color(c));
                                 }
 
-                                webView.loadUrl(makePaletteUrl(makePaletteQuery(list)));
+                                webView.loadUrl(Utils.makePaletteUrl(Utils.makePaletteQuery(list)));
                             }
                         });
                     } else if (intent.hasExtra("data")) {

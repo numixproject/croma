@@ -5,11 +5,14 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 
 import java.net.URLEncoder;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Utils {
+import me.croma.image.Color;
 
+public class Utils {
+    public static final String INDEX = "file:///android_asset/www/index.html";
     // Format and encode the string
     public static String getEncodedString(String text) {
         String regex = "((#([0-9a-f]{6}))|(#([0-9a-f]{3})))|(((rgba?)|(cmyk)|(lab))([\\s+]?\\([\\s+]?(\\d+)[\\s+]?,[\\s+]?(\\d+)[\\s+]?,[\\s+]?(\\d+)[\\s+]?[)]))|((l[\\*]?a[\\*]?b[\\*]?)([\\s+]?\\([\\s+]?(\\d+)[\\s+]?,[\\s+]?[-]?[\\s+]?(\\d+)[\\s+]?,[\\s+]?[-]?[\\s+]?(\\d+)[\\s+]?[)]))|(((hsva?)|(hsba?)|(hsla?))([\\s+]?\\([\\s+]?(\\d+)[\\s+]?,[\\s+]?(\\d+)[%]?[\\s+]?,[\\s+]?(\\d+)[%]?[\\s+]?[)]))";
@@ -46,6 +49,21 @@ public class Utils {
         } else {
             return false; // Camera absent
         }
+    }
+
+    public static String makePaletteUrl(String query) {
+        return Utils.INDEX + "#/palette/show?palette=" + query;
+    }
+
+
+    public static String makePaletteQuery(List<Color> colors) {
+        String query = "";
+
+        for (Color c : colors) {
+            query += c.getRed() + "," + c.getGreen() + "," + c.getBlue() + ":";
+        }
+
+        return query.substring(0, query.length() - 1);
     }
 
 }
