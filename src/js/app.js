@@ -300,7 +300,7 @@ $(function() {
                                 unlock: croma.unlockPro
                             },
                             persistent: true,
-                            timeout: 3000
+                            timeout: 5000
                         });
 
                         break;
@@ -432,7 +432,7 @@ $(function() {
                             unlock: croma.unlockPro
                         },
                         persistent: true,
-                        timeout: 3000
+                        timeout: 5000
                     });
 
                     return;
