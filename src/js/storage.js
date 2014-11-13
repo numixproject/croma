@@ -12,7 +12,7 @@ var Storage = (function() {
     // Listen to localStorage changes and update cache
     window.addEventListener("storage", function(e) {
         if (e && typeof e.key !== "undefined") {
-            // Deelete the key in cache
+            // Delete the key in cache
             delete _cacheStorage[e.key];
         }
     }, false);
@@ -85,7 +85,8 @@ var Storage = (function() {
                 throw err;
             }
 
-            if (typeof value === "string") {
+            // Android WebView throws error if string is empty
+            if (typeof value === "string" && value.trim() !== "") {
                 value = JSON.parse(value);
 
                 _cacheStorage[key] = value;
