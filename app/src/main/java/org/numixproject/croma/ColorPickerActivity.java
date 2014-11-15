@@ -21,7 +21,7 @@ public class ColorPickerActivity extends Activity {
     private Camera mCamera;
     private CameraPreview mPreview;
     private ImageButton doneButton;
-    private RotateButton orientation;
+    private RotateView orientation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class ColorPickerActivity extends Activity {
         }
 
         doneButton = (ImageButton) findViewById(R.id.done_button);
-        orientation = new RotateButton(this, doneButton);
+        orientation = new RotateView(this, doneButton);
 
         if (orientation.canDetectOrientation()) {
             orientation.enable();

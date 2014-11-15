@@ -2,25 +2,27 @@ package org.numixproject.croma;
 
 import android.content.Context;
 import android.view.OrientationEventListener;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.RotateAnimation;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 /**
  * Rotate button based on orientation of device
  */
-public class RotateButton extends OrientationEventListener {
+public class RotateView extends OrientationEventListener {
 
-    private ImageButton doneButton;
+    private View view;
 
     private int preAngle = 90;
 
-    public RotateButton(Context context, ImageButton doneButton) {
+    public RotateView(Context context, View view) {
         super(context);
 
-        this.doneButton = doneButton;
+        this.view = view;
     }
 
     @Override
@@ -77,17 +79,17 @@ public class RotateButton extends OrientationEventListener {
                 animRotate.setFillAfter(true);
                 animSet.addAnimation(animRotate);
 
-                doneButton.startAnimation(animSet);
+                view.startAnimation(animSet);
 
                 animSet.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
-                        RotateButton.this.disable();
+                        RotateView.this.disable();
                     }
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        RotateButton.this.enable();
+                        RotateView.this.enable();
                     }
 
                     @Override
