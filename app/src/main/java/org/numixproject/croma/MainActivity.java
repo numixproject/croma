@@ -87,7 +87,7 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
     private String getColors(Bitmap bitmap) {
         String url = INDEX;
 
-        BitMapImage b = new BitMapImage(bitmap);
+        BitmapImage b = new BitmapImage(bitmap);
 
         KMeansColorPicker k = new KMeansColorPicker();
 

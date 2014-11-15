@@ -8,18 +8,18 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageButton;
 
-
-public class Orientation extends OrientationEventListener {
-    private Context context;
+/**
+ * Rotate button based on orientation of device
+ */
+public class RotateButton extends OrientationEventListener {
 
     private ImageButton doneButton;
 
     private int preAngle = 90;
 
-    public Orientation(Context context, ImageButton doneButton) {
+    public RotateButton(Context context, ImageButton doneButton) {
         super(context);
 
-        this.context = context;
         this.doneButton = doneButton;
     }
 
@@ -82,12 +82,12 @@ public class Orientation extends OrientationEventListener {
                 animSet.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
-                        Orientation.this.disable();
+                        RotateButton.this.disable();
                     }
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        Orientation.this.enable();
+                        RotateButton.this.enable();
                     }
 
                     @Override

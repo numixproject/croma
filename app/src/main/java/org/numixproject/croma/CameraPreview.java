@@ -21,27 +21,29 @@ import android.widget.RelativeLayout;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback,View.OnTouchListener {
     private SurfaceHolder mHolder;
     private Camera mCamera;
     private RelativeLayout cameraPreview;
-    private ArrayList<Integer> colors;
+    private Set<Integer> colors;
 
-    public CameraPreview(Activity activity,Camera camera) {
+    public CameraPreview(Activity activity,Camera camera, RelativeLayout cameraPreview) {
         super(activity);
 
         mCamera = camera;
 
-        this.cameraPreview = (RelativeLayout) activity.findViewById(R.id.camera_preview);
+        this.cameraPreview = cameraPreview;/*(RelativeLayout) activity.findViewById(R.id.camera_preview);*/
 
-        colors = new ArrayList<Integer>();
+        colors = new HashSet<Integer>();
 
         mHolder = getHolder();
         mHolder.addCallback(this);
     }
 
-    public ArrayList<Integer> getColors() {
+    public Set<Integer> getColors() {
         return colors;
     }
 
@@ -92,7 +94,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                     paint.setAntiAlias(true);
                     paint.setColor(Color.RED);
 
-                    Bitmap cpBitmap = Bitmap.createBitmap(cameraPreview.getWidth(), cameraPreview.getHeight(), Bitmap.Config.ARGB_8888);
+                    Bitmap cpBitmap = Bitmap.createBitmap(cameraPreview.getWidth(),
+                            cameraPreview.getHeight(), Bitmap.Config.ARGB_8888);
 
                     Canvas cc = new Canvas(cpBitmap);
                     Canvas canvas = new Canvas(mutableBitmap);

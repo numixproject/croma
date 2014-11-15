@@ -12,14 +12,16 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 public class ColorPickerActivity extends Activity {
     private Camera mCamera;
     private CameraPreview mPreview;
     private ImageButton doneButton;
-    private Orientation orientation;
+    private RotateButton orientation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +37,7 @@ public class ColorPickerActivity extends Activity {
         }
 
         doneButton = (ImageButton) findViewById(R.id.done_button);
-        orientation = new Orientation(this, doneButton);
+        orientation = new RotateButton(this, doneButton);
 
         if (orientation.canDetectOrientation()) {
             orientation.enable();
@@ -58,7 +60,8 @@ public class ColorPickerActivity extends Activity {
         mCamera.setDisplayOrientation(90);
 
         // Create our Preview view and set it as the content of our activity.
-        mPreview = new CameraPreview(this, mCamera);
+        RelativeLayout rl = (RelativeLayout) this.findViewById(R.id.camera_preview);
+        mPreview = new CameraPreview(this, mCamera, rl);
 
         RelativeLayout preview = (RelativeLayout) findViewById(R.id.camera_preview);
         preview.setOnTouchListener(mPreview);
@@ -68,7 +71,12 @@ public class ColorPickerActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.putIntegerArrayListExtra("colors", mPreview.getColors());
+                Set<Integer> set = mPreview.getColors();
+                ArrayList<Integer> al = new ArrayList<Integer>(set.size());
+                for (int c: set) {
+                    al.add(c);
+                }
+                intent.putIntegerArrayListExtra("colors", al);
                 setResult(RESULT_OK, intent);
                 finish();
             }
