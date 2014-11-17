@@ -81,7 +81,7 @@ App.buildURL = function(state) {
 
     // Treat index route as a special case
     if (state.route !== "index") {
-        url += encodeURIComponent(state.route);
+        url += state.route;
     }
 
     if (!state.params || $.isEmptyObject(state.params)) {
@@ -161,7 +161,7 @@ App.on("navigate", function(state) {
         App.Outlet.empty().html(methods.render(state, model));
 
         // Bind event handlers so that we can perform actions
-        App.Outlet.off("click.action").on("click.action", "[data-action]", function() {
+        $(document).off("click.action").on("click.action", "[data-action]", function() {
             var action = $(this).attr("data-action");
 
             if (methods.actions && typeof methods.actions[action] === "function") {
