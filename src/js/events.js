@@ -32,8 +32,9 @@ Events.prototype = {
 		this.callbacks.splice(i, 1);
 	},
 
-	trigger: function(event, args) {
-		var currentcallbacks = this.callbacks[event];
+	trigger: function(event) {
+		var currentcallbacks = this.callbacks[event],
+			args = Array.prototype.slice.call(arguments, 1);
 
 		if (!currentcallbacks) {
 			return;
@@ -41,7 +42,7 @@ Events.prototype = {
 
 		for (var i = 0; i < currentcallbacks.length; i++) {
 			if (typeof currentcallbacks[i] === "function") {
-				currentcallbacks[i](args);
+				currentcallbacks[i].apply(null, args);
 			}
 		}
 	}

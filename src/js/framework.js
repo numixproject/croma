@@ -18,17 +18,13 @@ App._super = {
     afterModel: function() {},
     render: function() {},
     afterRender: function() {},
-    actions: {}
+    actions: {
+        goback: window.history.back
+    }
 };
 
 // Provides a way to add custom overrides
 App.Global = $.extend(true, {}, App._super);
-
-App.getParent = function(route) {
-    if (typeof route !== "string" || !/\//.test(route)) {
-        return;
-    }
-};
 
 // Format the route name
 App.formatRoute = function(name) {
@@ -73,7 +69,7 @@ App.registerRoutes([ "index" ]);
 
 // Build URL from state object
 App.buildURL = function(state) {
-    var url = "/";
+    var url = "#/";
 
     if (typeof state !== "object" || !state) {
         return;
@@ -130,14 +126,19 @@ App.parseURL = function(url) {
 };
 
 // Update URL on navigate
-App.on("navigate", function(state) {
+App.on("navigate", function(state, replace) {
     var methods, model;
 
-    // Set the old state
+    // Set the old and new states
     App.oldState = App.parseURL(window.location.hash);
+    App.currentState = state;
 
     // Update the URL
-    window.location.hash = App.buildURL(state);
+    if (replace) {
+        window.history.replaceState(state, null, App.buildURL(state));
+    } else {
+        window.history.pushState(state, null, App.buildURL(state));
+    }
 
     // Merge with the global methods
     methods = $.extend(true, {}, App.Global, App[App.formatRoute(state.route)]);
@@ -174,9 +175,6 @@ App.on("navigate", function(state) {
             methods.afterRender.apply(App.Outlet, [ state, model ]);
         }
     }
-
-    // Set the new state
-    App.currentState = state;
 });
 
 // Send an initial navigate event to update the UI based on state
@@ -184,14 +182,9 @@ $(document).on("ready", function() {
     App.trigger("navigate", App.parseURL(window.location.hash));
 });
 
-// On hashchange, check if the current state is same as hash, if not, trigger navigate
-$(window).on("hashchange", function() {
-    var stateURL = "#" + App.buildURL(App.currentState);
-
-    // Easier to check if URLs match than comparing objects
-    if (window.location.hash !== stateURL) {
-        App.trigger("navigate", App.parseURL(window.location.hash));
-    }
+// On history change, trigger navigate
+$(window).on("popstate", function() {
+    App.trigger("navigate", App.parseURL(window.location.hash), true);
 });
 
 module.exports = App;
