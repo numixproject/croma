@@ -62,41 +62,12 @@ App.DetailsRoute.render = function(state, model) {
 };
 
 App.DetailsRoute.actions = {
-    tocolors: function() {
-        var palette = $(this).closest("[data-palette]").attr("data-palette");
+    topalettes: function(state) {
+        var color = state.params.color;
 
         App.trigger("navigate", {
-            route: "colors",
-            params: { palette: palette }
-        });
-    },
-    add: function() {
-        App.trigger("navigate", {
-            route: "palette/new"
-        });
-    },
-    share: function() {
-        var palette = $(this).closest("[data-palette]").attr("data-palette");
-
-        croma.shareItem(palette);
-    },
-    remove: function() {
-        var palette = $(this).closest("[data-palette]").attr("data-palette"),
-            data;
-
-        data = croma.getData(palette);
-
-        croma.setData(palette);
-        croma.removeItem(palette, false, function() {
-            croma.showToast({
-                body: "Deleted " + palette + ". Tap to dismiss.",
-                actions: {
-                    undo: function() {
-                        croma.setData(palette, data);
-                        croma.undoRemoveItem(palette, false);
-                    }
-                }
-            });
+            route: "palettes",
+            params: { color: color }
         });
     }
 };

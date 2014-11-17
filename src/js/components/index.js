@@ -40,6 +40,16 @@ App.IndexRoute.model = function() {
 App.IndexRoute.render = function(state, model) {
     var html = "";
 
+    if (!model.length) {
+        html += [
+            "<div class='empty-area'>",
+            "<a action='add' class='empty-area-action'>Tap to add palette.</a>",
+            "</div>"
+        ].join("");
+
+        return html;
+    }
+
     for (var i = 0, l = model.length; i < l; i++) {
         html += [
             "<div class='card-item fx-animate-in' data-palette='" + model[i].name + "'>",

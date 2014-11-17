@@ -31,6 +31,16 @@ App.ColorsRoute.model = function(state) {
 App.ColorsRoute.render = function(state, model) {
     var html = "";
 
+    if (!model.length) {
+        html += [
+            "<div class='empty-area'>",
+            "<a action='add' class='empty-area-action'>Tap to add color.</a>",
+            "</div>"
+        ].join("");
+
+        return html;
+    }
+
     for (var i = 0, l = model.length; i < l; i++) {
         html += [
             "<div class='card-item fx-animate-in' data-color='" + model[i].color + "'>",
