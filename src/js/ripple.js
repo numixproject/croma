@@ -6,7 +6,7 @@ var ripple = function(el) {
 		return;
 	}
 
-	$el.off("mousedown.ripple touchstart.ripple").on("mousedown.ripple touchstart.ripple", function(e) {
+	$el.off("click.ripple").on("click.ripple", function(e) {
 		var $this = $(this),
 			$ripple = $("<div>").addClass("ripple"),
 			position = getPostion(e);

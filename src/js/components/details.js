@@ -1,8 +1,8 @@
 /* jshint browser: true */
-/* global App */
 
-var croma = require(".././croma.js"),
-    Color = require(".././color.js");
+var App = require(".././framework.js"),
+    Color = require(".././color.js"),
+    croma = require(".././croma.js");
 
 App.DetailsRoute.model = function(state) {
         var color;

@@ -1,7 +1,7 @@
 /* jshint browser: true */
-/* global App */
 
-var croma = require(".././croma.js");
+var App = require(".././framework.js"),
+    croma = require(".././croma.js");
 
 App.IndexRoute.model = function() {
     var palettes = croma.getData(),
