@@ -41,12 +41,31 @@
 
 <body>
 
-    <script type="text/x-handlebars">
-        {{outlet}}
-    </script>
+    <header>
+        <div class="section-wrapper">
+            <div class="header-action-wrapper">
+                <a data-action="goback" class="header-action-icon header-action-back fx-ripple"></a>
+            </div>
+            <div class="header-title-wrapper fx-fade-in">
+                <h1 id="app-title" class="header-title">
+                    Croma
+                </h1>
+            </div>
+            <div class="header-button-wrapper">
+                <a data-action="add" class="action-button action-button-add fx-scale-in">
+                    <span class="action-button-content fx-ripple"></span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="content-area card-area">
+        <div class="cover-image"></div>
+        <div id="app-outlet" class="section-wrapper"></div>
+    </main>
+
 
     <script src="./dist/js/libs.min.js"></script>
     <script src="./dist/js/app.min.js"></script>
-    <script src="./dist/js/templates.min.js"></script>
 </body>
 </html>

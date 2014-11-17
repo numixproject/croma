@@ -48,7 +48,7 @@ var croma = (function() {
 			return storage.set("palettes", palettes);
 		},
 
-		// Remove a color from the UI and database
+		// Remove a card from the UI
 		removeItem: function(palette, color, callback) {
 			var $el;
 
@@ -57,27 +57,61 @@ var croma = (function() {
 			}
 
 			if (color) {
-				$el = $('[data-palette="' + palette + '"][data-color="' + color + '"]');
+				$el = $('[data-color="' + color + '"]');
 			} else {
 				$el = $('[data-palette="' + palette + '"]');
 			}
 
+			// Let's save the styles so we can undo them
+			$el.data("styles", {
+				height: $el.css("height"),
+				paddingTop: $el.css("padding-top"),
+				paddingBottom: $el.css("padding-bottom")
+			});
+
 			// Swipe out the card
 			$el.velocity({
-				translateX: "100%",
-				opacity: 0
+				opacity: 0,
+				translateX: "100%"
 			}, {
 				duration: 300,
 				easing: [ 0.7, 0.1, 0.57, 0.79 ]
 			}).velocity({
 				height: 0,
 				paddingTop: 0,
-				paddingBottom: 0
+				paddingBottom: 0,
+				translateX: 0
 			}, {
 				duration: 150,
 				complete: function() {
-					$(this).remove();
+					if (callback && typeof callback === "function") {
+						callback();
+					}
+				}
+			});
+		},
 
+		// Undo remove a card from the UI
+		undoRemoveItem: function(palette, color, callback) {
+			var $el;
+
+			if (typeof palette !== "string") {
+				return;
+			}
+
+			if (color) {
+				$el = $('[data-color="' + color + '"]');
+			} else {
+				$el = $('[data-palette="' + palette + '"]');
+			}
+
+			// Restore the card
+			$el.velocity(
+				$el.data("styles"),
+				{ duration: 150 }
+			).velocity({ opacity: 1 }, {
+				duration: 150,
+				complete: function() {
 					if (callback && typeof callback === "function") {
 						callback();
 					}
@@ -280,11 +314,6 @@ var croma = (function() {
 			}
 		},
 
-		// Validate name
-		validateName: function(name, tmp) {
-			return ((name && typeof name === "string" && !(/^(null|undefined)$/).test(name)) && (tmp || !(/(^_\$.*|")/).test(name)));
-		},
-
 		// Show a toast
 		// @param {{ body: String, actions: Object, timeout: Number, persistent: Boolean }} options
 		showToast: function(options) {
@@ -420,6 +449,20 @@ var croma = (function() {
 
 			return "background-image:" + croma.makeWebkitGradient(colors, direction) + ";" +
 					croma.prefixCss("background-image", croma.makeGradient(colors, direction)) + ";";
+		},
+
+		sortByDate: function(a, b) {
+			if (a.created > b.created) {
+				return -1;
+			} else if (a.created < b.created) {
+				return 1;
+			} else {
+				return 0;
+			}
+		},
+
+		validateName: function(name, tmp) {
+			return ((name && typeof name === "string" && !(/^(null|undefined)$/).test(name)) && (tmp || !(/(^_\$.*|")/).test(name)));
 		}
 	};
 }());
