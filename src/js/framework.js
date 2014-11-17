@@ -22,7 +22,7 @@ App._super = {
 };
 
 // Provides a way to add custom overrides
-App.Global = $.extend({}, App._super);
+App.Global = $.extend(true, {}, App._super);
 
 App.getParent = function(route) {
     if (typeof route !== "string" || !/\//.test(route)) {
@@ -140,7 +140,7 @@ App.on("navigate", function(state) {
     window.location.hash = App.buildURL(state);
 
     // Merge with the global methods
-    methods = $.extend({}, App.Global, App[App.formatRoute(state.route)]);
+    methods = $.extend(true, {}, App.Global, App[App.formatRoute(state.route)]);
 
     if (!methods) {
         return;
