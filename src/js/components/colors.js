@@ -34,7 +34,7 @@ App.ColorsRoute.render = function(state, model) {
     if (!model.length) {
         html += [
             "<div class='empty-area'>",
-            "<a action='add' class='empty-area-action'>Tap to add color.</a>",
+            "<a data-action='add' class='empty-area-action'>Tap to add color.</a>",
             "</div>"
         ].join("");
 
@@ -71,9 +71,9 @@ App.ColorsRoute.actions = {
 
         data = croma.getData(palette);
 
-        if (!croma.isPro() && data && data.colors && Object.getOwnPropertyNames(data.colors).length >= 4) {
+        if (!croma.isPro() && data && data.colors && Object.getOwnPropertyNames(data.colors).length >= App.vars.maxColors) {
             croma.showToast({
-                body: "Unlock pro to add more than " + max + " colors.",
+                body: "Unlock pro to add more than " + App.vars.maxColors + " colors.",
                 actions: {
                     unlock: croma.unlockPro
                 },

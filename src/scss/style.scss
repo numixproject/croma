@@ -376,9 +376,7 @@ $actions: love, remove, download, share;
 }
 
 .card-item-input-name {
-    font-size: 1.5em;
-
-    @media screen and (min-width: $mobile-width) { font-size: 2em; }
+    @media screen and (min-width: $mobile-width) { font-size: 1.5em; }
 }
 
 .card-item-color-button {

@@ -144,7 +144,7 @@ App.PickerRoute.afterRender = function() {
         setColor(value, false);
     });
 
-    App.Global.afterRender();
+    App.Global.afterRender.apply(this, Array.prototype.slice.call(arguments));
 };
 
 App.PickerRoute.actions = {

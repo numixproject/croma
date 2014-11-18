@@ -43,7 +43,7 @@ App.IndexRoute.render = function(state, model) {
     if (!model.length) {
         html += [
             "<div class='empty-area'>",
-            "<a action='add' class='empty-area-action'>Tap to add palette.</a>",
+            "<a data-action='add' class='empty-area-action'>Tap to add palette.</a>",
             "</div>"
         ].join("");
 
