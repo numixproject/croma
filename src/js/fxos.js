@@ -1,5 +1,4 @@
 /* jshint browser: true */
-/* global $ */
 
 var fxos = (function() {
     var supported = !!("MozActivity" in window),
