@@ -23,7 +23,7 @@ App.PaletteNameRoute.render = function(state, model) {
 App.PaletteNameRoute.actions = {
     done: function(state) {
         var palette = $("#palette-name").val() || "",
-            oldname = state.params ? state.params.oldname : null,
+            oldname = state.params.oldname,
             data = {};
 
         if (!croma.validateName(palette)) {

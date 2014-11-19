@@ -49,7 +49,7 @@ App.PalettesRoute.render = function(state, model) {
 
     for (var i = 0, l = model.palettes.length; i < l; i++) {
         html += [
-            "<div data-action='save' class='card-item card-item-action-container fx-animate-in fx-ripple'>",
+            "<div data-action='save' class='card-item card-item-action-container fx-animate-in fx-ripple' data-index='" + i + "'>",
             "<div class='card-item-segment'>",
             "<div class='card-item-color-item-large fx-ripple' style='" + croma.generateBackground(model.palettes[i].colors) + "'></div>",
             "</div>",
@@ -63,8 +63,10 @@ App.PalettesRoute.render = function(state, model) {
 };
 
 App.PalettesRoute.actions = {
-    save: function(colors) {
+    save: function(state, model) {
         var map = {},
+            index = $(this).closest("[data-index]").attr("data-index"),
+            colors = model.palettes[index].colors,
             query;
 
         if (!colors instanceof Array) {

@@ -10,7 +10,6 @@ var gulp = require("gulp"),
     concat = require("gulp-concat"),
     jshint = require("gulp-jshint"),
     uglify = require("gulp-uglify"),
-    templates = require("gulp-ember-templates"),
     sass = require("gulp-ruby-sass"),
     webserver = require("gulp-webserver"),
     opn = require("opn"),
@@ -31,21 +30,9 @@ gulp.task("lint", function() {
     .pipe(jshint.reporter("jshint-stylish"));
 });
 
-gulp.task("templates", function() {
-    gulp.src([ "src/templates/**/*.hbs" ])
-    .pipe(plumber())
-    .pipe(templates())
-    .pipe(concat("templates.js"))
-    .pipe(gutil.env.production ? uglify() : gutil.noop())
-    .pipe(rename({ suffix: ".min" }))
-    .pipe(gulp.dest("dist/js"));
-});
-
 gulp.task("libs", [ "bower" ], function() {
     return gulp.src([
         "bower_components/jquery/dist/jquery" + (gutil.env.production ? ".min" : "") + ".js",
-        "bower_components/handlebars/handlebars" + (gutil.env.production ? ".min" : "") + ".js",
-        "bower_components/ember/ember" + (gutil.env.production ? ".min" : "") + ".js",
         "bower_components/velocity/velocity" + (gutil.env.production ? ".min" : "") + ".js"
     ])
     .pipe(plumber())
@@ -85,7 +72,6 @@ gulp.task("clean", function() {
 });
 
 gulp.task("watch", function() {
-    gulp.watch("src/templates/**/*.hbs", [ "templates" ]);
     gulp.watch("src/js/**/*.js", [ "lint", "libs", "scripts" ]);
     gulp.watch("src/scss/**/*.scss", [ "sass" ]);
 });
@@ -101,7 +87,7 @@ gulp.task("webserver", function() {
 });
 
 // Default Task
-gulp.task("default", [ "lint", "sass", "libs", "scripts", "templates" ]);
+gulp.task("default", [ "lint", "sass", "libs", "scripts" ]);
 
 // Serve in a web browser
 gulp.task("live", [ "default", "watch", "webserver" ], function() {
