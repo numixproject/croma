@@ -266,7 +266,7 @@ var utils = (function() {
 		getPalette: function(check) {
 			var supported = ("imageUtils" in window && imageUtils.getPalette);
 
-			if (check) {
+			if (check === true) {
 				return supported;
 			}
 
