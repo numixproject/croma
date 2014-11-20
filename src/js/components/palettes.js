@@ -21,7 +21,7 @@ App.PalettesRoute.model = function(state) {
 
     for (var i in color) {
         if ((/.*scheme$/i).test(i) && typeof color[i] === "function") {
-            objs = (!isPro && i.toLowerCase() === "monochromaticscheme") ? color[i](max) : color[i]();
+            objs = (!isPro && i.toLowerCase() === "monochromaticscheme") ? color[i](App.vars.maxColors) : color[i]();
 
             if (!isPro && objs.length > App.vars.maxColors) {
                 continue;

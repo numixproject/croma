@@ -20,9 +20,9 @@ function savePalette(state, model) {
     }
 
     for (var i = 0, l = palette.length; i < l; i++) {
-        if (!isPro && i === max) {
+        if (!isPro && i === App.vars.maxColors) {
             utils.showToast({
-                body: "Unlock pro to save more than " + max + " colors.",
+                body: "Unlock pro to save more than " + App.vars.maxColors + " colors.",
                 actions: {
                     unlock: utils.unlockPro
                 },
