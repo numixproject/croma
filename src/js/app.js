@@ -30,8 +30,8 @@ App.Global = $.extend(true, {}, App._super);
 App.formatRoute = function(name) {
     var route;
 
-    if (typeof name !== "string") {
-        return;
+    if (typeof name !== "string" || !name) {
+        throw new Error("Invalid route name " + name + ".");
     }
 
     // Capitalize words seprated by " ", "-" or "/"
@@ -46,8 +46,8 @@ App.formatRoute = function(name) {
 App.registerRoutes = function(routes) {
     var route;
 
-    if (!routes && !routes instanceof Array) {
-        return;
+    if (!routes || !routes instanceof Array) {
+        throw new Error("Routes to register must be an array.");
     }
 
     for (var i = 0, l = routes.length; i < l; i++) {
@@ -72,7 +72,7 @@ App.buildURL = function(state) {
     var url = "#/";
 
     if (typeof state !== "object" || !state) {
-        return;
+        throw new Error("Invalid state " + state + ".");
     }
 
     // Treat index route as a special case
@@ -87,7 +87,9 @@ App.buildURL = function(state) {
     url += "?";
 
     for (var param in state.params) {
-        url += encodeURIComponent(param) + "=" + encodeURIComponent(state.params[param]) + "&";
+        if (param && state.params[param]) {
+            url += encodeURIComponent(param) + "=" + encodeURIComponent(state.params[param]) + "&";
+        }
     }
 
     // Remove the trailing "&"
@@ -100,8 +102,8 @@ App.parseURL = function(url) {
         params = [],
         state = {};
 
-    if (typeof url !== "string") {
-        return;
+    if (typeof url !== "string" || !url) {
+        throw new Error("Invalid url " + url + ".");
     }
 
     hash = url.split("#")[1] || "";
