@@ -20,7 +20,8 @@ App._super = {
     afterRender: function() {},
     actions: {
         goback: window.history.back
-    }
+    },
+    tags: []
 };
 
 // Provides a way to add custom overrides
@@ -71,7 +72,7 @@ App.registerRoutes([ "index" ]);
 App.buildURL = function(state) {
     var url = "#/";
 
-    if (typeof state !== "object" || !state) {
+    if (typeof state !== "object") {
         throw new Error("Invalid state " + state + ".");
     }
 
@@ -102,7 +103,7 @@ App.parseURL = function(url) {
         params = [],
         state = {};
 
-    if (typeof url !== "string" || !url) {
+    if (typeof url !== "string") {
         throw new Error("Invalid url " + url + ".");
     }
 
@@ -130,6 +131,10 @@ App.parseURL = function(url) {
 // Update URL on navigate
 App.on("navigate", function(state, replace) {
     var methods, model;
+
+    if (typeof state !== "object") {
+        throw new Error("Invalid state " + state + ".");
+    }
 
     // Set the old and new states
     App.oldState = App.parseURL(window.location.hash);
@@ -177,6 +182,13 @@ App.on("navigate", function(state, replace) {
             methods.afterRender.apply(App.Outlet, [ state, model ]);
         }
     }
+
+    // Add the tags to body
+    if (methods.tags instanceof Array && methods.tags.length) {
+        $("body").attr("data-tags", methods.tags.join(" "));
+    } else {
+        $("body").removeAttr("data-tags");
+    }
 });
 
 // Send an initial navigate event to update the UI based on state
@@ -188,5 +200,7 @@ $(document).on("ready", function() {
 $(window).on("popstate", function() {
     App.trigger("navigate", App.parseURL(window.location.hash), true);
 });
+
+window.App = App;
 
 module.exports = App;

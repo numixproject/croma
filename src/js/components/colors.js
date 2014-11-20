@@ -3,6 +3,8 @@
 var App = require(".././app.js"),
     utils = require(".././utils.js");
 
+App.ColorsRoute.tags = [ "add" ];
+
 App.ColorsRoute.model = function(state) {
     var name, current,
         data = [];

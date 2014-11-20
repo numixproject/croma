@@ -5,6 +5,8 @@ var App = require(".././app.js"),
     utils = require(".././utils.js"),
     value = "#f06860";
 
+App.PaletteNameRoute.tags = [ "action" ];
+
 function renderHues() {
     var vals = [ 288, 312, 348, 36, 60, 96, 144, 180, 204, 264, 300, 336, 24, 48, 84, 120, 156, 192, 216, 276 ],
         h = 0, s = 100, l = 50,

@@ -3,6 +3,8 @@
 var App = require(".././app.js"),
     utils = require(".././utils.js");
 
+App.IndexRoute.tags = [ "home", "add" ];
+
 App.IndexRoute.model = function() {
     var palettes = utils.getData(),
         arr = [],
