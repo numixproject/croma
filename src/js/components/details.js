@@ -1,8 +1,8 @@
 /* jshint browser: true */
 
-var App = require(".././framework.js"),
+var App = require(".././app.js"),
     Color = require(".././color.js"),
-    croma = require(".././croma.js");
+    utils = require(".././utils.js");
 
 App.DetailsRoute.model = function(state) {
         var color;

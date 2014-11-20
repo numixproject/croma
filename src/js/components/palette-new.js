@@ -1,14 +1,14 @@
 /* jshint browser: true */
 
-var App = require(".././framework.js"),
-    croma = require(".././croma.js");
+var App = require(".././app.js"),
+    utils = require(".././utils.js");
 
 App.PaletteNewRoute.render = function(state, model) {
     var html = "";
 
     html += "<div class='section-content-center'><div class='section-content-center-inner'>";
 
-    if (croma.getPalette(true)) {
+    if (utils.getPalette(true)) {
         html += [
             "<div class='paper-button-container fx-animate-in'>",
             "<a data-action='getpalette' class='paper-button paper-button-block fx-ripple'>",
@@ -28,7 +28,7 @@ App.PaletteNewRoute.render = function(state, model) {
         "</div></div>"
     ].join("");
 
-    if (!croma.isPro()) {
+    if (!utils.isPro()) {
         html += [
             "<div class='paper-button-container fx-animate-in unlock'>",
             "<a data-action='unlockpro' class='paper-button paper-button-block fx-ripple'>",
@@ -49,6 +49,6 @@ App.PaletteNewRoute.actions = {
     topalettename: function() {
         App.trigger("navigate", { route: "palette/name" });
     },
-    getpalette: croma.getPalette,
-    unlockpro: croma.unlockPro
+    getpalette: utils.getPalette,
+    unlockpro: utils.unlockPro
 };

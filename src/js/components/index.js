@@ -1,10 +1,10 @@
 /* jshint browser: true */
 
-var App = require(".././framework.js"),
-    croma = require(".././croma.js");
+var App = require(".././app.js"),
+    utils = require(".././utils.js");
 
 App.IndexRoute.model = function() {
-    var palettes = croma.getData(),
+    var palettes = utils.getData(),
         arr = [],
         data = [],
         color;
@@ -13,7 +13,7 @@ App.IndexRoute.model = function() {
 
     for (var p in palettes) {
         // Exclude names beginning with "_$"
-        if (!(palettes[p] && croma.validateName(p))) {
+        if (!(palettes[p] && utils.validateName(p))) {
             continue;
         }
 
@@ -34,7 +34,7 @@ App.IndexRoute.model = function() {
         });
     }
 
-    return data.sort(croma.sortByDate);
+    return data.sort(utils.sortByDate);
 };
 
 App.IndexRoute.render = function(state, model) {
@@ -54,7 +54,7 @@ App.IndexRoute.render = function(state, model) {
         html += [
             "<div class='card-item fx-animate-in' data-palette='" + model[i].name + "'>",
             "<div class='card-item-segment' data-action='tocolors'>",
-            "<div class='card-item-color-item-large fx-ripple' style='" + croma.generateBackground(model[i].colors) + "'></div>",
+            "<div class='card-item-color-item-large fx-ripple' style='" + utils.generateBackground(model[i].colors) + "'></div>",
             "</div>",
             "<div class='card-item-segment'>",
             "<div class='card-item-text'>" + model[i].name + "</div>",
@@ -85,22 +85,22 @@ App.IndexRoute.actions = {
     share: function() {
         var palette = $(this).closest("[data-palette]").attr("data-palette");
 
-        croma.shareItem(palette);
+        utils.shareItem(palette);
     },
     remove: function() {
         var palette = $(this).closest("[data-palette]").attr("data-palette"),
             data;
 
-        data = croma.getData(palette);
+        data = utils.getData(palette);
 
-        croma.setData(palette);
-        croma.removeItem(palette, false, function() {
-            croma.showToast({
+        utils.setData(palette);
+        utils.removeItem(palette, false, function() {
+            utils.showToast({
                 body: "Deleted " + palette + ". Tap to dismiss.",
                 actions: {
                     undo: function() {
-                        croma.setData(palette, data);
-                        croma.undoRemoveItem(palette, false);
+                        utils.setData(palette, data);
+                        utils.undoRemoveItem(palette, false);
                     }
                 }
             });

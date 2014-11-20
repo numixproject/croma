@@ -44,10 +44,10 @@ gulp.task("libs", [ "bower" ], function() {
 
 gulp.task("scripts", function() {
     return browserify({
-        entries: "./src/js/app.js",
+        entries: "./src/js/croma.js",
         debug: !gutil.env.production
     }).bundle()
-    .pipe(source("app.js"))
+    .pipe(source("croma.js"))
     .pipe(buffer())
     .pipe(plumber())
     .pipe(gutil.env.production ? uglify() : gutil.noop())

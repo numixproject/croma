@@ -1,10 +1,10 @@
 /* jshint browser: true */
 
-var App = require(".././framework.js"),
-    croma = require(".././croma.js");
+var App = require(".././app.js"),
+    utils = require(".././utils.js");
 
 App.PaletteListRoute.model = function(state) {
-    var palettes = croma.getData(),
+    var palettes = utils.getData(),
         data = [];
 
     if (!palettes) {
@@ -13,14 +13,14 @@ App.PaletteListRoute.model = function(state) {
 
     for (var p in palettes) {
         // Exclude names beginning with "_$"
-        if (!croma.validateName(p)) {
+        if (!utils.validateName(p)) {
             continue;
         }
 
         data.push(p);
     }
 
-    return data.sort(croma.sortByDate);
+    return data.sort(utils.sortByDate);
 };
 
 App.PaletteListRoute.render = function(state, model) {
@@ -48,14 +48,14 @@ App.PaletteListRoute.actions = {
         var oldname = state.params.oldname,
             olddata, currdata, oldcolors, currcolors;
 
-        olddata = croma.getData(oldname) || {};
-        currdata = croma.getData(palette) || {};
+        olddata = utils.getData(oldname) || {};
+        currdata = utils.getData(palette) || {};
         oldcolors = olddata.colors;
         currcolors = currdata.colors;
 
         currdata.colors = $.extend(true, {}, currcolors, oldcolors);
 
-        croma.setData(palette, currdata);
+        utils.setData(palette, currdata);
 
         actiondone = true;
 

@@ -1,12 +1,12 @@
 /* jshint browser: true */
 
-var App = require(".././framework.js"),
+var App = require(".././app.js"),
     Color = require(".././color.js"),
-    croma = require(".././croma.js");
+    utils = require(".././utils.js");
 
 App.PalettesRoute.model = function(state) {
     var data = {},
-        isPro = croma.isPro(),
+        isPro = utils.isPro(),
         name, objs, arr, color;
 
     if (!(state.params && state.params.color)) {
@@ -27,7 +27,7 @@ App.PalettesRoute.model = function(state) {
                 continue;
             }
 
-            name = croma.parseCamelCase(i).replace(/scheme/i, "").trim();
+            name = utils.parseCamelCase(i).replace(/scheme/i, "").trim();
             arr = [];
 
             for (var j = 0; j < objs.length; j++) {
@@ -51,7 +51,7 @@ App.PalettesRoute.render = function(state, model) {
         html += [
             "<div data-action='save' class='card-item card-item-action-container fx-animate-in fx-ripple' data-index='" + i + "'>",
             "<div class='card-item-segment'>",
-            "<div class='card-item-color-item-large fx-ripple' style='" + croma.generateBackground(model.palettes[i].colors) + "'></div>",
+            "<div class='card-item-color-item-large fx-ripple' style='" + utils.generateBackground(model.palettes[i].colors) + "'></div>",
             "</div>",
             "<div class='card-item-segment'>",
             "<div class='card-item-text'>" + model.palettes[i].name + "</div>",
@@ -77,7 +77,7 @@ App.PalettesRoute.actions = {
             map[colors[i]] = true;
         }
 
-        query = croma.paletteToQuery(map);
+        query = utils.paletteToQuery(map);
 
         App.trigger("navigate", { route: "palette/show", params: { palette: query } });
     }

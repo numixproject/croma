@@ -1,8 +1,8 @@
 /* jshint browser: true */
 
-var App = require(".././framework.js"),
+var App = require(".././app.js"),
     Color = require(".././color.js"),
-    croma = require(".././croma.js"),
+    utils = require(".././utils.js"),
     value = "#f06860";
 
 function renderHues() {
@@ -160,8 +160,8 @@ App.PickerRoute.actions = {
 
         color = new Color(value).tohex();
 
-        if (croma.validateName(palette)) {
-            data = croma.getData(palette);
+        if (utils.validateName(palette)) {
+            data = utils.getData(palette);
 
             if (data) {
                 data.colors = data.colors || {};
@@ -170,7 +170,7 @@ App.PickerRoute.actions = {
                 };
             }
 
-            croma.setData(palette, data);
+            utils.setData(palette, data);
 
             actiondone = true;
 

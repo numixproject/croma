@@ -1,11 +1,11 @@
 /* jshint browser: true */
 
-var App = require(".././framework.js"),
-    croma = require(".././croma.js");
+var App = require(".././app.js"),
+    utils = require(".././utils.js");
 
 function savePalette(state, model) {
     var color,
-        isPro = croma.isPro(),
+        isPro = utils.isPro(),
         suggested = state.params.name,
         palette = model.palette,
         name = "_$extracted",
@@ -22,10 +22,10 @@ function savePalette(state, model) {
 
     for (var i = 0, l = palette.length; i < l; i++) {
         if (!isPro && i === max) {
-            croma.showToast({
+            utils.showToast({
                 body: "Unlock pro to save more than " + max + " colors.",
                 actions: {
-                    unlock: croma.unlockPro
+                    unlock: utils.unlockPro
                 },
                 persistent: true,
                 timeout: 5000
@@ -45,7 +45,7 @@ function savePalette(state, model) {
         count++;
     }
 
-    croma.setData(name, data);
+    utils.setData(name, data);
 
     return {
         oldname: name,
@@ -61,7 +61,7 @@ App.PaletteShowRoute.model = function(state) {
         App.trigger("navigate", { route: "index" });
     }
 
-    colors = croma.queryToPalette(state.params.palette);
+    colors = utils.queryToPalette(state.params.palette);
 
     for (var i = 0, l = colors.length; i < l; i++) {
         palette.push(colors[i].tohex());
@@ -89,7 +89,7 @@ App.PaletteShowRoute.render = function(state, model) {
         "</div>"
     ].join("");
 
-    if (croma.isPro()) {
+    if (utils.isPro()) {
         html += [
             "<div class='paper-button-container fx-animate-in'>",
             "<a data-action='add' class='paper-button paper-button-block fx-ripple'>Add to existing palette</a>",

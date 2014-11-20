@@ -1,7 +1,7 @@
 /* jshint browser: true */
 
-var App = require(".././framework.js"),
-    croma = require(".././croma.js");
+var App = require(".././app.js"),
+    utils = require(".././utils.js");
 
 App.PaletteNameRoute.render = function(state, model) {
     var html = "";
@@ -26,8 +26,8 @@ App.PaletteNameRoute.actions = {
             oldname = state.params.oldname,
             data = {};
 
-        if (!croma.validateName(palette)) {
-            croma.showToast({
+        if (!utils.validateName(palette)) {
+            utils.showToast({
                 body: "Invalid palette name " + palette + ".",
                 timeout: 3000
             });
@@ -35,8 +35,8 @@ App.PaletteNameRoute.actions = {
             return;
         }
 
-        if (croma.getData(palette)) {
-            croma.showToast({
+        if (utils.getData(palette)) {
+            utils.showToast({
                 body: "A palette with same name already exists.",
                 timeout: 3000
             });
@@ -44,13 +44,13 @@ App.PaletteNameRoute.actions = {
             return;
         }
 
-        if (croma.validateName(oldname, true)) {
-            data = croma.getData(oldname) || {};
+        if (utils.validateName(oldname, true)) {
+            data = utils.getData(oldname) || {};
 
-            croma.setData(oldname);
+            utils.setData(oldname);
         }
 
-        croma.setData(palette, data);
+        utils.setData(palette, data);
 
         App.vars.actionDone = true;
 

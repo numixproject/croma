@@ -1,7 +1,7 @@
 /* jshint browser: true */
 
-var App = require(".././framework.js"),
-    croma = require(".././croma.js");
+var App = require(".././app.js"),
+    utils = require(".././utils.js");
 
 App.ColorsRoute.model = function(state) {
     var name, current,
@@ -12,7 +12,7 @@ App.ColorsRoute.model = function(state) {
     }
 
     name = state.params.palette;
-    current = croma.getData(name);
+    current = utils.getData(name);
 
     if (!current) {
         return;
@@ -25,7 +25,7 @@ App.ColorsRoute.model = function(state) {
         });
     }
 
-    return data.sort(croma.sortByDate);
+    return data.sort(utils.sortByDate);
 };
 
 App.ColorsRoute.render = function(state, model) {
@@ -69,13 +69,13 @@ App.ColorsRoute.actions = {
         var data,
             palette = state.params.palette;
 
-        data = croma.getData(palette);
+        data = utils.getData(palette);
 
-        if (!croma.isPro() && data && data.colors && Object.getOwnPropertyNames(data.colors).length >= App.vars.maxColors) {
-            croma.showToast({
+        if (!utils.isPro() && data && data.colors && Object.getOwnPropertyNames(data.colors).length >= App.vars.maxColors) {
+            utils.showToast({
                 body: "Unlock pro to add more than " + App.vars.maxColors + " colors.",
                 actions: {
-                    unlock: croma.unlockPro
+                    unlock: utils.unlockPro
                 },
                 persistent: true,
                 timeout: 5000
@@ -94,25 +94,25 @@ App.ColorsRoute.actions = {
             palette = state.params.palette;
             color = $(this).closest("[data-color]").attr("data-color");
 
-        croma.removeItem(palette, color, function() {
-            data = croma.getData(palette);
+        utils.removeItem(palette, color, function() {
+            data = utils.getData(palette);
 
             oldcolor = data.colors[color];
 
             delete data.colors[color];
 
-            croma.setData(palette, data);
+            utils.setData(palette, data);
 
-            croma.showToast({
+            utils.showToast({
                 body: "Deleted " + color + ". Tap to dismiss.",
                 actions: {
                     undo: function() {
-                        data = croma.getData(palette);
+                        data = utils.getData(palette);
 
                         data.colors[color] = oldcolor;
 
-                        croma.setData(palette, data);
-                        croma.undoRemoveItem(palette, color);
+                        utils.setData(palette, data);
+                        utils.undoRemoveItem(palette, color);
                     }
                 }
             });
