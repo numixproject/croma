@@ -37,15 +37,22 @@ App.PaletteListRoute.render = function(state, model) {
     }
 
     for (var i = 0, l = model.length; i < l; i++) {
-        html += "<div class='card-item card-item-select-item fx-animate-in fx-ripple' data-action='add'>" + model[i] + "</div>";
+        html += "<div class='card-item card-item-select-item fx-animate-in fx-ripple' data-action='add' data-palette='" + model[i] + "'>" + model[i] + "</div>";
     }
 
     return html;
 };
 
+App.PaletteListRoute.afterRender = function(state) {
+    App.setTitle("Choose a palette");
+
+    App.Global.afterRender.apply(this, Array.prototype.slice.call(arguments));
+};
+
 App.PaletteListRoute.actions = {
-    add: function(palette) {
+    add: function(state, model) {
         var oldname = state.params.oldname,
+            palette = $(this).closest("[data-palette]").attr("data-palette"),
             olddata, currdata, oldcolors, currcolors;
 
         olddata = utils.getData(oldname) || {};

@@ -4,8 +4,7 @@ var App = require(".././app.js"),
     utils = require(".././utils.js");
 
 function savePalette(state, model) {
-    var color,
-        isPro = utils.isPro(),
+    var isPro = utils.isPro(),
         suggested = state.params.name,
         palette = model.palette,
         name = "_$extracted",
@@ -34,10 +33,8 @@ function savePalette(state, model) {
             break;
         }
 
-        color = palette[i].value;
-
-        if (color) {
-            data.colors[color] = {
+        if (palette[i]) {
+            data.colors[palette[i]] = {
                 created: new Date().getTime() + count
             };
         }
@@ -46,6 +43,8 @@ function savePalette(state, model) {
     }
 
     utils.setData(name, data);
+
+    App.vars.actionDone = true;
 
     return {
         oldname: name,

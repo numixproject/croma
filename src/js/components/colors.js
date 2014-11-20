@@ -58,6 +58,12 @@ App.ColorsRoute.render = function(state, model) {
     return html;
 };
 
+App.ColorsRoute.afterRender = function(state) {
+    App.setTitle(state.params.palette);
+
+    App.Global.afterRender.apply(this, Array.prototype.slice.call(arguments));
+};
+
 App.ColorsRoute.actions = {
     todetails: function(state) {
         var color = $(this).closest("[data-color]").attr("data-color");

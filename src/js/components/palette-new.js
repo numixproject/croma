@@ -3,6 +3,8 @@
 var App = require(".././app.js"),
     utils = require(".././utils.js");
 
+App.PaletteNewRoute.tags = [ "new" ];
+
 App.PaletteNewRoute.render = function(state, model) {
     var html = "";
 

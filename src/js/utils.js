@@ -66,7 +66,9 @@ var utils = (function() {
 			$el.data("styles", {
 				height: $el.css("height"),
 				paddingTop: $el.css("padding-top"),
-				paddingBottom: $el.css("padding-bottom")
+				paddingBottom: $el.css("padding-bottom"),
+				marginTop: $el.css("margin-top"),
+				marginBottom: $el.css("margin-bottom")
 			});
 
 			// Swipe out the card
@@ -80,6 +82,8 @@ var utils = (function() {
 				height: 0,
 				paddingTop: 0,
 				paddingBottom: 0,
+				marginTop: 0,
+				marginBottom: 0,
 				translateX: 0
 			}, {
 				duration: 150,

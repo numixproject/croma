@@ -70,6 +70,12 @@ App.IndexRoute.render = function(state, model) {
     return html;
 };
 
+App.IndexRoute.afterRender = function() {
+    App.setTitle("Croma");
+
+    App.Global.afterRender.apply(this, Array.prototype.slice.call(arguments));
+};
+
 App.IndexRoute.actions = {
     tocolors: function() {
         var palette = $(this).closest("[data-palette]").attr("data-palette");

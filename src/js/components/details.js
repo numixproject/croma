@@ -61,6 +61,12 @@ App.DetailsRoute.render = function(state, model) {
     return html;
 };
 
+App.DetailsRoute.afterRender = function(state) {
+    App.setTitle(state.params.color);
+
+    App.Global.afterRender.apply(this, Array.prototype.slice.call(arguments));
+};
+
 App.DetailsRoute.actions = {
     topalettes: function(state) {
         var color = state.params.color;

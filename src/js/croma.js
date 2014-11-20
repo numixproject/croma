@@ -1,12 +1,21 @@
 /* jshint browser: true */
 
 var App = require("./app.js"),
-    ripple = require("./ripple.js");
+    ripple = require("./ripple.js"),
+    $appTitle = $("#app-title");
 
 // App global variables
 App.vars = {
     maxColors: 4,
     actionDone: false
+};
+
+App.setTitle = function(title) {
+    if (typeof title !== "string") {
+        return;
+    }
+
+    $appTitle.text(title);
 };
 
 // Add animations after route is rendered
