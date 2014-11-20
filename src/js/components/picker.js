@@ -149,6 +149,12 @@ App.PickerRoute.afterRender = function() {
     App.Global.afterRender.apply(this, Array.prototype.slice.call(arguments));
 };
 
+App.PickerRoute.afterRender = function(state, model) {
+    App.setTitle("Pick a color");
+
+    App.Global.afterRender.apply(this, Array.prototype.slice.call(arguments));
+};
+
 App.PickerRoute.actions = {
     done: function(state) {
         var palette = state.params.palette,

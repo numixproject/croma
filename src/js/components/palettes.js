@@ -62,6 +62,12 @@ App.PalettesRoute.render = function(state, model) {
     return html;
 };
 
+App.PalettesRoute.afterRender = function(state, model) {
+    App.setTitle("Palettes");
+
+    App.Global.afterRender.apply(this, Array.prototype.slice.call(arguments));
+};
+
 App.PalettesRoute.actions = {
     save: function(state, model) {
         var map = {},

@@ -44,6 +44,12 @@ App.PaletteNewRoute.render = function(state, model) {
     return html;
 };
 
+App.PaletteNewRoute.afterRender = function(state) {
+    App.setTitle("Add new palette");
+
+    App.Global.afterRender.apply(this, Array.prototype.slice.call(arguments));
+};
+
 App.PaletteNewRoute.actions = {
     topicker: function() {
         App.trigger("navigate", { route: "picker" });

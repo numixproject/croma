@@ -23,6 +23,12 @@ App.PaletteNameRoute.render = function(state, model) {
     return html;
 };
 
+App.PaletteNameRoute.afterRender = function(state) {
+    App.setTitle("Name your palette");
+
+    App.Global.afterRender.apply(this, Array.prototype.slice.call(arguments));
+};
+
 App.PaletteNameRoute.actions = {
     done: function(state) {
         var palette = $("#palette-name").val() || "",

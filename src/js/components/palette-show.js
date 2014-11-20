@@ -99,6 +99,14 @@ App.PaletteShowRoute.render = function(state, model) {
     return html;
 };
 
+App.PaletteShowRoute.afterRender = function(state, model) {
+    var name = model.name || "Colors";
+
+    App.setTitle(name);
+
+    App.Global.afterRender.apply(this, Array.prototype.slice.call(arguments));
+};
+
 App.PaletteShowRoute.actions = {
     save: function(state, model) {
         var data = savePalette(state, model);
