@@ -106,7 +106,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                     cameraPreview.draw(cc);
 
                     View vc = getColorView(getContext(), x, y, color);
+                    vc.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
 
+                        }
+                    });
                     colors.add(color);
 
                     cameraPreview.addView(vc);
@@ -133,7 +138,13 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         DrawTouchDot dc = new DrawTouchDot(ct, color, radius);
         r.addView(dc);
+        r.setOnTouchListener(new View.OnTouchListener() {
 
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return false;
+            }
+        });
         return r;
     }
 

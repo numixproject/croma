@@ -312,7 +312,7 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
         }
     }
 
-    public class ImageUtils {
+    private class ImageUtils {
         @JavascriptInterface
         public void getPalette() {
             boolean hasCamera = Utils.checkCameraHardware(MainActivity.this);
