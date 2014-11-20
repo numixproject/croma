@@ -99,7 +99,7 @@ App.ColorsRoute.actions = {
     },
     remove: function(state) {
         var data, oldcolor,
-            palette = state.params.palette;
+            palette = state.params.palette,
             color = $(this).closest("[data-color]").attr("data-color");
 
         utils.removeItem(palette, color, function() {

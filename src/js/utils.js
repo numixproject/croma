@@ -111,8 +111,7 @@ var utils = (function() {
 
 			// Restore the card
 			$el.velocity(
-				$el.data("styles"),
-				{ duration: 150 }
+				$el.data("styles"), 150
 			).velocity({ opacity: 1 }, {
 				duration: 150,
 				complete: function() {
