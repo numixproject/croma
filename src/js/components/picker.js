@@ -146,10 +146,6 @@ App.PickerRoute.afterRender = function() {
         setColor(value, false);
     });
 
-    App.Global.afterRender.apply(this, Array.prototype.slice.call(arguments));
-};
-
-App.PickerRoute.afterRender = function(state, model) {
     App.setTitle("Pick a color");
 
     App.Global.afterRender.apply(this, Array.prototype.slice.call(arguments));
