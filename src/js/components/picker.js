@@ -153,10 +153,8 @@ App.PickerRoute.afterRender = function() {
 
 App.PickerRoute.actions = {
     done: function(state) {
-        var palette = state.params.palette,
+        var palette = state.params ? state.params.palette : null,
             color, data;
-
-        console.log(palette);
 
         if ((!value) || typeof value !== "string") {
             return;

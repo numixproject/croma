@@ -11,5 +11,17 @@
     "name": "The Numix Project",
     "url": "http://www.numixproject.org"
   },
+  "activities": {
+    "view": {
+      "filters": {
+        "type": "url",
+        "url": {
+          "required": true,
+          "regexp": "/^((https?:\/\/croma.numixproject.org)|(croma:\/\/))/"
+        }
+      },
+      "href": "index.html"
+    }
+  },
   "default_locale": "en"
 }

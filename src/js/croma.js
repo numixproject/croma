@@ -10,6 +10,7 @@ App.vars = {
     actionDone: false
 };
 
+// Set app title
 App.setTitle = function(title) {
     if (typeof title !== "string") {
         return;
@@ -17,6 +18,17 @@ App.setTitle = function(title) {
 
     $appTitle.text(title);
 };
+
+// Handle URL opening in Firefox OS
+if (!!("mozSetMessageHandler" in navigator)) {
+    // Handle opening of URLs
+    navigator.mozSetMessageHandler("activity", function(a) {
+        var url = a.source.data.url,
+            state = App.parseURL(url.replace(/^((https?:\/\/croma.numixproject.org)|(croma:\/\/))/, ""));
+
+        App.trigger("navigate", state);
+    });
+}
 
 // Add animations after route is rendered
 App.Global.afterRender = function() {
