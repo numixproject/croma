@@ -77,7 +77,6 @@ header {
     float: left;
     height: $bar-height;
     width: $bar-height;
-    margin: 0 .25em;
     background-repeat: no-repeat;
     background-position: center center;
 }
@@ -190,6 +189,8 @@ header {
 
 .header-button-wrapper { position: relative; }
 
+.action-button-wrapper { overflow: hidden; }
+
 .action-button {
     @include dropshadow(2);
     @extend %transition;
@@ -250,11 +251,12 @@ header {
 }
 
 .card-item {
+    @include dropshadow(1);
+
     background-color: $light-color;
     color: $dark-color;
     margin: $spacing;
     border-radius: $roundness;
-    box-shadow: 0 0 1px 0 rgba(0,0,0,0.3);
     overflow: hidden;
 }
 
@@ -305,15 +307,15 @@ header {
 .card-item-text {
     @include flex-grow(1);
 
-    padding: $spacing / 2;
+    padding: ($spacing / 2) $spacing;
 }
 
 .card-item-action {
     @extend %snappy;
 
     display: inline-block;
-    height: 3em;
-    width: 3em;
+    height: 3.5em;
+    width: 3.5em;
     background-size: $spacing;
     background-repeat: no-repeat;
     background-position: center;
