@@ -52,6 +52,8 @@ App.Global.actions = {
             } else {
                 App.trigger("navigate", App.oldState);
             }
+
+            App.vars.actionDone = false;
         } else {
             App.trigger("navigate", { route: "index" });
         }
