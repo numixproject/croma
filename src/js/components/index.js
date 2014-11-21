@@ -54,7 +54,7 @@ App.IndexRoute.render = function(state, model) {
 
     for (var i = 0, l = model.length; i < l; i++) {
         html += [
-            "<div class='card-item fx-animate-in' data-palette='" + model[i].name + "'>",
+            "<div class='card-item' data-palette='" + model[i].name + "'>",
             "<div class='card-item-segment' data-action='tocolors'>",
             "<div class='card-item-color-item-large fx-ripple' style='" + utils.generateBackground(model[i].colors) + "'></div>",
             "</div>",

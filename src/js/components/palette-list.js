@@ -37,7 +37,7 @@ App.PaletteListRoute.render = function(state, model) {
     }
 
     for (var i = 0, l = model.length; i < l; i++) {
-        html += "<div class='card-item card-item-select-item fx-animate-in fx-ripple' data-action='add' data-palette='" + model[i] + "'>" + model[i] + "</div>";
+        html += "<div class='card-item card-item-select-item fx-ripple' data-action='add' data-palette='" + model[i] + "'>" + model[i] + "</div>";
     }
 
     return html;

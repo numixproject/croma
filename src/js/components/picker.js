@@ -82,7 +82,7 @@ App.PickerRoute.render = function() {
     var html = "";
 
     html += [
-        "<div class='card-item fx-animate-in'>",
+        "<div class='card-item'>",
         "<div class='card-item-picker fx-ripple'>",
         "<div class='picker-wrapper'>",
         "<div class='picker-hues'></div>",

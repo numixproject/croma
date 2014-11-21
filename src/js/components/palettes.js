@@ -50,7 +50,7 @@ App.PalettesRoute.render = function(state, model) {
 
     for (var i = 0, l = model.palettes.length; i < l; i++) {
         html += [
-            "<div data-action='save' class='card-item card-item-action-container fx-animate-in fx-ripple' data-index='" + i + "'>",
+            "<div data-action='save' class='card-item card-item-action-container fx-ripple' data-index='" + i + "'>",
             "<div class='card-item-segment'>",
             "<div class='card-item-color-item-large fx-ripple' style='" + utils.generateBackground(model.palettes[i].colors) + "'></div>",
             "</div>",

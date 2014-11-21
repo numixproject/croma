@@ -5,33 +5,36 @@ var App = require(".././app.js"),
     utils = require(".././utils.js");
 
 App.DetailsRoute.model = function(state) {
-        var color = state.params ? state.params.palette : null,
-            model = {};
+        var color = state.params ? state.params.color : null,
+            model = {},
+            colorObj;
 
-        if (!color) {
-            App.trigger("navigate", { route: "index" });
-        }
+    if (!color) {
+        App.trigger("navigate", { route: "index" });
+    }
 
-        model.hexVal = (new Color(color)).tohex();
+    colorObj = new Color(color);
 
-        model.strings = [
-            { key: "Name", value: color.name() },
-            { key: "HEX", value: color.tohex() },
-            { key: "RGB", value: color.torgb() },
-            { key: "HSL", value: color.tohsl() },
-            { key: "HSV", value: color.tohsv() },
-            { key: "CMYK", value: color.tocmyk() },
-            { key: "LAB", value: color.tolab() },
-            { key: "Luminance", value: parseFloat(color.luminance()).toFixed(2) },
-            { key: "Darkness", value:  parseFloat(color.darkness()).toFixed(2) }
-        ];
+    model.hexVal = colorObj.tohex();
 
-        return model;
+    model.strings = [
+        { key: "Name", value: colorObj.name() },
+        { key: "HEX", value: colorObj.tohex() },
+        { key: "RGB", value: colorObj.torgb() },
+        { key: "HSL", value: colorObj.tohsl() },
+        { key: "HSV", value: colorObj.tohsv() },
+        { key: "CMYK", value: colorObj.tocmyk() },
+        { key: "LAB", value: colorObj.tolab() },
+        { key: "Luminance", value: parseFloat(colorObj.luminance()).toFixed(2) },
+        { key: "Darkness", value:  parseFloat(colorObj.darkness()).toFixed(2) }
+    ];
+
+    return model;
 };
 
 App.DetailsRoute.render = function(state, model) {
     var html = [
-        "<div class='card-item fx-animate-in'>",
+        "<div class='card-item'>",
         "<div class='card-item-color-item-large' style='background-color:" + model.hexVal + "'></div>",
         "<div class='card-item-info-wrap'>"
     ].join(""),
@@ -52,7 +55,7 @@ App.DetailsRoute.render = function(state, model) {
 
     html += [
         "</div></div>",
-        "<div class='paper-button-container fx-animate-in'>",
+        "<div class='paper-button-container'>",
         "<a data-action='topalettes' class='paper-button paper-button-block fx-ripple'>See color palettes</a>",
         "</div>"
     ].join("");

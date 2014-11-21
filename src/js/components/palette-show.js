@@ -75,7 +75,7 @@ App.PaletteShowRoute.model = function(state) {
 App.PaletteShowRoute.render = function(state, model) {
     var html = "";
 
-    html += "<div class='card-item fx-animate-in'>";
+    html += "<div class='card-item'>";
 
     for (var i = 0, l = model.palette.length; i < l; i++) {
         html += "<div class='card-item-color-item' style='background-color:" + model.palette[i] + "'>" + model.palette[i] + "</div>";
@@ -83,14 +83,14 @@ App.PaletteShowRoute.render = function(state, model) {
 
     html += [
         "</div>",
-        "<div class='paper-button-container fx-animate-in'>",
+        "<div class='paper-button-container'>",
         "<a data-action='save' class='paper-button paper-button-block fx-ripple'>Save as new palette</a>",
         "</div>"
     ].join("");
 
     if (utils.isPro()) {
         html += [
-            "<div class='paper-button-container fx-animate-in'>",
+            "<div class='paper-button-container'>",
             "<a data-action='add' class='paper-button paper-button-block fx-ripple'>Add to existing palette</a>",
             "</div>"
         ].join("");

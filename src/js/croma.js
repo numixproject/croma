@@ -32,7 +32,7 @@ if (!!("mozSetMessageHandler" in navigator)) {
 
 // Add animations after route is rendered
 App.Global.afterRender = function() {
-    var cls = [ "animate-in", "fade-in", "scale-in" ];
+    var cls = [ "fade-in", "scale-in" ];
 
     // Add ripple animation
     ripple(".fx-ripple");
