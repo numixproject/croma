@@ -282,6 +282,7 @@ header {
 
 .card-item-header {
     text-transform: uppercase;
+    font-weight: 700;
     padding-bottom: $spacing / 2;
 }
 
@@ -307,7 +308,7 @@ header {
 .card-item-text {
     @include flex-grow(1);
 
-    padding: ($spacing / 2) $spacing;
+    padding: ($spacing / 1.5) $spacing;
 }
 
 .card-item-action {
