@@ -7,21 +7,22 @@ var App = require(".././app.js"),
 App.PalettesRoute.model = function(state) {
     var data = {},
         isPro = utils.isPro(),
-        name, objs, arr, color;
+        color = state.params ? state.params.color : null,
+        colorObj, name, objs, arr;
 
-    if (!(state.params && state.params.color)) {
+    if (!color) {
         App.trigger("navigate", { route: "index" });
     }
 
-    color = new Color(state.params.color);
+    colorObj = new Color(color);
 
-    data.hexVal = color.tohex();
+    data.hexVal = colorObj.tohex();
 
     data.palettes = [];
 
-    for (var i in color) {
-        if ((/.*scheme$/i).test(i) && typeof color[i] === "function") {
-            objs = (!isPro && i.toLowerCase() === "monochromaticscheme") ? color[i](App.vars.maxColors) : color[i]();
+    for (var i in colorObj) {
+        if ((/.*scheme$/i).test(i) && typeof colorObj[i] === "function") {
+            objs = (!isPro && i.toLowerCase() === "monochromaticscheme") ? colorObj[i](App.vars.maxColors) : colorObj[i]();
 
             if (!isPro && objs.length > App.vars.maxColors) {
                 continue;

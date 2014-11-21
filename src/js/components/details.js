@@ -5,17 +5,16 @@ var App = require(".././app.js"),
     utils = require(".././utils.js");
 
 App.DetailsRoute.model = function(state) {
-        var color;
+        var color = state.params ? state.params.palette : null,
+            model = {};
 
-        if (!(state.params && state.params.color)) {
+        if (!color) {
             App.trigger("navigate", { route: "index" });
         }
 
-        color = new Color(state.params.color);
+        model.hexVal = (new Color(color)).tohex();
 
-        color.hexVal = color.tohex();
-
-        color.strings = [
+        model.strings = [
             { key: "Name", value: color.name() },
             { key: "HEX", value: color.tohex() },
             { key: "RGB", value: color.torgb() },
@@ -27,7 +26,7 @@ App.DetailsRoute.model = function(state) {
             { key: "Darkness", value:  parseFloat(color.darkness()).toFixed(2) }
         ];
 
-        return color;
+        return model;
 };
 
 App.DetailsRoute.render = function(state, model) {
@@ -69,7 +68,7 @@ App.DetailsRoute.afterRender = function(state) {
 
 App.DetailsRoute.actions = {
     topalettes: function(state) {
-        var color = state.params.color;
+        var color = state.params ? state.params.color : null;
 
         App.trigger("navigate", {
             route: "palettes",

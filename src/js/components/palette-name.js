@@ -32,7 +32,7 @@ App.PaletteNameRoute.afterRender = function(state) {
 App.PaletteNameRoute.actions = {
     done: function(state) {
         var palette = $("#palette-name").val() || "",
-            oldname = state.params.oldname,
+            oldname = state.params ? state.params.oldname : null,
             data = {};
 
         if (!utils.validateName(palette)) {

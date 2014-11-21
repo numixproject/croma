@@ -51,7 +51,7 @@ App.PaletteListRoute.afterRender = function(state) {
 
 App.PaletteListRoute.actions = {
     add: function(state, model) {
-        var oldname = state.params.oldname,
+        var oldname = state.params ? state.params.oldname : null,
             palette = $(this).closest("[data-palette]").attr("data-palette"),
             olddata, currdata, oldcolors, currcolors;
 

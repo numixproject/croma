@@ -6,14 +6,14 @@ var App = require(".././app.js"),
 App.ColorsRoute.tags = [ "add" ];
 
 App.ColorsRoute.model = function(state) {
-    var name, current,
+    var name = state.params ? state.params.palette : null,
+        current,
         data = [];
 
-    if (!(state.params && state.params.palette)) {
+    if (!name) {
         App.trigger("navigate", { route: "index" });
     }
 
-    name = state.params.palette;
     current = utils.getData(name);
 
     if (!current) {
@@ -75,7 +75,7 @@ App.ColorsRoute.actions = {
     },
     add: function(state) {
         var data,
-            palette = state.params.palette;
+            palette = state.params ? state.params.palette : null;
 
         data = utils.getData(palette);
 
@@ -99,7 +99,7 @@ App.ColorsRoute.actions = {
     },
     remove: function(state) {
         var data, oldcolor,
-            palette = state.params.palette,
+            palette = state.params ? state.params.palette : null,
             color = $(this).closest("[data-color]").attr("data-color");
 
         utils.removeItem(palette, color, function() {

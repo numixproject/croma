@@ -5,7 +5,7 @@ var App = require(".././app.js"),
 
 function savePalette(state, model) {
     var isPro = utils.isPro(),
-        suggested = state.params.name,
+        suggested = state.params ? state.params.name : null,
         palette = model.palette,
         name = "_$extracted",
         count = 0,
