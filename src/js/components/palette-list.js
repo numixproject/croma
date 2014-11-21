@@ -26,7 +26,7 @@ App.PaletteListRoute.model = function(state) {
 App.PaletteListRoute.render = function(state, model) {
     var html = "";
 
-    if (!model.length) {
+    if (!model || !model.length) {
         html += [
             "<div class='empty-area'><div class='empty-area-action'>",
             "No palettes found",

@@ -46,10 +46,12 @@ App.Global.afterRender = function() {
 // Provide global actions
 App.Global.actions = {
     goback: function() {
-        if (window.history.length > 1 && !App.vars.actionDone) {
-            window.history.back();
-        } else if (App.oldState && App.oldState.route && !App.vars.actionDone) {
-            App.trigger("navigate", App.oldState);
+        if (App.oldState && App.oldState.route !==  App.currentState.route && !App.vars.actionDone) {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                App.trigger("navigate", App.oldState);
+            }
         } else {
             App.trigger("navigate", { route: "index" });
         }

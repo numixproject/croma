@@ -12,6 +12,12 @@ App.PalettesRoute.model = function(state) {
 
     if (!color) {
         App.trigger("navigate", { route: "index" });
+
+        utils.showToast({
+            body: "No color specified.",
+            persistent: true,
+            timeout: 3000
+        });
     }
 
     colorObj = new Color(color);

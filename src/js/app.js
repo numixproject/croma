@@ -193,14 +193,12 @@ App.on("navigate", function(state, replace) {
 
 // Send an initial navigate event to update the UI based on state
 $(document).on("ready", function() {
-    App.trigger("navigate", App.parseURL(window.location.hash));
-});
-
-// On history change, trigger navigate
-$(window).on("popstate", function() {
     App.trigger("navigate", App.parseURL(window.location.hash), true);
 });
 
-window.App = App;
+// On hash change, trigger navigate
+$(window).on("hashchange", function() {
+    App.trigger("navigate", App.parseURL(window.location.hash), true);
+});
 
 module.exports = App;

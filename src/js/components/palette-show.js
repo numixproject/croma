@@ -58,6 +58,12 @@ App.PaletteShowRoute.model = function(state) {
 
     if (!(state.params && state.params.palette)) {
         App.trigger("navigate", { route: "index" });
+
+        utils.showToast({
+            body: "Invalid palette.",
+            persistent: true,
+            timeout: 3000
+        });
     }
 
     colors = utils.queryToPalette(state.params.palette);
