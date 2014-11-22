@@ -33,8 +33,8 @@ function savePalette(state, model) {
             break;
         }
 
-        if (palette[i]) {
-            data.colors[palette[i]] = {
+        if (palette[i].color) {
+            data.colors[palette[i].color] = {
                 created: new Date().getTime() + count
             };
         }
