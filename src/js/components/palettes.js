@@ -31,7 +31,11 @@ App.PalettesRoute.model = function(state) {
             name = utils.parseCamelCase(i).replace(/scheme/i, "").trim();
             arr = [];
 
-            for (var j = 0; j < objs.length; j++) {
+            // For the first color, push our initial color to retain it
+            // While palette generation, the hex value might change a bit
+            arr.push(data.hexVal);
+
+            for (var j = 1; j < objs.length; j++) {
                 arr.push(objs[j].tohex());
             }
 
