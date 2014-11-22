@@ -8,7 +8,7 @@ App.PalettesRoute.model = function(state) {
     var data = {},
         isPro = utils.isPro(),
         color = state.params ? state.params.color : null,
-        colorObj, name, objs, arr;
+        colorObj, objs, arr;
 
     if (!color) {
         return;
@@ -28,12 +28,10 @@ App.PalettesRoute.model = function(state) {
                 continue;
             }
 
-            name = utils.parseCamelCase(i).replace(/scheme/i, "").trim();
-            arr = [];
-
             // For the first color, push our initial color to retain it
             // While palette generation, the hex value might change a bit
-            arr.push(data.hexVal);
+            // Don't do this for monochromatic since the first color is not the color we passed
+            arr = (i.toLowerCase() === "monochromaticscheme") ? [ objs[0].tohex() ] : [ data.hexVal ];
 
             for (var j = 1; j < objs.length; j++) {
                 arr.push(objs[j].tohex());
@@ -41,7 +39,7 @@ App.PalettesRoute.model = function(state) {
 
             data.palettes.push({
                 colors: arr,
-                name: name
+                name: utils.parseCamelCase(i).replace(/scheme/i, "").trim()
             });
         }
     }
