@@ -465,7 +465,7 @@ var utils = (function() {
 		},
 
 		validateName: function(name, tmp) {
-			return ((name && typeof name === "string" && !(/^(null|undefined)$/).test(name)) && (tmp || !(/(^_\$.*|")/).test(name)));
+			return ((name && typeof name === "string" && !(/^(null|undefined)$/).test(name)) && (tmp || !(/(^_\$.*|"|'|<|>)/).test(name)));
 		}
 	};
 }());
