@@ -57,13 +57,7 @@ App.PaletteShowRoute.model = function(state) {
         colors;
 
     if (!(state.params && state.params.palette)) {
-        App.trigger("navigate", { route: "index" });
-
-        utils.showToast({
-            body: "Invalid palette.",
-            persistent: true,
-            timeout: 3000
-        });
+        return;
     }
 
     colors = utils.queryToPalette(state.params.palette);
@@ -80,6 +74,16 @@ App.PaletteShowRoute.model = function(state) {
 
 App.PaletteShowRoute.render = function(state, model) {
     var html = "";
+
+    if (!model || !model.palette || !(model.palette instanceof Array)) {
+        html += [
+            "<div class='empty-area'>",
+            "<a class='empty-area-action'>An error occured!</a>",
+            "</div>"
+        ].join("");
+
+        return html;
+    }
 
     html += "<div class='card-item'>";
 
@@ -106,9 +110,7 @@ App.PaletteShowRoute.render = function(state, model) {
 };
 
 App.PaletteShowRoute.afterRender = function(state, model) {
-    var name = model.name || "Colors";
-
-    App.setTitle(name);
+    App.setTitle(model.name || "Colors");
 
     App.Global.afterRender.apply(this, Array.prototype.slice.call(arguments));
 };

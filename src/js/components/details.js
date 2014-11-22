@@ -10,13 +10,7 @@ App.DetailsRoute.model = function(state) {
             colorObj;
 
     if (!color) {
-        App.trigger("navigate", { route: "index" });
-
-        utils.showToast({
-            body: "No color specified.",
-            persistent: true,
-            timeout: 3000
-        });
+        return;
     }
 
     colorObj = new Color(color);
@@ -39,12 +33,26 @@ App.DetailsRoute.model = function(state) {
 };
 
 App.DetailsRoute.render = function(state, model) {
-    var html = [
+    var html = "",
+        strings;
+
+    if (!model) {
+        html += [
+            "<div class='empty-area'>",
+            "<a class='empty-area-action'>An error occured!</a>",
+            "</div>"
+        ].join("");
+
+        return html;
+    }
+
+    html = [
         "<div class='card-item'>",
         "<div class='card-item-color-item-large' style='background-color:" + model.hexVal + "'></div>",
         "<div class='card-item-info-wrap'>"
-    ].join(""),
-        strings = model.strings;
+    ].join("");
+
+    strings = model.strings;
 
     for (var i = 0, l = strings.length; i < l; i++) {
         if (!strings[i].value) {
@@ -70,7 +78,7 @@ App.DetailsRoute.render = function(state, model) {
 };
 
 App.DetailsRoute.afterRender = function(state) {
-    App.setTitle(state.params.color);
+    App.setTitle(state.params.color || "Error!");
 
     App.Global.afterRender.apply(this, Array.prototype.slice.call(arguments));
 };

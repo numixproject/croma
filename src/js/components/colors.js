@@ -11,13 +11,7 @@ App.ColorsRoute.model = function(state) {
         data = [];
 
     if (!name) {
-        App.trigger("navigate", { route: "index" });
-
-        utils.showToast({
-            body: "No palette specified.",
-            persistent: true,
-            timeout: 3000
-        });
+        return;
     }
 
     current = utils.getData(name);
@@ -38,6 +32,16 @@ App.ColorsRoute.model = function(state) {
 
 App.ColorsRoute.render = function(state, model) {
     var html = "";
+
+    if (!model || !(model instanceof Array)) {
+        html += [
+            "<div class='empty-area'>",
+            "<a class='empty-area-action'>An error occured!</a>",
+            "</div>"
+        ].join("");
+
+        return html;
+    }
 
     if (!model.length) {
         html += [
@@ -65,7 +69,7 @@ App.ColorsRoute.render = function(state, model) {
 };
 
 App.ColorsRoute.afterRender = function(state) {
-    App.setTitle(state.params.palette);
+    App.setTitle(state.params.palette || "Error!");
 
     App.Global.afterRender.apply(this, Array.prototype.slice.call(arguments));
 };
