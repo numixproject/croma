@@ -421,8 +421,9 @@ $actions: love, remove, download, share;
     line-height: $bar-height;
     font-weight: 700;
     text-align: center;
-    color: #fff;
-    text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+    color: fade-out($dark-color, .2);
+
+    &-dark { color: $light-color; }
 
     &-large {
         height: $bar-height * 2;

@@ -63,7 +63,10 @@ App.PaletteShowRoute.model = function(state) {
     colors = utils.queryToPalette(state.params.palette);
 
     for (var i = 0, l = colors.length; i < l; i++) {
-        palette.push(colors[i].tohex());
+        palette.push({
+            color: colors[i].tohex(),
+            dark: (colors[i].darkness() > 0.5)
+        });
     }
 
     return {
@@ -88,7 +91,10 @@ App.PaletteShowRoute.render = function(state, model) {
     html += "<div class='card-item'>";
 
     for (var i = 0, l = model.palette.length; i < l; i++) {
-        html += "<div class='card-item-color-item' style='background-color:" + model.palette[i] + "'>" + model.palette[i] + "</div>";
+        html += [
+            "<div class='card-item-color-item " + (model.palette[i].dark ? "card-item-color-item-dark" : "") + "' ",
+            "style='background-color:" + model.palette[i].color + "'>" + model.palette[i].color + "</div>"
+        ].join("");
     }
 
     html += [
