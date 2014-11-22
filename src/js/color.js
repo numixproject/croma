@@ -835,7 +835,8 @@ var Color = (function() {
         }
 
         // Set a random color if no color was given
-        color = color || "#" + ((1 << 24) * Math.random() | 0).toString(16);
+        // http://www.paulirish.com/2009/random-hex-color-code-snippets/
+        color = color || "#" + Math.floor(Math.random() * 16777215).toString(16);
 
         // Check if color is in cache
         components = _fn.getComponents(color);
