@@ -24,6 +24,13 @@ App.PaletteNameRoute.render = function(state, model) {
 };
 
 App.PaletteNameRoute.afterRender = function(state) {
+    var suggested = state.params ? state.params.suggested : null;
+
+    // Prefill palette name
+    if (utils.validateName(suggested)) {
+        $("#palette-name").val(suggested);
+    }
+
     App.setTitle("Name your palette");
 
     App.Global.afterRender.apply(this, Array.prototype.slice.call(arguments));
