@@ -25,10 +25,10 @@
     <application
         android:allowBackup="true"
         android:backupAgent="org.numixproject.croma.BackupAgent"
-        android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.TranslucentDecor" >
+
         <meta-data
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAIo92l4xJqAJDuqvJlwDPnGYHpD5d_QKu69T_5Yg" />
@@ -36,11 +36,13 @@
         <activity
             android:name="org.numixproject.croma.MainActivity"
             android:configChanges="orientation|screenSize" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <intent-filter android:label="@string/view_label" >
                 <action android:name="android.intent.action.VIEW" />
 
@@ -55,6 +57,7 @@
                     android:host="@string/app_host"
                     android:scheme="https" />
             </intent-filter>
+
             <intent-filter android:label="@string/share_label" >
                 <action android:name="android.intent.action.SEND" />
 
@@ -64,14 +67,18 @@
                 <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name="org.numixproject.croma.ColorPickerActivity"
+            android:name=".ColorPickerActivity"
+            android:icon="@drawable/ic_camera"
             android:configChanges="orientation|screenSize"
             android:label="@string/picker_label" />
+
         <activity
-            android:name="org.numixproject.croma.PickColorActivity"
-            android:label="@string/title_activity_pick_color"
-            >
+            android:name=".PickColorActivity"
+            android:icon="@drawable/ic_camera"
+            android:label="@string/camera_label" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
