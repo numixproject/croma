@@ -94,7 +94,7 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
         try {
             List<Color> colors = k.getUsefulColors(b, 6);
 
-            url = Utils.makePaletteUrl(Utils.makePaletteQuery(colors));
+            url = INDEX + Utils.makePaletteUrl(Utils.makePaletteQuery(colors));
         } catch (IOException e) {
             Toast.makeText(this, R.string.generic_error, Toast.LENGTH_LONG).show();
 
@@ -186,7 +186,7 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
                 // Handle text being sent
                 final String query = intent.getStringExtra(Intent.EXTRA_TEXT);
 
-                webView.loadUrl(Utils.makePaletteUrl(Utils.getEncodedString(query)));
+                webView.loadUrl(INDEX + Utils.makePaletteUrl(Utils.getEncodedString(query)));
             } else if (type.startsWith("image/") && extras.containsKey(Intent.EXTRA_STREAM)) {
                 // Get resource path
                 final Uri imageUri = extras.getParcelable(Intent.EXTRA_STREAM);
@@ -276,7 +276,7 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
                                     list.add(new Color(c));
                                 }
 
-                                webView.loadUrl(Utils.makePaletteUrl(Utils.makePaletteQuery(list)));
+                                webView.loadUrl(INDEX + Utils.makePaletteUrl(Utils.makePaletteQuery(list)));
                             }
                         });
                     } else if (intent.hasExtra("data")) {

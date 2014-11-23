@@ -24,7 +24,7 @@
 
     <application
         android:allowBackup="true"
-        android:backupAgent="org.numixproject.croma.BackupAgent"
+        android:backupAgent=".BackupAgent"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.TranslucentDecor" >
@@ -34,7 +34,7 @@
             android:value="AEdPqrEAAAAIo92l4xJqAJDuqvJlwDPnGYHpD5d_QKu69T_5Yg" />
 
         <activity
-            android:name="org.numixproject.croma.MainActivity"
+            android:name=".MainActivity"
             android:configChanges="orientation|screenSize" >
 
             <intent-filter>
