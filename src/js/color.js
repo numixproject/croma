@@ -152,17 +152,6 @@ var Color = (function() {
             yellow: [ 255, 255, 0 ],
             yellowgreen: [ 154, 205, 50 ]
         },
-        _blind = {
-            Normal: [ 1, 0, 0, 0, 0,  0, 1, 0, 0, 0,  0, 0, 1, 0, 0,  0, 0, 0, 1, 0,  0, 0, 0, 0, 1 ],
-            Protanopia: [ 0.567, 0.433, 0, 0, 0,  0.558, 0.442, 0, 0, 0,  0, 0.242, 0.758, 0, 0,  0, 0, 0, 1, 0,  0, 0, 0, 0, 1 ],
-            Protanomaly: [ 0.817, 0.183, 0, 0, 0,  0.333, 0.667, 0, 0, 0,  0, 0.125, 0.875, 0, 0,  0, 0, 0, 1, 0,  0, 0, 0, 0, 1 ],
-            Deuteranopia: [ 0.625, 0.375, 0, 0, 0,  0.7, 0.3, 0, 0, 0,  0, 0.3, 0.7, 0, 0,  0, 0, 0, 1, 0,  0, 0, 0, 0, 1 ],
-            Deuteranomaly: [ 0.8, 0.2, 0, 0, 0,  0.258, 0.742, 0, 0, 0,  0, 0.142, 0.858, 0, 0,  0, 0, 0, 1, 0,  0, 0, 0, 0, 1 ],
-            Tritanopia: [ 0.95, 0.05, 0, 0, 0,  0, 0.433, 0.567, 0, 0,  0, 0.475, 0.525, 0, 0,  0, 0, 0, 1, 0,  0, 0, 0, 0, 1 ],
-            Tritanomaly: [ 0.967, 0.033, 0, 0, 0,  0, 0.733, 0.267, 0, 0,  0, 0.183, 0.817, 0, 0,  0, 0, 0, 1, 0,  0, 0, 0, 0, 1 ],
-            Achromatopsia: [ 0.299, 0.587, 0.114, 0, 0,  0.299, 0.587, 0.114, 0, 0,  0.299, 0.587, 0.114, 0, 0,  0, 0, 0, 1, 0,  0, 0, 0, 0, 1 ],
-            Achromatomaly: [ 0.618, 0.320, 0.062, 0, 0,  0.163, 0.775, 0.062, 0, 0,  0.163, 0.320, 0.516, 0, 0, 0, 0, 0, 1, 0, 0, 0 ]
-        },
 
         _convert = {
             rgb2hsl: function(values) {
@@ -834,6 +823,29 @@ var Color = (function() {
                 }
 
                 return _fn.colorObj(scheme);
+            },
+
+            addFilter: function(color, m) {
+                var o = {
+                        r: color.rgb[0],
+                        g: color.rgb[1],
+                        b: color.rgb[2],
+                        a: color.alpha
+                    },
+                    r, g, b, a,
+                    fu = function(n) {
+                        return (n < 0 ? 0 : (n < 255 ? n : 255 ));
+                    };
+
+                r = ((o.r * m[0]) + (o.g * m[1]) + (o.b * m[2]) + (o.a * m[3]) + m[4]);
+                g = ((o.r * m[5]) + (o.g * m[6]) + (o.b * m[7]) + (o.a * m[8]) + m[9]);
+                b = ((o.r * m[10]) + (o.g * m[11]) + (o.b * m[12]) + (o.a * m[13]) + m[14]);
+                a = ((o.r * m[15]) + (o.g * m[16]) + (o.b * m[17]) + (o.a * m[18]) + m[19]);
+
+                return _fn.colorObj({
+                    rgb: [ fu(r), fu(g), fu(b) ],
+                    alpha: fu(a)
+                });
             }
         };
 
@@ -1181,43 +1193,32 @@ var Color = (function() {
         },
 
         colorBlind: function(type) {
-            var matrix,
+            var matrices = {
+                    Normal: [ 1, 0, 0, 0, 0,  0, 1, 0, 0, 0,  0, 0, 1, 0, 0,  0, 0, 0, 1, 0,  0, 0, 0, 0, 1 ],
+                    Protanopia: [ 0.567, 0.433, 0, 0, 0,  0.558, 0.442, 0, 0, 0,  0, 0.242, 0.758, 0, 0,  0, 0, 0, 1, 0,  0, 0, 0, 0, 1 ],
+                    Protanomaly: [ 0.817, 0.183, 0, 0, 0,  0.333, 0.667, 0, 0, 0,  0, 0.125, 0.875, 0, 0,  0, 0, 0, 1, 0,  0, 0, 0, 0, 1 ],
+                    Deuteranopia: [ 0.625, 0.375, 0, 0, 0,  0.7, 0.3, 0, 0, 0,  0, 0.3, 0.7, 0, 0,  0, 0, 0, 1, 0,  0, 0, 0, 0, 1 ],
+                    Deuteranomaly: [ 0.8, 0.2, 0, 0, 0,  0.258, 0.742, 0, 0, 0,  0, 0.142, 0.858, 0, 0,  0, 0, 0, 1, 0,  0, 0, 0, 0, 1 ],
+                    Tritanopia: [ 0.95, 0.05, 0, 0, 0,  0, 0.433, 0.567, 0, 0,  0, 0.475, 0.525, 0, 0,  0, 0, 0, 1, 0,  0, 0, 0, 0, 1 ],
+                    Tritanomaly: [ 0.967, 0.033, 0, 0, 0,  0, 0.733, 0.267, 0, 0,  0, 0.183, 0.817, 0, 0,  0, 0, 0, 1, 0,  0, 0, 0, 0, 1 ],
+                    Achromatopsia: [ 0.299, 0.587, 0.114, 0, 0,  0.299, 0.587, 0.114, 0, 0,  0.299, 0.587, 0.114, 0, 0,  0, 0, 0, 1, 0,  0, 0, 0, 0, 1 ],
+                    Achromatomaly: [ 0.618, 0.320, 0.062, 0, 0,  0.163, 0.775, 0.062, 0, 0,  0.163, 0.320, 0.516, 0, 0, 0, 0, 0, 1, 0, 0, 0 ]
+                },
                 objs = {},
-                o = {
-                    r: this.rgb[0],
-                    g: this.rgb[1],
-                    b: this.rgb[2],
-                    a: this.alpha
-                },
-                fu = function(n) {
-                    return (n < 0 ? 0 : (n < 255 ? n : 255 ));
-                },
-                simulate = function(m) {
-                    var r, g, b, a;
-
-                    r = ((o.r * m[0]) + (o.g * m[1]) + (o.b * m[2]) + (o.a * m[3]) + m[4]);
-                    g = ((o.r * m[5]) + (o.g * m[6]) + (o.b * m[7]) + (o.a * m[8]) + m[9]);
-                    b = ((o.r * m[10]) + (o.g * m[11]) + (o.b * m[12]) + (o.a * m[13]) + m[14]);
-                    a = ((o.r * m[15]) + (o.g * m[16]) + (o.b * m[17]) + (o.a * m[18]) + m[19]);
-
-                    return _fn.colorObj({
-                        rgb: [ fu(r), fu(g), fu(b) ],
-                        alpha: fu(a)
-                    });
-                };
+                matrix;
 
             if (type) {
-                matrix = _blind[type];
+                matrix = matrices[type];
 
                 if (!matrix) {
                     return;
                 }
 
-                return simulate[matrix];
+                return _fn.addFilter(this, matrix);
             }
 
-            for (var i in _blind) {
-                objs[i] = simulate(_blind[i]);
+            for (var m in matrices) {
+                objs[m] = _fn.addFilter(this, matrices[m]);
             }
 
             return objs;
