@@ -56,7 +56,7 @@ App.IndexRoute.render = function(state, model) {
         html += [
             "<div class='card-item' data-palette='" + model[i].name + "'>",
             "<div class='card-item-segment' data-action='tocolors'>",
-            "<div class='card-item-color-item-large fx-ripple' style='" + utils.generateBackground(model[i].colors) + "'></div>",
+            "<div class='card-item-color-item-large' style='" + utils.generateBackground(model[i].colors) + "'></div>",
             "</div>",
             "<div class='card-item-segment'>",
             "<div class='card-item-text'>" + model[i].name + "</div>",

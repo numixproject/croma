@@ -56,7 +56,7 @@ App.ColorsRoute.render = function(state, model) {
     for (var i = 0, l = model.length; i < l; i++) {
         html += [
             "<div class='card-item' data-color='" + model[i].color + "'>",
-            "<div class='card-item-color-item-large fx-ripple' data-action='todetails' style='background-color:" + model[i].color + "'></div>",
+            "<div class='card-item-color-item-large' data-action='todetails' style='background-color:" + model[i].color + "'></div>",
             "<div class='card-item-segment'>",
             "<div class='card-item-text'>" + model[i].color + "</div>",
             "<div class='card-item-actions'>",

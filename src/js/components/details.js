@@ -70,7 +70,7 @@ App.DetailsRoute.render = function(state, model) {
     html += [
         "</div></div>",
         "<div class='paper-button-container'>",
-        "<a data-action='topalettes' class='paper-button paper-button-block fx-ripple'>See color palettes</a>",
+        "<a data-action='topalettes' class='paper-button paper-button-block'>See color palettes</a>",
         "</div>"
     ].join("");
 

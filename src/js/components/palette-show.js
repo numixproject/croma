@@ -100,14 +100,14 @@ App.PaletteShowRoute.render = function(state, model) {
     html += [
         "</div>",
         "<div class='paper-button-container'>",
-        "<a data-action='save' class='paper-button paper-button-block fx-ripple'>Save as new palette</a>",
+        "<a data-action='save' class='paper-button paper-button-block'>Save as new palette</a>",
         "</div>"
     ].join("");
 
     if (utils.isPro()) {
         html += [
             "<div class='paper-button-container'>",
-            "<a data-action='add' class='paper-button paper-button-block fx-ripple'>Add to existing palette</a>",
+            "<a data-action='add' class='paper-button paper-button-block'>Add to existing palette</a>",
             "</div>"
         ].join("");
     }
