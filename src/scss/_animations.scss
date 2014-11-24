@@ -44,7 +44,7 @@
     @include prefix(animation, break $args);
 }
 
-@mixin ripple($args: .5s ease-out) {
+@mixin ripple($args: 1s ease-out) {
     @include prefix(animation, ripple $args);
 }
 
@@ -142,6 +142,8 @@
 
     @include keyframes(ripple) {
         0% { @include transform(scale(0) translateZ(0)); }
+
+        50% { @include transform(scale(2.5) translateZ(0)); }
 
         100% {
             @include transform(scale(2.5) translateZ(0));

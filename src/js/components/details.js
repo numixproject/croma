@@ -60,7 +60,7 @@ App.DetailsRoute.render = function(state, model) {
         }
 
         html += [
-            "<div class='card-item-info'>",
+            "<div class='card-item-info" + (utils.copyToClipboard(true) ? " fx-ripple card-item-info-action-copy' data-action='copy'" : "'") + ">",
             "<span class='card-item-label'>" + strings[i].key + "</span>",
             "<span class='card-item-value'>" + strings[i].value + "</span>",
             "</div>"
@@ -91,5 +91,12 @@ App.DetailsRoute.actions = {
             route: "palettes",
             params: { color: color }
         });
+    },
+
+    copy: function() {
+        var label = $(this).find(".card-item-label").text(),
+            text = $(this).find(".card-item-value").text();
+
+        utils.copyToClipboard(label, text);
     }
 };

@@ -282,6 +282,26 @@ var utils = (function() {
 			}
 		},
 
+		// Copy text to clipboard
+		copyToClipboard: function(label, text) {
+			var supported = ("androidTools" in window && androidTools.copyToClipboard);
+
+			if (label === true) {
+				return supported;
+			}
+
+			if (supported) {
+				try {
+					androidTools.copyToClipboard(label, text);
+				} catch (e) {
+					utils.showToast({
+						body: e,
+						timeout: 3000
+					});
+				}
+			}
+		},
+
 		// Check if pro version
 		isPro: function() {
 			var purchased = false;

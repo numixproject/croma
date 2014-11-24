@@ -33,7 +33,7 @@ var ripple = function(el) {
 		setTimeout(function() {
 			$this.data("ripple-animating", false);
 			$ripple.remove();
-		}, 500);
+		}, 1000);
 	});
 };
 

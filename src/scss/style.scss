@@ -292,6 +292,12 @@ header {
     &:first-of-type { padding-top: $spacing; }
 
     &:last-of-type { padding-bottom: $spacing; }
+
+    &-action-copy {
+        background-image: url(../../img/copy.svg);
+        background-repeat: no-repeat;
+        background-position: right center;
+    }
 }
 
 .card-item-label {
