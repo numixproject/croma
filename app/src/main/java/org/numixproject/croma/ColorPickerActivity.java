@@ -81,7 +81,7 @@ public class ColorPickerActivity extends Activity {
                 setResult(RESULT_OK, intent);
                 finish();
             } else {
-                Toast.makeText(ColorPickerActivity.this, R.string.no_color_message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ColorPickerActivity.this, R.string.no_color_message, Toast.LENGTH_LONG).show();
             }
             }
         });

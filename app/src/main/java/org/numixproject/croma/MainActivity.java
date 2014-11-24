@@ -79,10 +79,6 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
         return null;
     }
 
-
-
-
-
     // Get color palette from image
     private String getColors(Bitmap bitmap) {
         String url = INDEX;
