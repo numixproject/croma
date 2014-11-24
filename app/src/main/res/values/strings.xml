@@ -17,6 +17,7 @@
     <string name="key_file">Store</string>
     <string name="no_camera_message">Camera is not available</string>
     <string name="license_key">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2AWSWgeFDdZwWlrpLAYU9DY1P558KmkELhGl1efyplLdk0D2bhZFw0Op+I+AGhJyFIBdfc4Dbd/eMMp0ZkYfwMILe124bTpiMzRaXb26fwxCf4PmDoYV2P+G1pRXehQ9BUthoYnDxHorifjU/yHFYHMeELLHbQsu0QpE2nZBLiyVNJoh73QDqrbZ4imyvUDgfZULZqdgEYioF0teZard7hbc2X3qm0zK3zw5kD83kd+cy1ty9bSzkctTiU1/k4EYrwIJs0MDHs8qDHBvT6QUnWjWJawgdIwbJWuiEFL7hYU2UBtrW9squk5C2oYg2RBJkW6/vkAqg5cx8os/dL4nWwIDAQAB</string>
+    <string name="title_activity_pick_color">Pick colors</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="no_color_message">Tap to choose colors</string>
