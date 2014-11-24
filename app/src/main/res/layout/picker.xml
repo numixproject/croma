@@ -9,6 +9,22 @@
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="0dp">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/no_color_help"
+
+            android:text="@string/no_color_selected_message"
+            android:inputType="text"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="58dp"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:background="#00000000"
+            android:focusableInTouchMode="false" />
     </RelativeLayout>
 
 

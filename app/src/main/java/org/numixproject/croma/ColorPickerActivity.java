@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -22,7 +24,7 @@ public class ColorPickerActivity extends Activity {
     private CameraPreview mPreview;
     private ImageButton doneButton;
     private RotateView orientation;
-
+    private final static int NO_COLOR_HELP_TIMEOUT = 3000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,23 +68,47 @@ public class ColorPickerActivity extends Activity {
         RelativeLayout preview = (RelativeLayout) findViewById(R.id.camera_preview);
         preview.setOnTouchListener(mPreview);
         preview.addView(mPreview);
-
+        final View noColorHelp = ColorPickerActivity.this.findViewById(R.id.no_color_help);
+        noColorHelp.bringToFront();
+        noColorHelp.setVisibility(View.INVISIBLE);
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            if (mPreview.getColors().size() != 0) {
-                Set<Integer> set = mPreview.getColors();
-                Intent intent = new Intent();
-                ArrayList<Integer> al = new ArrayList<Integer>(set.size());
-                for (int c : set) {
-                    al.add(c);
+                if (mPreview.getColors().size() != 0) {
+                    Set<Integer> set = mPreview.getColors();
+                    Intent intent = new Intent();
+                    ArrayList<Integer> al = new ArrayList<Integer>(set.size());
+                    for (int c : set) {
+                        al.add(c);
+                    }
+                    intent.putIntegerArrayListExtra("colors", al);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                } else {
+
+                    AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
+                    anim.setDuration(ColorPickerActivity.NO_COLOR_HELP_TIMEOUT);
+                    anim.setRepeatCount(0);
+                    anim.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                            noColorHelp.bringToFront();
+                            noColorHelp.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            noColorHelp.setVisibility(View.INVISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+                            //No Repeat
+                        }
+                    });
+                    ColorPickerActivity.this.findViewById(R.id.no_color_help).startAnimation(anim);
+
                 }
-                intent.putIntegerArrayListExtra("colors", al);
-                setResult(RESULT_OK, intent);
-                finish();
-            } else {
-                Toast.makeText(ColorPickerActivity.this, R.string.no_color_message, Toast.LENGTH_LONG).show();
-            }
             }
         });
     }
