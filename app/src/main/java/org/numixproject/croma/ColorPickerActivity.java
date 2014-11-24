@@ -70,15 +70,19 @@ public class ColorPickerActivity extends Activity {
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
+            if (mPreview.getColors().size() != 0) {
                 Set<Integer> set = mPreview.getColors();
+                Intent intent = new Intent();
                 ArrayList<Integer> al = new ArrayList<Integer>(set.size());
-                for (int c: set) {
+                for (int c : set) {
                     al.add(c);
                 }
                 intent.putIntegerArrayListExtra("colors", al);
                 setResult(RESULT_OK, intent);
                 finish();
+            } else {
+                Toast.makeText(ColorPickerActivity.this, R.string.no_color_message, Toast.LENGTH_SHORT).show();
+            }
             }
         });
     }

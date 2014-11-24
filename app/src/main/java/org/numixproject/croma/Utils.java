@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 import me.croma.image.Color;
 
 public class Utils {
-    public static final String INDEX = "file:///android_asset/www/index.html";
+
     // Format and encode the string
     public static String getEncodedString(String text) {
         String regex = "((#([0-9a-f]{6}))|(#([0-9a-f]{3})))|(((rgba?)|(cmyk)|(lab))([\\s+]?\\([\\s+]?(\\d+)[\\s+]?,[\\s+]?(\\d+)[\\s+]?,[\\s+]?(\\d+)[\\s+]?[)]))|((l[\\*]?a[\\*]?b[\\*]?)([\\s+]?\\([\\s+]?(\\d+)[\\s+]?,[\\s+]?[-]?[\\s+]?(\\d+)[\\s+]?,[\\s+]?[-]?[\\s+]?(\\d+)[\\s+]?[)]))|(((hsva?)|(hsba?)|(hsla?))([\\s+]?\\([\\s+]?(\\d+)[\\s+]?,[\\s+]?(\\d+)[%]?[\\s+]?,[\\s+]?(\\d+)[%]?[\\s+]?[)]))";
@@ -52,7 +52,7 @@ public class Utils {
     }
 
     public static String makePaletteUrl(String query) {
-        return Utils.INDEX + "#/palette/show?palette=" + query;
+        return "#/palette/show?palette=" + query;
     }
 
 

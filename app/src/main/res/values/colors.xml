@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="accent" type="color">#fff06860</item>
-    <item name="success" type="color">#ff65f060</item>
+    <item name="success" type="color">#ff60f0af</item>
     <item name="primarydark" type="color">#ffc0534D</item>
     <item name="navigation" type="color">#ff222222</item>
 
