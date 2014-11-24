@@ -24,7 +24,7 @@ public class ColorPickerActivity extends Activity {
     private CameraPreview mPreview;
     private ImageButton doneButton;
     private RotateView orientation;
-    private final static int NO_COLOR_HELP_TIMEOUT = 3000;
+    private final static int NO_COLOR_HELP_TIMEOUT = 1000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,19 +86,20 @@ public class ColorPickerActivity extends Activity {
                     finish();
                 } else {
 
-                    AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
+                    AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
                     anim.setDuration(ColorPickerActivity.NO_COLOR_HELP_TIMEOUT);
-                    anim.setRepeatCount(0);
+                    anim.setRepeatCount(1);
+                    anim.setRepeatMode(Animation.REVERSE);
                     anim.setAnimationListener(new Animation.AnimationListener() {
                         @Override
                         public void onAnimationStart(Animation animation) {
                             noColorHelp.bringToFront();
-                            noColorHelp.setVisibility(View.VISIBLE);
+                            //noColorHelp.setVisibility(View.VISIBLE);
                         }
 
                         @Override
                         public void onAnimationEnd(Animation animation) {
-                            noColorHelp.setVisibility(View.INVISIBLE);
+                            //noColorHelp.setVisibility(View.INVISIBLE);
                         }
 
                         @Override
