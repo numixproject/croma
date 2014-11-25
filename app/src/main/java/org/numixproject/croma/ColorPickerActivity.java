@@ -128,14 +128,23 @@ public class ColorPickerActivity extends Activity {
     }
 
     // Safely way get an instance of the Camera object.
-    public static Camera getCameraInstance(){
+    private Camera getCameraInstance(){
         Camera c = null;
 
         try {
             c = Camera.open(); // Attempt to get a Camera instance
+
         } catch (Exception e){
             // Camera is not available (in use or does not exist)
             e.printStackTrace();
+        }
+
+        if (c == null) {
+            try {
+                c = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT);//Try to open front camera
+            } catch (Exception e) {
+                //Ignore
+            }
         }
 
         return c; // Returns null if camera is unavailable
