@@ -105,8 +105,12 @@ public class ColorPickerActivity extends Activity {
 
                         @Override
                         public void onAnimationRepeat(Animation animation) {
-
-                            //No Repeat
+                            try {
+                                Thread.sleep(500);
+                            } catch (InterruptedException e) {
+                                //ignore
+                                e.printStackTrace();
+                            }
                         }
                     });
                     ColorPickerActivity.this.findViewById(R.id.no_color_help).startAnimation(anim);
