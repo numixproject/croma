@@ -1,12 +1,9 @@
 package org.numixproject.croma;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.hardware.Camera;
-import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -24,10 +21,12 @@ public class ColorPickerActivity extends Activity {
     private CameraPreview mPreview;
     private ImageButton doneButton;
     private RotateView orientation;
+
     private final static int NO_COLOR_HELP_TIMEOUT = 1000;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onStart() {
+        super.onStart();
         setContentView(R.layout.picker);
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -88,7 +87,9 @@ public class ColorPickerActivity extends Activity {
 
                     AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
                     anim.setDuration(ColorPickerActivity.NO_COLOR_HELP_TIMEOUT);
+
                     anim.setRepeatCount(1);
+
                     anim.setRepeatMode(Animation.REVERSE);
                     anim.setAnimationListener(new Animation.AnimationListener() {
                         @Override
@@ -104,6 +105,7 @@ public class ColorPickerActivity extends Activity {
 
                         @Override
                         public void onAnimationRepeat(Animation animation) {
+
                             //No Repeat
                         }
                     });
@@ -116,12 +118,13 @@ public class ColorPickerActivity extends Activity {
 
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onPause() {
+        super.onPause();
 
         if (orientation != null) {
             orientation.disable();
         }
+        mCamera.release();
     }
 
     // Safely way get an instance of the Camera object.
