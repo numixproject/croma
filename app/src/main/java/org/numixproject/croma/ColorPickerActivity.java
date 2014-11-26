@@ -28,6 +28,7 @@ public class ColorPickerActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
+
         setContentView(R.layout.picker);
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -71,6 +72,7 @@ public class ColorPickerActivity extends Activity {
 
         noColorHelp.bringToFront();
         noColorHelp.setVisibility(View.INVISIBLE);
+
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,14 +80,15 @@ public class ColorPickerActivity extends Activity {
                     Set<Integer> set = mPreview.getColors();
                     Intent intent = new Intent();
                     ArrayList<Integer> al = new ArrayList<Integer>(set.size());
+
                     for (int c : set) {
                         al.add(c);
                     }
+
                     intent.putIntegerArrayListExtra("colors", al);
                     setResult(RESULT_OK, intent);
                     finish();
                 } else {
-
                     AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
                     anim.setDuration(ColorPickerActivity.NO_COLOR_HELP_TIMEOUT);
 
@@ -94,7 +97,6 @@ public class ColorPickerActivity extends Activity {
                     anim.setRepeatMode(Animation.REVERSE);
                     anim.setAnimationListener(helpAnimator);
                     noColorHelp.startAnimation(anim);
-
                 }
             }
         });
@@ -108,6 +110,7 @@ public class ColorPickerActivity extends Activity {
         if (orientation != null) {
             orientation.disable();
         }
+
         mCamera.release();
     }
 
@@ -125,9 +128,9 @@ public class ColorPickerActivity extends Activity {
 
         if (c == null) {
             try {
-                c = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT);//Try to open front camera
+                c = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT); //Try to open front camera
             } catch (Exception e) {
-                //Ignore
+                e.printStackTrace();
             }
         }
 

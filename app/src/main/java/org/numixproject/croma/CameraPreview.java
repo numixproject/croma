@@ -58,12 +58,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void surfaceDestroyed(SurfaceHolder holder) {
-        //nothing
+        // Do nothing
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
-        //No need to change preview, using orientation portrait
+        // No need to change preview, using orientation portrait
     }
 
     @Override
