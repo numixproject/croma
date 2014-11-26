@@ -27,6 +27,7 @@ public class ColorPickerActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
+
         setContentView(R.layout.picker);
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -62,14 +63,18 @@ public class ColorPickerActivity extends Activity {
 
         // Create our Preview view and set it as the content of our activity.
         RelativeLayout rl = (RelativeLayout) this.findViewById(R.id.camera_preview);
+
         mPreview = new CameraPreview(this, mCamera, rl);
 
         RelativeLayout preview = (RelativeLayout) findViewById(R.id.camera_preview);
         preview.setOnTouchListener(mPreview);
         preview.addView(mPreview);
+
         final View noColorHelp = ColorPickerActivity.this.findViewById(R.id.no_color_help);
+
         noColorHelp.bringToFront();
         noColorHelp.setVisibility(View.INVISIBLE);
+
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,14 +82,15 @@ public class ColorPickerActivity extends Activity {
                     Set<Integer> set = mPreview.getColors();
                     Intent intent = new Intent();
                     ArrayList<Integer> al = new ArrayList<Integer>(set.size());
+
                     for (int c : set) {
                         al.add(c);
                     }
+
                     intent.putIntegerArrayListExtra("colors", al);
                     setResult(RESULT_OK, intent);
                     finish();
                 } else {
-
                     AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
                     anim.setDuration(ColorPickerActivity.NO_COLOR_HELP_TIMEOUT);
 
@@ -108,13 +114,12 @@ public class ColorPickerActivity extends Activity {
                             try {
                                 Thread.sleep(500);
                             } catch (InterruptedException e) {
-                                //ignore
                                 e.printStackTrace();
                             }
                         }
                     });
-                    ColorPickerActivity.this.findViewById(R.id.no_color_help).startAnimation(anim);
 
+                    ColorPickerActivity.this.findViewById(R.id.no_color_help).startAnimation(anim);
                 }
             }
         });
@@ -128,6 +133,7 @@ public class ColorPickerActivity extends Activity {
         if (orientation != null) {
             orientation.disable();
         }
+
         mCamera.release();
     }
 
@@ -145,9 +151,9 @@ public class ColorPickerActivity extends Activity {
 
         if (c == null) {
             try {
-                c = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT);//Try to open front camera
+                c = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT); //Try to open front camera
             } catch (Exception e) {
-                //Ignore
+                e.printStackTrace();
             }
         }
 
