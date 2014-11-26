@@ -170,10 +170,14 @@ App.on("navigate", function(state, replace) {
 
         // Bind event handlers so that we can perform actions
         $(document).off("click.action").on("click.action", "[data-action]", function() {
-            var action = $(this).attr("data-action");
+            var actions = $(this).attr("data-action");
 
-            if (methods.actions && typeof methods.actions[action] === "function") {
-                methods.actions[action].apply(this, [ state, model ]);
+            actions = (typeof actions === "string") ? actions.split(" ") : [];
+
+            for (var i = 0, l = actions.length; i < l; i++) {
+                if (methods.actions && typeof methods.actions[actions[i]] === "function") {
+                    methods.actions[actions[i]].apply(this, [ state, model ]);
+                }
             }
         });
 
