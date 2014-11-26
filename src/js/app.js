@@ -94,7 +94,7 @@ App.buildURL = function(state) {
     }
 
     // Remove the trailing "&"
-    return url.replace(/&$/, "");
+    return url.replace(/[&\?]$/, "").replace(/[&\?]$/, "");
 };
 
 // Parse URL to state
@@ -139,6 +139,17 @@ App.on("navigate", function(state, replace) {
     // Set the old and new states
     App.oldState = App.parseURL(window.location.hash);
     App.currentState = state;
+
+    // Retain persistent params prefixed with "_"
+    if (App.oldState.params) {
+        state.params = state.params || {};
+
+        for (var p in App.oldState.params) {
+            if ((/^_/).test(p) && !(p in state.params)) {
+                state.params[p] = App.oldState.params[p];
+            }
+        }
+    }
 
     // Update the URL
     if (replace) {
