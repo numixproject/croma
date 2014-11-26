@@ -64,7 +64,7 @@ public class ColorPickerActivity extends Activity {
 
         // Create our Preview view and set it as the content of our activity.
         RelativeLayout rl = (RelativeLayout) this.findViewById(R.id.camera_preview);
-        mPreview = new CameraPreview(this, mCamera, rl, helpAnimator);
+        mPreview = new CameraPreview(this, mCamera, rl);
 
         RelativeLayout preview = (RelativeLayout) findViewById(R.id.camera_preview);
         preview.setOnTouchListener(mPreview);
