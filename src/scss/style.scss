@@ -6,6 +6,7 @@
 @import "dropshadow";
 @import "paper-input";
 @import "paper-button";
+@import "paper-icons";
 @import "toast-notification";
 
 
@@ -79,16 +80,26 @@ header {
     width: $bar-height;
     background-repeat: no-repeat;
     background-position: center center;
+    margin-right: $spacing / 2;
 }
 
-.header-action-icon-right { float: right; }
+.header-action-icon-right {
+    float: right;
+    margin-left: $spacing / 2;
+}
 
 .header-action-menu { background-image: url(../../img/hamburger.svg); }
 
-.header-action-back {
-    background-image: url(../../img/arrow-back.svg);
-
+.header-action-menu-back {
     [data-tags~="home"] & { display: none; }
+
+    .paper-icon-container { padding: 1.25em; }
+
+    .paper-icon {
+        @extend .paper-icon-back;
+
+        [data-tags~="home"]:not(.drawer-open) & { @extend .paper-icon-menu; }
+    }
 }
 
 .header-action-done {
@@ -101,7 +112,7 @@ header {
 }
 
 .header-title-wrapper {
-    margin-left: $spacing;
+    [data-tags~="home"] & { margin-left: $spacing / 2; }
 
     [data-tags~="action"] & { display: none; }
 }
@@ -154,6 +165,63 @@ header {
     display: table-cell;
     vertical-align: middle;
 }
+
+/*************************
+! Navigation drawer styles
+**************************/
+
+.drawer-dim {
+    @include transition(.3s);
+
+    content: "";
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,0.8);
+    z-index: 40;
+    opacity: 0;
+    pointer-events: none;
+
+    .drawer-open & {
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
+
+.drawer {
+    @include dropshadow(5);
+    @include transition(.3s);
+    @include transform(translate3d(-100%, 0, 0));
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 21em;
+    max-width: 80%;
+    max-width: calc(100% - #{$bar-height});
+    background-color: $light-color;
+    z-index: 60;
+
+    .cover-image { height: $bar-height * 2; }
+
+    ul {
+        li {
+            @extend %transition;
+
+            padding: ($spacing * .75) $spacing;
+            cursor: pointer;
+
+            &:focus, &:hover { background-color: fade-out($dark-color, 0.85); }
+        }
+    }
+
+    .drawer-open & { @include transform(translate3d(0, 0, 0)); }
+}
+
 
 /******************
 ! Empty area styles
@@ -255,7 +323,7 @@ header {
 
     background-color: $light-color;
     color: $dark-color;
-    margin: $spacing;
+    margin: $spacing / 2;
     border-radius: $roundness;
     overflow: hidden;
 }
@@ -266,9 +334,9 @@ header {
     padding: $spacing / 2;
     cursor: pointer;
 
-    &:focus, &:hover { @include dropshadow(1); }
+    &:focus, &:hover { @include dropshadow(2); }
 
-    &:active { @include dropshadow(2); }
+    &:active { @include dropshadow(3); }
 }
 
 .card-item-segment {

@@ -1,0 +1,64 @@
+@import "global";
+@import "animations";
+
+
+/*************
+! Paper icons
+**************/
+
+@include exports("paper-icons") {
+    %paper-icon-line {
+        @include transition(.3s);
+
+        display: block;
+        height: 2px;
+        width: 18px;
+        background-color: $light-color;
+    }
+
+    .paper-icon-container {
+        display: inline-block;
+        vertical-align: middle
+    }
+
+    .paper-icon { position: relative; }
+
+    %paper-icon-menu-back {
+        @extend %paper-icon-line;
+
+        &:before, &:after {
+            @extend %paper-icon-line;
+
+            content: "";
+            position: absolute;
+        }
+
+        &:before { top: -5px; }
+
+        &:after { top: 5px; }
+    }
+
+    .paper-icon-menu {
+        @include transform(rotate(0deg) translate3d(0, 0, 0));
+        @extend %paper-icon-menu-back;
+
+        &:before, &:after {
+            @include transform(rotate(0deg) translate3d(0, 0, 0));
+
+            width: 18px;
+        }
+    }
+
+    .paper-icon-back {
+        @include transform(rotate(-180deg) translate3d(0, 0, 0));
+        @extend %paper-icon-menu-back;
+
+        width: 16px;
+
+        &:before, &:after { width: 12px; }
+
+        &:before { @include transform(rotate(225deg) translate3d(-6px, 4px, 0)); }
+
+        &:after { @include transform(rotate(-225deg) translate3d(-6px, -4px, 0)); }
+    }
+}

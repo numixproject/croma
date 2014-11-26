@@ -8,7 +8,7 @@
 **************/
 
 @include exports("paper-button") {
-	.paper-button-container { margin: $spacing; }
+	.paper-button-container { margin: $spacing / 2; }
 
 	.paper-button {
 		@include dropshadow(1);
