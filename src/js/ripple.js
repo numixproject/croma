@@ -9,7 +9,8 @@ var ripple = function(el) {
 	$el.off("click.ripple").on("click.ripple", function(e) {
 		var $this = $(this),
 			$ripple = $("<div>").addClass("ripple"),
-			position = getPostion(e);
+			position = getPostion(e),
+			color = $this.attr("data-color");
 
 		if ($this.data("ripple-animating")) {
 			return;
@@ -25,7 +26,8 @@ var ripple = function(el) {
 
 		$ripple.css({
 			left: position[0] + "px",
-			top: position[1] + "px"
+			top: position[1] + "px",
+			background: color ? color : ""
 		}).addClass("ripple-animate");
 
 		$this.data("ripple-animating", true).append($ripple);
