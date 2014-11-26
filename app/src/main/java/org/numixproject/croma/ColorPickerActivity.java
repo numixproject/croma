@@ -21,6 +21,7 @@ public class ColorPickerActivity extends Activity {
     private CameraPreview mPreview;
     private ImageButton doneButton;
     private RotateView orientation;
+    private HelpAnimator helpAnimator;
 
     private final static int NO_COLOR_HELP_TIMEOUT = 1000;
 
@@ -36,10 +37,10 @@ public class ColorPickerActivity extends Activity {
             this.finish();
             return;
         }
-
         doneButton = (ImageButton) findViewById(R.id.done_button);
         orientation = new RotateView(this, doneButton);
-
+        final View noColorHelp = ColorPickerActivity.this.findViewById(R.id.no_color_help);
+        helpAnimator = new HelpAnimator(noColorHelp);
         if (orientation.canDetectOrientation()) {
             orientation.enable();
         }
@@ -62,12 +63,12 @@ public class ColorPickerActivity extends Activity {
 
         // Create our Preview view and set it as the content of our activity.
         RelativeLayout rl = (RelativeLayout) this.findViewById(R.id.camera_preview);
-        mPreview = new CameraPreview(this, mCamera, rl);
+        mPreview = new CameraPreview(this, mCamera, rl, helpAnimator);
 
         RelativeLayout preview = (RelativeLayout) findViewById(R.id.camera_preview);
         preview.setOnTouchListener(mPreview);
         preview.addView(mPreview);
-        final View noColorHelp = ColorPickerActivity.this.findViewById(R.id.no_color_help);
+
         noColorHelp.bringToFront();
         noColorHelp.setVisibility(View.INVISIBLE);
         doneButton.setOnClickListener(new View.OnClickListener() {
@@ -91,29 +92,8 @@ public class ColorPickerActivity extends Activity {
                     anim.setRepeatCount(1);
 
                     anim.setRepeatMode(Animation.REVERSE);
-                    anim.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-                            noColorHelp.bringToFront();
-                            //noColorHelp.setVisibility(View.VISIBLE);
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            //noColorHelp.setVisibility(View.INVISIBLE);
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-                            try {
-                                Thread.sleep(500);
-                            } catch (InterruptedException e) {
-                                //ignore
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                    ColorPickerActivity.this.findViewById(R.id.no_color_help).startAnimation(anim);
+                    anim.setAnimationListener(helpAnimator);
+                    noColorHelp.startAnimation(anim);
 
                 }
             }

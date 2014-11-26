@@ -29,10 +29,10 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private Camera mCamera;
     private RelativeLayout cameraPreview;
     private Set<Integer> colors;
-
-    public CameraPreview(Activity activity,Camera camera, RelativeLayout cameraPreview) {
+    private HelpAnimator helpAnimator;
+    public CameraPreview(Activity activity, Camera camera, RelativeLayout cameraPreview, HelpAnimator helpAnimator) {
         super(activity);
-
+        this.helpAnimator = helpAnimator;
         mCamera = camera;
 
         this.cameraPreview = cameraPreview;/*(RelativeLayout) activity.findViewById(R.id.camera_preview);*/
@@ -68,6 +68,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public boolean onTouch(final View view, final MotionEvent motionEvent) {
+        helpAnimator.cancelGracefully();
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
             return true;
         } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
