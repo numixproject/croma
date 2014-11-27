@@ -44,7 +44,7 @@ public class Utils {
 
     // Check if device has a camera
     public static boolean checkCameraHardware(Context context) {
-        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
+        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)){
             return true; // Camera present
         } else {
             return false; // Camera absent
