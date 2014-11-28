@@ -57,6 +57,7 @@ body {
 
 header {
     @include dropshadow(1);
+    @extend %clearfix;
     @extend %noselect;
 
     position: fixed;
@@ -80,20 +81,16 @@ header {
     width: $bar-height;
     background-repeat: no-repeat;
     background-position: center center;
-    margin-right: $spacing / 2;
 }
 
-.header-action-icon-right {
-    float: right;
-    margin-left: $spacing / 2;
-}
+.header-action-icon-right { float: right; }
 
 .header-action-menu { background-image: url(../../img/hamburger.svg); }
 
 .header-action-menu-back {
     [data-tags~="home"] & { display: none; }
 
-    .paper-icon-container { padding: 1.25em; }
+    .paper-icon-container { padding: 1.5em; }
 
     .paper-icon {
         @extend .paper-icon-back;
@@ -112,7 +109,8 @@ header {
 }
 
 .header-title-wrapper {
-    [data-tags~="home"] & { margin-left: $spacing / 2; }
+    float: left;
+    margin: 0 ($spacing / 2);
 
     [data-tags~="action"] & { display: none; }
 }
@@ -255,7 +253,10 @@ header {
 ! Action area styles
 ********************/
 
-.header-button-wrapper { position: relative; }
+.header-button-wrapper {
+    clear: both;
+    position: relative;
+}
 
 .action-button-wrapper { overflow: hidden; }
 
