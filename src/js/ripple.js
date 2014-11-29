@@ -1,5 +1,5 @@
 var ripple = function(el) {
-	var getPostion = require("./position.js"),
+	var getPosition = require("./position.js"),
 		$el = $(el);
 
 	if (!$el.length) {
@@ -9,7 +9,7 @@ var ripple = function(el) {
 	$el.off("click.ripple").on("click.ripple", function(e) {
 		var $this = $(this),
 			$ripple = $("<div>").addClass("ripple"),
-			position = getPostion(e),
+			position = getPosition(e),
 			color = $this.attr("data-color");
 
 		if ($this.data("ripple-animating")) {

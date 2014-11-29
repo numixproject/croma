@@ -109,8 +109,7 @@ App.PickerRoute.afterRender = function() {
         $text = $(".picker-input"),
         startEvent = "touchstart mousedown pointerdown",
         moveEvent = "touchmove mousemove pointermove",
-        endEvent = "touchend touchleave touchcancel mouseup pointerup",
-        colorTimer;
+        endEvent = "touchend touchleave touchcancel mouseup pointerup";
 
     setColor(value);
 
@@ -128,8 +127,6 @@ App.PickerRoute.afterRender = function() {
         });
     }).on(endEvent, function() {
         $(this).off(moveEvent);
-
-        clearInterval(colorTimer);
     });
 
     $picker.on("click", ".picker-color-cell", function() {
