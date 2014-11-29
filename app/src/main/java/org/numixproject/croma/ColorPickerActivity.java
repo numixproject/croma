@@ -34,7 +34,6 @@ public class ColorPickerActivity extends Activity {
 
         if (!Utils.checkCameraHardware(this)) {
             Toast.makeText(this, R.string.no_camera_message, Toast.LENGTH_LONG).show();
-
             this.finish();
             return;
         }
@@ -48,7 +47,11 @@ public class ColorPickerActivity extends Activity {
 
         // Create an instance of Camera
         mCamera = getCameraInstance();
-
+        if (mCamera == null) {
+            Toast.makeText(this, R.string.no_camera_message, Toast.LENGTH_LONG).show();
+            this.finish();
+            return;
+        }
         // Get Camera parameters
         Camera.Parameters params = mCamera.getParameters();
 
@@ -117,23 +120,22 @@ public class ColorPickerActivity extends Activity {
     // Safely way get an instance of the Camera object.
     private Camera getCameraInstance(){
         Camera c = null;
-
+        int cameras[] = {Camera.CameraInfo.CAMERA_FACING_FRONT, 0};
         try {
             c = Camera.open(); // Attempt to get a Camera instance
-
         } catch (Exception e){
             // Camera is not available (in use or does not exist)
             e.printStackTrace();
         }
-
-        if (c == null) {
-            try {
-                c = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT); //Try to open front camera
-            } catch (Exception e) {
-                e.printStackTrace();
+        for (int i = 0;i < cameras.length;i++) {
+            if (c == null) {
+                try {
+                    c = Camera.open(cameras[i]); //Try to open front camera
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
-
         return c; // Returns null if camera is unavailable
     }
 
