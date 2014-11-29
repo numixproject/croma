@@ -1,18 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
-        config {
-            storeFile file('/home/kamal/AndroidStudioProjects/croma.jks')
-        }
-    }
     compileSdkVersion 21
     buildToolsVersion '21.0.0'
     defaultConfig {
         applicationId 'org.numixproject.croma'
         minSdkVersion 14
         targetSdkVersion 21
-        versionName '1.2'
+        versionName '1.4'
         versionCode 15
     }
     buildTypes {
