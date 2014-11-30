@@ -8,18 +8,16 @@ var App = require(".././app.js"),
 App.PickerRoute.tags = [ "action" ];
 
 function renderHues() {
-    var vals = [ 288, 312, 348, 36, 60, 96, 144, 180, 204, 264, 300, 336, 24, 48, 84, 120, 156, 192, 216, 276 ],
-        h = 0, s = 100, l = 50,
-        color, divs = "";
+    var colors = [
+            "#f50057", "#db0A5b", "#c51162", "#9c27b0", "#673ab7", "#4b77be", "#2196f3", "#03a9f4", "#00bcd4", "#1bbc9b",
+            "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#f44336", "#e00032"
+        ],
+        c, divs = "";
 
     for (var i = 0; i < 20; i++) {
-        h = vals[i];
+        c = new Color(colors[i]);
 
-        color = new Color({
-            hsl: [ h, s, l ]
-        }).tohex();
-
-        divs += '<div class="picker-color-cell" style="background-color: ' + color + '" data-hue="' + h + '"></div>';
+        divs += '<div class="picker-color-cell" style="background-color: ' + c.tohex() + '" data-hue="' + c.hsl[0] + '"></div>';
     }
 
     return divs;
@@ -83,10 +81,10 @@ App.PickerRoute.render = function() {
 
     html += [
         "<div class='card-item'>",
-        "<div class='card-item-picker fx-ripple'>",
+        "<div class='card-item-picker fx-ripple' data-color='rgba(255,255,255,0.1)'>",
         "<div class='picker-wrapper'>",
-        "<div class='picker-hues'></div>",
-        "<div class='picker-shades'></div>",
+        "<div class='picker-row picker-hues'></div>",
+        "<div class='picker-row picker-shades'></div>",
         "</div></div>",
          "<div class='card-item-segment'>",
          "<div class='card-item-container card-item-input-wrap'>",

@@ -35,7 +35,7 @@
         color: $light-color;
 
         @media screen and (min-width: $mobile-width) {
-            margin: $spacing;
+            margin: $spacing ($spacing / 2);
             border-radius: $roundness;
         }
     }

@@ -514,27 +514,30 @@ $actions: love, remove, download, share;
 **************/
 
 .picker-wrapper {
+    width: 100%;
+    height: 20em;
+}
+
+.picker-row {
     @extend %clearfix;
 
     width: 100%;
-    height: 20em;
 }
 
 .picker-color-cell {
     float: left;
     width: 10%;
     height: 10%;
+    cursor: pointer;
 }
 
 .picker-hues {
-    width: 100%;
     height: 20%;
 
     .picker-color-cell { height: 50%; }
 }
 
 .picker-shades {
-    width: 100%;
     height: 80%;
 
     .picker-color-cell { height: 12.5%; }

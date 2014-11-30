@@ -8,34 +8,38 @@ var ripple = function(el) {
 
 	$el.off("click.ripple").on("click.ripple", function(e) {
 		var $this = $(this),
-			$ripple = $("<div>").addClass("ripple"),
-			position = getPosition(e),
-			color = $this.attr("data-color");
+			$ripple,
+			position, color,
+			rippleTimer;
 
-		if ($this.data("ripple-animating")) {
+		if ($this.is(":hidden")) {
 			return;
+		}
+
+		position = getPosition(e);
+
+		color = $this.attr("data-color") || "";
+		rippleTimer = $this.data("rippleTimer");
+
+		if (rippleTimer) {
+			clearTimeout(rippleTimer);
 		}
 
 		$this.find(".ripple").remove();
 
-		$this.css({
+		$ripple = $("<div>").addClass("ripple").css({
+			left: position[0] + "px",
+			top: position[1] + "px",
+			backgroundColor: color
+		}).addClass("ripple-animate");
+
+		$this.data("rippleTimer", setTimeout(function() {
+			$ripple.remove();
+		}, 1000)).css({
 			position: "relative",
 			transform: "translateZ(0)",
 			overflow: "hidden"
-		});
-
-		$ripple.css({
-			left: position[0] + "px",
-			top: position[1] + "px",
-			background: color ? color : ""
-		}).addClass("ripple-animate");
-
-		$this.data("ripple-animating", true).append($ripple);
-
-		setTimeout(function() {
-			$this.data("ripple-animating", false);
-			$ripple.remove();
-		}, 1000);
+		}).append($ripple);
 	});
 };
 
