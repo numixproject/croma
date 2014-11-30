@@ -89,7 +89,7 @@ App.PickerRoute.render = function() {
          "<div class='card-item-segment'>",
          "<div class='card-item-container card-item-input-wrap'>",
          "<div class='paper-input-container'>",
-         "<input type='text' class='card-item-input picker-input paper-input' placeholder='Enter a color' autofocus>",
+         "<input type='text' class='card-item-input picker-input paper-input' placeholder='Enter a color'>",
          "<span class='paper-input-highlight'></span>",
          "<span class='paper-input-bar'></span>",
          "</div></div>",

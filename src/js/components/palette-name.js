@@ -24,12 +24,15 @@ App.PaletteNameRoute.render = function(state, model) {
 };
 
 App.PaletteNameRoute.afterRender = function(state) {
-    var suggested = state.params ? state.params.suggested : null;
+    var suggested = state.params ? state.params.suggested : null,
+        $input = $("#palette-name");
 
     // Prefill palette name
     if (utils.validateName(suggested)) {
-        $("#palette-name").val(suggested);
+        $input.val(suggested);
     }
+
+    $input.focus();
 
     App.setTitle("Name your palette");
 
