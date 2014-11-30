@@ -17,11 +17,13 @@
     }
 
     .paper-icon-container {
+        position: relative;
         display: inline-block;
-        vertical-align: middle
+        vertical-align: middle;
+        width: 100%;
     }
 
-    .paper-icon { position: relative; }
+    .paper-icon { position: absolute; }
 
     %paper-icon-menu-back {
         @extend %paper-icon-line;
@@ -60,5 +62,21 @@
         &:before { @include transform(rotate(225deg) translate3d(-6px, 4px, 0)); }
 
         &:after { @include transform(rotate(-225deg) translate3d(-6px, -4px, 0)); }
+    }
+
+    .paper-icon-done {
+        @include transform(rotate(-45deg) translate3d(16px, 16px, 0));
+        @extend %paper-icon-line;
+
+        width: 18px;
+
+        &:before {
+            @include transform(rotate(270deg) translate3d(3px, -4px, 0));
+            @extend %paper-icon-line;
+
+            content: "";
+            position: absolute;
+            width: 8px;
+        }
     }
 }

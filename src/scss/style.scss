@@ -102,10 +102,7 @@ header {
 .header-action-done {
     display: none;
 
-    [data-tags~="action"] & {
-        display: block;
-        background-image: url(../../img/done.svg);
-    }
+    [data-tags~="action"] & { display: block; }
 }
 
 .header-title-wrapper {
