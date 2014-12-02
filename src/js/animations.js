@@ -1,4 +1,4 @@
-var ripple = function(el) {
+function ripple(el) {
 	var getPosition = require("./position.js"),
 		$el = $(el);
 
@@ -40,6 +40,8 @@ var ripple = function(el) {
 			overflow: "hidden"
 		}).append($ripple);
 	});
-};
+}
 
-module.exports = ripple;
+module.exports = {
+	ripple: ripple
+};

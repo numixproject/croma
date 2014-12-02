@@ -80,7 +80,7 @@ App.PaletteShowRoute.render = function(state, model) {
 
     if (!model || !model.palette || !(model.palette instanceof Array)) {
         html += [
-            "<div class='empty-area'>",
+            "<div class='empty-area fx-fade-in'>",
             "<a class='empty-area-action'>An error occured!</a>",
             "</div>"
         ].join("");
@@ -88,7 +88,7 @@ App.PaletteShowRoute.render = function(state, model) {
         return html;
     }
 
-    html += "<div class='card-item'>";
+    html += "<div class='card-item fx-come-in'>";
 
     for (var i = 0, l = model.palette.length; i < l; i++) {
         html += [
@@ -99,14 +99,14 @@ App.PaletteShowRoute.render = function(state, model) {
 
     html += [
         "</div>",
-        "<div class='paper-button-container'>",
+        "<div class='paper-button-container fx-come-in'>",
         "<a data-action='save' class='paper-button paper-button-block'>Save as new palette</a>",
         "</div>"
     ].join("");
 
     if (utils.isPro()) {
         html += [
-            "<div class='paper-button-container'>",
+            "<div class='paper-button-container fx-come-in'>",
             "<a data-action='add' class='paper-button paper-button-block'>Add to existing palette</a>",
             "</div>"
         ].join("");

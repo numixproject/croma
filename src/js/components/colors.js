@@ -35,7 +35,7 @@ App.ColorsRoute.render = function(state, model) {
 
     if (!model || !(model instanceof Array)) {
         html += [
-            "<div class='empty-area'>",
+            "<div class='empty-area fx-fade-in'>",
             "<a class='empty-area-action'>An error occured!</a>",
             "</div>"
         ].join("");
@@ -45,7 +45,7 @@ App.ColorsRoute.render = function(state, model) {
 
     if (!model.length) {
         html += [
-            "<div class='empty-area'>",
+            "<div class='empty-area fx-fade-in'>",
             "<a data-action='add' class='empty-area-action'>Tap to add color.</a>",
             "</div>"
         ].join("");
@@ -55,7 +55,7 @@ App.ColorsRoute.render = function(state, model) {
 
     for (var i = 0, l = model.length; i < l; i++) {
         html += [
-            "<div class='card-item' data-color='" + model[i].color + "'>",
+            "<div class='card-item fx-come-in' data-color='" + model[i].color + "'>",
             "<div class='card-item-color-item-large' data-action='todetails' style='background-color:" + model[i].color + "'></div>",
             "<div class='card-item-segment'>",
             "<div class='card-item-text'>" + model[i].color + "</div>",

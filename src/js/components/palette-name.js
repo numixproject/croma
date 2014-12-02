@@ -9,7 +9,7 @@ App.PaletteNameRoute.render = function(state, model) {
     var html = "";
 
     html += [
-        "<div class='card-item'>",
+        "<div class='card-item fx-come-in'>",
         "<div class='card-item-container'>",
         "<div class='card-item-header'>Add new palette</div>",
         "<div class='paper-input-container'>",

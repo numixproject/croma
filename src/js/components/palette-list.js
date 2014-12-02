@@ -28,16 +28,16 @@ App.PaletteListRoute.render = function(state, model) {
 
     if (!model || !model.length) {
         html += [
-            "<div class='empty-area'><div class='empty-area-action'>",
-            "No palettes found",
-            "</div></div>"
+            "<div class='empty-area fx-fade-in'>",
+            "<div class='empty-area-action'>No palettes found</div>",
+            "</div>"
         ].join("");
 
         return html;
     }
 
     for (var i = 0, l = model.length; i < l; i++) {
-        html += "<div class='card-item card-item-select-item' data-action='add' data-palette='" + model[i] + "'>" + model[i] + "</div>";
+        html += "<div class='card-item card-item-select-item fx-come-in' data-action='add' data-palette='" + model[i] + "'>" + model[i] + "</div>";
     }
 
     return html;

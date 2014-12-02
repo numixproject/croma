@@ -52,7 +52,7 @@ App.PalettesRoute.render = function(state, model) {
 
     if (!model || !model.palettes || !(model.palettes instanceof Array)) {
         html += [
-            "<div class='empty-area'>",
+            "<div class='empty-area fx-fade-in'>",
             "<a class='empty-area-action'>An error occured!</a>",
             "</div>"
         ].join("");
@@ -62,7 +62,7 @@ App.PalettesRoute.render = function(state, model) {
 
     for (var i = 0, l = model.palettes.length; i < l; i++) {
         html += [
-            "<div data-action='save' class='card-item card-item-action-container' data-index='" + i + "'>",
+            "<div data-action='save' class='card-item card-item-action-container fx-come-in' data-index='" + i + "'>",
             "<div class='card-item-segment'>",
             "<div class='card-item-color-item-large' style='" + utils.generateBackground(model.palettes[i].colors) + "'></div>",
             "</div>",

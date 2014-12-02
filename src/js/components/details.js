@@ -38,7 +38,7 @@ App.DetailsRoute.render = function(state, model) {
 
     if (!model) {
         html += [
-            "<div class='empty-area'>",
+            "<div class='empty-area fx-fade-in'>",
             "<a class='empty-area-action'>An error occured!</a>",
             "</div>"
         ].join("");
@@ -47,7 +47,7 @@ App.DetailsRoute.render = function(state, model) {
     }
 
     html = [
-        "<div class='card-item'>",
+        "<div class='card-item fx-come-in'>",
         "<div class='card-item-color-item-large' style='background-color:" + model.hexVal + "'></div>",
         "<div class='card-item-info-wrap'>"
     ].join("");
@@ -69,7 +69,7 @@ App.DetailsRoute.render = function(state, model) {
 
     html += [
         "</div></div>",
-        "<div class='paper-button-container'>",
+        "<div class='paper-button-container fx-come-in'>",
         "<a data-action='topalettes' class='paper-button paper-button-block'>See color palettes</a>",
         "</div>"
     ].join("");

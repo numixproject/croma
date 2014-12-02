@@ -1,7 +1,7 @@
 /* jshint browser: true */
 
 var App = require("./app.js"),
-    ripple = require("./ripple.js"),
+    animations = require("./animations.js"),
     $appTitle = $("#app-title");
 
 // App global variables
@@ -32,14 +32,15 @@ if (!!("mozSetMessageHandler" in navigator)) {
 
 // Add animations after route is rendered
 App.Global.afterRender = function() {
-    var cls = [ "fade-in", "scale-in" ];
+    var cls = [ "fade-in", "scale-in" ],
+        $this = $(this);
 
     // Add ripple animation
-    ripple(".fx-ripple");
+    animations.ripple($this.find(".fx-ripple"));
 
     // Animate elements
     cls.forEach(function(c) {
-        $(".fx-" + c).addClass(c);
+        $this.find(".fx-" + c).addClass(c);
     });
 };
 

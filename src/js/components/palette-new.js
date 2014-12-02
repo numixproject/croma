@@ -12,7 +12,7 @@ App.PaletteNewRoute.render = function(state, model) {
 
     if (utils.getPalette(true)) {
         html += [
-            "<div class='paper-button-container'>",
+            "<div class='paper-button-container fx-come-in'>",
             "<a data-action='getpalette' class='paper-button paper-button-block'>",
             "Get palette from image",
             "</a></div>"
@@ -20,11 +20,11 @@ App.PaletteNewRoute.render = function(state, model) {
     }
 
     html += [
-        "<div class='paper-button-container'>",
+        "<div class='paper-button-container fx-come-in'>",
         "<div class='paper-button paper-button-block' data-action='topicker'>",
         "Get palette from color",
         "</div></div>",
-        "<div class='paper-button-container'>",
+        "<div class='paper-button-container fx-come-in'>",
         "<div class='paper-button paper-button-block' data-action='topalettename'>",
         "Add colors manually",
         "</div></div>"
@@ -32,7 +32,7 @@ App.PaletteNewRoute.render = function(state, model) {
 
     if (!utils.isPro()) {
         html += [
-            "<div class='paper-button-container unlock'>",
+            "<div class='paper-button-container unlock fx-come-in'>",
             "<a data-action='unlockpro' class='paper-button paper-button-block'>",
             "Unlock pro",
             "</a></div>"
