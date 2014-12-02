@@ -3,6 +3,7 @@
 @import "global";
 @import "flexbox";
 @import "animations";
+@import "easings";
 @import "dropshadow";
 @import "paper-input";
 @import "paper-button";
@@ -31,6 +32,11 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+%easeout {
+    @include transition(.3s $easeOutQuad);
+    @include prefix(will-change, unquote("transform, opacity"));
 }
 
 /************
@@ -74,13 +80,15 @@ header {
 .header-action-container { @extend %clearfix; }
 
 .header-action-icon {
-    @extend %snappy;
+    @extend %easeout;
 
     float: left;
     height: $bar-height;
     width: $bar-height;
     background-repeat: no-repeat;
     background-position: center center;
+
+    .paper-icon-container { @extend %easeout; }
 }
 
 .header-action-icon-right { float: right; }
@@ -88,28 +96,45 @@ header {
 .header-action-menu { background-image: url(../../img/hamburger.svg); }
 
 .header-action-menu-back {
-    [data-tags~="home"] & { display: none; }
+    [data-tags~="home"] & {
+        opacity: 0;
+        pointer-events: none;
+    }
 
-    .paper-icon-container { padding: 1.5em; }
+    .paper-icon-container {
+        padding: 1.5em;
 
-    .paper-icon {
-        @extend .paper-icon-back;
-
-        [data-tags~="home"]:not(.drawer-open) & { @extend .paper-icon-menu; }
+        [data-tags~="home"] & { @include transform(translateZ(0) scale(.7)); }
     }
 }
 
 .header-action-done {
-    display: none;
+    @include transform(translateZ(0) scale(.7));
 
-    [data-tags~="action"] & { display: block; }
+    opacity: 0;
+    pointer-events: none;
+
+    [data-tags~="action"] & {
+        @include transform(translateZ(0) scale(1));
+
+        opacity: 1;
+        pointer-events: auto;
+    }
 }
 
 .header-title-wrapper {
+    @extend %easeout;
+
     float: left;
     margin: 0 ($spacing / 2);
 
-    [data-tags~="action"] & { display: none; }
+    [data-tags~="home"] & { @include transform(translateZ(0) translateX($bar-height * -1)); }
+
+    [data-tags~="action"] & {
+        @include transform(translateZ(0) scale(.7));
+
+        opacity: 0;
+    }
 }
 
 .header-title {
@@ -125,15 +150,16 @@ header {
 *************/
 
 .cover-image {
-    display: none;
+    @extend %easeout;
+    @include transform(translateZ(0) translateY($bar-height * -1));
 
-    [data-tags~="add"] & {
-        display: block;
-        height: $bar-height;
-        width: 100%;
-        background: url(../../img/cover.png) repeat center center;
-        box-shadow: inset 0 -1px 1px rgba(0,0,0,0.06);
-    }
+    display: block;
+    height: $bar-height;
+    width: 100%;
+    background: url(../../img/cover.png) repeat center center;
+    box-shadow: inset 0 -1px 1px rgba(0,0,0,0.06);
+
+    [data-tags~="add"] & { @include transform(translateZ(0) translateY(0)); }
 }
 
 
@@ -189,7 +215,7 @@ header {
 .drawer {
     @include dropshadow(5);
     @include transition(.3s);
-    @include transform(translate3d(-100%, 0, 0));
+    @include transform(translateZ(0) translateX(-100%));
 
     position: fixed;
     top: 0;
@@ -214,7 +240,7 @@ header {
         }
     }
 
-    .drawer-open & { @include transform(translate3d(0, 0, 0)); }
+    .drawer-open & { @include transform(translateZ(0) translate3d(0, 0, 0)); }
 }
 
 
@@ -282,11 +308,18 @@ header {
 }
 
 .action-button-add {
-    display: none;
+    @include transform(translateZ(0) scale(.7) rotate(-180deg));
+    @extend %easeout;
+
+    background-image: url(../../img/add-circle.svg);
+    opacity: 0;
+    pointer-events: none;
 
     [data-tags~="add"] & {
-        display: block;
-        background-image: url(../../img/add-circle.svg);
+        @include transform(translateZ(0) scale(1) rotate(0deg));
+
+        opacity: 1;
+        pointer-events: auto;
     }
 }
 
@@ -314,6 +347,13 @@ header {
     -webkit-overflow-scrolling : touch;
 
     &.card-area { background-color: darken($light-color, 5%); }
+}
+
+.content-view {
+    @include transform(translateZ(0) translateY($bar-height * -1));
+    @extend %easeout;
+
+    [data-tags~="add"] & { @include transform(translateZ(0) translateY(0)); }
 }
 
 .card-item {
@@ -550,7 +590,7 @@ $actions: love, remove, download, share;
 .scale-in { @extend %scalein; }
 
 .ripple {
-    @include transform(scale(0) translateZ(0));
+    @include transform(translateZ(0) scale(0));
 
     position: absolute;
     width: 100%;

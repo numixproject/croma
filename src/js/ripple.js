@@ -37,7 +37,6 @@ var ripple = function(el) {
 			$ripple.remove();
 		}, 1000)).css({
 			position: "relative",
-			transform: "translateZ(0)",
 			overflow: "hidden"
 		}).append($ripple);
 	});

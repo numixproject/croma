@@ -52,8 +52,8 @@
     @include prefix(animation, input-effect $args);
 }
 
-@mixin transition($duration: .05s, $timing: ease) {
-    @include prefix(transition, $duration $timing);
+@mixin transition($args: .05s ease) {
+    @include prefix(transition, $args);
 }
 
 @include exports("animations") {
