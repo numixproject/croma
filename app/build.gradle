@@ -7,8 +7,8 @@ android {
         applicationId 'org.numixproject.croma'
         minSdkVersion 14
         targetSdkVersion 21
-        versionName '1.4'
-        versionCode 15
+        versionName '1.5'
+        versionCode 17
     }
     buildTypes {
         release {
@@ -22,6 +22,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.anjlab.android.iab.v3:library:1.0.+@aar'
 }
