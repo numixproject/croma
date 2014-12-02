@@ -353,6 +353,8 @@ header {
     @include transform(translateZ(0) translateY($bar-height * -1));
     @extend %easeout;
 
+    height: 100%;
+
     [data-tags~="add"] & { @include transform(translateZ(0) translateY(0)); }
 }
 
