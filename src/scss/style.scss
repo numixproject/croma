@@ -258,7 +258,7 @@ header {
     left: 0;
     height: 100%;
     width: 100%;
-    padding: $spacing;
+    padding: 10em $spacing;
     z-index: 0;
 }
 
@@ -352,8 +352,6 @@ header {
 .content-view {
     @include transform(translateZ(0) translateY($bar-height * -1));
     @extend %easeout;
-
-    height: 100%;
 
     [data-tags~="add"] & { @include transform(translateZ(0) translateY(0)); }
 }
