@@ -32,15 +32,14 @@ if (!!("mozSetMessageHandler" in navigator)) {
 
 // Add animations after route is rendered
 App.Global.afterRender = function() {
-    var cls = [ "fade-in", "scale-in" ],
-        $this = $(this);
+    var cls = [ "fade-in", "scale-in" ];
 
     // Add ripple animation
-    animations.ripple($this.find(".fx-ripple"));
+    animations.ripple(".fx-ripple");
 
     // Animate elements
     cls.forEach(function(c) {
-        $this.find(".fx-" + c).addClass(c);
+        $(".fx-" + c).addClass(c);
     });
 };
 
