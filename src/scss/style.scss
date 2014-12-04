@@ -171,8 +171,6 @@ header {
     width: $mobile-width;
     max-width: 100%;
     margin: auto;
-
-    [data-tags~="new"] & { height: 100%; }
 }
 
 .section-content-center {
@@ -254,11 +252,11 @@ header {
     position: absolute;
     display: table;
     table-layout: fixed;
-    top: 0;
+    top: $bar-height * -1;
     left: 0;
     height: 100%;
     width: 100%;
-    padding: 10em $spacing;
+    padding: $spacing;
     z-index: 0;
 }
 
@@ -345,15 +343,24 @@ header {
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling : touch;
-
-    &.card-area { background-color: darken($light-color, 5%); }
+    background-color: darken($light-color, 5%);
 }
 
 .content-view {
     @include transform(translateZ(0) translateY($bar-height * -1));
     @extend %easeout;
 
+    height: 100%;
+    height: calc(100% - #{$bar-height});
+
     [data-tags~="add"] & { @include transform(translateZ(0) translateY(0)); }
+
+    // Fix bottom getting cut off in android
+    &:after {
+        content: "";
+        display: block;
+        height: 1px;
+    }
 }
 
 .card-item {
