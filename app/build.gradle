@@ -7,8 +7,8 @@ android {
         applicationId 'org.numixproject.croma'
         minSdkVersion 14
         targetSdkVersion 21
-        versionName '1.5'
-        versionCode 17
+        versionName '1.6'
+        versionCode 18
     }
     buildTypes {
         release {

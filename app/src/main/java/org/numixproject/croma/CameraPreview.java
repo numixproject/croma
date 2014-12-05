@@ -30,6 +30,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private Set<Integer> colors;
     public CameraPreview(Activity activity, Camera camera, RelativeLayout cameraPreview) {
         super(activity);
+
         mCamera = camera;
 
         this.cameraPreview = cameraPreview;/*(RelativeLayout) activity.findViewById(R.id.camera_preview);*/
@@ -97,8 +98,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                     Canvas cc = new Canvas(cpBitmap);
                     Canvas canvas = new Canvas(mutableBitmap);
 
-                    canvas.drawCircle(x, y, 10, paint);
-                    cc.drawCircle(x, y, 10, paint);
+                    canvas.drawCircle(x, y, 5, paint);
+                    cc.drawCircle(x, y, 5, paint);
 
                     cameraPreview.draw(cc);
 
@@ -109,6 +110,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
                         }
                     });
+
                     colors.add(color);
 
                     cameraPreview.addView(vc);
@@ -119,8 +121,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         return false;
     }
 
-    private View getColorView(Context ct,int x, int y, int color) {
-        int radius = 36;
+    private View getColorView(Context ct, int x, int y, int color) {
+        int radius = (int) (16 * getResources().getDisplayMetrics().density + 0.5f);
 
         RelativeLayout.LayoutParams params;
 
@@ -134,14 +136,15 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         r.setLayoutParams(params);
 
         DrawTouchDot dc = new DrawTouchDot(ct, color, radius);
+
         r.addView(dc);
         r.setOnTouchListener(new View.OnTouchListener() {
-
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 return false;
             }
         });
+
         return r;
     }
 
