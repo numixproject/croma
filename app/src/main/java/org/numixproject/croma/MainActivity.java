@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
@@ -12,8 +13,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.webkit.ConsoleMessage;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -161,7 +164,9 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
 
         // Enable debugging in webview
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            WebView.setWebContentsDebuggingEnabled(BuildConfig.DEBUG);
+            if (0 != (getApplicationInfo().flags &= ApplicationInfo.FLAG_DEBUGGABLE)) {
+                WebView.setWebContentsDebuggingEnabled(true);
+            }
         }
 
         // Expose Java methods as JavaScript interfaces
@@ -293,6 +298,15 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
         public void onPageFinished(WebView view, String url) {
             findViewById(R.id.imageview).setVisibility(View.GONE);
             findViewById(R.id.webview).setVisibility(View.VISIBLE);
+        }
+
+        // Enable debugging below KitKat
+        public boolean onConsoleMessage(ConsoleMessage cm) {
+            Log.d(getString(R.string.app_name), cm.message() + " -- From line "
+                    + cm.lineNumber() + " of "
+                    + cm.sourceId());
+
+            return true;
         }
     }
 
