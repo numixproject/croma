@@ -96,7 +96,7 @@ header {
 .header-action-menu { background-image: url(../../img/hamburger.svg); }
 
 .header-action-menu-back {
-    [data-tags~="home"] & {
+    .tag-home & {
         opacity: 0;
         pointer-events: none;
     }
@@ -104,7 +104,7 @@ header {
     .paper-icon-container {
         padding: 1.5em;
 
-        [data-tags~="home"] & { @include transform(translateZ(0) scale(.7)); }
+        .tag-home & { @include transform(translateZ(0) scale(.7)); }
     }
 }
 
@@ -114,7 +114,7 @@ header {
     opacity: 0;
     pointer-events: none;
 
-    [data-tags~="action"] & {
+    .tag-action & {
         @include transform(translateZ(0) scale(1));
 
         opacity: 1;
@@ -128,9 +128,9 @@ header {
     float: left;
     margin: 0 ($spacing / 2);
 
-    [data-tags~="home"] & { @include transform(translateZ(0) translateX($bar-height * -1)); }
+    .tag-home & { @include transform(translateZ(0) translateX($bar-height * -1)); }
 
-    [data-tags~="action"] & {
+    .tag-action & {
         @include transform(translateZ(0) scale(.7));
 
         opacity: 0;
@@ -159,7 +159,7 @@ header {
     background: url(../../img/cover.png) repeat center center;
     box-shadow: inset 0 -1px 1px rgba(0,0,0,0.06);
 
-    [data-tags~="add"] & { @include transform(translateZ(0) translateY(0)); }
+    .tag-add & { @include transform(translateZ(0) translateY(0)); }
 }
 
 
@@ -313,7 +313,7 @@ header {
     opacity: 0;
     pointer-events: none;
 
-    [data-tags~="add"] & {
+    .tag-add & {
         @include transform(translateZ(0) scale(1) rotate(0deg));
 
         opacity: 1;
@@ -353,7 +353,7 @@ header {
     height: 100%;
     height: calc(100% - #{$bar-height});
 
-    [data-tags~="add"] & { @include transform(translateZ(0) translateY(0)); }
+    .tag-add & { @include transform(translateZ(0) translateY(0)); }
 
     // Fix bottom getting cut off in android
     &:after {

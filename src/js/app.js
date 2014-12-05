@@ -130,7 +130,7 @@ App.parseURL = function(url) {
 
 // Update URL on navigate
 App.on("navigate", function(state, replace) {
-    var methods, model;
+    var methods, model, classlist;
 
     if (typeof state !== "object") {
         throw new Error("Invalid state " + state + ".");
@@ -198,12 +198,18 @@ App.on("navigate", function(state, replace) {
         }
     }
 
-    // Add the tags to body
-    if (methods.tags instanceof Array && methods.tags.length) {
-        $("body").attr("data-tags", methods.tags.join(" "));
-    } else {
-        $("body").removeAttr("data-tags");
+    // Add the tags as classnames to body
+    // Attribute selectors for data don't work in Android 4.1
+    classlist = $("body").attr("class") || "";
+    classlist = classlist.replace(/\btag-\S+/g, "").trim();
+
+    if (methods.tags instanceof Array) {
+        for (var j = 0, k = methods.tags.length; j < k; j++) {
+            classlist += " tag-" + methods.tags[j];
+        }
     }
+
+    $("body").attr("class", classlist);
 });
 
 // Send an initial navigate event to update the UI based on state
