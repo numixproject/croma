@@ -47,6 +47,11 @@ gulp.task("scripts", function() {
         entries: "./src/js/croma.js",
         debug: !gutil.env.production
     }).bundle()
+    .on("error", function(err) {
+        gutil.log(err);
+        // End the stream to prevent gulp from crashing
+        this.end();
+    })
     .pipe(source("croma.js"))
     .pipe(buffer())
     .pipe(plumber())
