@@ -129,20 +129,16 @@ App.parseURL = function(url) {
 };
 
 // Provide a transitionTo page method
-App.transitionTo = function(state) {
-    var args;
-
+App.transitionTo = function(state, args) {
     if (typeof state !== "object") {
         return;
     }
-
-    args = Array.prototype.slice.call(arguments, 1);
 
     App.trigger("navigate", state, args);
 };
 
 // Update URL on navigate
-App.on("navigate", function(state, replace) {
+App.on("navigate", function(state, args) {
     var methods, model, classlist;
 
     if (typeof state !== "object") {
@@ -165,7 +161,7 @@ App.on("navigate", function(state, replace) {
     }
 
     // Update the URL
-    if (replace) {
+    if (args && args instanceof Array && args[0] === true) {
         window.history.replaceState(state, null, App.buildURL(state));
     } else {
         window.history.pushState(state, null, App.buildURL(state));
@@ -227,12 +223,12 @@ App.on("navigate", function(state, replace) {
 
 // Send an initial navigate event to update the UI based on state
 $(document).on("ready", function() {
-    App.transitionTo(App.parseURL(window.location.hash), true);
+    App.transitionTo(App.parseURL(window.location.hash), [ true ]);
 });
 
 // On hash change, transition page
 $(window).on("hashchange", function() {
-    App.transitionTo(App.parseURL(window.location.hash), true);
+    App.transitionTo(App.parseURL(window.location.hash), [ true ]);
 });
 
 module.exports = App;
