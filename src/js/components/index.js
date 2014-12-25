@@ -59,7 +59,7 @@ App.IndexRoute.render = function(state, model) {
             "<div class='card-item-color-item-large' style='" + utils.generateBackground(model[i].colors) + "'></div>",
             "</div>",
             "<div class='card-item-segment'>",
-            "<div class='card-item-text'>" + model[i].name + "</div>",
+            "<div class='card-item-text' data-action='rename'>" + model[i].name + "</div>",
             "<div class='card-item-actions'>",
             "<div class='card-item-action card-item-action-share' data-action='share'></div>",
             "<div class='card-item-action card-item-action-remove' data-action='remove'></div>",
@@ -83,6 +83,14 @@ App.IndexRoute.actions = {
         App.transitionTo({
             route: "colors",
             params: { palette: palette }
+        });
+    },
+    rename: function() {
+        var palette = $(this).closest("[data-palette]").attr("data-palette");
+
+        App.transitionTo({
+            route: "palette/name",
+            params: { oldname: palette }
         });
     },
     add: function() {
