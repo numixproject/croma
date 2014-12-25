@@ -125,11 +125,23 @@ App.PaletteShowRoute.actions = {
     save: function(state, model) {
         var data = savePalette(state, model);
 
-        App.trigger("navigate", { route: "palette/name", params: { oldname: data.oldname, suggested: data.suggested } });
+        App.transitionTo({
+            route: "palette/name",
+            params: {
+                oldname: data.oldname,
+                suggested: data.suggested
+            }
+        });
     },
     add: function(state, model) {
         var data = savePalette(state, model);
 
-        App.trigger("navigate", { route: "palette/list", params: { oldname: data.oldname, suggested: data.suggested } });
+        App.transitionTo({
+            route: "palette/list",
+            params: {
+                oldname: data.oldname,
+                suggested: data.suggested
+            }
+        });
     }
 };

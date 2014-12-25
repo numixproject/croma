@@ -73,7 +73,7 @@ App.PaletteNameRoute.actions = {
 
         App.vars.actionDone = true;
 
-        App.trigger("navigate", {
+        App.transitionTo({
             route: "colors",
             params: { palette: palette }
         });

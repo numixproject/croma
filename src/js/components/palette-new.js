@@ -52,10 +52,10 @@ App.PaletteNewRoute.afterRender = function(state) {
 
 App.PaletteNewRoute.actions = {
     topicker: function() {
-        App.trigger("navigate", { route: "picker" });
+        App.transitionTo({ route: "picker" });
     },
     topalettename: function() {
-        App.trigger("navigate", { route: "palette/name" });
+        App.transitionTo({ route: "palette/name" });
     },
     getpalette: utils.getPalette,
     unlockpro: utils.unlockPro

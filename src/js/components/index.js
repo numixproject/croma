@@ -80,13 +80,13 @@ App.IndexRoute.actions = {
     tocolors: function() {
         var palette = $(this).closest("[data-palette]").attr("data-palette");
 
-        App.trigger("navigate", {
+        App.transitionTo({
             route: "colors",
             params: { palette: palette }
         });
     },
     add: function() {
-        App.trigger("navigate", {
+        App.transitionTo({
             route: "palette/new"
         });
     },

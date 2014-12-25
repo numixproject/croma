@@ -4,6 +4,20 @@ var App = require("./app.js"),
     animations = require("./animations.js"),
     $appTitle = $("#app-title");
 
+// Handle URL opening in Firefox OS
+if (!!("mozSetMessageHandler" in navigator)) {
+    // Handle opening of URLs
+    navigator.mozSetMessageHandler("activity", function(a) {
+        var url = a.source.data.url;
+
+        if (typeof url !== "string") {
+            return;
+        }
+
+        App.transitionTo(App.parseURL(url.replace(/^((https?:\/\/croma.numixproject.org)|(croma:\/\/))/, "")));
+    });
+}
+
 // App global variables
 App.vars = {
     maxColors: 4,
@@ -19,16 +33,6 @@ App.setTitle = function(title) {
     $appTitle.text(title);
 };
 
-// Handle URL opening in Firefox OS
-if (!!("mozSetMessageHandler" in navigator)) {
-    // Handle opening of URLs
-    navigator.mozSetMessageHandler("activity", function(a) {
-        var url = a.source.data.url,
-            state = App.parseURL(url.replace(/^((https?:\/\/croma.numixproject.org)|(croma:\/\/))/, ""));
-
-        App.trigger("navigate", state);
-    });
-}
 
 // Add animations after route is rendered
 App.Global.afterRender = function() {
@@ -50,12 +54,12 @@ App.Global.actions = {
             if (window.history.length > 1) {
                 window.history.back();
             } else {
-                App.trigger("navigate", App.oldState);
+                App.transitionTo(App.oldState);
             }
 
             App.vars.actionDone = false;
         } else {
-            App.trigger("navigate", { route: "index" });
+            App.transitionTo({ route: "index" });
         }
     }
 };

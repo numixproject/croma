@@ -171,9 +171,15 @@ App.PickerRoute.actions = {
 
             actiondone = true;
 
-            App.trigger("navigate", { route: "colors", params: { palette: palette } });
+            App.transitionTo({
+                route: "colors",
+                params: { palette: palette }
+            });
         } else {
-            App.trigger("navigate", { route: "palettes", params: { color: color } });
+            App.transitionTo({
+                route: "palettes",
+                params: { color: color }
+            });
         }
     }
 };

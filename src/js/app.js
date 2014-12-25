@@ -128,6 +128,19 @@ App.parseURL = function(url) {
     return state;
 };
 
+// Provide a transitionTo page method
+App.transitionTo = function(state) {
+    var args;
+
+    if (typeof state !== "object") {
+        return;
+    }
+
+    args = Array.prototype.slice.call(arguments, 1);
+
+    App.trigger("navigate", state, args);
+};
+
 // Update URL on navigate
 App.on("navigate", function(state, replace) {
     var methods, model, classlist;
@@ -168,16 +181,16 @@ App.on("navigate", function(state, replace) {
     // Model will give us formatted data
     if (typeof methods.model === "function") {
         model = methods.model(state);
-    }
 
-    // Call the afterModel function
-    if (typeof methods.afterModel === "function") {
-        methods.afterModel(state, model);
+        // Call the afterModel function
+        if (typeof methods.afterModel === "function") {
+            methods.afterModel(state, model);
+        }
     }
 
     // Call the render method of the route and update the view
     if (typeof methods.render === "function") {
-        App.Outlet.empty().html(methods.render(state, model));
+        App.Outlet.html(methods.render(state, model));
 
         // Bind event handlers so that we can perform actions
         $(document).off("click.action").on("click.action", "[data-action]", function() {
@@ -214,12 +227,12 @@ App.on("navigate", function(state, replace) {
 
 // Send an initial navigate event to update the UI based on state
 $(document).on("ready", function() {
-    App.trigger("navigate", App.parseURL(window.location.hash), true);
+    App.transitionTo(App.parseURL(window.location.hash), true);
 });
 
-// On hash change, trigger navigate
+// On hash change, transition page
 $(window).on("hashchange", function() {
-    App.trigger("navigate", App.parseURL(window.location.hash), true);
+    App.transitionTo(App.parseURL(window.location.hash), true);
 });
 
 module.exports = App;

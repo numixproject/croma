@@ -98,6 +98,9 @@ App.PalettesRoute.actions = {
 
         query = utils.paletteToQuery(map);
 
-        App.trigger("navigate", { route: "palette/show", params: { palette: query } });
+        App.transitionTo({
+            route: "palette/show",
+            params: { palette: query }
+        });
     }
 };

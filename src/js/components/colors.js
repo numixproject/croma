@@ -78,7 +78,7 @@ App.ColorsRoute.actions = {
     todetails: function(state) {
         var color = $(this).closest("[data-color]").attr("data-color");
 
-        App.trigger("navigate", {
+        App.transitionTo({
             route: "details",
             params: { color: color }
         });
@@ -102,7 +102,7 @@ App.ColorsRoute.actions = {
             return;
         }
 
-        App.trigger("navigate", {
+        App.transitionTo({
             route: "picker",
             params: { palette: palette }
         });

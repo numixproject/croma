@@ -87,7 +87,7 @@ App.DetailsRoute.actions = {
     topalettes: function(state) {
         var color = state.params ? state.params.color : null;
 
-        App.trigger("navigate", {
+        App.transitionTo({
             route: "palettes",
             params: { color: color }
         });
