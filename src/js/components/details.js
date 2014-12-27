@@ -1,8 +1,8 @@
 /* jshint browser: true */
 
-var App = require(".././app.js"),
-    Color = require(".././color.js"),
-    utils = require(".././utils.js");
+var App = require("../core/app.js"),
+    Color = require("../core/color.js"),
+    utils = require("../utils.js");
 
 App.DetailsRoute.model = function(state) {
         var color = state.params ? state.params.color : null,

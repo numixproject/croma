@@ -1,6 +1,6 @@
 /* jshint browser: true */
 
-var App = require("./app.js"),
+var App = require("./core/app.js"),
     animations = require("./animations.js"),
     $appTitle = $("#app-title");
 

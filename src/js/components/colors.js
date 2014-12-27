@@ -1,7 +1,7 @@
 /* jshint browser: true */
 
-var App = require(".././app.js"),
-    utils = require(".././utils.js");
+var App = require("../core/app.js"),
+    utils = require("../utils.js");
 
 App.ColorsRoute.tags = [ "add" ];
 

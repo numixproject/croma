@@ -2,9 +2,9 @@
 /* global $ */
 
 var utils = (function() {
-	var Color = require("./color.js"),
+	var Color = require("./core/color.js"),
+		storage = require("../core/storage"),
 		fxos = require("./fxos.js"),
-		storage = require("./storage"),
 		productId = "ultimate";
 
 	return {

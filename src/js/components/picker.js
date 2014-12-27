@@ -1,8 +1,8 @@
 /* jshint browser: true */
 
-var App = require(".././app.js"),
-    Color = require(".././color.js"),
-    utils = require(".././utils.js"),
+var App = require("../core/app.js"),
+    Color = require("../core/color.js"),
+    utils = require("../utils.js"),
     value = "#f06860";
 
 App.PickerRoute.tags = [ "action" ];
