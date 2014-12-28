@@ -35,7 +35,7 @@ App.Global = $.extend(true, {}, App._super);
 App.renderTemplate = (function() {
     var cache = {};
 
-    function render(string, data){
+    function render(string, data) {
         // Figure out if we're getting a template, or if we need to
         // load the template - and be sure to cache the result.
         var fn = !/\W/.test(string) ?
@@ -278,4 +278,14 @@ $(window).on("hashchange", function() {
     App.transitionTo(App.parseURL(window.location.hash), [ true ]);
 });
 
-module.exports = App;
+if (typeof define === "function" && define.amd) {
+    // Define as AMD module
+    define(function() {
+        return App;
+    });
+} else if (typeof module !== "undefined" && module.exports) {
+    // Export to CommonJS
+    module.exports = App;
+} else {
+    window.App = App;
+}

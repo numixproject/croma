@@ -122,11 +122,11 @@ var Storage = (function() {
 if (typeof define === "function" && define.amd) {
     // Define as AMD module
     define(function() {
-        return new Storage();
+        return Storage;
     });
 } else if (typeof module !== "undefined" && module.exports) {
     // Export to CommonJS
-    module.exports = new Storage();
+    module.exports = Storage;
 } else {
-    window.storage = new Storage();
+    window.Storage = Storage;
 }
