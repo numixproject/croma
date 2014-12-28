@@ -17,9 +17,7 @@ App._super = {
     model: function() {},
     afterModel: function() {},
     render: function(state, model) {
-        var template = App[App.formatRoute(state.route)].template || $("[data-template=" + state.route + "]").html();
-
-        return App.renderTemplate(template, { model: model });
+        return App.renderTemplate(App.getTemplate(state.route), { model: model });
     },
     afterRender: function() {},
     actions: {
@@ -31,15 +29,29 @@ App._super = {
 // Provides a way to add custom overrides
 App.Global = $.extend(true, {}, App._super);
 
+// Get the template for the specified route
+App.getTemplate = (function() {
+    var cache = {};
+
+    return function(route) {
+        var template = cache[route] = cache[route] || App[App.formatRoute(route)].template || $("[data-template=" + route + "]").html();
+
+        return template;
+    };
+}());
+
 // Simple templating engine based on John Resig's micro-templating engine
 App.renderTemplate = (function() {
     var cache = {};
 
     function render(string, data) {
-        // Figure out if we're getting a template, or if we need to
-        // load the template - and be sure to cache the result.
-        var fn = !/\W/.test(string) ?
-            cache[string] = (cache[string] || render(document.querySelector(string).innerHTML)) :
+        var fn;
+
+        if (typeof string !== "string") {
+            throw new Error("A string must be passed to the template engine");
+        }
+
+        fn = cache[string] = cache[string] ||
 
         // Generate a reusable function that will serve as a template
         // generator (and which will be cached).
@@ -250,7 +262,7 @@ App.on("navigate", function(state, args) {
 
         // Call the afterRender function if present
         if (typeof methods.afterRender === "function") {
-            methods.afterRender.apply(App.Outlet, [ state, model ]);
+            methods.afterRender(state, model);
         }
     }
 
