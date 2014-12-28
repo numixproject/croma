@@ -27,7 +27,8 @@ gulp.task("lint", function() {
     return gulp.src("src/js/**/*.js")
     .pipe(plumber())
     .pipe(jshint())
-    .pipe(jshint.reporter("jshint-stylish"));
+    .pipe(jshint.reporter("jshint-stylish"))
+    .pipe(jshint.reporter("fail"));
 });
 
 gulp.task("libs", [ "bower" ], function() {

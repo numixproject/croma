@@ -3,9 +3,12 @@
 
 var utils = (function() {
 	var Color = require("./core/color.js"),
-		storage = require("./core/storage.js"),
+		Storage = require("./core/storage.js"),
 		fxos = require("./fxos.js"),
-		productId = "ultimate";
+		productId = "ultimate",
+		store;
+
+	store = new Storage();
 
 	return {
 
@@ -21,7 +24,7 @@ var utils = (function() {
 		},
 
 		getData: function(palette) {
-			var palettes = storage.get("palettes") || {};
+			var palettes = store.get("palettes") || {};
 
 			if (palette) {
 				return palettes[palette];
@@ -45,7 +48,7 @@ var utils = (function() {
 				palettes[palette] = data;
 			}
 
-			return storage.set("palettes", palettes);
+			return store.set("palettes", palettes);
 		},
 
 		// Remove a card from the UI
