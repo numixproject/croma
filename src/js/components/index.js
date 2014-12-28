@@ -32,42 +32,12 @@ App.IndexRoute.model = function() {
         data.push({
             name: p,
             colors: arr,
+            background: utils.generateBackground(arr),
             created: palettes[p].created
         });
     }
 
     return data.sort(utils.sortByDate);
-};
-
-App.IndexRoute.render = function(state, model) {
-    var html = "";
-
-    if (!model.length) {
-        html += [
-            "<div class='empty-area fx-fade-in'>",
-            "<a data-action='add' class='empty-area-action'>Tap to add palette.</a>",
-            "</div>"
-        ].join("");
-
-        return html;
-    }
-
-    for (var i = 0, l = model.length; i < l; i++) {
-        html += [
-            "<div class='card-item fx-come-in' data-palette='" + model[i].name + "'>",
-            "<div class='card-item-segment' data-action='tocolors'>",
-            "<div class='card-item-color-item-large' style='" + utils.generateBackground(model[i].colors) + "'></div>",
-            "</div>",
-            "<div class='card-item-segment'>",
-            "<div class='card-item-text' data-action='rename'>" + model[i].name + "</div>",
-            "<div class='card-item-actions'>",
-            "<div class='card-item-action card-item-action-share' data-action='share'></div>",
-            "<div class='card-item-action card-item-action-remove' data-action='remove'></div>",
-            "</div></div></div>"
-        ].join("");
-    }
-
-    return html;
 };
 
 App.IndexRoute.afterRender = function() {
