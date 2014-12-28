@@ -42,7 +42,7 @@ Events.prototype = {
 
 		for (var i = 0; i < currentcallbacks.length; i++) {
 			if (typeof currentcallbacks[i] === "function") {
-				currentcallbacks[i].apply(null, args);
+				currentcallbacks[i].apply(this, args);
 			}
 		}
 	}

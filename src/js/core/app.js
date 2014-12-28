@@ -262,7 +262,7 @@ App.on("navigate", function(state, args) {
 
         // Call the afterRender function if present
         if (typeof methods.afterRender === "function") {
-            methods.afterRender.apply(App.Outlet, [ state, model ]);
+            methods.afterRender(state, model);
         }
     }
 
