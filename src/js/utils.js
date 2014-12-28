@@ -3,7 +3,7 @@
 
 var utils = (function() {
 	var Color = require("./core/color.js"),
-		storage = require("../core/storage"),
+		storage = require("./core/storage.js"),
 		fxos = require("./fxos.js"),
 		productId = "ultimate";
 
