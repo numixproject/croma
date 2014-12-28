@@ -24,6 +24,7 @@
     "gulp": "latest",
     "gulp-concat": "latest",
     "gulp-ember-templates": "latest",
+    "gulp-jscs": "latest",
     "gulp-jshint": "latest",
     "gulp-plumber": "latest",
     "gulp-rename": "latest",
