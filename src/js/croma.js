@@ -33,7 +33,6 @@ App.setTitle = function(title) {
     $appTitle.text(title);
 };
 
-
 // Add animations after route is rendered
 App.Global.afterRender = function() {
     var cls = [ "fade-in", "scale-in" ];
