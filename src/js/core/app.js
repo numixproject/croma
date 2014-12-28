@@ -1,4 +1,4 @@
-/* jshint browser: true */
+/* jshint browser: true, evil: true */
 /* global $ */
 
 var Events = require("./events.js"),
@@ -16,7 +16,11 @@ App.Outlet = $("#app-outlet");
 App._super = {
     model: function() {},
     afterModel: function() {},
-    render: function() {},
+    render: function(state, model) {
+        var template = App[App.formatRoute(state.route)].template || $("[data-template=" + state.route + "]").html();
+
+        return App.renderTemplate(template, { model: model });
+    },
     afterRender: function() {},
     actions: {
         goback: window.history.back
@@ -26,6 +30,49 @@ App._super = {
 
 // Provides a way to add custom overrides
 App.Global = $.extend(true, {}, App._super);
+
+// Simple templating engine based on John Resig's micro-templating engine
+App.renderTemplate = (function() {
+    var cache = {};
+
+    function render(string, data){
+        // Figure out if we're getting a template, or if we need to
+        // load the template - and be sure to cache the result.
+        var fn = !/\W/.test(string) ?
+            cache[string] = (cache[string] || render(document.querySelector(string).innerHTML)) :
+
+        // Generate a reusable function that will serve as a template
+        // generator (and which will be cached).
+        new Function("obj",
+                     "var p=[],print=function(){p.push.apply(p,arguments);};" +
+
+                     // Escape &, <, > and quotes to prevent XSS
+                     // Convert new lines to <br> tags
+                     "function tohtml(s){if(typeof s!=='string'){return '';}" +
+                     "return s.replace(/&/g,'&#38').replace(/</g,'&#60;').replace(/>/g,'&#62;')" +
+                     ".replace(/\"/g,'&#34').replace(/'/g,'&#39;').replace(/(?:\\r\\n|\\r|\\n)/g,'<br>');}" +
+
+                     // Introduce the data as local variables using with(){}
+                     "with(obj){p.push('" +
+
+                     // Convert the template into pure JavaScript
+                     string
+                     .replace(/[\r\t\n]/g, " ")
+                     .split("<%").join("\t")
+                     .replace(/((^|%>)[^\t]*)'/g, "$1\r")
+                     .replace(/\t=(.*?)%>/g, "',tohtml($1),'")
+                     .split("\t").join("');")
+                     .split("%>").join("p.push('")
+                     .split("\r").join("\\'") +
+
+                     "');}return p.join('');");
+
+        // Provide some basic currying to the user
+        return data ? fn(data) : fn;
+    }
+
+    return render;
+}());
 
 // Format the route name
 App.formatRoute = function(name) {
