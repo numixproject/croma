@@ -9,6 +9,7 @@ var gulp = require("gulp"),
     rename = require("gulp-rename"),
     concat = require("gulp-concat"),
     jshint = require("gulp-jshint"),
+    jscs = require("gulp-jscs"),
     uglify = require("gulp-uglify"),
     sass = require("gulp-ruby-sass"),
     webserver = require("gulp-webserver"),
@@ -28,7 +29,8 @@ gulp.task("lint", function() {
     .pipe(plumber())
     .pipe(jshint())
     .pipe(jshint.reporter("jshint-stylish"))
-    .pipe(jshint.reporter("fail"));
+    .pipe(jshint.reporter("fail"))
+    .pipe(jscs());
 });
 
 gulp.task("libs", [ "bower" ], function() {
