@@ -39,6 +39,7 @@ Template.prototype = {
                          .split("<%").join("\t")
                          .replace(/((^|%>)[^\t]*)'/g, "$1\r")
                          .replace(/\t=(.*?)%>/g, "',tohtml($1),'")
+                         .replace(/\t-(.*?)%>/g, "',$1,'")
                          .split("\t").join("');")
                          .split("%>").join("p.push('")
                          .split("\r").join("\\'") +
