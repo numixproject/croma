@@ -4,14 +4,18 @@ var gulp = require("gulp"),
     browserify = require("browserify"),
     source = require("vinyl-source-stream"),
     buffer = require("vinyl-buffer"),
-    plumber = require("gulp-plumber"),
     gutil = require("gulp-util"),
+    plumber = require("gulp-plumber"),
+    sourcemaps = require("gulp-sourcemaps"),
     rename = require("gulp-rename"),
     concat = require("gulp-concat"),
     jshint = require("gulp-jshint"),
     jscs = require("gulp-jscs"),
     uglify = require("gulp-uglify"),
-    sass = require("gulp-ruby-sass"),
+    sass = require("gulp-sass"),
+    combinemq = require("gulp-combine-mq"),
+    autoprefixer = require("gulp-autoprefixer"),
+    minifycss = require("gulp-minify-css"),
     webserver = require("gulp-webserver"),
     opn = require("opn"),
     server = {
@@ -48,7 +52,7 @@ gulp.task("libs", [ "bower" ], function() {
 gulp.task("scripts", function() {
     return browserify({
         entries: "./src/js/croma.js",
-        debug: !gutil.env.production
+        debug: true
     }).bundle()
     .on("error", function(err) {
         gutil.log(err);
@@ -58,20 +62,27 @@ gulp.task("scripts", function() {
     .pipe(source("croma.js"))
     .pipe(buffer())
     .pipe(plumber())
+    .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(gutil.env.production ? uglify() : gutil.noop())
     .pipe(rename({ suffix: ".min" }))
+    .pipe(sourcemaps.write("."))
     .pipe(gulp.dest("dist/js"))
     .on("error", gutil.log);
 });
 
-gulp.task("sass", function() {
+gulp.task("styles", function() {
     return gulp.src("src/scss/**/*.scss")
     .pipe(plumber())
+    .pipe(sourcemaps.init())
     .pipe(sass({
-        style: gutil.env.production ? "compressed" : "expanded",
-        sourcemapPath: "../../src/scss"
+        outputStyle: "expanded",
+        lineNumbers: !gutil.env.production,
+        sourceMap: true
     }))
-    .on("error", function(e) { gutil.log(e.message); })
+    .pipe(combinemq())
+    .pipe(gutil.env.production ? autoprefixer() : gutil.noop())
+    .pipe(gutil.env.production ? minifycss() : gutil.noop())
+    .pipe(sourcemaps.write("."))
     .pipe(gulp.dest("dist/css"));
 });
 
@@ -81,7 +92,7 @@ gulp.task("clean", function() {
 
 gulp.task("watch", function() {
     gulp.watch("src/js/**/*.js", [ "lint", "libs", "scripts" ]);
-    gulp.watch("src/scss/**/*.scss", [ "sass" ]);
+    gulp.watch("src/scss/**/*.scss", [ "styles" ]);
 });
 
 gulp.task("webserver", function() {
@@ -95,7 +106,7 @@ gulp.task("webserver", function() {
 });
 
 // Default Task
-gulp.task("default", [ "lint", "sass", "libs", "scripts" ]);
+gulp.task("default", [ "lint", "libs", "scripts", "styles" ]);
 
 // Serve in a web browser
 gulp.task("live", [ "default", "watch", "webserver" ], function() {
