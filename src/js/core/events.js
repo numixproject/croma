@@ -5,35 +5,35 @@
  */
 
 var Events = function() {
-	this.callbacks = {};
+	this._callbacks = {};
 };
 
 Events.prototype = {
 	on: function(event, handler) {
-		if (!(event in this.callbacks)) {
-			this.callbacks[event] = [];
+		if (!(event in this._callbacks)) {
+			this._callbacks[event] = [];
 		}
 
-		this.callbacks[event].push(handler);
+		this._callbacks[event].push(handler);
 	},
 
 	off: function(event, handler) {
-		if (!this.callbacks && !this.callbacks[event]) {
+		if (!this._callbacks && !this._callbacks[event]) {
 			return;
 		}
 
 		if (arguments.length === 1) {
-			delete this.callbacks[event];
+			delete this._callbacks[event];
 			return this;
 		}
 
-		var i = this.callbacks[event].indexOf(handler);
+		var i = this._callbacks[event].indexOf(handler);
 
-		this.callbacks.splice(i, 1);
+		this._callbacks.splice(i, 1);
 	},
 
 	trigger: function(event) {
-		var currentcallbacks = this.callbacks[event],
+		var currentcallbacks = this._callbacks[event],
 			args = Array.prototype.slice.call(arguments, 1);
 
 		if (!currentcallbacks) {
