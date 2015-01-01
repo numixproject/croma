@@ -1,8 +1,11 @@
-/* jshint browser: true, evil: true */
+/* jshint browser: true */
 /* global $ */
 
 var Events = require("./events.js"),
-    App = new Events();
+    Template = require("./template.js"),
+    App;
+
+App = new Events();
 
 App.currentState = {}; // Store the current state
 App.oldState = {}; // The previous state belongs here
@@ -17,7 +20,7 @@ App._super = {
     model: function() {},
     afterModel: function() {},
     render: function(state, model) {
-        return App.renderTemplate(App.getTemplate(state.route), { model: model });
+        return App.Template.render(App.Template.get(state.route), { model: model });
     },
     afterRender: function() {},
     actions: {
@@ -29,8 +32,11 @@ App._super = {
 // Provides a way to add custom overrides
 App.Global = $.extend(true, {}, App._super);
 
+// Initialize template engine
+App.Template = new Template();
+
 // Get the template for the specified route
-App.getTemplate = (function() {
+App.Template.get = (function() {
     var cache = {};
 
     return function(route) {
@@ -38,52 +44,6 @@ App.getTemplate = (function() {
 
         return template;
     };
-}());
-
-// Simple templating engine based on John Resig's micro-templating engine
-App.renderTemplate = (function() {
-    var cache = {};
-
-    function render(string, data) {
-        var fn;
-
-        if (typeof string !== "string") {
-            throw new Error("A string must be passed to the template engine");
-        }
-
-        fn = cache[string] = cache[string] ||
-
-        // Generate a reusable function that will serve as a template
-        // generator (and which will be cached).
-        new Function("obj",
-                     "var p=[],print=function(){p.push.apply(p,arguments);};" +
-
-                     // Escape &, <, > and quotes to prevent XSS
-                     // Convert new lines to <br> tags
-                     "function tohtml(s){if(typeof s!=='string'){return '';}" +
-                     "return s.replace(/&/g,'&#38').replace(/</g,'&#60;').replace(/>/g,'&#62;')" +
-                     ".replace(/\"/g,'&#34').replace(/'/g,'&#39;').replace(/(?:\\r\\n|\\r|\\n)/g,'<br>');}" +
-
-                     // Introduce the data as local variables using with(){}
-                     "with(obj){p.push('" +
-
-                     // Convert the template into pure JavaScript
-                     string
-                     .replace(/[\r\t\n]/g, " ")
-                     .split("<%").join("\t")
-                     .replace(/((^|%>)[^\t]*)'/g, "$1\r")
-                     .replace(/\t=(.*?)%>/g, "',tohtml($1),'")
-                     .split("\t").join("');")
-                     .split("%>").join("p.push('")
-                     .split("\r").join("\\'") +
-
-                     "');}return p.join('');");
-
-        // Provide some basic currying to the user
-        return data ? fn(data) : fn;
-    }
-
-    return render;
 }());
 
 // Format the route name
