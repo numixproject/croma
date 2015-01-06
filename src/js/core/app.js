@@ -21,7 +21,7 @@ App._super = {
     model: function() {},
     afterModel: function() {},
     render: function(state, model) {
-        return App.renderTemplate(App.getTemplate(state.route), { model: model });
+        return App.renderTemplate(App.getTemplate(state.route), model);
     },
     afterRender: function() {},
     actions: {
