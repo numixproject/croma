@@ -257,14 +257,5 @@ $(window).on("hashchange", function() {
     App.transitionTo(App.parseURL(window.location.hash), [ true ]);
 });
 
-if (typeof define === "function" && define.amd) {
-    // Define as AMD module
-    define(function() {
-        return App;
-    });
-} else if (typeof module !== "undefined" && module.exports) {
-    // Export to CommonJS
-    module.exports = App;
-} else {
-    window.App = App;
-}
+// Export to CommonJS
+module.exports = App;
