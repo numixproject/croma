@@ -5,6 +5,7 @@ var Events = require("./events.js"),
     Template = require("./template.js"),
     App;
 
+// The app is basically an event emitter with additional methods
 App = new Events();
 
 App.currentState = {}; // Store the current state
@@ -20,7 +21,7 @@ App._super = {
     model: function() {},
     afterModel: function() {},
     render: function(state, model) {
-        return App.Template.render(App.Template.get(state.route), { model: model });
+        return App.renderTemplate(App.getTemplate(state.route), model);
     },
     afterRender: function() {},
     actions: {
@@ -32,17 +33,23 @@ App._super = {
 // Provides a way to add custom overrides
 App.Global = $.extend(true, {}, App._super);
 
-// Initialize template engine
-App.Template = new Template();
-
 // Get the template for the specified route
-App.Template.get = (function() {
+App.getTemplate = (function() {
     var cache = {};
 
     return function(route) {
         var template = cache[route] = cache[route] || App[App.formatRoute(route)].template || $("[data-template=" + route + "]").html();
 
         return template;
+    };
+}());
+
+// Provide method to render a template
+App.renderTemplate = (function() {
+    var template = new Template();
+
+    return function(string, data) {
+        return data ? template.render(string, data) : template.compile(string);
     };
 }());
 
@@ -250,14 +257,5 @@ $(window).on("hashchange", function() {
     App.transitionTo(App.parseURL(window.location.hash), [ true ]);
 });
 
-if (typeof define === "function" && define.amd) {
-    // Define as AMD module
-    define(function() {
-        return App;
-    });
-} else if (typeof module !== "undefined" && module.exports) {
-    // Export to CommonJS
-    module.exports = App;
-} else {
-    window.App = App;
-}
+// Export to CommonJS
+module.exports = App;

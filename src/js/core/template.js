@@ -21,7 +21,7 @@ Template.prototype = {
 
             // Generate a reusable function that will serve as a template
             // generator (and which will be cached).
-            new Function("obj",
+            new Function("model", // Pass the data as "model"
                          "var p=[],print=function(){p.push.apply(p,arguments);};" +
 
                          // Escape &, <, > and quotes to prevent XSS
@@ -30,8 +30,7 @@ Template.prototype = {
                          "return s.replace(/&/g,'&#38').replace(/</g,'&#60;').replace(/>/g,'&#62;')" +
                          ".replace(/\"/g,'&#34').replace(/'/g,'&#39;').replace(/(?:\\r\\n|\\r|\\n)/g,'<br>');}" +
 
-                         // Introduce the data as local variables using with(){}
-                         "with(obj){p.push('" +
+                         "p.push('" +
 
                          // Convert the template into pure JavaScript
                          template
@@ -44,7 +43,7 @@ Template.prototype = {
                          .split("%>").join("p.push('")
                          .split("\r").join("\\'") +
 
-                         "');}return p.join('');");
+                         "');return p.join('');");
 
         return fn;
     },
