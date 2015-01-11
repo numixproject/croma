@@ -19,31 +19,37 @@ Template.prototype = {
 
         fn = this._cache[template] = this._cache[template] ||
 
-            // Generate a reusable function that will serve as a template
-            // generator (and which will be cached).
-            new Function("model", // Pass the data as "model"
-                         "var p=[],print=function(){p.push.apply(p,arguments);};" +
+            // Generate a reusable function that will serve as a template generator
+            // The data is passed as "model"
+            new Function("model", (function() {
+                            var parts = template.split(/<%|%>/),
+                                body = "var t=[],printtext=function(){t.push.apply(t,arguments);};",
+                                tohtml = function(s) {
+                                    s = s + "" ; // Convert argument to string
 
-                         // Escape &, <, > and quotes to prevent XSS
-                         // Convert new lines to <br> tags
-                         "function tohtml(s){if(typeof s!=='string'){return '';}" +
-                         "return s.replace(/&/g,'&#38').replace(/</g,'&#60;').replace(/>/g,'&#62;')" +
-                         ".replace(/\"/g,'&#34').replace(/'/g,'&#39;').replace(/(?:\\r\\n|\\r|\\n)/g,'<br>');}" +
+                                    // Escape &, <, > and quotes to prevent XSS
+                                    // Convert new lines to <br> tags
+                                    return s.replace(/&/g, "&#38")
+                                            .replace(/</g, "&#60;").replace(/>/g, "&#62;")
+                                            .replace(/"/g, "&#34").replace(/'/g, "&#39;")
+                                            .replace(/(?:\\r\\n|\\r|\\n)/g, "<br>");
+                                };
 
-                         "p.push('" +
+                            body += "var tohtml=" + tohtml.toString() + ";";
 
-                         // Convert the template into pure JavaScript
-                         template
-                         .replace(/[\r\t\n]/g, " ")
-                         .split("<%").join("\t")
-                         .replace(/((^|%>)[^\t]*)'/g, "$1\r")
-                         .replace(/\t=(.*?)%>/g, "',tohtml($1),'")
-                         .replace(/\t-(.*?)%>/g, "',$1,'")
-                         .split("\t").join("');")
-                         .split("%>").join("p.push('")
-                         .split("\r").join("\\'") +
+                            for (var i = 0, l = parts.length; i < l; i++) {
+                                body += i % 2 ? (
+                                    parts[i][0] === "=" ? "printtext(tohtml(" + parts[i].substr(1) + "));" :
+                                    parts[i][0] === "-" ? "printtext(" + parts[i].substr(1) + ");" : parts[i]
+                                ) : "t.push('" + parts[i].replace(/\n/g, "\\n\\\n").replace(/'/g, "\\'") + "');";
 
-                         "');return p.join('');");
+                                body += "\n";
+                            }
+
+                            body += ";return t.join('');";
+
+                            return body;
+                        }()));
 
         return fn;
     },
