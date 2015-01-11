@@ -26,7 +26,7 @@ Template.prototype = {
 
                          // Escape &, <, > and quotes to prevent XSS
                          // Convert new lines to <br> tags
-                         "function tohtml(s){if(typeof s!=='string'){return '';}" +
+                         "function tohtml(s){s=s+'';" +
                          "return s.replace(/&/g,'&#38').replace(/</g,'&#60;').replace(/>/g,'&#62;')" +
                          ".replace(/\"/g,'&#34').replace(/'/g,'&#39;').replace(/(?:\\r\\n|\\r|\\n)/g,'<br>');}" +
 

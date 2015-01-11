@@ -5,7 +5,7 @@ var App = require("../core/app.js"),
     utils = require("../utils.js");
 
 App.PalettesRoute.model = function(state) {
-    var data = {},
+    var model = {},
         isPro = utils.isPro(),
         color = state.params ? state.params.color : null,
         colorObj, objs, arr;
@@ -16,9 +16,9 @@ App.PalettesRoute.model = function(state) {
 
     colorObj = new Color(color);
 
-    data.hexVal = colorObj.tohex();
+    model.hexVal = colorObj.tohex();
 
-    data.palettes = [];
+    model.palettes = [];
 
     for (var i in colorObj) {
         if ((/.*scheme$/i).test(i) && typeof colorObj[i] === "function") {
@@ -31,48 +31,21 @@ App.PalettesRoute.model = function(state) {
             // For the first color, push our initial color to retain it
             // While palette generation, the hex value might change a bit
             // Don't do this for monochromatic since the first color is not the color we passed
-            arr = (i.toLowerCase() === "monochromaticscheme") ? [ objs[0].tohex() ] : [ data.hexVal ];
+            arr = (i.toLowerCase() === "monochromaticscheme") ? [ objs[0].tohex() ] : [ model.hexVal ];
 
             for (var j = 1; j < objs.length; j++) {
                 arr.push(objs[j].tohex());
             }
 
-            data.palettes.push({
+            model.palettes.push({
                 colors: arr,
-                name: utils.parseCamelCase(i).replace(/scheme/i, "").trim()
+                name: utils.parseCamelCase(i).replace(/scheme/i, "").trim(),
+                background: utils.generateBackground(arr)
             });
         }
     }
 
-    return data;
-};
-
-App.PalettesRoute.render = function(state, model) {
-    var html = "";
-
-    if (!model || !model.palettes || !(model.palettes instanceof Array)) {
-        html += [
-            "<div class='empty-area fx-fade-in'>",
-            "<a class='empty-area-action'>An error occured!</a>",
-            "</div>"
-        ].join("");
-
-        return html;
-    }
-
-    for (var i = 0, l = model.palettes.length; i < l; i++) {
-        html += [
-            "<div data-action='save' class='card-item card-item-action-container fx-come-in' data-index='" + i + "'>",
-            "<div class='card-item-segment'>",
-            "<div class='card-item-color-item-large' style='" + utils.generateBackground(model.palettes[i].colors) + "'></div>",
-            "</div>",
-            "<div class='card-item-segment'>",
-            "<div class='card-item-text'>" + model.palettes[i].name + "</div>",
-            "</div></div>"
-        ].join("");
-    }
-
-    return html;
+    return model;
 };
 
 App.PalettesRoute.afterRender = function(state, model) {

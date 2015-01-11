@@ -8,10 +8,12 @@
         <div class="card-item-info-wrap">
 
         <% for (var i = 0; i < model.strings.length; i++) { %>
-            <div class="card-item-info <% if (model.copy) { %> fx-ripple card-item-info-action-copy" data-action="copy <% } %>">
-                <span class="card-item-label"><%=model.strings[i].key%></span>
-                <span class="card-item-value"><%=model.strings[i].value%></span>
-            </div>
+            <% if (model.strings[i].value) { %>
+                <div class="card-item-info <% if (model.copy) { %> fx-ripple card-item-info-action-copy" data-action="copy <% } %>">
+                    <span class="card-item-label"><%=model.strings[i].key%></span>
+                    <span class="card-item-value"><%=model.strings[i].value%></span>
+                </div>
+            <% } %>
         <% } %>
 
         </div>

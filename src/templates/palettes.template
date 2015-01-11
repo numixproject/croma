@@ -1,0 +1,15 @@
+<% if (!model || !model.palettes || !(model.palettes instanceof Array)) { %>
+    <div class="empty-area fx-fade-in">
+        <a class="empty-area-action">An error occured!</a>
+    </div>
+<% } else { %>
+    <% for (var i = 0; i < model.palettes.length; i++) { %>
+        <div data-action="save" class="card-item card-item-action-container fx-come-in" data-index="<%=i%>">
+            <div class="card-item-segment">
+                <div class="card-item-color-item-large" style="<%=model.palettes[i].background%>"></div>
+            </div>
+            <div class="card-item-segment">
+            <div class="card-item-text"><%=model.palettes[i].name%></div>
+        </div></div>
+    <% } %>
+<% } %>
