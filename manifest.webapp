@@ -1,11 +1,11 @@
 {
   "name": "Croma",
-  "version": "1.6",
+  "version": "1.6.1",
   "description": "Save your colors!",
   "launch_path": "/index.html",
   "icons": {
-    "512": "/fav/fxos-512x512.png",
-    "128": "/fav/fxos-128x128.png"
+    "128": "/fav/fxos-128x128.png",
+    "512": "/fav/fxos-512x512.png"
   },
   "developer": {
     "name": "The Numix Project",
@@ -17,7 +17,7 @@
         "type": "url",
         "url": {
           "required": true,
-          "regexp": "/^((https?:\/\/croma.numixproject.org)|(croma:\/\/))/"
+          "regexp": "/^((https?://croma.numixproject.org)|(croma://))/"
         }
       },
       "href": "index.html"
