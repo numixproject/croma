@@ -1,0 +1,20 @@
+<% if (!model || !model.palette || !(model.palette instanceof Array)) { %>
+    <div class="empty-area fx-fade-in">
+        <a class="empty-area-action">An error occured!</a>
+    </div>
+<% } else { %>
+    <div class="card-item fx-come-in">
+        <% for (var i = 0, l = model.palette.length; i < l; i++) { %>
+            <div class="card-item-color-item <% if (model.palette[i].dark) { %> card-item-color-item-dark <% } %>" style="background-color:<%=model.palette[i].color%>"><%=model.palette[i].color%></div>
+        <% } %>
+    </div>
+    <div class="paper-button-container fx-come-in">
+        <a data-action="save" class="paper-button paper-button-block">Save as new palette</a>
+    </div>
+
+    <% if (model.isPro) { %>
+        <div class="paper-button-container fx-come-in">
+            <a data-action="add" class="paper-button paper-button-block">Add to existing palette</a>
+    </div>
+    <% } %>
+<% } %>

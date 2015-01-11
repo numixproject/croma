@@ -71,48 +71,9 @@ App.PaletteShowRoute.model = function(state) {
 
     return {
         name: state.params.name,
-        palette: palette
+        palette: palette,
+        isPro: utils.isPro()
     };
-};
-
-App.PaletteShowRoute.render = function(state, model) {
-    var html = "";
-
-    if (!model || !model.palette || !(model.palette instanceof Array)) {
-        html += [
-            "<div class='empty-area fx-fade-in'>",
-            "<a class='empty-area-action'>An error occured!</a>",
-            "</div>"
-        ].join("");
-
-        return html;
-    }
-
-    html += "<div class='card-item fx-come-in'>";
-
-    for (var i = 0, l = model.palette.length; i < l; i++) {
-        html += [
-            "<div class='card-item-color-item " + (model.palette[i].dark ? "card-item-color-item-dark" : "") + "' ",
-            "style='background-color:" + model.palette[i].color + "'>" + model.palette[i].color + "</div>"
-        ].join("");
-    }
-
-    html += [
-        "</div>",
-        "<div class='paper-button-container fx-come-in'>",
-        "<a data-action='save' class='paper-button paper-button-block'>Save as new palette</a>",
-        "</div>"
-    ].join("");
-
-    if (utils.isPro()) {
-        html += [
-            "<div class='paper-button-container fx-come-in'>",
-            "<a data-action='add' class='paper-button paper-button-block'>Add to existing palette</a>",
-            "</div>"
-        ].join("");
-    }
-
-    return html;
 };
 
 App.PaletteShowRoute.afterRender = function(state, model) {
