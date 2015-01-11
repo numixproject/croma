@@ -37,10 +37,12 @@ App.Global = $.extend(true, {}, App._super);
 App.getTemplate = (function() {
     var cache = {};
 
-    return function(route) {
-        var template = cache[route] = cache[route] || App[App.formatRoute(route)].template || $("[data-template=" + route + "]").html();
+    $.templates = $.templates || {};
 
-        return template;
+    return function(route) {
+        cache[route] = cache[route] || $.templates[route] || App[App.formatRoute(route)].template || $("[data-template=" + route + "]").html();
+
+        return cache[route];
     };
 }());
 
@@ -48,8 +50,10 @@ App.getTemplate = (function() {
 App.renderTemplate = (function() {
     var template = new Template();
 
-    return function(string, data) {
-        return data ? template.render(string, data) : template.compile(string);
+    return function(tmpl, data) {
+        tmpl = (typeof tmpl === "function") ? tmpl : template.compile(tmpl);
+
+        return data ? tmpl(data) : tmpl;
     };
 }());
 
