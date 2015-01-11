@@ -6,6 +6,8 @@ var gulp = require("gulp"),
     buffer = require("vinyl-buffer"),
     gutil = require("gulp-util"),
     plumber = require("gulp-plumber"),
+    bump = require("gulp-bump"),
+    git = require("gulp-git"),
     sourcemaps = require("gulp-sourcemaps"),
     rename = require("gulp-rename"),
     concat = require("gulp-concat"),
@@ -26,6 +28,29 @@ var gulp = require("gulp"),
 gulp.task("bower", function() {
     return bower.commands.install([], { save: true }, {})
     .on("error", gutil.log);
+});
+
+// Bump version and do a new release
+gulp.task("bump", function() {
+    return gulp.src([ "package.json", "bower.json", "manifest.webapp" ])
+    .pipe(plumber())
+    .pipe(bump())
+    .pipe(gulp.dest("."));
+});
+
+gulp.task("release", [ "bump" ], function() {
+    var version = require("./package.json").version,
+        message = "Release " + version;
+
+    return gulp.src([ "package.json", "bower.json", "manifest.webapp" ])
+    .pipe(plumber())
+    .pipe(git.add())
+    .pipe(git.commit(message))
+    .on("end", function() {
+        git.tag("v" + version, message, function() {
+            git.push("origin", "master", { args: "--tags" }, function() {});
+        });
+    });
 });
 
 gulp.task("lint", function() {
