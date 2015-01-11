@@ -76,30 +76,6 @@ function setColor(color, update) {
     $colorbutton.css({ "background-color": value });
 }
 
-App.PickerRoute.render = function() {
-    var html = "";
-
-    html += [
-        "<div class='card-item fx-come-in'>",
-        "<div class='card-item-picker fx-ripple' data-color='rgba(255,255,255,0.2)'>",
-        "<div class='picker-wrapper'>",
-        "<div class='picker-row picker-hues'></div>",
-        "<div class='picker-row picker-shades'></div>",
-        "</div></div>",
-         "<div class='card-item-segment'>",
-         "<div class='card-item-container card-item-input-wrap'>",
-         "<div class='paper-input-container'>",
-         "<input type='text' class='card-item-input picker-input paper-input' placeholder='Enter a color'>",
-         "<span class='paper-input-highlight'></span>",
-         "<span class='paper-input-bar'></span>",
-         "</div></div>",
-         "<div class='card-item-color-button picker-color-button'></div>",
-         "</div></div>"
-    ].join("");
-
-    return html;
-};
-
 App.PickerRoute.afterRender = function() {
     var $picker = $(".picker-wrapper"),
         $hues = $picker.find(".picker-hues"),
