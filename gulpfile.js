@@ -11,6 +11,7 @@ var gulp = require("gulp"),
     sourcemaps = require("gulp-sourcemaps"),
     rename = require("gulp-rename"),
     concat = require("gulp-concat"),
+    declare = require("gulp-declare"),
     jshint = require("gulp-jshint"),
     jscs = require("gulp-jscs"),
     uglify = require("gulp-uglify"),
@@ -95,6 +96,21 @@ gulp.task("scripts", function() {
     .on("error", gutil.log);
 });
 
+gulp.task("templates", function() {
+    var microtemplate = require("./microtemplate.js");
+
+    return gulp.src("src/templates/**/*.template")
+    .pipe(plumber())
+    .pipe(microtemplate("templates.js"))
+    .pipe(declare({
+        namespace: "$",
+        noRedeclare: true
+    }))
+    .pipe(gutil.env.production ? uglify() : gutil.noop())
+    .pipe(rename({ suffix: ".min" }))
+    .pipe(gulp.dest("dist/js"));
+});
+
 gulp.task("styles", function() {
     return gulp.src("src/scss/**/*.scss")
     .pipe(plumber())
@@ -118,9 +134,10 @@ gulp.task("clean", function() {
 gulp.task("watch", function() {
     gulp.watch("src/js/**/*.js", [ "lint", "libs", "scripts" ]);
     gulp.watch("src/scss/**/*.scss", [ "styles" ]);
+    gulp.watch("src/templates/**/*.template", [ "templates" ]);
 });
 
-gulp.task("webserver", function() {
+gulp.task("server", function() {
     return gulp.src(".")
     .pipe(webserver({
         host: server.host,
@@ -131,9 +148,9 @@ gulp.task("webserver", function() {
 });
 
 // Default Task
-gulp.task("default", [ "lint", "libs", "scripts", "styles" ]);
+gulp.task("default", [ "lint", "libs", "scripts", "styles", "templates" ]);
 
 // Serve in a web browser
-gulp.task("live", [ "default", "watch", "webserver" ], function() {
+gulp.task("live", [ "default", "watch", "server" ], function() {
     opn("http://" + server.host + ":" + server.port);
 });
