@@ -31,6 +31,7 @@
     "gulp-jscs": "latest",
     "gulp-jshint": "latest",
     "gulp-minify-css": "latest",
+    "gulp-notify": "latest",
     "gulp-plumber": "latest",
     "gulp-rename": "latest",
     "gulp-sass": "latest",
@@ -40,7 +41,6 @@
     "gulp-webserver": "latest",
     "jshint-stylish": "latest",
     "opn": "latest",
-    "path": "latest",
     "through": "latest",
     "vinyl-buffer": "latest",
     "vinyl-source-stream": "latest"

@@ -6,6 +6,7 @@ var gulp = require("gulp"),
     buffer = require("vinyl-buffer"),
     gutil = require("gulp-util"),
     plumber = require("gulp-plumber"),
+    notify = require("gulp-notify"),
     bump = require("gulp-bump"),
     git = require("gulp-git"),
     sourcemaps = require("gulp-sourcemaps"),
@@ -34,7 +35,7 @@ gulp.task("bower", function() {
 // Bump version and do a new release
 gulp.task("bump", function() {
     return gulp.src([ "package.json", "bower.json", "manifest.webapp" ])
-    .pipe(plumber())
+    .pipe(plumber({ errorHandler: notify.onError("Error: <%= error.message %>") }))
     .pipe(bump())
     .pipe(gulp.dest("."));
 });
@@ -44,7 +45,7 @@ gulp.task("release", [ "bump" ], function() {
         message = "Release " + version;
 
     return gulp.src([ "package.json", "bower.json", "manifest.webapp" ])
-    .pipe(plumber())
+    .pipe(plumber({ errorHandler: notify.onError("Error: <%= error.message %>") }))
     .pipe(git.add())
     .pipe(git.commit(message))
     .on("end", function() {
@@ -56,7 +57,7 @@ gulp.task("release", [ "bump" ], function() {
 
 gulp.task("lint", function() {
     return gulp.src("src/js/**/*.js")
-    .pipe(plumber())
+    .pipe(plumber({ errorHandler: notify.onError("Error: <%= error.message %>") }))
     .pipe(jshint())
     .pipe(jshint.reporter("jshint-stylish"))
     .pipe(jshint.reporter("fail"))
@@ -68,7 +69,7 @@ gulp.task("libs", [ "bower" ], function() {
         "bower_components/jquery/dist/jquery" + (gutil.env.production ? ".min" : "") + ".js",
         "bower_components/velocity/velocity" + (gutil.env.production ? ".min" : "") + ".js"
     ])
-    .pipe(plumber())
+    .pipe(plumber({ errorHandler: notify.onError("Error: <%= error.message %>") }))
     .pipe(concat("libs.js"))
     .pipe(rename({ suffix: ".min" }))
     .pipe(gulp.dest("dist/js"))
@@ -87,7 +88,7 @@ gulp.task("scripts", function() {
     })
     .pipe(source("croma.js"))
     .pipe(buffer())
-    .pipe(plumber())
+    .pipe(plumber({ errorHandler: notify.onError("Error: <%= error.message %>") }))
     .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(gutil.env.production ? uglify() : gutil.noop())
     .pipe(rename({ suffix: ".min" }))
@@ -100,7 +101,7 @@ gulp.task("templates", function() {
     var microtemplate = require("./microtemplate.js");
 
     return gulp.src("src/templates/**/*.template")
-    .pipe(plumber())
+    .pipe(plumber({ errorHandler: notify.onError("Error: <%= error.message %>") }))
     .pipe(microtemplate("templates.js"))
     .pipe(declare({
         namespace: "$",
@@ -113,7 +114,7 @@ gulp.task("templates", function() {
 
 gulp.task("styles", function() {
     return gulp.src("src/scss/**/*.scss")
-    .pipe(plumber())
+    .pipe(plumber({ errorHandler: notify.onError("Error: <%= error.message %>") }))
     .pipe(sourcemaps.init())
     .pipe(sass({
         outputStyle: "expanded",
