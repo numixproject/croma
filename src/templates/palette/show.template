@@ -5,7 +5,7 @@
 <% } else { %>
     <div class="card-item fx-come-in">
         <% for (var i = 0, l = model.palette.length; i < l; i++) { %>
-            <div class="card-item-color-item <% if (model.palette[i].dark) { %> card-item-color-item-dark <% } %>" style="background-color:<%=model.palette[i].color%>"><%=model.palette[i].color%></div>
+            <div class="card-item-color-item <% if (model.palette[i].dark) { %> card-item-color-item-dark <% } %>" style="background-color:<%= model.palette[i].color %>"><%= model.palette[i].color %></div>
         <% } %>
     </div>
     <div class="paper-button-container fx-come-in">

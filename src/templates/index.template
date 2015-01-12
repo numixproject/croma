@@ -8,12 +8,12 @@
     </div>
 <% } else { %>
     <% for (var i = 0; i < model.length; i++) { %>
-        <div class="card-item fx-come-in" data-palette="<%=model[i].name%>">
+        <div class="card-item fx-come-in" data-palette="<%= model[i].name %>">
             <div class="card-item-segment" data-action="tocolors">
-                <div class="card-item-color-item-large" style="<%=model[i].background%>"></div>
+                <div class="card-item-color-item-large" style="<%= model[i].background %>"></div>
             </div>
             <div class="card-item-segment">
-                <div class="card-item-text" data-action="rename"><%=model[i].name%></div>
+                <div class="card-item-text" data-action="rename"><%= model[i].name %></div>
                 <div class="card-item-actions">
                     <div class="card-item-action card-item-action-share" data-action="share"></div>
                     <div class="card-item-action card-item-action-remove" data-action="remove"></div>

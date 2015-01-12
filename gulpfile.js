@@ -124,6 +124,7 @@ gulp.task("styles", function() {
     .pipe(combinemq())
     .pipe(gutil.env.production ? autoprefixer() : gutil.noop())
     .pipe(gutil.env.production ? minifycss() : gutil.noop())
+    .pipe(rename({ suffix: ".min" }))
     .pipe(sourcemaps.write("."))
     .pipe(gulp.dest("dist/css"));
 });

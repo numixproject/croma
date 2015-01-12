@@ -8,10 +8,10 @@
     </div>
 <% } else { %>
     <% for (var i = 0; i < model.length; i++) { %>
-        <div class="card-item fx-come-in" data-color="<%=model[i].color%>">
-            <div class="card-item-color-item-large" data-action="todetails" style="background-color:<%=model[i].color%>"></div>
+        <div class="card-item fx-come-in" data-color="<%= model[i].color %>">
+            <div class="card-item-color-item-large" data-action="todetails" style="background-color:<%= model[i].color %>"></div>
             <div class="card-item-segment">
-                <div class="card-item-text"><%=model[i].color%></div>
+                <div class="card-item-text"><%= model[i].color %></div>
                 <div class="card-item-actions">
                     <div class="card-item-action card-item-action-remove" data-action="remove"></div>
                 </div>

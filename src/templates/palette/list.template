@@ -4,6 +4,6 @@
     </div>
 <% } else { %>
     <% for (var i = 0, l = model.length; i < l; i++) { %>
-        <div class="card-item card-item-select-item fx-come-in" data-action="add" data-palette="<%=model[i]%>"><%=model[i]%></div>
+        <div class="card-item card-item-select-item fx-come-in" data-action="add" data-palette="<%= model[i] %>"><%= model[i] %></div>
     <% } %>
 <% } %>
