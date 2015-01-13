@@ -25,17 +25,18 @@ var gulp = require("gulp"),
     server = {
         host: "localhost",
         port: "8001"
-    };
+    },
+    onerror = notify.onError("Error: <%= error.message %>");
 
 gulp.task("bower", function() {
     return bower.commands.install([], { save: true }, {})
-    .on("error", gutil.log);
+    .on("error", onerror);
 });
 
 // Bump version and do a new release
 gulp.task("bump", function() {
     return gulp.src([ "package.json", "bower.json", "manifest.webapp" ])
-    .pipe(plumber({ errorHandler: notify.onError("Error: <%= error.message %>") }))
+    .pipe(plumber({ errorHandler: onerror }))
     .pipe(bump())
     .pipe(gulp.dest("."));
 });
@@ -45,7 +46,7 @@ gulp.task("release", [ "bump" ], function() {
         message = "Release " + version;
 
     return gulp.src([ "package.json", "bower.json", "manifest.webapp" ])
-    .pipe(plumber({ errorHandler: notify.onError("Error: <%= error.message %>") }))
+    .pipe(plumber({ errorHandler: onerror }))
     .pipe(git.add())
     .pipe(git.commit(message))
     .on("end", function() {
@@ -57,7 +58,7 @@ gulp.task("release", [ "bump" ], function() {
 
 gulp.task("lint", function() {
     return gulp.src("src/js/**/*.js")
-    .pipe(plumber({ errorHandler: notify.onError("Error: <%= error.message %>") }))
+    .pipe(plumber({ errorHandler: onerror }))
     .pipe(jshint())
     .pipe(jshint.reporter("jshint-stylish"))
     .pipe(jshint.reporter("fail"))
@@ -69,11 +70,10 @@ gulp.task("libs", [ "bower" ], function() {
         "bower_components/jquery/dist/jquery" + (gutil.env.production ? ".min" : "") + ".js",
         "bower_components/velocity/velocity" + (gutil.env.production ? ".min" : "") + ".js"
     ])
-    .pipe(plumber({ errorHandler: notify.onError("Error: <%= error.message %>") }))
+    .pipe(plumber({ errorHandler: onerror }))
     .pipe(concat("libs.js"))
     .pipe(rename({ suffix: ".min" }))
-    .pipe(gulp.dest("dist/js"))
-    .on("error", gutil.log);
+    .pipe(gulp.dest("dist/js"));
 });
 
 gulp.task("scripts", function() {
@@ -81,27 +81,27 @@ gulp.task("scripts", function() {
         entries: "./src/js/croma.js",
         debug: true
     }).bundle()
-    .on("error", function(err) {
-        gutil.log(err);
+    .on("error", function(error) {
+        onerror(error);
+
         // End the stream to prevent gulp from crashing
         this.end();
     })
     .pipe(source("croma.js"))
     .pipe(buffer())
-    .pipe(plumber({ errorHandler: notify.onError("Error: <%= error.message %>") }))
+    .pipe(plumber({ errorHandler: onerror }))
     .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(gutil.env.production ? uglify() : gutil.noop())
     .pipe(rename({ suffix: ".min" }))
     .pipe(sourcemaps.write("."))
-    .pipe(gulp.dest("dist/js"))
-    .on("error", gutil.log);
+    .pipe(gulp.dest("dist/js"));
 });
 
 gulp.task("templates", function() {
     var microtemplate = require("./microtemplate.js");
 
     return gulp.src("src/templates/**/*.template")
-    .pipe(plumber({ errorHandler: notify.onError("Error: <%= error.message %>") }))
+    .pipe(plumber({ errorHandler: onerror }))
     .pipe(microtemplate("templates.js"))
     .pipe(declare({
         namespace: "$",
@@ -114,7 +114,7 @@ gulp.task("templates", function() {
 
 gulp.task("styles", function() {
     return gulp.src("src/scss/**/*.scss")
-    .pipe(plumber({ errorHandler: notify.onError("Error: <%= error.message %>") }))
+    .pipe(plumber({ errorHandler: onerror }))
     .pipe(sourcemaps.init())
     .pipe(sass({
         outputStyle: "expanded",
