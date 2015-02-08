@@ -1,0 +1,17 @@
+{
+    "name": "croma.paolorotolo",
+    "description": "description of Croma",
+    "architecture": "all",
+    "title": "Croma",
+    "hooks": {
+        "croma": {
+            "apparmor": "croma.apparmor",
+            "desktop":  "croma.desktop"
+        }
+    },
+    "version": "0.1",
+    "maintainer": "Paolo Rotolo <paolorotolo@ubuntu.com>",
+    "framework" : "ubuntu-sdk-14.10"
+}
+
+
