@@ -247,7 +247,7 @@ var Color = (function() {
 
                 s = (max === 0) ? 0 : d / max;
 
-                if (max == min){
+                if (max == min) {
                     h = 0;
                 } else {
                     switch (max) {

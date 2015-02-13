@@ -7,23 +7,23 @@
 *************/
 
 @include exports("input") {
-	input[type=text] {
-		@extend %transition;
+    input[type=text] {
+        @extend %transition;
 
-		-webkit-appearance: none;
-		-moz-appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
 
-		padding: ($spacing / 2) 0;
-		border: none;
-		border-bottom: 1px solid lighten($dark-color, 50%);
-		background-image: none;
-		background-color: transparent;
+        padding: ($spacing / 2) 0;
+        border: none;
+        border-bottom: 1px solid lighten($dark-color, 50%);
+        background-image: none;
+        background-color: transparent;
 
-		&:focus, &:active {
-			border-bottom-color: $info-color;
-			outline: none;
-		}
-	}
+        &:focus, &:active {
+            border-bottom-color: $info-color;
+            outline: none;
+        }
+    }
 }
 
 
@@ -32,50 +32,50 @@
 *************/
 
 @include exports("paper-input") {
-	.paper-input-container { position: relative; }
+    .paper-input-container { position: relative; }
 
-	.paper-input-bar {
-		position: relative;
-		display: block;
+    .paper-input-bar {
+        position: relative;
+        display: block;
 
-		&:before, &:after {
-			@extend %transition;
+        &:before, &:after {
+            @extend %transition;
 
-			content: "";
-			position: absolute;
-			bottom: 0;
-			width: 0;
-			height: 2px;
-			background-color: $info-color;
-		}
+            content: "";
+            position: absolute;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background-color: $info-color;
+        }
 
-		&:before { left: 50%; }
+        &:before { left: 50%; }
 
-		&:after { right: 50%; }
-	}
+        &:after { right: 50%; }
+    }
 
-	.paper-input-highlight {
-		position: absolute;
-		height: 50%;
-		width: 50%;
-		top: 25%;
-		left: 0;
-		opacity: 0.5;
-		pointer-events: none;
-	}
+    .paper-input-highlight {
+        position: absolute;
+        height: 50%;
+        width: 50%;
+        top: 25%;
+        left: 0;
+        opacity: 0.5;
+        pointer-events: none;
+    }
 
-	.paper-input {
-		width: 100%;
-		border-radius: 0;
+    .paper-input {
+        width: 100%;
+        border-radius: 0;
 
-		&:focus, &:active {
-			border-bottom-color: darken($light-color, 20%);
+        &:focus, &:active {
+            border-bottom-color: darken($light-color, 20%);
 
-			& ~ .paper-input-bar {
-				&:before, &:after { width: 50%; }
-			}
+            & ~ .paper-input-bar {
+                &:before, &:after { width: 50%; }
+            }
 
-			& ~ .paper-input-highlight { @extend %input-effect; }
-		}
-	}
+            & ~ .paper-input-highlight { @extend %input-effect; }
+        }
+    }
 }

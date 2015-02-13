@@ -13,19 +13,23 @@
     "requireMultipleVarDecl": true,
     "requireCommaBeforeLineBreak": true,
     "requireCamelCaseOrUpperCaseIdentifiers": true,
-    "requireDotNotation": true,
+    "requireDotNotation": "except_snake_case",
+    "requireSpacesInForStatement": true,
+    "requireSpaceBetweenArguments": true,
     "maximumLineLength": {
         "value": 160,
         "tabSize": 4,
         "allowUrlComments": true,
         "allowRegex": true
     },
+    "validateQuoteMarks": { "mark": "\"", "escape": true },
 
     "disallowMixedSpacesAndTabs": "smart",
     "disallowTrailingWhitespace": true,
     "disallowMultipleLineStrings": true,
     "disallowTrailingComma": true,
 
+    "requireSpaceBeforeBlockStatements": true,
     "requireSpacesInFunctionExpression": {
         "beforeOpeningCurlyBrace": true
     },
@@ -40,8 +44,6 @@
         "try",
         "catch"
     ],
-    "requireSpacesInsideObjectBrackets": "all",
-    "requireSpacesInsideArrayBrackets": "all",
     "requireSpacesInConditionalExpression": true,
     "requireSpaceAfterBinaryOperators": true,
     "requireLineFeedAtFileEnd": true,
