@@ -139,7 +139,7 @@ gulp.task("watch", function() {
     gulp.watch("src/templates/**/*.template", [ "templates" ]);
 });
 
-gulp.task("server", function() {
+gulp.task("connect", function() {
     return gulp.src(".")
     .pipe(webserver({
         host: server.host,
@@ -149,10 +149,10 @@ gulp.task("server", function() {
     }));
 });
 
-// Default Task
-gulp.task("default", [ "lint", "libs", "scripts", "styles", "templates" ]);
-
 // Serve in a web browser
-gulp.task("live", [ "default", "watch", "server" ], function() {
+gulp.task("serve", [ "connect", "watch" ], function() {
     opn("http://" + server.host + ":" + server.port);
 });
+
+// Default Task
+gulp.task("default", [ "lint", "libs", "scripts", "styles", "templates" ]);
