@@ -154,5 +154,10 @@ gulp.task("serve", [ "connect", "watch" ], function() {
     opn("http://" + server.host + ":" + server.port);
 });
 
+// Build files
+gulp.task("build", [ "scripts", "styles", "templates" ]);
+
 // Default Task
-gulp.task("default", [ "lint", "libs", "scripts", "styles", "templates" ]);
+gulp.task("default", [ "lint", "libs" ], function() {
+    gulp.start("build");
+});
