@@ -76,7 +76,7 @@ gulp.task("libs", [ "bower" ], function() {
     .pipe(gulp.dest("dist/js"));
 });
 
-gulp.task("scripts", function() {
+gulp.task("bundle", function() {
     return browserify({
         entries: "./src/js/croma.js",
         debug: true
@@ -96,6 +96,8 @@ gulp.task("scripts", function() {
     .pipe(sourcemaps.write("."))
     .pipe(gulp.dest("dist/js"));
 });
+
+gulp.task("scripts", [ "libs", "bundle" ]);
 
 gulp.task("templates", function() {
     var microtemplate = require("./microtemplate.js");
@@ -158,6 +160,6 @@ gulp.task("serve", [ "connect", "watch" ], function() {
 gulp.task("build", [ "scripts", "styles", "templates" ]);
 
 // Default Task
-gulp.task("default", [ "lint", "libs" ], function() {
+gulp.task("default", [ "lint", "clean" ], function() {
     gulp.start("build");
 });
