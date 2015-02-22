@@ -37,7 +37,10 @@ App.IndexRoute.model = function() {
         });
     }
 
-    return data.sort(utils.sortByDate);
+    return {
+	palettes: data.sort(utils.sortByDate),
+	share: !("external" in window && window.external && "getUnityObject" in window.external && window.external.getUnityObject("1.0"))
+	};
 };
 
 App.IndexRoute.afterRender = function() {
