@@ -15,7 +15,9 @@
             <div class="card-item-segment">
                 <div class="card-item-text" data-action="rename"><%= model.palettes[i].name %></div>
                 <div class="card-item-actions">
-                    <div class="card-item-action card-item-action-share" data-action="share"></div>
+			<% if (model.share) { %>
+				<div class="card-item-action card-item-action-share" data-action="share"></div>
+			<% } %>
                     <div class="card-item-action card-item-action-remove" data-action="remove"></div>
                 </div>
             </div>
