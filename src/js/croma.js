@@ -4,6 +4,16 @@ var App = require("./core/app.js"),
     animations = require("./animations.js"),
     $appTitle = $("#app-title");
 
+// If running on Ubuntu Touch hide Share button
+window.onload = function() {
+    if ("external" in window && window.external && "getUnityObject" in window.external && window.external.getUnityObject("1.0")) {
+        var shareButton = document.getElementsByClassName("card-item-action-share");
+        for (var i = 0; i < shareButton.length; i++) {
+            shareButton[i].style.visibility = "hidden";
+        }
+    }
+};
+
 // Handle URL opening in Firefox OS
 if (!!("mozSetMessageHandler" in navigator)) {
     // Handle opening of URLs
