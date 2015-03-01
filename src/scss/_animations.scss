@@ -44,7 +44,7 @@
     @include prefix(animation, break $args);
 }
 
-@mixin ripple($args: .5s cubic-bezier(0.250, 0.460, 0.450, 0.940)) {
+@mixin ripple($args: .5s cubic-bezier(.25, .46, .45, .94)) {
     @include prefix(animation, ripple $args);
 }
 
@@ -66,7 +66,7 @@
     %fadein { @include fadein; }
 
     @include keyframes(scalein) {
-        0% { @include transform(translateZ(0) scale(0.5)); }
+        0% { @include transform(translateZ(0) scale(.5)); }
 
         60% { @include transform(translateZ(0) scale(1.1)); }
 

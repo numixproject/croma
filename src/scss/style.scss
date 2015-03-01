@@ -24,8 +24,10 @@
 }
 
 %noselect {
+    // scss-lint:disable DuplicateProperty
+
     outline: 0;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -62,9 +64,9 @@ body {
  ****************/
 
 header {
-    @include dropshadow(1);
     @extend %clearfix;
     @extend %noselect;
+    @include dropshadow(1);
 
     position: fixed;
     top: 0;
@@ -93,7 +95,7 @@ header {
 
 .header-action-icon-right { float: right; }
 
-.header-action-menu { background-image: url(../../img/hamburger.svg); }
+.header-action-menu { background-image: url("../../img/hamburger.svg"); }
 
 .header-action-menu-back {
     .tag-home & {
@@ -156,8 +158,8 @@ header {
     display: block;
     height: $bar-height;
     width: 100%;
-    background: url(../../img/cover.png) repeat center center;
-    box-shadow: inset 0 -1px 1px rgba(0,0,0,0.06);
+    background: url("../../img/cover.png") repeat center center;
+    box-shadow: inset 0 -1px 1px rgba(0, 0, 0, .06);
 
     .tag-add & { @include transform(translateZ(0) translateY(0)); }
 }
@@ -199,7 +201,7 @@ header {
     left: 0;
     height: 100%;
     width: 100%;
-    background-color: rgba(0,0,0,0.8);
+    background-color: rgba(0, 0, 0, .8);
     z-index: 40;
     opacity: 0;
     pointer-events: none;
@@ -211,6 +213,8 @@ header {
 }
 
 .drawer {
+    // scss-lint:disable DuplicateProperty
+
     @include dropshadow(5);
     @include transition(.3s);
     @include transform(translateZ(0) translateX(-100%));
@@ -234,7 +238,7 @@ header {
             padding: ($spacing * .75) $spacing;
             cursor: pointer;
 
-            &:focus, &:hover { background-color: fade-out($dark-color, 0.85); }
+            &:focus, &:hover { background-color: fade-out($dark-color, .85); }
         }
     }
 
@@ -282,8 +286,8 @@ header {
 .action-button-wrapper { overflow: hidden; }
 
 .action-button {
-    @include dropshadow(2);
     @extend %transition;
+    @include dropshadow(2);
 
     position: absolute;
     right: $spacing;
@@ -297,19 +301,19 @@ header {
     pointer-events: auto;
 
     &:focus, &:hover {
-        background-color: lighten($warning-color, 10%);
-
         @include dropshadow(3);
+
+        background-color: lighten($warning-color, 10%);
     }
 
     &:active { @include dropshadow(4); }
 }
 
 .action-button-add {
-    @include transform(translateZ(0) scale(.7) rotate(-180deg));
     @extend %easeout;
+    @include transform(translateZ(0) scale(.7) rotate(-180deg));
 
-    background-image: url(../../img/add-circle.svg);
+    background-image: url("../../img/add-circle.svg");
     opacity: 0;
     pointer-events: none;
 
@@ -342,13 +346,15 @@ header {
     bottom: 0;
     overflow-x: hidden;
     overflow-y: auto;
-    -webkit-overflow-scrolling : touch;
+    -webkit-overflow-scrolling: touch;
     background-color: darken($light-color, 5%);
 }
 
 .content-view {
-    @include transform(translateZ(0) translateY($bar-height * -1));
+    // scss-lint:disable DuplicateProperty
+
     @extend %easeout;
+    @include transform(translateZ(0) translateY($bar-height * -1));
 
     height: 100%;
     height: calc(100% - #{$bar-height});
@@ -407,7 +413,7 @@ header {
     &:last-of-type { padding-bottom: $spacing; }
 
     &-action-copy {
-        background-image: url(../../img/copy.svg);
+        background-image: url("../../img/copy.svg");
         background-repeat: no-repeat;
         background-position: right center;
     }
@@ -467,7 +473,7 @@ $actions: love, remove, download, share;
             display: block;
             height: 100%;
             width: 100%;
-            background-image: url(../../img/love-break.svg);
+            background-image: url("../../img/love-break.svg");
             background-size: $spacing;
             background-repeat: no-repeat;
             background-position: center;
@@ -476,12 +482,12 @@ $actions: love, remove, download, share;
             .card-item-loved & {
                 @extend %love;
 
-                background-image: url(../../img/love-active.svg);
+                background-image: url("../../img/love-active.svg");
             }
         }
     }
 
-    .card-item-loved & { background-image: url(../../img/love-active.svg); }
+    .card-item-loved & { background-image: url("../../img/love-active.svg"); }
 }
 
 .card-item-button-area {
@@ -491,11 +497,11 @@ $actions: love, remove, download, share;
 }
 
 .card-item-button {
-    @include flex-grow(1);
     @extend %noselect;
     @extend %transition;
+    @include flex-grow(1);
 
-    border-color: rgba(0,0,0,0.1);
+    border-color: rgba(0, 0, 0, .1);
     border-width: 1px 1px 0 0;
     border-style: solid;
     padding: $spacing / 2;
@@ -505,9 +511,9 @@ $actions: love, remove, download, share;
     text-transform: uppercase;
     cursor: pointer;
 
-    &:focus, &:hover { background-color: rgba(0,0,0,0.025); }
+    &:focus, &:hover { background-color: rgba(0, 0, 0, .025); }
 
-    &:active { background-color: rgba(0,0,0,0.05); }
+    &:active { background-color: rgba(0, 0, 0, .05); }
 
     &:only-of-type, &:last-of-type { border-right-width: 0; }
 }
@@ -605,7 +611,7 @@ $actions: love, remove, download, share;
     margin-left: -50%;
     padding: 50%;
     border-radius: 50%;
-    background-color: rgba(0,0,0,0.2);
+    background-color: rgba(0, 0, 0, .2);
     pointer-events: none;
 }
 

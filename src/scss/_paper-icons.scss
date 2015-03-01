@@ -41,8 +41,8 @@
     }
 
     .paper-icon-menu {
-        @include transform(rotate(0deg) translate3d(0, 0, 0));
         @extend %paper-icon-menu-back;
+        @include transform(rotate(0deg) translate3d(0, 0, 0));
 
         &:before, &:after {
             @include transform(rotate(0deg) translate3d(0, 0, 0));
@@ -52,8 +52,8 @@
     }
 
     .paper-icon-back {
-        @include transform(rotate(-180deg) translate3d(0, 0, 0));
         @extend %paper-icon-menu-back;
+        @include transform(rotate(-180deg) translate3d(0, 0, 0));
 
         width: 16px;
 
@@ -65,14 +65,14 @@
     }
 
     .paper-icon-done {
-        @include transform(rotate(-45deg) translate3d(16px, 16px, 0));
         @extend %paper-icon-line;
+        @include transform(rotate(-45deg) translate3d(16px, 16px, 0));
 
         width: 18px;
 
         &:before {
-            @include transform(rotate(270deg) translate3d(3px, -4px, 0));
             @extend %paper-icon-line;
+            @include transform(rotate(270deg) translate3d(3px, -4px, 0));
 
             content: "";
             position: absolute;

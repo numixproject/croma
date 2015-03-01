@@ -11,8 +11,8 @@
     .paper-button-container { margin: $spacing / 2; }
 
     .paper-button {
-        @include dropshadow(1);
         @extend %transition;
+        @include dropshadow(1);
 
         -webkit-appearance: none;
         -moz-appearance: none;
