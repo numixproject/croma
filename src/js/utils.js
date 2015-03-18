@@ -1,11 +1,9 @@
-/* jshint browser: true */
-/* global $ */
+import Color from "./core/color";
+import Storage from "./core/storage";
+import fxos from "./fxos";
 
 var utils = (function() {
-    var Color = require("./core/color.js"),
-        Storage = require("./core/storage.js"),
-        fxos = require("./fxos.js"),
-        productId = "ultimate",
+    var productId = "ultimate",
         store;
 
     store = new Storage();
@@ -493,4 +491,4 @@ var utils = (function() {
     };
 }());
 
-module.exports = utils;
+export default utils;

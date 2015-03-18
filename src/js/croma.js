@@ -1,8 +1,7 @@
-/* jshint browser: true */
+import App from "./core/app";
+import * as animations from "./animations";
 
-var App = require("./core/app.js"),
-    animations = require("./animations.js"),
-    $appTitle = $("#app-title");
+var $appTitle = $("#app-title");
 
 // Handle URL opening in Firefox OS
 if (!!("mozSetMessageHandler" in navigator)) {
@@ -76,12 +75,12 @@ App.registerRoutes([
 ]);
 
 // Include components
-require("./components/index.js");
-require("./components/colors.js");
-require("./components/details.js");
-require("./components/palettes.js");
-require("./components/picker.js");
-require("./components/palette-new.js");
-require("./components/palette-name.js");
-require("./components/palette-list.js");
-require("./components/palette-show.js");
+import index from "./components/index";
+import colors from "./components/colors";
+import details from "./components/details";
+import palettes from "./components/palettes";
+import picker from "./components/picker";
+import paletteNew from "./components/palette-new";
+import paletteName from "./components/palette-name";
+import paletteList from "./components/palette-list";
+import paletteShow from "./components/palette-show";

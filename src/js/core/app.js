@@ -1,6 +1,3 @@
-/* jshint browser: true */
-/* global $ */
-
 var Events = require("./events.js"),
     Template = require("./template.js"),
     App;
@@ -261,5 +258,5 @@ $(window).on("hashchange", function() {
     App.transitionTo(App.parseURL(window.location.hash), [ true ]);
 });
 
-// Export to CommonJS
-module.exports = App;
+// Export module
+export default App;

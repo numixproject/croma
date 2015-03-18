@@ -1,5 +1,3 @@
-/* jshint browser: true */
-
 var fxos = (function() {
     var supported = !!("MozActivity" in window),
         domain = "http://croma.numixproject.org";
@@ -25,4 +23,4 @@ var fxos = (function() {
     };
 }());
 
-module.exports = fxos;
+export default fxos;

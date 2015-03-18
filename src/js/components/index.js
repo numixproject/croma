@@ -1,7 +1,5 @@
-/* jshint browser: true */
-
-var App = require(".././core/app.js"),
-    utils = require(".././utils.js");
+import App from ".././core/app";
+import utils from ".././utils";
 
 App.IndexRoute.tags = [ "home", "add" ];
 

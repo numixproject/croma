@@ -18,6 +18,7 @@
     "url": "https://github.com/numixproject/croma/issues"
   },
   "devDependencies": {
+    "babelify": "latest",
     "bower": "latest",
     "browserify": "latest",
     "del": "latest",

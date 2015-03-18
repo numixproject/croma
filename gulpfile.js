@@ -2,6 +2,7 @@ var gulp = require("gulp"),
     del = require("del"),
     bower = require("bower"),
     browserify = require("browserify"),
+    babelify = require("babelify"),
     source = require("vinyl-source-stream"),
     buffer = require("vinyl-buffer"),
     gutil = require("gulp-util"),
@@ -80,7 +81,9 @@ gulp.task("bundle", function() {
     return browserify({
         entries: "./src/js/croma.js",
         debug: true
-    }).bundle()
+    })
+    .transform(babelify)
+    .bundle()
     .on("error", function(error) {
         onerror(error);
 

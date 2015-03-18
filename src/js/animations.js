@@ -50,6 +50,4 @@ function ripple(el) {
     });
 }
 
-module.exports = {
-    ripple: ripple
-};
+export { ripple };
