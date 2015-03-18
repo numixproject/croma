@@ -21,12 +21,7 @@ var gulp = require("gulp"),
     combinemq = require("gulp-combine-mq"),
     autoprefixer = require("gulp-autoprefixer"),
     minifycss = require("gulp-minify-css"),
-    webserver = require("gulp-webserver"),
-    opn = require("opn"),
-    server = {
-        host: "localhost",
-        port: "8001"
-    },
+    browsersync = require("browser-sync"),
     onerror = notify.onError("Error: <%= error.message %>");
 
 gulp.task("bower", function() {
@@ -144,20 +139,15 @@ gulp.task("watch", function() {
     gulp.watch("src/templates/**/*.template", [ "templates" ]);
 });
 
-gulp.task("connect", function() {
-    return gulp.src(".")
-    .pipe(webserver({
-        host: server.host,
-        port: server.port,
-        livereload: true,
-        directoryListing: false
-    }));
+// Synchronise file changes in browser
+gulp.task("browsersync", function() {
+    browsersync({
+        server: { baseDir: "./" }
+    });
 });
 
 // Serve in a web browser
-gulp.task("serve", [ "connect", "watch" ], function() {
-    opn("http://" + server.host + ":" + server.port);
-});
+gulp.task("serve", [ "browsersync", "watch" ]);
 
 // Build files
 gulp.task("build", [ "scripts", "styles", "templates" ]);

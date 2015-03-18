@@ -20,6 +20,7 @@
   "devDependencies": {
     "babelify": "latest",
     "bower": "latest",
+    "browser-sync": "latest",
     "browserify": "latest",
     "del": "latest",
     "gulp": "latest",
@@ -39,9 +40,7 @@
     "gulp-sourcemaps": "latest",
     "gulp-uglify": "latest",
     "gulp-util": "latest",
-    "gulp-webserver": "latest",
     "jshint-stylish": "latest",
-    "opn": "latest",
     "through": "latest",
     "vinyl-buffer": "latest",
     "vinyl-source-stream": "latest"
