@@ -313,7 +313,7 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
     public class InAppBilling {
         @JavascriptInterface
         public void purchase(String productId) {
-            bp.purchase(productId);
+            bp.purchase(MainActivity.this, productId);
         }
 
         @JavascriptInterface
