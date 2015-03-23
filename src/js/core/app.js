@@ -1,4 +1,4 @@
-var Events = require("./events.js"),
+let Events = require("./events.js"),
     Template = require("./template.js"),
     App;
 
@@ -15,12 +15,10 @@ App.Outlet = $("#app-outlet");
 // We have base methods which are inherited by every route
 // This should never be overwritten
 App._super = {
-    model: function() {},
-    afterModel: function() {},
-    render: function(state, model) {
-        return App.renderTemplate(App.getTemplate(state.route), model);
-    },
-    afterRender: function() {},
+    model: () => false,
+    afterModel: () => false,
+    render: (state, model) => App.renderTemplate(App.getTemplate(state.route), model),
+    afterRender: () => false,
     actions: {
         goback: window.history.back
     },
@@ -31,64 +29,55 @@ App._super = {
 App.Global = $.extend(true, {}, App._super);
 
 // Get the template for the specified route
-App.getTemplate = (function() {
-    var cache = {};
+App.getTemplate = (() => {
+    let cache = {};
 
     $.templates = $.templates || {};
 
-    return function(route) {
+    return (route) => {
         cache[route] = cache[route] || $.templates[route] || App[App.formatRoute(route)].template || $("[data-template=" + route + "]").html();
 
         return cache[route];
     };
-}());
+})();
 
 // Provide method to render a template
-App.renderTemplate = (function() {
-    var template = new Template();
+App.renderTemplate = (() => {
+    let template = new Template();
 
-    return function(tmpl, data) {
+    return (tmpl, data) => {
         tmpl = (typeof tmpl === "function") ? tmpl : template.compile(tmpl);
 
         return data ? tmpl(data) : tmpl;
     };
-}());
+})();
 
 // Format the route name
-App.formatRoute = function(name) {
-    var route;
-
+App.formatRoute = (name) => {
     if (typeof name !== "string" || !name) {
-        throw new Error("Invalid route name " + name + ".");
+        throw new Error(`Invalid route name $(name).`);
     }
 
     // Capitalize words seprated by " ", "-" or "/"
-    route = name.replace(/(^|\s|\/|-)([a-z])/g, function(m, p1, p2) {
-        return p1.substring(1) + p2.toUpperCase();
-    });
+    let route = name.replace(/(^|\s|\/|-)([a-z])/g, (m, p1, p2) =>  p1.substring(1) + p2.toUpperCase());
 
     return route + "Route";
 };
 
 // Register routes and create empty objects
-App.registerRoutes = function(routes) {
-    var route;
-
+App.registerRoutes = (routes) => {
     if (!routes || !routes instanceof Array) {
-        throw new Error("Routes to register must be an array.");
+        throw new Error(`Routes to register must be an array.`);
     }
 
-    for (var i = 0, l = routes.length; i < l; i++) {
-        route = App.formatRoute(routes[i]);
+    for (let path of routes) {
+        let route = App.formatRoute(path);
 
         if (typeof route !== "string") {
             continue;
         }
 
-        App[route] = {
-            // Every route should have a render function
-            // And optionally actions to bind
-        };
+        App[route] = {};
     }
 };
 
@@ -96,11 +85,11 @@ App.registerRoutes = function(routes) {
 App.registerRoutes([ "index" ]);
 
 // Build URL from state object
-App.buildURL = function(state) {
-    var url = "#/";
+App.buildURL = (state) => {
+    let url = "#/";
 
     if (typeof state !== "object") {
-        throw new Error("Invalid state " + state + ".");
+        throw new Error(`Invalid state $(state).`);
     }
 
     // Treat index route as a special case
@@ -114,7 +103,7 @@ App.buildURL = function(state) {
 
     url += "?";
 
-    for (var param in state.params) {
+    for (let param in state.params) {
         if (param && state.params[param]) {
             url += encodeURIComponent(param) + "=" + encodeURIComponent(state.params[param]) + "&";
         }
@@ -125,29 +114,23 @@ App.buildURL = function(state) {
 };
 
 // Parse URL to state
-App.parseURL = function(url) {
-    var hash, extra, query, route,
-        params = [],
-        state = {};
-
+App.parseURL = (url) => {
     if (typeof url !== "string") {
-        throw new Error("Invalid url " + url + ".");
+        throw new Error(`Invalid url $(url).`);
     }
 
-    hash = url.split("#")[1] || "";
+    // Het hash and emove the leading "/"
+    let hash = (url.split("#")[1] || "").replace(/^\//, ""),
+        route = hash.split("?")[0] || "index", // Index is the default route
+        extra = hash.split("?")[1] || "",
+        params = extra ? extra.split("&") : [],
+        state = {
+            route: route.replace(/^\//, ""),
+            params: {}
+        };
 
-    // Remove the leading "/"
-    hash = hash.replace(/^\//, "");
-
-    route = hash.split("?")[0] || "index"; // Index is the default route
-    extra = hash.split("?")[1] || "";
-    params = extra ? extra.split("&") : [];
-
-    state.route = route.replace(/^\//, "");
-    state.params = {};
-
-    for (var i = 0, l = params.length; i < l; i++) {
-        query = params[i].split("=");
+    for (let param of params) {
+        let query = param.split("=");
 
         state.params[decodeURIComponent(query[0])] = decodeURIComponent(query[1]);
     }
@@ -156,20 +139,18 @@ App.parseURL = function(url) {
 };
 
 // Provide a transitionTo page method
-App.transitionTo = function(state, args) {
+App.transitionTo = (state, ...args) => {
     if (typeof state !== "object") {
         return;
     }
 
-    App.trigger("navigate", state, args);
+    App.trigger("navigate", state, ...args);
 };
 
 // Update URL on navigate
-App.on("navigate", function(state, args) {
-    var methods, model, classlist;
-
+App.on("navigate", (state, ...args) => {
     if (typeof state !== "object") {
-        throw new Error("Invalid state " + state + ".");
+        throw new Error(`Invalid state $(state).`);
     }
 
     // Set the old and new states
@@ -180,7 +161,7 @@ App.on("navigate", function(state, args) {
     if (App.oldState.params) {
         state.params = state.params || {};
 
-        for (var p in App.oldState.params) {
+        for (let p in App.oldState.params) {
             if ((/^_/).test(p) && !(p in state.params)) {
                 state.params[p] = App.oldState.params[p];
             }
@@ -195,13 +176,15 @@ App.on("navigate", function(state, args) {
     }
 
     // Merge with the global methods
-    methods = $.extend(true, {}, App.Global, App[App.formatRoute(state.route)]);
+    let methods = $.extend(true, {}, App.Global, App[App.formatRoute(state.route)]);
 
     if (!methods) {
         return;
     }
 
     // Model will give us formatted data
+    let model;
+
     if (typeof methods.model === "function") {
         model = methods.model(state);
 
@@ -217,13 +200,13 @@ App.on("navigate", function(state, args) {
 
         // Bind event handlers so that we can perform actions
         $(document).off("click.action").on("click.action", "[data-action]", function() {
-            var actions = $(this).attr("data-action");
+            let actions = $(this).attr("data-action");
 
             actions = (typeof actions === "string") ? actions.split(" ") : [];
 
-            for (var i = 0, l = actions.length; i < l; i++) {
-                if (methods.actions && typeof methods.actions[actions[i]] === "function") {
-                    methods.actions[actions[i]].apply(this, [ state, model ]);
+            for (let action of actions) {
+                if (methods.actions && typeof methods.actions[action] === "function") {
+                    methods.actions[action].apply(this, [ state, model ]);
                 }
             }
         });
@@ -236,12 +219,13 @@ App.on("navigate", function(state, args) {
 
     // Add the tags as classnames to body
     // Attribute selectors for data don't work in Android 4.1
-    classlist = $("body").attr("class") || "";
+    let classlist = $("body").attr("class") || "";
+
     classlist = classlist.replace(/\btag-\S+/g, "").trim();
 
     if (methods.tags instanceof Array) {
-        for (var j = 0, k = methods.tags.length; j < k; j++) {
-            classlist += " tag-" + methods.tags[j];
+        for (let tag of methods.tags) {
+            classlist += " tag-" + tag;
         }
     }
 
@@ -249,14 +233,10 @@ App.on("navigate", function(state, args) {
 });
 
 // Send an initial navigate event to update the UI based on state
-$(document).on("ready", function() {
-    App.transitionTo(App.parseURL(window.location.hash), [ true ]);
-});
+$(document).on("ready", () => App.transitionTo(App.parseURL(window.location.hash), true));
 
 // On hash change, transition page
-$(window).on("hashchange", function() {
-    App.transitionTo(App.parseURL(window.location.hash), [ true ]);
-});
+$(window).on("hashchange", () => App.transitionTo(App.parseURL(window.location.hash), true));
 
 // Export module
 export default App;
