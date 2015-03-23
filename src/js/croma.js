@@ -1,13 +1,13 @@
 import App from "./core/app";
 import * as animations from "./animations";
 
-var $appTitle = $("#app-title");
+let $appTitle = $("#app-title");
 
 // Handle URL opening in Firefox OS
 if (!!("mozSetMessageHandler" in navigator)) {
     // Handle opening of URLs
-    navigator.mozSetMessageHandler("activity", function(a) {
-        var url = a.source.data.url;
+    navigator.mozSetMessageHandler("activity", (a) => {
+        let url = a.source.data.url;
 
         if (typeof url !== "string") {
             return;
@@ -24,7 +24,7 @@ App.vars = {
 };
 
 // Set app title
-App.setTitle = function(title) {
+App.setTitle = (title) => {
     if (typeof title !== "string") {
         return;
     }
@@ -33,21 +33,21 @@ App.setTitle = function(title) {
 };
 
 // Add animations after route is rendered
-App.Global.afterRender = function() {
+App.Global.afterRender = () => {
     var cls = [ "fade-in", "scale-in" ];
 
     // Add ripple animation
     animations.ripple(".fx-ripple");
 
     // Animate elements
-    cls.forEach(function(c) {
+    cls.forEach((c) => {
         $(".fx-" + c).addClass(c);
     });
 };
 
 // Provide global actions
 App.Global.actions = {
-    goback: function() {
+    goback: () => {
         if (App.oldState && App.oldState.route !==  App.currentState.route && !App.vars.actionDone) {
             if (window.history.length > 1) {
                 window.history.back();
@@ -63,7 +63,7 @@ App.Global.actions = {
 };
 
 // Add the routes
-App.registerRoutes([
+App.registerRoutes(
     "palette/new",
     "palette/list",
     "palette/name",
@@ -72,7 +72,7 @@ App.registerRoutes([
     "picker",
     "details",
     "palettes"
-]);
+);
 
 // Include components
 import index from "./components/index";

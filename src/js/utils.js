@@ -2,27 +2,27 @@ import Color from "./core/color";
 import Storage from "./core/storage";
 import fxos from "./fxos";
 
-var utils = (function() {
-    var productId = "ultimate",
-        store;
+let utils = (() => {
+    const productId = "ultimate";
 
-    store = new Storage();
+    let store = new Storage();
 
     return {
 
         // Convert camelCase to sentence
-        parseCamelCase: function(text) {
+        parseCamelCase: (text) => {
             if (typeof text !== "string") {
                 return "";
             }
 
-            return text.replace(/([a-z])([A-Z])/g, "$1 $2")
+            return text
+            .replace(/([a-z])([A-Z])/g, "$1 $2")
             .replace(/\b([A-Z]+)([A-Z])([a-z])/, "$1 $2$3")
-            .replace(/^./, function(str) { return str.toUpperCase(); });
+            .replace(/^./, (str) => str.toUpperCase());
         },
 
-        getData: function(palette) {
-            var palettes = store.get("palettes") || {};
+        getData: (palette) => {
+            let palettes = store.get("palettes") || {};
 
             if (palette) {
                 return palettes[palette];
@@ -31,14 +31,12 @@ var utils = (function() {
             }
         },
 
-        setData: function(palette, data) {
-            var palettes;
-
+        setData: (palette, data) => {
             if (!palette) {
                 return;
             }
 
-            palettes = utils.getData();
+            let palettes = utils.getData();
 
             if (typeof data === "undefined" || data === null) {
                 delete palettes[palette];
@@ -50,12 +48,12 @@ var utils = (function() {
         },
 
         // Remove a card from the UI
-        removeItem: function(palette, color, callback) {
-            var $el;
-
+        removeItem: (palette, color, callback) => {
             if (typeof palette !== "string") {
                 return;
             }
+
+            let $el;
 
             if (color) {
                 $el = $('[data-color="' + color + '"]');
@@ -88,7 +86,7 @@ var utils = (function() {
                 translateX: 0
             }, {
                 duration: 150,
-                complete: function() {
+                complete: () => {
                     if (callback && typeof callback === "function") {
                         callback();
                     }
@@ -97,12 +95,12 @@ var utils = (function() {
         },
 
         // Undo remove a card from the UI
-        undoRemoveItem: function(palette, color, callback) {
-            var $el;
-
+        undoRemoveItem: (palette, color, callback) => {
             if (typeof palette !== "string") {
                 return;
             }
+
+            let $el;
 
             if (color) {
                 $el = $('[data-color="' + color + '"]');
@@ -115,7 +113,7 @@ var utils = (function() {
                 $el.data("styles"), 150
             ).velocity({ opacity: 1 }, {
                 duration: 150,
-                complete: function() {
+                complete: () => {
                     if (callback && typeof callback === "function") {
                         callback();
                     }
@@ -124,21 +122,18 @@ var utils = (function() {
         },
 
         // Toggle love color in the UI and database
-        loveItem: function(palette) {
-            var $card, $button;
-
+        loveItem: (palette) => {
             if (typeof palette !== "string") {
                 return;
             }
 
-            $card = $('[data-palette="' + palette + '"]');
-
-            $button = $card.find(".card-item-action-love");
+            let $card = $('[data-palette="' + palette + '"]'),
+                $button = $card.find(".card-item-action-love");
 
             // Add class to animate the click
             $button.addClass("clicked");
 
-            setTimeout(function() {
+            setTimeout(() => {
                 $button.removeClass("clicked");
             }, 500);
 
@@ -147,8 +142,8 @@ var utils = (function() {
         },
 
         // Trigger a file download
-        downloadFile: function(filename, content) {
-            var el = document.createElement("a");
+        downloadFile: (filename, content) => {
+            let el = document.createElement("a");
 
             el.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(content));
             el.setAttribute("download", filename);
@@ -156,13 +151,13 @@ var utils = (function() {
         },
 
         // Convert color hashmap to human readable text
-        paletteToText: function(palette, colors) {
-            var content = [
+        paletteToText: (palette, colors) => {
+            let content = [
                 "Name: " + palette + "\n",
                 "Colors:"
             ];
 
-            for (var c in colors) {
+            for (let c in colors) {
                 content.push(c);
             }
 
@@ -170,13 +165,12 @@ var utils = (function() {
         },
 
         // Convert query parameter to array
-        queryToPalette: function(query) {
-            var colors, objs = [];
-
+        queryToPalette: (query) => {
             query = decodeURIComponent(query);
 
             if ((/^(([0-9]{1,3},){2}[0-9]{1,3}[\:])+[\:]?$/).test(query + ":")) {
-                colors = query.replace(/\:$/, "").split(":");
+                let colors = query.replace(/\:$/, "").split(":"),
+                    objs = [];
 
                 for (var i = 0, l = colors.length; i < l; i++) {
                     objs.push(new Color({
@@ -191,11 +185,11 @@ var utils = (function() {
         },
 
         // Convert color hashmap to query parameter
-        paletteToQuery: function(colors) {
-            var rgb, query = "";
+        paletteToQuery: (colors) => {
+            let query = "";
 
-            for (var c in colors) {
-                rgb = new Color(c).rgb;
+            for (let c in colors) {
+                let rgb = new Color(c).rgb;
 
                 query += rgb.join(",") + ":";
             }
@@ -204,8 +198,8 @@ var utils = (function() {
         },
 
         // Convert color hashmap to link
-        paletteToPath: function(colors, name) {
-            var path = "#/palette/show?";
+        paletteToPath: (colors, name) => {
+            let path = "#/palette/show?";
 
             if (name) {
                 path += "name=" + encodeURIComponent(name) + "&";
@@ -217,17 +211,16 @@ var utils = (function() {
         },
 
         // Convert colors hashmap to GIMP Palette
-        paletteToGPL: function(palette, colors) {
-            var rgb,
-                content = [
+        paletteToGPL: (palette, colors) => {
+            let content = [
                 "GIMP Palette",
                 "Name: " + palette,
                 "Columns: 4",
                 "#"
             ];
 
-            for (var c in colors) {
-                rgb = new Color(c).rgb;
+            for (let c in colors) {
+                let rgb = new Color(c).rgb;
 
                 content.push(
                     rgb.join("\t") + "\t" + c
@@ -238,14 +231,12 @@ var utils = (function() {
         },
 
         // Share a palette
-        shareItem: function(palette) {
-            var data;
-
+        shareItem: (palette) => {
             if ((!palette) || typeof palette !== "string") {
                 return;
             }
 
-            data = utils.getData(palette);
+            let data = utils.getData(palette);
 
             if ("androidTools" in window && androidTools.shareWithLink) {
                 try {
@@ -264,8 +255,8 @@ var utils = (function() {
         },
 
         // Get palette from an image
-        getPalette: function(check) {
-            var supported = ("imageUtils" in window && imageUtils.getPalette);
+        getPalette: (check) => {
+            let supported = ("imageUtils" in window && imageUtils.getPalette);
 
             if (check === true) {
                 return supported;
@@ -284,8 +275,8 @@ var utils = (function() {
         },
 
         // Copy text to clipboard
-        copyToClipboard: function(label, text) {
-            var supported = ("androidTools" in window && androidTools.copyToClipboard);
+        copyToClipboard: (label, text) => {
+            let supported = ("androidTools" in window && androidTools.copyToClipboard);
 
             if (label === true) {
                 return supported;
@@ -304,8 +295,8 @@ var utils = (function() {
         },
 
         // Check if pro version
-        isPro: function() {
-            var purchased = false;
+        isPro: () => {
+            let purchased = false;
 
             if ("inAppBilling" in window && inAppBilling.isPurchased) {
                 try {
@@ -321,8 +312,8 @@ var utils = (function() {
         },
 
         // Unlock pro version with IAP
-        unlockPro: function() {
-            var supported = ("inAppBilling" in window && inAppBilling.purchase);
+        unlockPro: () => {
+            let supported = ("inAppBilling" in window && inAppBilling.purchase);
 
             if (supported) {
                 try {
@@ -340,11 +331,9 @@ var utils = (function() {
 
         // Show a toast
         // @param {{ body: String, actions: Object, timeout: Number, persistent: Boolean }} options
-        showToast: function(options) {
-            var $toast,
-                $wrapper = $(".toast-notification-wrapper"),
-                $container = $wrapper.find(".toast-notification-container"),
-                $segment;
+        showToast: (options) => {
+            let $wrapper = $(".toast-notification-wrapper"),
+                $container = $wrapper.find(".toast-notification-container");
 
             if (!$wrapper.length) {
                 $wrapper = $("<div>").addClass("toast-notification-wrapper");
@@ -356,9 +345,8 @@ var utils = (function() {
                 $container.appendTo($wrapper);
             }
 
-            $toast = $("<div>").addClass("toast-notification");
-
-            $segment = $("<div>").addClass("toast-notification-segment").html(options.body).appendTo($toast);
+            let $toast = $("<div>").addClass("toast-notification"),
+                $segment = $("<div>").addClass("toast-notification-segment").html(options.body).appendTo($toast);
 
             if (options.actions) {
                 for (var action in options.actions) {
@@ -400,10 +388,8 @@ var utils = (function() {
         },
 
         // Hide toast
-        hideToast: function(el, duration) {
-            var $el = el ? $(el) : (this.source === "hashchange") ? $(".toast-notification:not(.toast-persistent)") : $(".toast-notification");
-
-            duration = duration || 300;
+        hideToast: function(el, duration = 300) {
+            let $el = el ? $(el) : (this.source === "hashchange") ? $(".toast-notification:not(.toast-persistent)") : $(".toast-notification");
 
             if ($.fn.velocity) {
                 $el.velocity({
@@ -423,12 +409,10 @@ var utils = (function() {
         },
 
         // Genrate legacy webkit gradient
-        makeWebkitGradient: function(colors, direction) {
-            var css;
+        makeWebkitGradient: (colors, direction) => {
+            let css = "-webkit-gradient(linear," + ((direction === "to bottom") ? "left top,left bottom" : "left top,right top") + ",";
 
-            css = "-webkit-gradient(linear," + ((direction === "to bottom") ? "left top,left bottom" : "left top,right top") + ",";
-
-            for (var i = 0, l = colors.length; i < l; i++) {
+            for (let i = 0, l = colors.length; i < l; i++) {
                 css += "color-stop(" + ((i / l) * 100) + "%," + colors[i] + ")," + "color-stop(" + (((i + 1) / l) * 100) + "%," +
                         colors[i] + ")" + ((i === (l - 1)) ? "" : ",");
             }
@@ -440,12 +424,10 @@ var utils = (function() {
         },
 
         // Generate CSS gradient
-        makeGradient: function(colors, direction) {
-            var css;
+        makeGradient: (colors, direction) => {
+            let css = "linear-gradient(" + (direction ? direction : "to right") + ",";
 
-            css = "linear-gradient(" + (direction ? direction : "to right") + ",";
-
-            for (var i = 0, l = colors.length; i < l; i++) {
+            for (let i = 0, l = colors.length; i < l; i++) {
                 css += colors[i] + " " + ((i / l) * 100) + "%," + colors[i] + " " + (((i + 1) / l) * 100) + "%" + ((i === (l - 1)) ? "" : ",");
             }
 
@@ -455,18 +437,18 @@ var utils = (function() {
         },
 
         // Prefix CSS properties
-        prefixCss: function(property, value) {
-            var prefixes = [ "-webkit-", "-moz-", "-o-", "" ],
+        prefixCss: (property, value) => {
+            let prefixes = [ "-webkit-", "-moz-", "-o-", "" ],
                 css = "";
 
-            for (var i = 0, l = prefixes.length; i < l; i++) {
-                css += property + ":" + prefixes[i] + value + ";";
+            for (let prefix of prefixes) {
+                css += property + ":" + prefix + value + ";";
             }
 
             return css;
         },
 
-        generateBackground: function(colors, direction) {
+        generateBackground: (colors, direction) => {
             if (!colors instanceof Array) {
                 return;
             }
@@ -475,7 +457,7 @@ var utils = (function() {
                     utils.prefixCss("background-image", utils.makeGradient(colors, direction)) + ";";
         },
 
-        sortByDate: function(a, b) {
+        sortByDate: (a, b) => {
             if (a.created > b.created) {
                 return -1;
             } else if (a.created < b.created) {
@@ -485,10 +467,8 @@ var utils = (function() {
             }
         },
 
-        validateName: function(name, tmp) {
-            return ((name && typeof name === "string" && !(/^(null|undefined)$/).test(name)) && (tmp || !(/(^_\$.*|"|'|<|>)/).test(name)));
-        }
+        validateName: (name, tmp) => ((name && typeof name === "string" && !(/^(null|undefined)$/).test(name)) && (tmp || !(/(^_\$.*|"|'|<|>)/).test(name)))
     };
-}());
+})();
 
 export default utils;

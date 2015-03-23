@@ -65,11 +65,7 @@ App.formatRoute = (name) => {
 };
 
 // Register routes and create empty objects
-App.registerRoutes = (routes) => {
-    if (!routes || !routes instanceof Array) {
-        throw new Error(`Routes to register must be an array.`);
-    }
-
+App.registerRoutes = (...routes) => {
     for (let path of routes) {
         let route = App.formatRoute(path);
 
@@ -82,7 +78,7 @@ App.registerRoutes = (routes) => {
 };
 
 // Let's add an index route by default, so the app doesn't have to
-App.registerRoutes([ "index" ]);
+App.registerRoutes("index");
 
 // Build URL from state object
 App.buildURL = (state) => {

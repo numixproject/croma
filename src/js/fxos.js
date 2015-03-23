@@ -1,6 +1,5 @@
-var fxos = (function() {
-    var supported = !!("MozActivity" in window),
-        domain = "http://croma.numixproject.org";
+let fxos = (() => {
+    const domain = "http://croma.numixproject.org";
 
     function shareItem(title, body) {
         new MozActivity({
@@ -13,14 +12,10 @@ var fxos = (function() {
     }
 
     return {
-        supported: supported,
+        supported: !!("MozActivity" in window),
         shareItem: shareItem,
-        shareWithLink: function(title, content, path) {
-            var body = content + "\n" + domain + "/" + path;
-
-            shareItem(title, body);
-        }
+        shareWithLink: (title, content, path) => shareItem(title, content + "\n" + domain + "/" + path)
     };
-}());
+})();
 
 export default fxos;
