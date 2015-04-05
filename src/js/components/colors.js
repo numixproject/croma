@@ -35,7 +35,7 @@ App.ColorsRoute.afterRender = function(...args) {
 };
 
 App.ColorsRoute.actions = {
-    todetails: function(state) {
+    todetails: function() {
         var color = $(this).closest("[data-color]").attr("data-color");
 
         App.transitionTo({

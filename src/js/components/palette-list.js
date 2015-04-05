@@ -1,7 +1,7 @@
 import App from "../core/app";
 import utils from "../utils";
 
-App.PaletteListRoute.model = function(state) {
+App.PaletteListRoute.model = function() {
     var palettes = utils.getData(),
         model = [];
 
@@ -28,7 +28,7 @@ App.PaletteListRoute.afterRender = function(...args) {
 };
 
 App.PaletteListRoute.actions = {
-    add: function(state, model) {
+    add: function(state) {
         var oldname = state.params ? state.params.oldname : null,
             palette = $(this).closest("[data-palette]").attr("data-palette"),
             olddata, currdata, oldcolors, currcolors;

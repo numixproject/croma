@@ -247,7 +247,7 @@ var Color = (function() {
 
                 s = (max === 0) ? 0 : d / max;
 
-                if (max == min) {
+                if (max === min) {
                     h = 0;
                 } else {
                     switch (max) {
@@ -538,7 +538,7 @@ var Color = (function() {
                     cmyk: /^cmyk[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i,
                     lab: /^l[\*]?a[\*]?b[\*]?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?[-]?[\s+]?(\d+)?[\s+]?,[\s+]?[-]?[\s+]?(\d+)?[\s+]?/i,
                     name: function(color) {
-                        if (color && typeof color == "string") {
+                        if (color && typeof color === "string") {
                             color = color.toLowerCase();
                         }
 
@@ -649,7 +649,7 @@ var Color = (function() {
             parseName: function(color) {
                 var rgb;
 
-                if (color && typeof color == "string") {
+                if (color && typeof color === "string") {
                     color = color.toLowerCase();
                 }
 
@@ -698,7 +698,7 @@ var Color = (function() {
             },
 
             parseHSL: function(color) {
-                var arr, hsl, rgb, alpha;
+                var arr, hsl, alpha;
 
                 arr = color.replace(/[hsla()]/g, "").split(",");
 
@@ -717,7 +717,7 @@ var Color = (function() {
             },
 
             parseHSV: function(color) {
-                var arr, hsv, rgb, alpha;
+                var arr, hsv, alpha;
 
                 arr = color.replace(/[hsbva()]/g, "").split(",");
 
@@ -736,7 +736,7 @@ var Color = (function() {
             },
 
             parseCMYK: function(color) {
-                var arr, cmyk, rgb, alpha;
+                var arr, cmyk, alpha;
 
                 arr = color.replace(/[cmyk()]/g, "").split(",");
 
@@ -754,7 +754,7 @@ var Color = (function() {
             },
 
             parseLAB: function(color) {
-                var arr, lab, rgb, alpha;
+                var arr, lab, alpha;
 
                 arr = color.replace(/[lab\*()]/g, "").split(",");
 

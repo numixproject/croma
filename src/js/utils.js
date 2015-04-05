@@ -346,7 +346,9 @@ let utils = (() => {
             }
 
             let $toast = $("<div>").addClass("toast-notification"),
-                $segment = $("<div>").addClass("toast-notification-segment").html(options.body).appendTo($toast);
+                $segment = $("<div>").addClass("toast-notification-segment").html(options.body);
+
+            $toast.append($segment);
 
             if (options.actions) {
                 for (var action in options.actions) {

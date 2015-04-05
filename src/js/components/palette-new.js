@@ -3,7 +3,7 @@ import utils from "../utils";
 
 App.PaletteNewRoute.tags = [ "new" ];
 
-App.PaletteNewRoute.model = function(...args) {
+App.PaletteNewRoute.model = function() {
     return {
         getPalette: utils.getPalette(true),
         isPro: utils.isPro()
