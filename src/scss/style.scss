@@ -66,7 +66,7 @@ body {
 header {
     @extend %clearfix;
     @extend %noselect;
-    @include dropshadow(1);
+    @include dropshadow(2);
 
     position: fixed;
     top: 0;
@@ -290,7 +290,7 @@ header {
 
 .action-button {
     @extend %transition;
-    @include dropshadow(2);
+    @include dropshadow(3);
 
     position: absolute;
     right: $spacing;
