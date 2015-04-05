@@ -1,5 +1,10 @@
 {
-    "esnext": true,
+    "boss": true,
     "browser": true,
-    "jquery" :true
+    "eqeqeq": true,
+    "esnext": true,
+    "jquery" :true,
+    "noarg": true,
+    "node": true,
+    "unused": true
 }
