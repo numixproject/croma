@@ -16,7 +16,6 @@
   ],
   "dependencies": {
     "jquery": "latest",
-    "velocity": "latest",
-    "ember": "latest"
+    "velocity": "latest"
   }
 }
