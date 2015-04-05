@@ -2,18 +2,21 @@
 ! Drop shadows
 **************/
 
-@include exports("dropshadow") {
-    %dropshadow-1 { box-shadow: 0 1px 3px rgba(0, 0, 0, .12); }
-
-    %dropshadow-2 { box-shadow: 0 3px 6px rgba(0, 0, 0, .16); }
-
-    %dropshadow-3 { box-shadow: 0 10px 20px rgba(0, 0, 0, .19); }
-
-    %dropshadow-4 { box-shadow: 0 14px 28px rgba(0, 0, 0, .25); }
-
-    %dropshadow-5 { box-shadow: 0 19px 38px rgba(0, 0, 0, .3); }
-}
+$shadows: (
+    1: 0 1px 3px rgba(0, 0, 0, .12),
+    2: 0 3px 6px rgba(0, 0, 0, .16),
+    3: 0 10px 20px rgba(0, 0, 0, .19),
+    4: 0 14px 28px rgba(0, 0, 0, .25),
+    5: 0 19px 38px rgba(0, 0, 0, .3)
+);
 
 @mixin dropshadow($level: 1) {
-    @extend %dropshadow-#{$level};
+    box-shadow: map-get($shadows, $level);
 }
+
+@include exports("dropshadows") {
+    @each $level, $value in $shadows {
+        %dropshadow-#{$level} { box-shadow: $value; }
+    }
+}
+
