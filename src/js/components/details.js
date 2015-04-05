@@ -32,10 +32,10 @@ App.DetailsRoute.model = function(state) {
     return model;
 };
 
-App.DetailsRoute.afterRender = function(state) {
-    App.setTitle(state.params.color || "Error!");
+App.ColorsRoute.afterRender = function(...args) {
+    App.setTitle(args[0].params.color || "Error!");
 
-    App.Global.afterRender.apply(this, Array.prototype.slice.call(arguments));
+    App.Global.afterRender(...args);
 };
 
 App.DetailsRoute.actions = {

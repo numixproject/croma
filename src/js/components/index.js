@@ -4,23 +4,22 @@ import utils from ".././utils";
 App.IndexRoute.tags = [ "home", "add" ];
 
 App.IndexRoute.model = function() {
-    var palettes = utils.getData(),
-        arr = [],
-        data = [],
-        color;
+    let palettes = utils.getData();
 
     if (!palettes) { return; }
 
-    for (var p in palettes) {
+    let data = [];
+
+    for (let p in palettes) {
         // Exclude names beginning with "_$"
         if (!(palettes[p] && utils.validateName(p))) {
             continue;
         }
 
-        arr = [];
+        let arr = [];
 
         if (palettes[p].colors) {
-            for (var c in palettes[p].colors) {
+            for (let c in palettes[p].colors) {
                 if (palettes[p].colors[c]) {
                     arr.push(c);
                 }
@@ -41,15 +40,15 @@ App.IndexRoute.model = function() {
     };
 };
 
-App.IndexRoute.afterRender = function() {
+App.IndexRoute.afterRender = function(...args) {
     App.setTitle("Croma");
 
-    App.Global.afterRender.apply(this, Array.prototype.slice.call(arguments));
+    App.Global.afterRender(...args);
 };
 
 App.IndexRoute.actions = {
     tocolors: function() {
-        var palette = $(this).closest("[data-palette]").attr("data-palette");
+        let palette = $(this).closest("[data-palette]").attr("data-palette");
 
         App.transitionTo({
             route: "colors",
@@ -57,7 +56,7 @@ App.IndexRoute.actions = {
         });
     },
     rename: function() {
-        var palette = $(this).closest("[data-palette]").attr("data-palette");
+        let palette = $(this).closest("[data-palette]").attr("data-palette");
 
         App.transitionTo({
             route: "palette/name",
@@ -70,22 +69,20 @@ App.IndexRoute.actions = {
         });
     },
     share: function() {
-        var palette = $(this).closest("[data-palette]").attr("data-palette");
+        let palette = $(this).closest("[data-palette]").attr("data-palette");
 
         utils.shareItem(palette);
     },
     remove: function() {
-        var palette = $(this).closest("[data-palette]").attr("data-palette"),
-            data;
-
-        data = utils.getData(palette);
+        let palette = $(this).closest("[data-palette]").attr("data-palette"),
+            data = utils.getData(palette);
 
         utils.setData(palette);
-        utils.removeItem(palette, false, function() {
+        utils.removeItem(palette, false, () => {
             utils.showToast({
                 body: "Deleted " + palette + ". Tap to dismiss.",
                 actions: {
-                    undo: function() {
+                    undo: () => {
                         utils.setData(palette, data);
                         utils.undoRemoveItem(palette, false);
                     }

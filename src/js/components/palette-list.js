@@ -21,10 +21,10 @@ App.PaletteListRoute.model = function(state) {
     return model.sort(utils.sortByDate);
 };
 
-App.PaletteListRoute.afterRender = function(state) {
+App.PaletteListRoute.afterRender = function(...args) {
     App.setTitle("Choose a palette");
 
-    App.Global.afterRender.apply(this, Array.prototype.slice.call(arguments));
+    App.Global.afterRender(...args);
 };
 
 App.PaletteListRoute.actions = {

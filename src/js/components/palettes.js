@@ -46,10 +46,10 @@ App.PalettesRoute.model = function(state) {
     return model;
 };
 
-App.PalettesRoute.afterRender = function(state, model) {
+App.PalettesRoute.afterRender = function(...args) {
     App.setTitle("Palettes");
 
-    App.Global.afterRender.apply(this, Array.prototype.slice.call(arguments));
+    App.Global.afterRender(...args);
 };
 
 App.PalettesRoute.actions = {

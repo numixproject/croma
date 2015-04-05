@@ -4,19 +4,19 @@ import utils from "../utils";
 App.ColorsRoute.tags = [ "add" ];
 
 App.ColorsRoute.model = function(state) {
-    var name = state.params ? state.params.palette : null,
-        current,
-        data = [];
+    let name = state.params ? state.params.palette : null;
 
     if (!name) {
         return;
     }
 
-    current = utils.getData(name);
+    let current = utils.getData(name);
 
     if (!current) {
         return;
     }
+
+    let data = [];
 
     for (var c in current.colors) {
         data.push({
@@ -28,10 +28,10 @@ App.ColorsRoute.model = function(state) {
     return data.sort(utils.sortByDate);
 };
 
-App.ColorsRoute.afterRender = function(state) {
-    App.setTitle(state.params.palette || "Error!");
+App.ColorsRoute.afterRender = function(...args) {
+    App.setTitle(args[0].params.palette || "Error!");
 
-    App.Global.afterRender.apply(this, Array.prototype.slice.call(arguments));
+    App.Global.afterRender(...args);
 };
 
 App.ColorsRoute.actions = {

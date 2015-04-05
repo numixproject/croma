@@ -74,10 +74,10 @@ App.PaletteShowRoute.model = function(state) {
     };
 };
 
-App.PaletteShowRoute.afterRender = function(state, model) {
-    App.setTitle(model.name || "Colors");
+App.PaletteShowRoute.afterRender = function(...args) {
+    App.setTitle(args[1].name || "Colors");
 
-    App.Global.afterRender.apply(this, Array.prototype.slice.call(arguments));
+    App.Global.afterRender(...args);
 };
 
 App.PaletteShowRoute.actions = {

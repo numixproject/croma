@@ -75,7 +75,7 @@ function setColor(color, update) {
     $colorbutton.css({ "background-color": value });
 }
 
-App.PickerRoute.afterRender = function() {
+App.PickerRoute.afterRender = function(...args) {
     var $picker = $(".picker-wrapper"),
         $hues = $picker.find(".picker-hues"),
         $shades = $picker.find(".picker-shades"),
@@ -118,7 +118,7 @@ App.PickerRoute.afterRender = function() {
 
     App.setTitle("Pick a color");
 
-    App.Global.afterRender.apply(this, Array.prototype.slice.call(arguments));
+    App.Global.afterRender(...args);
 };
 
 App.PickerRoute.actions = {
@@ -144,7 +144,7 @@ App.PickerRoute.actions = {
 
             utils.setData(palette, data);
 
-            actiondone = true;
+            App.vars.actiondone = true;
 
             App.transitionTo({
                 route: "colors",

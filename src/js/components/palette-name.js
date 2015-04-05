@@ -3,8 +3,9 @@ import utils from "../utils";
 
 App.PaletteNameRoute.tags = [ "action" ];
 
-App.PaletteNameRoute.afterRender = function(state) {
-    var suggested = state.params ? state.params.suggested : null,
+App.PaletteNameRoute.afterRender = function(...args) {
+    var state = args[0],
+        suggested = state.params ? state.params.suggested : null,
         $input = $("#palette-name");
 
     // Prefill palette name
@@ -16,7 +17,7 @@ App.PaletteNameRoute.afterRender = function(state) {
 
     App.setTitle("Name your palette");
 
-    App.Global.afterRender.apply(this, Array.prototype.slice.call(arguments));
+    App.Global.afterRender(...args);
 };
 
 App.PaletteNameRoute.actions = {

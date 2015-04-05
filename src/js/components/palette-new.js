@@ -3,7 +3,7 @@ import utils from "../utils";
 
 App.PaletteNewRoute.tags = [ "new" ];
 
-App.PaletteNewRoute.model = function(state) {
+App.PaletteNewRoute.model = function(...args) {
     return {
         getPalette: utils.getPalette(true),
         isPro: utils.isPro()
@@ -13,7 +13,7 @@ App.PaletteNewRoute.model = function(state) {
 App.PaletteNewRoute.afterRender = function(state) {
     App.setTitle("Add new palette");
 
-    App.Global.afterRender.apply(this, Array.prototype.slice.call(arguments));
+    App.Global.afterRender(...args);
 };
 
 App.PaletteNewRoute.actions = {
