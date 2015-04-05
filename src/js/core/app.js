@@ -1,3 +1,5 @@
+"use strict";
+
 let Events = require("./events.js"),
     Template = require("./template.js"),
     App;

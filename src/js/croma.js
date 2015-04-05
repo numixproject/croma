@@ -1,3 +1,5 @@
+"use strict";
+
 require("babelify/polyfill"); // Include ES6 polyfills
 
 let App = require("./core/app"),

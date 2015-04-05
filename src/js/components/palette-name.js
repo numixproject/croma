@@ -5,15 +5,21 @@ App.PaletteNameRoute.tags = [ "action" ];
 
 App.PaletteNameRoute.model = function(state) {
     var rename = state.params ? state.params.rename : null,
-        title;
+        oldname = state.params ? state.params.oldname : null,
+        title, placeholder;
 
     if (rename) {
         title = "Rename palette";
+        placeholder = "Enter new name for " + oldname;
     } else {
         title = "Add new palette";
+        placeholder = "Enter a name for the palette";
     }
 
-    return { title: title };
+    return {
+        title: title,
+        placeholder: placeholder
+    };
 };
 
 App.PaletteNameRoute.afterRender = function(...args) {
