@@ -60,7 +60,10 @@ App.IndexRoute.actions = {
 
         App.transitionTo({
             route: "palette/name",
-            params: { oldname: palette }
+            params: {
+                oldname: palette,
+                rename: true
+            }
         });
     },
     add: function() {

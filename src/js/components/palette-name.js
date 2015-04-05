@@ -3,6 +3,19 @@ import utils from "../utils";
 
 App.PaletteNameRoute.tags = [ "action" ];
 
+App.PaletteNameRoute.model = function(state) {
+    var rename = state.params ? state.params.rename : null,
+        title;
+
+    if (rename) {
+        title = "Rename palette";
+    } else {
+        title = "Add new palette";
+    }
+
+    return { title: title };
+};
+
 App.PaletteNameRoute.afterRender = function(...args) {
     var state = args[0],
         suggested = state.params ? state.params.suggested : null,
@@ -15,7 +28,7 @@ App.PaletteNameRoute.afterRender = function(...args) {
 
     $input.focus();
 
-    App.setTitle("Name your palette");
+    App.setTitle("");
 
     App.Global.afterRender(...args);
 };

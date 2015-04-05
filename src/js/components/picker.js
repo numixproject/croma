@@ -116,7 +116,7 @@ App.PickerRoute.afterRender = function(...args) {
         setColor(value, false);
     });
 
-    App.setTitle("Pick a color");
+    App.setTitle("");
 
     App.Global.afterRender(...args);
 };
