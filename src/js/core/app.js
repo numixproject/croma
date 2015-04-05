@@ -165,7 +165,7 @@ App.on("navigate", (state, ...args) => {
     }
 
     // Update the URL
-    if (args && args instanceof Array && args[0] === true) {
+    if (Array.isArray(args) && args[0] === true) {
         window.history.replaceState(state, null, App.buildURL(state));
     } else {
         window.history.pushState(state, null, App.buildURL(state));
@@ -219,7 +219,7 @@ App.on("navigate", (state, ...args) => {
 
     classlist = classlist.replace(/\btag-\S+/g, "").trim();
 
-    if (methods.tags instanceof Array) {
+    if (Array.isArray(methods.tags)) {
         for (let tag of methods.tags) {
             classlist += " tag-" + tag;
         }

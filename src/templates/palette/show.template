@@ -1,4 +1,4 @@
-<% if (!model || !model.palette || !(model.palette instanceof Array)) { %>
+<% if (!model || !Array.isArray(model.palette)) { %>
     <div class="empty-area fx-fade-in">
         <a class="empty-area-action">An error occured!</a>
     </div>

@@ -32,7 +32,7 @@ App.DetailsRoute.model = function(state) {
     return model;
 };
 
-App.ColorsRoute.afterRender = function(...args) {
+App.DetailsRoute.afterRender = function(...args) {
     App.setTitle(args[0].params.color || "Error!");
 
     App.Global.afterRender(...args);

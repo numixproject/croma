@@ -514,7 +514,7 @@ var Color = (function() {
                 var objs = [],
                     c;
 
-                if (colors instanceof Array) {
+                if (Array.isArray(colors)) {
                     for (var i = 0, l = colors.length; i < l; i++) {
                         c = new ColorConstructor(colors[i]);
 
@@ -596,31 +596,31 @@ var Color = (function() {
                     return data;
                 }
 
-                if (c.rgb && c.rgb instanceof Array) {
+                if (Array.isArray(c.rgb)) {
                     rgb =  c.rgb;
                     hsl = _convert.rgb2hsl(rgb);
                     hsv = _convert.rgb2hsv(rgb);
                     cmyk = _convert.rgb2cmyk(rgb);
                     lab = _convert.xyz2lab(_convert.rgb2xyz(rgb));
-                } else if (c.hsl && c.hsl instanceof Array) {
+                } else if (Array.isArray(c.hsl)) {
                     hsl = c.hsl;
                     rgb = _convert.hsl2rgb(hsl);
                     hsv = _convert.hsl2hsv(hsl);
                     cmyk = _convert.rgb2cmyk(rgb);
                     lab = _convert.xyz2lab(_convert.rgb2xyz(rgb));
-                } else if (c.hsv && c.hsv instanceof Array) {
+                } else if (Array.isArray(c.hsv)) {
                     hsv = c.hsv;
                     rgb = _convert.hsl2rgb(hsv);
                     hsl = _convert.hsv2hsl(hsv);
                     cmyk = _convert.rgb2cmyk(rgb);
                     lab = _convert.xyz2lab(_convert.rgb2xyz(rgb));
-                } else if (c.cmyk && c.cmyk instanceof Array) {
+                } else if (Array.isArray(c.cmyk)) {
                     cmyk = c.cmyk;
                     rgb = _convert.cmyk2rgb(cmyk);
                     hsl = _convert.rgb2hsl(rgb);
                     hsv = _convert.rgb2hsv(rgb);
                     lab = _convert.xyz2lab(_convert.rgb2xyz(rgb));
-                } else if (c.lab && c.lab instanceof Array) {
+                } else if (Array.isArray(c.lab)) {
                     lab = c.lab;
                     rgb = _convert.xyz2rgb(_convert.lab2xyz(lab));
                     hsl = _convert.rgb2hsl(rgb);

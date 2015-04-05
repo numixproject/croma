@@ -59,7 +59,7 @@ App.PalettesRoute.actions = {
             colors = model.palettes[index].colors,
             query;
 
-        if (!colors instanceof Array) {
+        if (!Array.isArray(colors)) {
             return;
         }
 

@@ -13,7 +13,7 @@ function savePalette(state, model) {
             colors: {}
         };
 
-    if (!(palette && palette instanceof Array)) {
+    if (!Array.isArray(palette)) {
         return;
     }
 

@@ -449,7 +449,7 @@ let utils = (() => {
         },
 
         generateBackground: (colors, direction) => {
-            if (!colors instanceof Array) {
+            if (!Array.isArray(colors)) {
                 return;
             }
 
