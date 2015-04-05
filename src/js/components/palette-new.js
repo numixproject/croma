@@ -10,7 +10,7 @@ App.PaletteNewRoute.model = function(...args) {
     };
 };
 
-App.PaletteNewRoute.afterRender = function(state) {
+App.PaletteNewRoute.afterRender = function(...args) {
     App.setTitle("Add new palette");
 
     App.Global.afterRender(...args);
