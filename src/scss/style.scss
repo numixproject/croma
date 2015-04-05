@@ -454,7 +454,7 @@ header {
     &:last-of-type { margin-right: 0; }
 }
 
-$actions: love, remove, download, share;
+$actions: love, edit, remove, download, share;
 
 @for $i from 1 through length($actions) {
     $action: nth($actions, $i);

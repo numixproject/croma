@@ -55,7 +55,7 @@ App.IndexRoute.actions = {
             params: { palette: palette }
         });
     },
-    rename: function() {
+    edit: function() {
         let palette = $(this).closest("[data-palette]").attr("data-palette");
 
         App.transitionTo({
