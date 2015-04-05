@@ -1,7 +1,7 @@
-import App from "./core/app";
-import * as animations from "./animations";
+require("babelify/polyfill"); // Include ES6 polyfills
 
-let $appTitle = $("#app-title");
+let App = require("./core/app"),
+    animations = require("./animations");
 
 // Handle URL opening in Firefox OS
 if (!!("mozSetMessageHandler" in navigator)) {
@@ -24,6 +24,8 @@ App.vars = {
 };
 
 // Set app title
+let $appTitle = $("#app-title");
+
 App.setTitle = (title) => {
     if (typeof title !== "string") {
         return;
@@ -75,12 +77,12 @@ App.registerRoutes(
 );
 
 // Include components
-import index from "./components/index";
-import colors from "./components/colors";
-import details from "./components/details";
-import palettes from "./components/palettes";
-import picker from "./components/picker";
-import paletteNew from "./components/palette-new";
-import paletteName from "./components/palette-name";
-import paletteList from "./components/palette-list";
-import paletteShow from "./components/palette-show";
+require("./components/index");
+require("./components/colors");
+require("./components/details");
+require("./components/palettes");
+require("./components/picker");
+require("./components/palette-new");
+require("./components/palette-name");
+require("./components/palette-list");
+require("./components/palette-show");
