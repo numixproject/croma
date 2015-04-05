@@ -116,11 +116,7 @@ gulp.task("styles", function() {
     return gulp.src("src/scss/**/*.scss")
     .pipe(plumber({ errorHandler: onerror }))
     .pipe(sourcemaps.init())
-    .pipe(sass({
-        outputStyle: "expanded",
-        lineNumbers: !gutil.env.production,
-        sourceMap: true
-    }))
+    .pipe(sass())
     .pipe(combinemq())
     .pipe(gutil.env.production ? autoprefixer() : gutil.noop())
     .pipe(gutil.env.production ? minifycss() : gutil.noop())
