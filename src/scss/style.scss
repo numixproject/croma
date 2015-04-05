@@ -283,7 +283,10 @@ header {
     position: relative;
 }
 
-.action-button-wrapper { overflow: hidden; }
+.action-button-wrapper {
+    border-radius: 50%;
+    overflow: hidden;
+}
 
 .action-button {
     @extend %transition;
@@ -299,6 +302,7 @@ header {
     background-repeat: no-repeat;
     background-position: center center;
     pointer-events: auto;
+    overflow: hidden;
 
     &:focus, &:hover {
         @include dropshadow(3);
