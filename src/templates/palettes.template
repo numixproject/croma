@@ -1,6 +1,6 @@
 <% if (!model || !Array.isArray(model.palettes)) { %>
     <div class="empty-area fx-fade-in">
-        <a class="empty-area-action">An error occured!</a>
+        <div class="empty-area-label">An error occured!</div>
     </div>
 <% } else { %>
     <% for (var i = 0; i < model.palettes.length; i++) { %>

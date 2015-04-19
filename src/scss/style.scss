@@ -116,6 +116,11 @@ header {
     opacity: 0;
     pointer-events: none;
 
+    &:before {
+        content: "Done";
+        text-transform: uppercase;
+    }
+
     .tag-action & {
         @include transform(translateZ(0) scale(1));
 
@@ -144,24 +149,6 @@ header {
     font-weight: 400;
     font-size: 1.5em;
     text-decoration: none;
-}
-
-
-/************
-! Cover image
-*************/
-
-.cover-image {
-    @extend %easeout;
-    @include transform(translateZ(0) translateY($bar-height * -1));
-
-    display: block;
-    height: $bar-height;
-    width: 100%;
-    background: url("../../img/cover.png") repeat center center;
-    box-shadow: inset 0 -1px 1px rgba(0, 0, 0, .06);
-
-    .tag-add & { @include transform(translateZ(0) translateY(0)); }
 }
 
 
@@ -256,7 +243,7 @@ header {
     position: absolute;
     display: table;
     table-layout: fixed;
-    top: $bar-height * -1;
+    top: 0;
     left: 0;
     height: 100%;
     width: 100%;
@@ -264,7 +251,7 @@ header {
     z-index: 0;
 }
 
-.empty-area-action {
+.empty-area-label {
     display: table-cell;
     vertical-align: middle;
     text-align: center;
@@ -278,27 +265,17 @@ header {
 ! Action area styles
 ********************/
 
-.header-button-wrapper {
-    clear: both;
-    position: relative;
-}
-
-.action-button-wrapper {
-    border-radius: 50%;
-    overflow: hidden;
-}
-
 .action-button {
     @extend %transition;
     @include dropshadow(3);
 
-    position: absolute;
+    position: fixed;
     right: $spacing;
-    bottom: - ($bar-height / 2);
+    bottom: $spacing;
     height: $bar-height;
     width: $bar-height;
     border-radius: 50%;
-    background-color: $warning-color;
+    background-color: $secondary-color;
     background-repeat: no-repeat;
     background-position: center center;
     pointer-events: auto;
@@ -307,22 +284,24 @@ header {
     &:focus, &:hover {
         @include dropshadow(3);
 
-        background-color: lighten($warning-color, 10%);
+        background-color: darken($warning-color, 5%);
     }
 
     &:active { @include dropshadow(4); }
+
+    @media screen and (min-width: $mobile-width) { margin: $spacing; }
 }
 
 .action-button-add {
     @extend %easeout;
-    @include transform(translateZ(0) scale(.7) rotate(-180deg));
+    @include transform(translateZ(0) rotate(1turn));
 
     background-image: url("../../img/add-circle.svg");
     opacity: 0;
     pointer-events: none;
 
     .tag-add & {
-        @include transform(translateZ(0) scale(1) rotate(0deg));
+        @include transform(translateZ(0) rotate(0deg));
 
         opacity: 1;
         pointer-events: auto;
@@ -357,19 +336,18 @@ header {
 .content-view {
     // scss-lint:disable DuplicateProperty
 
-    @extend %easeout;
-    @include transform(translateZ(0) translateY($bar-height * -1));
-
     height: 100%;
     height: calc(100% - #{$bar-height});
-
-    .tag-add & { @include transform(translateZ(0) translateY(0)); }
 
     // Fix bottom getting cut off in android
     &:after {
         content: "";
         display: block;
         height: 1px;
+
+        @media screen and (max-width: $mobile-width) {
+            .tag-add & { height: $bar-height * 2; }
+        }
     }
 }
 

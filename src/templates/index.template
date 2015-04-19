@@ -1,10 +1,10 @@
 <% if (!model || !Array.isArray(model.palettes)) { %>
     <div class="empty-area fx-fade-in">
-        <a class="empty-area-action">An error occured!</a>
+        <div class="empty-area-label">No palettes added.</div>
     </div>
 <% } else if (!model.palettes.length) { %>
     <div class="empty-area fx-fade-in">
-        <a data-action="add" class="empty-area-action">Tap to add palette.</a>
+        <div class="empty-area-label">No palettes added.</div>
     </div>
 <% } else { %>
     <% for (var i = 0; i < model.palettes.length; i++) { %>

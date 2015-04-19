@@ -1,6 +1,6 @@
 <% if (!model || !model.length) { %>
     <div class="empty-area fx-fade-in">
-        <div class="empty-area-action">No palettes found</div>
+        <div class="empty-area-label">No palettes found.</div>
     </div>
 <% } else { %>
     <% for (var i = 0, l = model.length; i < l; i++) { %>
