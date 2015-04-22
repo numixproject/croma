@@ -3,6 +3,7 @@ package org.numixproject.croma;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -159,6 +160,13 @@ public class MainActivity extends Activity implements BillingProcessor.IBillingH
         webSettings.setAppCachePath(appCachePath);
         webSettings.setAllowFileAccess(true);
         webSettings.setCacheMode(LOAD_DEFAULT);
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            String databasePath = getApplicationContext().getDir("databases", Context.MODE_PRIVATE).getPath();
+
+            webSettings.setDatabaseEnabled(true);
+            webSettings.setDatabasePath(databasePath);
+        }
 
         webView.setWebViewClient(new webViewClient());
 
