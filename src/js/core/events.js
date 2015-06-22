@@ -19,7 +19,7 @@ Events.prototype = {
 
     off: function(event, handler) {
         if (!this._callbacks && !this._callbacks[event]) {
-            return;
+            return null;
         }
 
         if (arguments.length === 1) {

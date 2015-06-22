@@ -10,7 +10,7 @@ var Template = function() {
 
 Template.prototype = {
     compile: function(template) {
-        /* jshint evil: true */
+        /* eslint-disable no-new-func */
         var fn;
 
         if (typeof template !== "string") {
@@ -25,7 +25,7 @@ Template.prototype = {
                             var parts = template.split(/<%|%>/),
                                 body = "var t=[],printtext=function(){t.push.apply(t,arguments);};",
                                 tohtml = function(s) {
-                                    s = s + "" ; // Convert argument to string
+                                    s = s + ""; // Convert argument to string
 
                                     // Escape &, <, > and quotes to prevent XSS
                                     // Convert new lines to <br> tags

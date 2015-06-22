@@ -227,7 +227,7 @@ App.on("navigate", (state, ...args) => {
         }
     }
 
-    $("body").attr("class", classlist);
+    $("body").attr("class", classlist.trim());
 });
 
 // Send an initial navigate event to update the UI based on state
@@ -237,4 +237,4 @@ $(document).on("ready", () => App.transitionTo(App.parseURL(window.location.hash
 $(window).on("hashchange", () => App.transitionTo(App.parseURL(window.location.hash), true));
 
 // Export module
-export default App;
+module.exports = App;

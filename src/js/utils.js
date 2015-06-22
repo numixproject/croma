@@ -1,6 +1,6 @@
-import Color from "./core/color";
-import Storage from "./core/storage";
-import fxos from "./fxos";
+var Color = require("pigment/full"),
+    Storage = require("./core/storage.js"),
+    fxos = require("./fxos.js");
 
 let utils = (() => {
     const productId = "ultimate";
@@ -33,7 +33,7 @@ let utils = (() => {
 
         setData: (palette, data) => {
             if (!palette) {
-                return;
+                return null;
             }
 
             let palettes = utils.getData();
@@ -168,13 +168,18 @@ let utils = (() => {
         queryToPalette: (query) => {
             query = decodeURIComponent(query);
 
-            if ((/^(([0-9]{1,3},){2}[0-9]{1,3}[\:])+[\:]?$/).test(query + ":")) {
+            if ((/^(([0-9]{1,3},){2}[0-9]{1,3},.?[\:])+[\:]?$/).test(query + ":")) {
                 let colors = query.replace(/\:$/, "").split(":"),
                     objs = [];
 
-                for (var i = 0, l = colors.length; i < l; i++) {
+                for (let c of colors) {
+                    let rgb = c.split(",");
+
                     objs.push(new Color({
-                        rgb: colors[i].split(",")
+                        red: parseInt(rgb[0]),
+                        green: parseInt(rgb[1]),
+                        blue: parseInt(rgb[2]),
+                        alpha: rgb[3] ? parseFloat(rgb[3]) : rgb[3]
                     }));
                 }
 
@@ -238,9 +243,9 @@ let utils = (() => {
 
             let data = utils.getData(palette);
 
-            if ("androidTools" in window && androidTools.shareWithLink) {
+            if ("androidTools" in window && window.androidTools.shareWithLink) {
                 try {
-                    androidTools.shareWithLink("Share palette", utils.paletteToText(palette, data.colors), utils.paletteToPath(data.colors, palette));
+                    window.androidTools.shareWithLink("Share palette", utils.paletteToText(palette, data.colors), utils.paletteToPath(data.colors, palette));
                 } catch (e) {
                     utils.showToast({
                         body: e,
@@ -256,7 +261,7 @@ let utils = (() => {
 
         // Get palette from an image
         getPalette: (check) => {
-            let supported = ("imageUtils" in window && imageUtils.getPalette);
+            let supported = ("imageUtils" in window && window.imageUtils.getPalette);
 
             if (check === true) {
                 return supported;
@@ -264,7 +269,7 @@ let utils = (() => {
 
             if (supported) {
                 try {
-                    imageUtils.getPalette();
+                    window.imageUtils.getPalette();
                 } catch (e) {
                     utils.showToast({
                         body: e,
@@ -276,7 +281,7 @@ let utils = (() => {
 
         // Copy text to clipboard
         copyToClipboard: (label, text) => {
-            let supported = ("androidTools" in window && androidTools.copyToClipboard);
+            let supported = ("androidTools" in window && window.androidTools.copyToClipboard);
 
             if (label === true) {
                 return supported;
@@ -284,7 +289,7 @@ let utils = (() => {
 
             if (supported) {
                 try {
-                    androidTools.copyToClipboard(label, text);
+                    window.androidTools.copyToClipboard(label, text);
                 } catch (e) {
                     utils.showToast({
                         body: e,
@@ -298,9 +303,9 @@ let utils = (() => {
         isPro: () => {
             let purchased = false;
 
-            if ("inAppBilling" in window && inAppBilling.isPurchased) {
+            if ("inAppBilling" in window && window.inAppBilling.isPurchased) {
                 try {
-                    purchased = (inAppBilling.isPurchased(productId) === "true") ? true : false;
+                    purchased = (window.inAppBilling.isPurchased(productId) === "true") ? true : false;
                 } catch (e) {
                     purchased = false;
                 }
@@ -313,11 +318,11 @@ let utils = (() => {
 
         // Unlock pro version with IAP
         unlockPro: () => {
-            let supported = ("inAppBilling" in window && inAppBilling.purchase);
+            let supported = ("inAppBilling" in window && window.inAppBilling.purchase);
 
             if (supported) {
                 try {
-                    inAppBilling.purchase(productId);
+                    window.inAppBilling.purchase(productId);
                 } catch (e) {
                     utils.showToast({
                         body: e,
@@ -452,7 +457,7 @@ let utils = (() => {
 
         generateBackground: (colors, direction) => {
             if (!Array.isArray(colors)) {
-                return;
+                return "";
             }
 
             return "background-image:" + utils.makeWebkitGradient(colors, direction) + ";" +
@@ -473,4 +478,4 @@ let utils = (() => {
     };
 })();
 
-export default utils;
+module.exports = utils;

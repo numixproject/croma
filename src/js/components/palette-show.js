@@ -1,5 +1,5 @@
-import App from "../core/app";
-import utils from "../utils";
+var App = require("../core/app.js"),
+    utils = require("../utils.js");
 
 function savePalette(state, model) {
     var isPro = utils.isPro(),
@@ -14,7 +14,7 @@ function savePalette(state, model) {
         };
 
     if (!Array.isArray(palette)) {
-        return;
+        return {};
     }
 
     for (var i = 0, l = palette.length; i < l; i++) {
@@ -55,7 +55,7 @@ App.PaletteShowRoute.model = function(state) {
         colors;
 
     if (!(state.params && state.params.palette)) {
-        return;
+        return {};
     }
 
     colors = utils.queryToPalette(state.params.palette);

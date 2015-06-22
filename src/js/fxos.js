@@ -1,8 +1,10 @@
+/* global MozActivity */
+
 let fxos = (() => {
     const domain = "http://croma.numixproject.org";
 
     function shareItem(title, body) {
-        new MozActivity({
+        return new MozActivity({
             name: "new",
             data: {
                 type: "mail",
@@ -18,4 +20,4 @@ let fxos = (() => {
     };
 })();
 
-export default fxos;
+module.exports = fxos;

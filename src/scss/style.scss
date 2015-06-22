@@ -345,9 +345,7 @@ header {
         display: block;
         height: 1px;
 
-        @media screen and (max-width: $mobile-width) {
-            .tag-add & { height: $bar-height * 2; }
-        }
+        .tag-add & { height: $bar-height * 2; }
     }
 }
 

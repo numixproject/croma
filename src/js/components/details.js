@@ -1,14 +1,14 @@
-import App from "../core/app";
-import Color from "../core/color";
-import utils from "../utils";
+var Color = require("pigment"),
+    App = require("../core/app.js"),
+    utils = require("../utils.js");
 
 App.DetailsRoute.model = function(state) {
-        var color = state.params ? state.params.color : null,
-            model = {},
-            colorObj;
+    var color = state.params ? state.params.color : null,
+        model = {},
+        colorObj;
 
     if (!color) {
-        return;
+        return model;
     }
 
     colorObj = new Color(color);
@@ -16,11 +16,12 @@ App.DetailsRoute.model = function(state) {
     model.hexVal = colorObj.tohex();
 
     model.strings = [
-        { key: "Name", value: colorObj.name() },
+        { key: "Name", value: colorObj.toname() },
         { key: "HEX", value: colorObj.tohex() },
         { key: "RGB", value: colorObj.torgb() },
         { key: "HSL", value: colorObj.tohsl() },
         { key: "HSV", value: colorObj.tohsv() },
+        { key: "HWB", value: colorObj.tohwb() },
         { key: "CMYK", value: colorObj.tocmyk() },
         { key: "LAB", value: colorObj.tolab() },
         { key: "Luminance", value: parseFloat(colorObj.luminance()).toFixed(2) },

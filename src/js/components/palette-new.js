@@ -1,5 +1,5 @@
-import App from "../core/app";
-import utils from "../utils";
+var App = require("../core/app.js"),
+    utils = require("../utils.js");
 
 App.PaletteNewRoute.tags = [ "new" ];
 

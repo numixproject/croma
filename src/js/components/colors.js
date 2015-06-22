@@ -1,22 +1,21 @@
-import App from "../core/app";
-import utils from "../utils";
+var App = require("../core/app.js"),
+    utils = require("../utils.js");
 
 App.ColorsRoute.tags = [ "add" ];
 
 App.ColorsRoute.model = function(state) {
-    let name = state.params ? state.params.palette : null;
+    let name = state.params ? state.params.palette : null,
+        data = [];
 
     if (!name) {
-        return;
+        return data;
     }
 
     let current = utils.getData(name);
 
     if (!current) {
-        return;
+        return data;
     }
-
-    let data = [];
 
     for (var c in current.colors) {
         data.push({

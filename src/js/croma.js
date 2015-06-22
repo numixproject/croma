@@ -6,7 +6,7 @@ let App = require("./core/app"),
     animations = require("./animations");
 
 // Handle URL opening in Firefox OS
-if (!!("mozSetMessageHandler" in navigator)) {
+if ("mozSetMessageHandler" in navigator) {
     // Handle opening of URLs
     navigator.mozSetMessageHandler("activity", (a) => {
         let url = a.source.data.url;

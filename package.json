@@ -43,6 +43,10 @@
     "jshint-stylish": "latest",
     "through": "latest",
     "vinyl-buffer": "latest",
-    "vinyl-source-stream": "latest"
+    "vinyl-source-stream": "latest",
+    "watchify": "^3.2.2"
+  },
+  "dependencies": {
+    "pigment": "latest"
   }
 }

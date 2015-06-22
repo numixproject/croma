@@ -1,12 +1,12 @@
-import App from ".././core/app";
-import utils from ".././utils";
+var App = require(".././core/app.js"),
+    utils = require(".././utils.js");
 
 App.IndexRoute.tags = [ "home", "add" ];
 
 App.IndexRoute.model = function() {
     let palettes = utils.getData();
 
-    if (!palettes) { return; }
+    if (!palettes) { return {}; }
 
     let data = [];
 

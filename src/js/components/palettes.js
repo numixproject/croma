@@ -1,6 +1,6 @@
-import App from "../core/app";
-import Color from "../core/color";
-import utils from "../utils";
+var Color = require("pigment/full"),
+    App = require("../core/app.js"),
+    utils = require("../utils.js");
 
 App.PalettesRoute.model = function(state) {
     var model = {},
@@ -9,7 +9,7 @@ App.PalettesRoute.model = function(state) {
         colorObj, objs, arr;
 
     if (!color) {
-        return;
+        return model;
     }
 
     colorObj = new Color(color);

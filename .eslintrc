@@ -1,8 +1,10 @@
 {
   "env": {
-    "node": true,
+    "amd": true,
+    "browser": true,
     "es6": true,
-    "jquery": true
+    "jquery": true,
+    "node": true
   },
 
   "ecmaFeatures": {

@@ -1,8 +1,7 @@
-import App from "../core/app";
-import Color from "../core/color";
-import utils from "../utils";
-
-var value = "#f06860";
+var Color = require("pigment/full"),
+    App = require("../core/app.js"),
+    utils = require("../utils.js"),
+    value = "#f06860";
 
 App.PickerRoute.tags = [ "action" ];
 
@@ -23,39 +22,25 @@ function renderHues() {
 }
 
 function renderShades(h) {
-    var s = 100, l,
+    var w = 100, b,
         color,
         divs = "";
 
     for (var i = 0; i < 8; i++) {
-        l = 10;
+        b = 10;
 
         for (var j = 0; j < 10; j++) {
-            color = new Color({
-                hsl: [ h, s, l ]
-            }).tohex();
+            color = new Color("hsl(" + h + "," + w + "," + b + ")").tohex();
 
             divs += '<div class="picker-color-cell" style="background-color: ' + color + '"></div>';
 
-            l += 9;
+            b += 9;
         }
 
-        s = s - 12;
+        w = w - 12;
     }
 
     return divs;
-}
-
-function updateColor(target) {
-    var $shades = $(".picker-shades"),
-        hue = $(target).data("hue"),
-        color = $(target).css("background-color");
-
-    setColor(color);
-
-    if (hue) {
-        $shades.empty().append(renderShades(hue));
-    }
 }
 
 function setColor(color, update) {
@@ -73,6 +58,18 @@ function setColor(color, update) {
     }
 
     $colorbutton.css({ "background-color": value });
+}
+
+function updateColor(target) {
+    var $shades = $(".picker-shades"),
+        hue = $(target).data("hue"),
+        color = $(target).css("background-color");
+
+    setColor(color);
+
+    if (hue) {
+        $shades.empty().append(renderShades(hue));
+    }
 }
 
 App.PickerRoute.afterRender = function(...args) {
@@ -95,8 +92,8 @@ App.PickerRoute.afterRender = function(...args) {
     $picker.on(startEvent, function(e) {
         updateColor(e.target);
 
-        $(this).on(moveEvent, function(e) {
-            updateColor(e.target);
+        $(this).on(moveEvent, function(ev) {
+            updateColor(ev.target);
         });
     }).on(endEvent, function() {
         $(this).off(moveEvent);
@@ -107,13 +104,13 @@ App.PickerRoute.afterRender = function(...args) {
     });
 
     $text.on("DOMSubtreeModified input paste change", function() {
-        var value = $(this).val();
+        var color = $(this).val();
 
-        if (!(value && value.length > 2)) {
+        if (!(color && color.length > 2)) {
             return;
         }
 
-        setColor(value, false);
+        setColor(color, false);
     });
 
     App.setTitle("");

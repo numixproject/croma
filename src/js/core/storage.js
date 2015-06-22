@@ -21,14 +21,14 @@ var Storage = (function() {
      * Return the constructor function.
      */
     return function() {
-        var _this = this;
+        var self = this;
 
         /**
          * Check if localStorage is supported.
          * @constructor
          * @return {Boolean}
          */
-        _this.supported = function() {
+        self.supported = function() {
             try {
                 return "localStorage" in window && window.localStorage !== null;
             } catch (err) {
@@ -42,7 +42,7 @@ var Storage = (function() {
          * @param {Object} key
          * @param {Object} value
          */
-        _this.set = function(key, value) {
+        self.set = function(key, value) {
             // Convert the key to string
             key = JSON.stringify(key);
 
@@ -65,7 +65,7 @@ var Storage = (function() {
          * @param {Object} key
          * @return {Object} value
          */
-        _this.get = function(key) {
+        self.get = function(key) {
             var value;
 
             // Convert the key to string
@@ -100,7 +100,7 @@ var Storage = (function() {
          * @constructor
          * @param {Object} key
          */
-        _this.remove = function(key) {
+        self.remove = function(key) {
             // Convert the key to string
             key = JSON.stringify(key);
 

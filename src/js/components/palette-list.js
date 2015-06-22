@@ -1,12 +1,12 @@
-import App from "../core/app";
-import utils from "../utils";
+var App = require("../core/app.js"),
+    utils = require("../utils.js");
 
 App.PaletteListRoute.model = function() {
     var palettes = utils.getData(),
         model = [];
 
     if (!palettes) {
-        return;
+        return model;
     }
 
     for (var p in palettes) {

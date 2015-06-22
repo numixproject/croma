@@ -47,4 +47,4 @@ function ripple(el) {
     });
 }
 
-export { ripple };
+module.exports = { ripple };
