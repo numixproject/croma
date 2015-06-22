@@ -168,7 +168,7 @@ let utils = (() => {
         queryToPalette: (query) => {
             query = decodeURIComponent(query);
 
-            if ((/^(([0-9]{1,3},){2}[0-9]{1,3},.?[\:])+[\:]?$/).test(query + ":")) {
+            if ((/^(([0-9]{1,3},){2}[0-9]{1,3}(,.)?[\:])+[\:]?$/).test(query + ":")) {
                 let colors = query.replace(/\:$/, "").split(":"),
                     objs = [];
 
