@@ -14,7 +14,7 @@ var gulp = require("gulp"),
     rename = require("gulp-rename"),
     concat = require("gulp-concat"),
     declare = require("gulp-declare"),
-    jshint = require("gulp-jshint"),
+    eslint = require("gulp-eslint"),
     jscs = require("gulp-jscs"),
     uglify = require("gulp-uglify"),
     sass = require("gulp-sass"),
@@ -23,6 +23,62 @@ var gulp = require("gulp"),
     minifycss = require("gulp-minify-css"),
     browsersync = require("browser-sync"),
     onerror = notify.onError("Error: <%= error.message %>");
+
+// Make browserify bundle
+function bundle(file, opts, cb) {
+    var base, bundler, watcher;
+
+    opts = opts || {};
+
+    opts.entries = "./" + file;
+    opts.debug = typeof opts.debug === "boolean" ? opts.debug : true;
+
+    if (bundle.watch) {
+        opts.cache = {};
+        opts.packageCache = {};
+        opts.fullPaths = true;
+    }
+
+    bundler = browserify(opts);
+
+    base = file.split(/[\\/]/).pop();
+
+    if (bundle.watch) {
+        watcher  = watchify(bundler);
+
+        cb(
+           watcher
+            .on("update", function() {
+                gutil.log("Starting '" + gutil.colors.yellow(file) + "'...");
+
+                cb(
+                   watcher.bundle()
+                    .on("error", onerror)
+                    .pipe(source(base))
+                    .pipe(buffer())
+                );
+            })
+            .on("time", function(time) {
+                gutil.log("Finished '" + gutil.colors.yellow(file) + "' after " + gutil.colors.magenta(time + " ms"));
+            })
+            .bundle()
+            .pipe(source(base))
+            .pipe(buffer())
+        );
+    } else {
+        cb(
+           bundler.bundle()
+            .on("error", function(error) {
+                onerror(error);
+
+                // End the stream to prevent gulp from crashing
+                this.end();
+            })
+            .pipe(source(base))
+            .pipe(buffer())
+        );
+    }
+}
 
 gulp.task("bower", function() {
     return bower.commands.install([], { save: true }, {})
@@ -55,9 +111,9 @@ gulp.task("release", [ "bump" ], function() {
 gulp.task("lint", function() {
     return gulp.src("src/js/**/*.js")
     .pipe(plumber({ errorHandler: onerror }))
-    .pipe(jshint())
-    .pipe(jshint.reporter("jshint-stylish"))
-    .pipe(jshint.reporter("fail"))
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failOnError())
     .pipe(jscs());
 });
 
@@ -73,29 +129,29 @@ gulp.task("libs", [ "bower" ], function() {
 });
 
 gulp.task("bundle", function() {
-    return browserify({
-        entries: "./src/js/croma.js",
-        debug: true
-    })
-    .transform(babelify)
-    .bundle()
-    .on("error", function(error) {
-        onerror(error);
-
-        // End the stream to prevent gulp from crashing
-        this.end();
-    })
-    .pipe(source("croma.js"))
-    .pipe(buffer())
-    .pipe(plumber({ errorHandler: onerror }))
-    .pipe(sourcemaps.init({ loadMaps: true }))
-    .pipe(gutil.env.production ? uglify() : gutil.noop())
-    .pipe(rename({ suffix: ".min" }))
-    .pipe(sourcemaps.write("."))
-    .pipe(gulp.dest("dist/js"));
+    return bundle("src/js/croma.js", {
+        transform: [ babelify ]
+    }, function(bundled) {
+        bundled
+        .pipe(plumber({ errorHandler: onerror }))
+        .pipe(sourcemaps.init({ loadMaps: true }))
+        .pipe(gutil.env.production ? uglify() : gutil.noop())
+        .pipe(rename({ suffix: ".min" }))
+        .pipe(sourcemaps.write("."))
+        .pipe(gulp.dest("dist/js"));
+    });
 });
 
 gulp.task("scripts", [ "libs", "bundle" ]);
+
+gulp.task("scripts:watch", function() {
+    bundle.watch = true;
+
+    gulp.start("scripts");
+
+    gulp.watch("src/js/**/*.js", [ "lint" ]);
+    gulp.watch("bower_components/**/*.js", [ "libs" ]);
+});
 
 gulp.task("templates", function() {
     var microtemplate = require("./microtemplate.js");
@@ -112,6 +168,10 @@ gulp.task("templates", function() {
     .pipe(gulp.dest("dist/js"));
 });
 
+gulp.task("templates:watch", function() {
+    gulp.watch("src/templates/**/*.template", [ "templates" ]);
+});
+
 gulp.task("styles", function() {
     return gulp.src("src/scss/**/*.scss")
     .pipe(plumber({ errorHandler: onerror }))
@@ -125,15 +185,15 @@ gulp.task("styles", function() {
     .pipe(gulp.dest("dist/css"));
 });
 
+gulp.task("styles:watch", function() {
+    gulp.watch("src/scss/**/*.scss", [ "styles" ]);
+});
+
 gulp.task("clean", function() {
     return del([ "dist" ]);
 });
 
-gulp.task("watch", function() {
-    gulp.watch("src/js/**/*.js", [ "lint", "libs", "scripts" ]);
-    gulp.watch("src/scss/**/*.scss", [ "styles" ]);
-    gulp.watch("src/templates/**/*.template", [ "templates" ]);
-});
+gulp.task("watch", [ "scripts:watch", "styles:watch", "templates:watch" ]);
 
 // Synchronise file changes in browser
 gulp.task("browsersync", function() {

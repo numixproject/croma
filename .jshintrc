@@ -4,6 +4,7 @@
     "eqeqeq": true,
     "esnext": true,
     "jquery" :true,
+    "predef": [ "define" ],
     "noarg": true,
     "node": true,
     "unused": true,
