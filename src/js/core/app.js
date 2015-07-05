@@ -32,12 +32,13 @@ App.Global = $.extend(true, {}, App._super);
 
 // Get the template for the specified route
 App.getTemplate = (() => {
-    let cache = {};
+    let APP = window.APP || {},
+        cache = {};
 
-    $.templates = $.templates || {};
+    APP.templates = APP.templates || {};
 
     return (route) => {
-        cache[route] = cache[route] || $.templates[route] || App[App.formatRoute(route)].template || $("[data-template=" + route + "]").html();
+        cache[route] = cache[route] || APP.templates[route] || App[App.formatRoute(route)].template || $("[data-template=" + route + "]").html();
 
         return cache[route];
     };

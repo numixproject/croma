@@ -15,7 +15,6 @@
     "*.json"
   ],
   "dependencies": {
-    "jquery": "latest",
-    "velocity": "latest"
+    "jquery": "latest"
   }
 }

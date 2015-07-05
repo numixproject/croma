@@ -13,7 +13,6 @@ var gulp = require("gulp"),
     git = require("gulp-git"),
     sourcemaps = require("gulp-sourcemaps"),
     rename = require("gulp-rename"),
-    concat = require("gulp-concat"),
     declare = require("gulp-declare"),
     eslint = require("gulp-eslint"),
     jscs = require("gulp-jscs"),
@@ -118,17 +117,6 @@ gulp.task("lint", function() {
     .pipe(jscs());
 });
 
-gulp.task("libs", [ "bower" ], function() {
-    return gulp.src([
-        "bower_components/jquery/dist/jquery" + (gutil.env.production ? ".min" : "") + ".js",
-        "bower_components/velocity/velocity" + (gutil.env.production ? ".min" : "") + ".js"
-    ])
-    .pipe(plumber({ errorHandler: onerror }))
-    .pipe(concat("libs.js"))
-    .pipe(rename({ suffix: ".min" }))
-    .pipe(gulp.dest("dist/js"));
-});
-
 gulp.task("bundle", function() {
     return bundle("src/js/croma.js", {
         transform: [ babelify ]
@@ -143,7 +131,7 @@ gulp.task("bundle", function() {
     });
 });
 
-gulp.task("scripts", [ "libs", "bundle" ]);
+gulp.task("scripts", [ "bundle" ]);
 
 gulp.task("scripts:watch", function() {
     bundle.watch = true;
@@ -151,7 +139,6 @@ gulp.task("scripts:watch", function() {
     gulp.start("scripts");
 
     gulp.watch("src/js/**/*.js", [ "lint" ]);
-    gulp.watch("bower_components/**/*.js", [ "libs" ]);
 });
 
 gulp.task("templates", function() {
@@ -161,7 +148,7 @@ gulp.task("templates", function() {
     .pipe(plumber({ errorHandler: onerror }))
     .pipe(microtemplate("templates.js"))
     .pipe(declare({
-        namespace: "$",
+        namespace: "APP",
         noRedeclare: true
     }))
     .pipe(gutil.env.production ? uglify() : gutil.noop())

@@ -1,4 +1,4 @@
-"use strict";
+window.jQuery = window.$ = require("../../bower_components/jquery/dist/jquery.min.js"); // Include jQuery
 
 require("babelify/polyfill"); // Include ES6 polyfills
 

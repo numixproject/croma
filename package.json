@@ -27,7 +27,6 @@
     "gulp-autoprefixer": "latest",
     "gulp-bump": "latest",
     "gulp-combine-mq": "latest",
-    "gulp-concat": "latest",
     "gulp-declare": "latest",
     "gulp-eslint": "latest",
     "gulp-git": "latest",
@@ -44,7 +43,7 @@
     "through": "latest",
     "vinyl-buffer": "latest",
     "vinyl-source-stream": "latest",
-    "watchify": "^3.2.2"
+    "watchify": "latest"
   },
   "dependencies": {
     "pigment": "latest"
