@@ -18,12 +18,12 @@ var Details = React.createClass({
                 fontSize: 36,
                 textAlign: "center",
                 margin: 10,
-                color: c.darkness() > .5 ? "#fff" : "rgba(0,0,0,0.9)"
+                color: c.darkness() > 0.5 ? "#fff" : "rgba(0,0,0,0.9)"
             },
             info: {
                 textAlign: "center",
                 marginBottom: 5,
-                color: c.darkness() > .5 ? "rgba(255,255,255,0.9)" : "rgba(0,0,0,0.7)"
+                color: c.darkness() > 0.5 ? "rgba(255,255,255,0.9)" : "rgba(0,0,0,0.7)"
             }
         });
     },

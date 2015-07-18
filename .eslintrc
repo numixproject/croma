@@ -13,7 +13,6 @@
   "plugins": [ "react" ],
 
   "rules": {
-    "no-comma-dangle": 2,
     "no-cond-assign": 2,
     "no-console": 1,
     "no-constant-condition": 2,
@@ -21,7 +20,7 @@
     "no-debugger": 2,
     "no-dupe-keys": 2,
     "no-empty": 2,
-    "no-empty-class": 2,
+    "no-empty-character-class": 2,
     "no-ex-assign": 2,
     "no-extra-boolean-cast": 2,
     "no-extra-parens": 0,
@@ -39,6 +38,7 @@
     "use-isnan": 2,
     "valid-jsdoc": 0,
     "valid-typeof": 2,
+    "comma-dangle": 2,
 
     "block-scoped-var": 2,
     "complexity": [1, 11],

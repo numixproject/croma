@@ -1,7 +1,7 @@
 "use strict";
 
 var React = require("react-native"),
-    Details = require("./components/ios/details.js");
+    Details = require("./components/details.js");
 
 var AppRegistry = React.AppRegistry;
 
