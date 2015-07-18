@@ -1,0 +1,16 @@
+{
+  "name": "croma",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node_modules/react-native/packager/packager.sh"
+  },
+  "dependencies": {
+    "pigment": "0.0.5",
+    "react-native": "^0.7.1"
+  },
+  "devDependencies": {
+    "eslint": "^1.0.0-rc-1",
+    "eslint-plugin-react": "^2.7.1"
+  }
+}
