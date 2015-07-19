@@ -7,9 +7,7 @@ var AppRegistry = React.AppRegistry;
 
 var croma = React.createClass({
     render: function() {
-        return (
-            <Details color="#f1544d" />
-        );
+        return <Details color="#f1544d" />;
     }
 });
 
