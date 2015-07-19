@@ -15,7 +15,6 @@ var gulp = require("gulp"),
     rename = require("gulp-rename"),
     declare = require("gulp-declare"),
     eslint = require("gulp-eslint"),
-    jscs = require("gulp-jscs"),
     uglify = require("gulp-uglify"),
     sass = require("gulp-sass"),
     combinemq = require("gulp-combine-mq"),
@@ -113,8 +112,7 @@ gulp.task("lint", function() {
     .pipe(plumber({ errorHandler: onerror }))
     .pipe(eslint())
     .pipe(eslint.format())
-    .pipe(eslint.failOnError())
-    .pipe(jscs());
+    .pipe(eslint.failOnError());
 });
 
 gulp.task("bundle", function() {
