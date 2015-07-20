@@ -6,7 +6,8 @@ let { StyleSheet, View, ScrollView } = React;
 let styles = StyleSheet.create({
     page: {
         flex: 1,
-        backgroundColor: Constants.colorLightGray
+        backgroundColor: Constants.colorLightGray,
+        padding: Constants.spacing / 2
     }
 });
 

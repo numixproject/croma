@@ -1,4 +1,5 @@
-let React = require("react-native"),
+let Constants = require("../constants.json"),
+    React = require("react-native"),
     Color = require("pigment/full");
 
 let { StyleSheet, Text, View } = React;
@@ -12,12 +13,12 @@ let styles = StyleSheet.create({
     header: {
         fontSize: 36,
         textAlign: "center",
-        margin: 10
+        margin: Constants.spacing
     },
     info: {
         flexDirection: "row",
         textAlign: "center",
-        marginBottom: 5
+        marginBottom: Constants.spacing
     }
 });
 
@@ -40,12 +41,12 @@ var Full = React.createClass({
 
         return (
             <View style={[ styles.container, { backgroundColor: hex } ]}>
-                <Text style={[ styles.header, { color: darkness > 0.4 ? "rgba(255,255,255,.7)" : "rgba(0,0,0,.7)" } ]}>{hex.toUpperCase()}</Text>
+                <Text style={[ styles.header, { color: darkness > 0.4 ? Constants.colorWhite : Constants.colorBlack, opacity: 0.7 } ]}>{hex.toUpperCase()}</Text>
 
                 {this.getItems(c).map(item =>
                     <View style={styles.info}>
-                        <Text style={{ color: darkness > 0.4 ? "rgba(255,255,255,.5)" : "rgba(0,0,0,.5)" }}>{item.key} </Text>
-                        <Text style={{ color: darkness > 0.4 ? "#fff" : "#000" }}>{item.value}</Text>
+                        <Text style={{ color: darkness > 0.4 ? Constants.colorWhite : Constants.colorBlack, opacity: 0.5 }}>{item.key} </Text>
+                        <Text style={{ color: darkness > 0.4 ? Constants.colorWhite : Constants.colorBlack }}>{item.value}</Text>
                     </View>
                 )}
             </View>

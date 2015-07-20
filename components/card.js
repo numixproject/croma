@@ -5,13 +5,13 @@ let { StyleSheet, TouchableHighlight } = React;
 
 let styles = StyleSheet.create({
     card: {
-        margin: Constants.spacing,
         backgroundColor: Constants.colorWhite,
         borderRadius: 2,
         shadowColor: Constants.colorBlack,
         shadowOffset: { width: 0, height: 0.5 },
         shadowOpacity: 0.16,
-        shadowRadius: 1.5
+        shadowRadius: 1.5,
+        margin: Constants.spacing / 2
     },
     wrapper: { flex: 1 }
 });
