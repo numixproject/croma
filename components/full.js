@@ -40,12 +40,12 @@ var Full = React.createClass({
 
         return (
             <View style={[ styles.container, { backgroundColor: hex } ]}>
-                <Text style={[ styles.header, { color: darkness > 0.5 ? "rgba(255,255,255,.7)" : "rgba(0,0,0,.7)" } ]}>{hex.toUpperCase()}</Text>
+                <Text style={[ styles.header, { color: darkness > 0.4 ? "rgba(255,255,255,.7)" : "rgba(0,0,0,.7)" } ]}>{hex.toUpperCase()}</Text>
 
                 {this.getItems(c).map(item =>
                     <View style={styles.info}>
-                        <Text style={{ color: darkness > 0.5 ? "rgba(255,255,255,.5)" : "rgba(0,0,0,.5)" }}>{item.key} </Text>
-                        <Text style={{ color: darkness > 0.5 ? "#fff" : "#000" }}>{item.value}</Text>
+                        <Text style={{ color: darkness > 0.4 ? "rgba(255,255,255,.5)" : "rgba(0,0,0,.5)" }}>{item.key} </Text>
+                        <Text style={{ color: darkness > 0.4 ? "#fff" : "#000" }}>{item.value}</Text>
                     </View>
                 )}
             </View>
