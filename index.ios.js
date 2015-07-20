@@ -1,13 +1,35 @@
-"use strict";
+let Constants = require("./constants.json"),
+    React = require("react-native"),
+    Home = require("./components/home.js");
 
-var React = require("react-native"),
-    Details = require("./components/details.js");
+let { AppRegistry, StyleSheet, NavigatorIOS, AlertIOS } = React;
 
-var AppRegistry = React.AppRegistry;
+let styles = StyleSheet.create({
+    nav: { flex: 1 }
+});
 
 var croma = React.createClass({
-    render: function() {
-        return <Details color="#f1544d" />;
+    render() {
+        return (
+            <NavigatorIOS
+                style={styles.nav}
+                initialRoute={{
+                    title: "Palettes",
+                    component: Home,
+                    rightButtonTitle: "Add",
+                    onRightButtonPress: () => {
+                        AlertIOS.alert(
+                            "Whatcha doin?",
+                            "You can't add a palette yet, silly",
+                            [ { text: "Okay" } ]
+                        );
+                    }
+                }}
+                barTintColor={Constants.colorPrimary}
+                titleTextColor={Constants.colorText}
+                tintColor={Constants.colorText}
+            />
+        );
     }
 });
 
