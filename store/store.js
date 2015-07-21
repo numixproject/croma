@@ -1,7 +1,7 @@
 var data = require("./data.json");
 
 module.exports = {
-    getPalettes() {
+    getAll() {
         var model = [],
             colors, c, p;
 

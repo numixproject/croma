@@ -23,6 +23,10 @@ let styles = StyleSheet.create({
 });
 
 var Full = React.createClass({
+    propTypes: {
+        color: React.PropTypes.object
+    },
+
     getItems(c) {
         return [
             { key: "RGB", value: c.torgb() },
@@ -34,6 +38,7 @@ var Full = React.createClass({
             { key: "Darkness", value: parseFloat(c.darkness()).toFixed(2) }
         ];
     },
+
     render() {
         let c = new Color(this.props.color.color),
             hex = c.tohex(),

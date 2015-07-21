@@ -4,8 +4,8 @@ let React = require("react-native"),
     Page = require("./page.js");
 
 var Details = React.createClass({
-    _handleBackButtonPress() {
-        this.props.navigator.pop();
+    propTypes: {
+        palette: React.PropTypes.object
     },
 
     onPress(color) {

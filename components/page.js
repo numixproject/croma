@@ -12,6 +12,10 @@ let styles = StyleSheet.create({
 });
 
 var Page = React.createClass({
+    propTypes: {
+        children: React.PropTypes.element
+    },
+
     render() {
         return (
             <ScrollView style={[ styles.page, this.props.style ]}>

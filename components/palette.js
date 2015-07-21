@@ -2,7 +2,7 @@ let Constants = require("../constants.json"),
     Card = require("./card.js"),
     React = require("react-native");
 
-let { StyleSheet, View, Text } = React;
+let { StyleSheet, TouchableHighlight, View, Text } = React;
 
 let styles = StyleSheet.create({
     palette: {
@@ -14,20 +14,24 @@ let styles = StyleSheet.create({
         flex: 1
     },
     label: {
-        padding: Constants.spacing * 1.5
+        padding: Constants.spacing * 2
     }
 });
 
 var Palette = React.createClass({
+    propTypes: {
+        palette: React.PropTypes.object
+    },
+
     render() {
         return (
-            <Card {...this.props}>
-                <View>
+            <Card>
+                <TouchableHighlight {...this.props} underlayColor={Constants.colorWhite}>
                     <View style={styles.palette}>
                         {this.props.palette.colors.map(item => <View style={[ styles.color, { backgroundColor: item.color } ]} key={item.color} />)}
                     </View>
-                    <Text style={styles.label}>{this.props.palette.name}</Text>
-                </View>
+                </TouchableHighlight>
+                <Text style={styles.label}>{this.props.palette.name}</Text>
             </Card>
         );
     }

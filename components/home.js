@@ -17,7 +17,7 @@ var Home = React.createClass({
     render() {
         return (
             <Page>
-                {store.getPalettes().map(palette => <Palette palette={palette} key={palette.name} onPress={() => this.onPress(palette)} />)}
+                {store.getAll().map(palette => <Palette palette={palette} key={palette.name} onPress={() => this.onPress(palette)} />)}
             </Page>
         );
     }

@@ -1,31 +1,35 @@
 let Constants = require("../constants.json"),
     React = require("react-native");
 
-let { StyleSheet, TouchableHighlight } = React;
+let { StyleSheet, View } = React;
 
 let styles = StyleSheet.create({
-    card: {
-        backgroundColor: Constants.colorWhite,
-        borderRadius: 2,
+    outer: {
         shadowColor: Constants.colorBlack,
         shadowOffset: { width: 0, height: 0.5 },
-        shadowOpacity: 0.16,
+        shadowOpacity: 0.24,
         shadowRadius: 1.5,
         margin: Constants.spacing / 2
     },
-    wrapper: { flex: 1 }
+    inner: {
+        backgroundColor: Constants.colorWhite,
+        borderRadius: 2,
+        overflow: "hidden"
+    }
 });
 
 var Card = React.createClass({
+    propTypes: {
+        children: React.PropTypes.any
+    },
+
     render() {
         return (
-            <TouchableHighlight
-                {...this.props}
-                style={[ styles.card, this.props.style ]}
-                underlayColor={Constants.colorWhite}
-                >
-                {this.props.children}
-            </TouchableHighlight>
+            <View style={styles.outer}>
+                <View {...this.props} style={[ styles.inner, this.props.style ]}>
+                    {this.props.children}
+                </View>
+            </View>
         );
     }
 });
