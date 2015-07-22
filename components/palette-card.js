@@ -10,15 +10,11 @@ let styles = StyleSheet.create({
         flexDirection: "row",
         height: 100
     },
-    color: {
-        flex: 1
-    },
-    label: {
-        padding: Constants.spacing * 2
-    }
+    color: { flex: 1 },
+    label: { padding: Constants.spacing * 2 }
 });
 
-let Palette = React.createClass({
+let PaletteCard = React.createClass({
     propTypes: {
         palette: React.PropTypes.object
     },
@@ -37,4 +33,4 @@ let Palette = React.createClass({
     }
 });
 
-module.exports = Palette;
+module.exports = PaletteCard;

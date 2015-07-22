@@ -1,7 +1,7 @@
 let Constants = require("../constants.json"),
     React = require("react-native"),
-    Palette = require("./palette.js"),
-    Details = require("./details.js"),
+    PaletteCard = require("./palette-card.js"),
+    Colors = require("./colors.js"),
     store = require("../store/store.js");
 
 let { StyleSheet, ListView } = React;
@@ -17,7 +17,7 @@ let Home = React.createClass({
     onPress(palette) {
         this.props.navigator.push({
             title: palette.name,
-            component: Details,
+            component: Colors,
             rightButtonTitle: "Add",
             passProps: { palette }
         });
@@ -36,7 +36,7 @@ let Home = React.createClass({
             <ListView
                 style={styles.page}
                 dataSource={this.state.dataSource}
-                renderRow={palette => <Palette palette={palette} key={palette.name} onPress={() => this.onPress(palette)} />}
+                renderRow={palette => <PaletteCard palette={palette} key={palette.name} onPress={() => this.onPress(palette)} />}
             />
         );
     }

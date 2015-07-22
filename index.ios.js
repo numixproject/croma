@@ -1,6 +1,6 @@
 let Constants = require("./constants.json"),
     React = require("react-native"),
-    Home = require("./components/home.js");
+    Home = require("./components/palettes.js");
 
 let { AppRegistry, StyleSheet, NavigatorIOS, AlertIOS } = React;
 

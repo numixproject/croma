@@ -1,57 +1,62 @@
 let Constants = require("../constants.json"),
     React = require("react-native"),
-    Palette = require("./palette.js"),
-    Full = require("./full.js");
+    Color = require("pigment/full");
 
-let { StyleSheet, ListView } = React;
+let { StyleSheet, Text, View } = React;
 
 let styles = StyleSheet.create({
-    page: {
-        backgroundColor: Constants.colorLightGray,
-        padding: Constants.spacing / 2
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    header: {
+        fontSize: 36,
+        textAlign: "center",
+        margin: Constants.spacing
+    },
+    info: {
+        flexDirection: "row",
+        textAlign: "center",
+        marginBottom: Constants.spacing
     }
 });
 
-let Details = React.createClass({
+let Full = React.createClass({
     propTypes: {
-        palette: React.PropTypes.object
+        color: React.PropTypes.object
     },
 
-    onPress(color) {
-        this.props.navigator.push({
-            title: color.color,
-            component: Full,
-            passProps: { color }
-        });
-    },
-
-    getInitialState() {
-        let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-
-        return {
-            dataSource: ds.cloneWithRows(this.props.palette.colors)
-        };
-    },
-
-    renderRow(color) {
-        return (
-            <Palette
-                palette={{ name: color.color, colors: [ color ] }}
-                key={color.name}
-                onPress={() => this.onPress(color)}
-            />
-        );
+    getItems(c) {
+        return [
+            { key: "RGB", value: c.torgb() },
+            { key: "HSL", value: c.tohsl() },
+            { key: "HSV", value: c.tohsv() },
+            { key: "HWB", value: c.tohwb() },
+            { key: "CMYK", value: c.tocmyk() },
+            { key: "Luminance", value: parseFloat(c.luminance()).toFixed(2) },
+            { key: "Darkness", value: parseFloat(c.darkness()).toFixed(2) }
+        ];
     },
 
     render() {
+        let c = new Color(this.props.color.color),
+            hex = c.tohex(),
+            darkness = c.darkness();
+
         return (
-            <ListView
-                style={styles.page}
-                dataSource={this.state.dataSource}
-                renderRow={this.renderRow}
-            />
+            <View style={[ styles.container, { backgroundColor: hex } ]}>
+                <Text style={[ styles.header, { color: darkness > 0.4 ? Constants.colorWhite : Constants.colorBlack, opacity: 0.7 } ]}>{hex.toUpperCase()}</Text>
+
+                {this.getItems(c).map(item =>
+                    <View style={styles.info}>
+                        <Text style={{ color: darkness > 0.4 ? Constants.colorWhite : Constants.colorBlack, opacity: 0.5 }}>{item.key} </Text>
+                        <Text style={{ color: darkness > 0.4 ? Constants.colorWhite : Constants.colorBlack }}>{item.value}</Text>
+                    </View>
+                )}
+            </View>
         );
     }
 });
 
-module.exports = Details;
+module.exports = Full;
