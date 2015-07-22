@@ -22,7 +22,7 @@ let styles = StyleSheet.create({
     }
 });
 
-var Full = React.createClass({
+let Full = React.createClass({
     propTypes: {
         color: React.PropTypes.object
     },

@@ -18,7 +18,7 @@ let styles = StyleSheet.create({
     }
 });
 
-var Card = React.createClass({
+let Card = React.createClass({
     propTypes: {
         children: React.PropTypes.any
     },

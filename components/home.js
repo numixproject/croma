@@ -1,10 +1,19 @@
-let React = require("react-native"),
+let Constants = require("../constants.json"),
+    React = require("react-native"),
     Palette = require("./palette.js"),
     Details = require("./details.js"),
-    Page = require("./page.js"),
     store = require("../store/store.js");
 
-var Home = React.createClass({
+let { StyleSheet, ListView } = React;
+
+let styles = StyleSheet.create({
+    page: {
+        backgroundColor: Constants.colorLightGray,
+        padding: Constants.spacing / 2
+    }
+});
+
+let Home = React.createClass({
     onPress(palette) {
         this.props.navigator.push({
             title: palette.name,
@@ -14,11 +23,21 @@ var Home = React.createClass({
         });
     },
 
+    getInitialState() {
+        let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+
+        return {
+            dataSource: ds.cloneWithRows(store.getAll())
+        };
+    },
+
     render() {
         return (
-            <Page>
-                {store.getAll().map(palette => <Palette palette={palette} key={palette.name} onPress={() => this.onPress(palette)} />)}
-            </Page>
+            <ListView
+                style={styles.page}
+                dataSource={this.state.dataSource}
+                renderRow={palette => <Palette palette={palette} key={palette.name} onPress={() => this.onPress(palette)} />}
+            />
         );
     }
 });

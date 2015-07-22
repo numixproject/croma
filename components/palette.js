@@ -18,7 +18,7 @@ let styles = StyleSheet.create({
     }
 });
 
-var Palette = React.createClass({
+let Palette = React.createClass({
     propTypes: {
         palette: React.PropTypes.object
     },
