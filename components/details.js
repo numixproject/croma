@@ -34,7 +34,7 @@ let Full = React.createClass({
             { key: "HSV", value: c.tohsv() },
             { key: "HWB", value: c.tohwb() },
             { key: "CMYK", value: c.tocmyk() },
-            { key: "LAB", value: `lab(${c.lab[0].toFixed(2)},${c.lab[1].toFixed(2)},${c.lab[2].toFixed(2)})` },
+            { key: "LAB", value: `lab(${c.lab[0].toFixed(2)}, ${c.lab[1].toFixed(2)}, ${c.lab[2].toFixed(2)})` },
             { key: "Luminance", value: (c.luminance() * 100).toFixed(2) + "%" },
             { key: "Darkness", value: (c.darkness() * 100).toFixed(2) + "%" }
         ];
