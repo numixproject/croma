@@ -14,10 +14,10 @@ let styles = StyleSheet.create({
     label: { padding: Constants.spacing * 2 }
 });
 
-let PaletteCard = React.createClass({
-    propTypes: {
-        palette: React.PropTypes.object
-    },
+class PaletteCard extends React.Component {
+    constructor(props) {
+        super(props);
+    }
 
     render() {
         return (
@@ -31,6 +31,10 @@ let PaletteCard = React.createClass({
             </Card>
         );
     }
-});
+}
+
+PaletteCard.propTypes = {
+    palette: React.PropTypes.object
+};
 
 module.exports = PaletteCard;

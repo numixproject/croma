@@ -1,6 +1,6 @@
 let Constants = require("./constants.json"),
     React = require("react-native"),
-    Home = require("./components/palettes.js");
+    Home = require("./components/home.js");
 
 let { AppRegistry, StyleSheet, NavigatorIOS, AlertIOS } = React;
 
@@ -8,7 +8,11 @@ let styles = StyleSheet.create({
     nav: { flex: 1 }
 });
 
-var croma = React.createClass({
+class croma extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return (
             <NavigatorIOS
@@ -31,6 +35,6 @@ var croma = React.createClass({
             />
         );
     }
-});
+}
 
 AppRegistry.registerComponent("croma", () => croma);

@@ -13,7 +13,17 @@ let styles = StyleSheet.create({
     }
 });
 
-let Home = React.createClass({
+class Home extends React.Component {
+    constructor(props) {
+        super(props);
+
+        let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+
+        this.state = {
+            dataSource: ds.cloneWithRows(store.getAll())
+        };
+    }
+
     onPress(palette) {
         this.props.navigator.push({
             title: palette.name,
@@ -21,15 +31,7 @@ let Home = React.createClass({
             rightButtonTitle: "Add",
             passProps: { palette }
         });
-    },
-
-    getInitialState() {
-        let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-
-        return {
-            dataSource: ds.cloneWithRows(store.getAll())
-        };
-    },
+    }
 
     render() {
         return (
@@ -40,6 +42,6 @@ let Home = React.createClass({
             />
         );
     }
-});
+}
 
 module.exports = Home;

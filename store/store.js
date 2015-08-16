@@ -1,16 +1,15 @@
-var data = require("./data.json");
+let data = require("./data.json");
 
-module.exports = {
+class Store {
     getAll() {
-        var model = [],
-            colors, c, p;
+        let model = [];
 
-        for (var palette in data) {
-            colors = [];
-            p = data[palette];
+        for (let palette in data) {
+            let colors = [],
+                p = data[palette];
 
             if (p && p.colors) {
-                c = p.colors;
+                let c = p.colors;
 
                 for (var color in c) {
                     colors.push({ color, time: c && c[color] ? c.created : Date.now() });
@@ -22,4 +21,6 @@ module.exports = {
 
         return model;
     }
-};
+}
+
+module.exports = new Store();

@@ -22,10 +22,10 @@ let styles = StyleSheet.create({
     }
 });
 
-let Full = React.createClass({
-    propTypes: {
-        color: React.PropTypes.object
-    },
+class Full extends React.Component {
+    constructor(props) {
+        super(props);
+    }
 
     getItems(c) {
         return [
@@ -38,7 +38,7 @@ let Full = React.createClass({
             { key: "Luminance", value: (c.luminance() * 100).toFixed(2) + "%" },
             { key: "Darkness", value: (c.darkness() * 100).toFixed(2) + "%" }
         ];
-    },
+    }
 
     render() {
         let c = new Color(this.props.color.color),
@@ -58,6 +58,10 @@ let Full = React.createClass({
             </View>
         );
     }
-});
+}
+
+Full.propTypes = {
+    color: React.PropTypes.object
+};
 
 module.exports = Full;

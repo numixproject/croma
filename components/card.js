@@ -18,10 +18,10 @@ let styles = StyleSheet.create({
     }
 });
 
-let Card = React.createClass({
-    propTypes: {
-        children: React.PropTypes.any
-    },
+class Card extends React.Component {
+    constructor(props) {
+        super(props);
+    }
 
     render() {
         return (
@@ -32,6 +32,10 @@ let Card = React.createClass({
             </View>
         );
     }
-});
+}
+
+Card.propTypes = {
+    children: React.PropTypes.any
+};
 
 module.exports = Card;

@@ -9,10 +9,10 @@ let styles = StyleSheet.create({
     label: { padding: Constants.spacing * 2 }
 });
 
-let ColorCard = React.createClass({
-    propTypes: {
-        color: React.PropTypes.object
-    },
+class ColorCard extends React.Component {
+    constructor(props) {
+        super(props);
+    }
 
     render() {
         return (
@@ -24,6 +24,10 @@ let ColorCard = React.createClass({
             </Card>
         );
     }
-});
+}
+
+ColorCard.propTypes = {
+    color: React.PropTypes.object
+};
 
 module.exports = ColorCard;

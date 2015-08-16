@@ -1,7 +1,7 @@
 let Constants = require("../constants.json"),
     React = require("react-native"),
     ColorCard = require("./color-card.js"),
-    Details = require("./details.js");
+    Details = require("./full.js");
 
 let { StyleSheet, ListView } = React;
 
@@ -12,10 +12,16 @@ let styles = StyleSheet.create({
     }
 });
 
-let Colors = React.createClass({
-    propTypes: {
-        palette: React.PropTypes.object
-    },
+class Colors extends React.Component {
+    constructor(props) {
+        super(props);
+
+        let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+
+        this.state = {
+            dataSource: ds.cloneWithRows(this.props.palette.colors)
+        };
+    }
 
     onPress(color) {
         this.props.navigator.push({
@@ -23,15 +29,7 @@ let Colors = React.createClass({
             component: Details,
             passProps: { color }
         });
-    },
-
-    getInitialState() {
-        let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-
-        return {
-            dataSource: ds.cloneWithRows(this.props.palette.colors)
-        };
-    },
+    }
 
     renderRow(color) {
         return (
@@ -41,17 +39,22 @@ let Colors = React.createClass({
                 onPress={() => this.onPress(color)}
             />
         );
-    },
+    }
 
     render() {
         return (
             <ListView
                 style={styles.page}
                 dataSource={this.state.dataSource}
-                renderRow={this.renderRow}
+                renderRow={this.renderRow.bind(this)}
             />
         );
     }
-});
+}
+
+Colors.propTypes = {
+    palette: React.PropTypes.object
+};
+
 
 module.exports = Colors;
