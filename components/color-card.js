@@ -1,12 +1,20 @@
 let Constants = require("../constants.json"),
     Card = require("./card.js"),
+    CardAction = require("./card-action.js"),
     React = require("react-native");
 
 let { StyleSheet, TouchableHighlight, View, Text } = React;
 
 let styles = StyleSheet.create({
     color: { height: 100 },
-    label: { padding: Constants.spacing * 2 }
+    bottom: {
+        flexDirection: "row",
+        alignItems: "flex-end"
+    },
+    label: {
+        flex: 1,
+        padding: Constants.spacing * 2
+    }
 });
 
 class ColorCard extends React.Component {
@@ -20,7 +28,10 @@ class ColorCard extends React.Component {
                 <TouchableHighlight {...this.props} underlayColor={Constants.colorWhite}>
                     <View style={[ styles.color, { backgroundColor: this.props.color.color } ]} />
                 </TouchableHighlight>
-                <Text style={styles.label}>{this.props.color.color}</Text>
+                <View style={styles.bottom}>
+                    <Text style={styles.label}>{this.props.color.color}</Text>
+                    <CardAction name="delete" />
+                </View>
             </Card>
         );
     }
