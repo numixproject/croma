@@ -8,6 +8,7 @@
   "dependencies": {
     "pigment": "latest",
     "react-native": "^0.7.1",
+    "react-native-clipboard": "0.0.1",
     "react-native-icons": "^0.3.6",
     "react-native-vector-icons": "^0.6.9",
     "react-redux": "^1.0.1",

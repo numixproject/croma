@@ -1,30 +1,37 @@
 let Constants = require("../constants.json"),
     React = require("react-native"),
+    Clipboard = require("react-native-clipboard"),
     Color = require("pigment/full");
 
-let { StyleSheet, Text, View } = React;
+let { StyleSheet, Text, View, TouchableHighlight } = React;
 
 let styles = StyleSheet.create({
     container: {
         flex: 1,
+        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center"
     },
     header: {
         fontSize: 36,
         textAlign: "center",
-        margin: Constants.spacing
+        margin: Constants.spacing,
+        opacity: 0.7
     },
     info: {
         flexDirection: "row",
         textAlign: "center",
-        marginBottom: Constants.spacing
-    }
+        margin: Constants.spacing
+    },
+    key: { opacity: 0.5 },
+    hint: { margin: Constants.spacing * 2 }
 });
 
 class Full extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state = { copied: null };
     }
 
     getItems(c) {
@@ -40,21 +47,33 @@ class Full extends React.Component {
         ];
     }
 
+    copyToClipboard(text) {
+        Clipboard.set(text);
+
+        this.setState({ copied: true });
+
+        setTimeout(() => this.setState({ copied: null }), 1500);
+    }
+
     render() {
         let c = new Color(this.props.color.color),
             hex = c.tohex(),
-            darkness = c.darkness();
+            color = c.darkness() > 0.4 ? Constants.colorWhite : Constants.colorBlack;
 
         return (
             <View style={[ styles.container, { backgroundColor: hex } ]}>
-                <Text style={[ styles.header, { color: darkness > 0.4 ? Constants.colorWhite : Constants.colorBlack, opacity: 0.7 } ]}>{hex.toUpperCase()}</Text>
+                <Text style={[ styles.header, { color } ]}>{hex.toUpperCase()}</Text>
 
                 {this.getItems(c).map(item =>
-                    <View style={styles.info}>
-                        <Text style={{ color: darkness > 0.4 ? Constants.colorWhite : Constants.colorBlack, opacity: 0.5 }}>{item.key} </Text>
-                        <Text style={{ color: darkness > 0.4 ? Constants.colorWhite : Constants.colorBlack }}>{item.value}</Text>
-                    </View>
+                    <TouchableHighlight underlayColor={"rgba(0, 0, 0, .1)"} onPress={() => this.copyToClipboard(item.value)}>
+                        <View style={styles.info}>
+                            <Text style={[ styles.key, { color } ]}>{item.key} </Text>
+                            <Text style={{ color }}>{item.value}</Text>
+                        </View>
+                    </TouchableHighlight>
                 )}
+
+                <Text style={[ styles.hint, { color } ]}>{this.state.copied ? "Copied to clipboard!" : "Tap an item to copy"}</Text>
             </View>
         );
     }
