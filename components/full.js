@@ -52,7 +52,11 @@ class Full extends React.Component {
 
         this.setState({ copied: true });
 
-        setTimeout(() => this.setState({ copied: null }), 1500);
+        if (this.copyTimeout) {
+            clearTimeout(this.copyTimeout);
+        }
+
+        this.copyTimeout = setTimeout(() => this.setState({ copied: null }), 1500);
     }
 
     render() {
