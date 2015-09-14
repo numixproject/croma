@@ -8,7 +8,7 @@ let styles = StyleSheet.create({
     nav: { flex: 1 }
 });
 
-class croma extends React.Component {
+class Croma extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -37,4 +37,4 @@ class croma extends React.Component {
     }
 }
 
-AppRegistry.registerComponent("croma", () => croma);
+AppRegistry.registerComponent("Croma", () => Croma);

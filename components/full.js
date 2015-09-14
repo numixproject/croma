@@ -21,6 +21,7 @@ let styles = StyleSheet.create({
     info: {
         flexDirection: "row",
         textAlign: "center",
+        borderRadius: 2,
         margin: Constants.spacing
     },
     key: { opacity: 0.5 },
