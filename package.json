@@ -7,13 +7,14 @@
   },
   "dependencies": {
     "pigment": "latest",
-    "react-native": "^0.10.1",
+    "react-native": "^0.11.0",
     "react-native-clipboard": "^0.0.1",
     "react-native-vector-icons": "^0.6.11"
   },
   "devDependencies": {
-    "babel-eslint": "latest",
-    "eslint": "latest",
-    "eslint-plugin-react": "latest"
+    "babel": "^5.8.23",
+    "babel-eslint": "^4.1.2",
+    "eslint": "^1.4.1",
+    "eslint-plugin-react": "^3.3.2"
   }
 }
