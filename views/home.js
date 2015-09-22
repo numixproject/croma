@@ -2,7 +2,6 @@ import React from "react-native";
 import PaletteCard from "./palette-card";
 import Colors from "./colors";
 import store from "../store/store";
-import Constants from "../constants.json";
 
 const {
     ListView
