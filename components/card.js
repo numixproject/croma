@@ -5,11 +5,8 @@ let { StyleSheet, View } = React;
 
 let styles = StyleSheet.create({
     outer: {
-        shadowColor: Constants.colorBlack,
-        shadowOffset: { width: 0, height: 0.5 },
-        shadowOpacity: 0.24,
-        shadowRadius: 1.5,
-        margin: Constants.spacing / 2
+        marginVertical: Constants.spacing / 2,
+        marginHorizontal: Constants.spacing
     },
     inner: {
         backgroundColor: Constants.colorWhite,

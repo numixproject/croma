@@ -9,11 +9,11 @@ let styles = StyleSheet.create({
     color: { height: 100 },
     bottom: {
         flexDirection: "row",
-        alignItems: "flex-end"
+        alignItems: "center"
     },
     label: {
         flex: 1,
-        padding: Constants.spacing * 2
+        marginHorizontal: Constants.spacing * 2
     }
 });
 

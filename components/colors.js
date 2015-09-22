@@ -3,14 +3,9 @@ let Constants = require("../constants.json"),
     ColorCard = require("./color-card.js"),
     Details = require("./full.js");
 
-let { StyleSheet, ListView } = React;
-
-let styles = StyleSheet.create({
-    page: {
-        backgroundColor: Constants.colorLightGray,
-        padding: Constants.spacing / 2
-    }
-});
+let {
+    ListView
+} = React;
 
 class Colors extends React.Component {
     constructor(props) {
@@ -44,7 +39,7 @@ class Colors extends React.Component {
     render() {
         return (
             <ListView
-                style={styles.page}
+                {...this.props}
                 dataSource={this.state.dataSource}
                 renderRow={this.renderRow.bind(this)}
             />
