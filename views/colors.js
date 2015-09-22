@@ -1,13 +1,12 @@
-let Constants = require("../constants.json"),
-    React = require("react-native"),
-    ColorCard = require("./color-card.js"),
-    Details = require("./full.js");
+import React from "react-native";
+import ColorCard from "./color-card";
+import Details from "./full";
 
-let {
+const {
     ListView
 } = React;
 
-class Colors extends React.Component {
+export default class Colors extends React.Component {
     constructor(props) {
         super(props);
 
@@ -50,6 +49,3 @@ class Colors extends React.Component {
 Colors.propTypes = {
     palette: React.PropTypes.object
 };
-
-
-module.exports = Colors;

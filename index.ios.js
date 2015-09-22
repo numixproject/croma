@@ -1,14 +1,19 @@
-let Constants = require("./constants.json"),
-    React = require("react-native"),
-    Home = require("./components/home.js");
+import React from "react-native";
+import Constants from "./constants.json";
+import Home from "./views/home";
 
-let { AppRegistry, StyleSheet, NavigatorIOS, AlertIOS } = React;
+const {
+    AppRegistry,
+    StyleSheet,
+    NavigatorIOS,
+    AlertIOS
+} = React;
 
-let styles = StyleSheet.create({
+const styles = StyleSheet.create({
     nav: { flex: 1 }
 });
 
-class Croma extends React.Component {
+export default class Croma extends React.Component {
     constructor(props) {
         super(props);
     }

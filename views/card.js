@@ -1,9 +1,12 @@
-let Constants = require("../constants.json"),
-    React = require("react-native");
+import React from "react-native";
+import Constants from "../constants.json";
 
-let { StyleSheet, View } = React;
+const {
+    StyleSheet,
+    View
+} = React;
 
-let styles = StyleSheet.create({
+const styles = StyleSheet.create({
     outer: {
         marginVertical: Constants.spacing / 2,
         marginHorizontal: Constants.spacing
@@ -15,11 +18,7 @@ let styles = StyleSheet.create({
     }
 });
 
-class Card extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
+export default class Card extends React.Component {
     render() {
         return (
             <View style={styles.outer}>
@@ -34,5 +33,3 @@ class Card extends React.Component {
 Card.propTypes = {
     children: React.PropTypes.any
 };
-
-module.exports = Card;

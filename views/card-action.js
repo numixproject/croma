@@ -1,9 +1,12 @@
-let React = require("react-native"),
-    Icon = require("react-native-vector-icons/MaterialIcons");
+import React from "react-native";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
-let { StyleSheet, TouchableHighlight } = React;
+const {
+    StyleSheet,
+    TouchableHighlight
+} = React;
 
-let styles = StyleSheet.create({
+const styles = StyleSheet.create({
     icon: {
         flex: 0,
         height: 48,
@@ -11,11 +14,7 @@ let styles = StyleSheet.create({
     }
 });
 
-class PaletteCard extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
+export default class CardAction extends React.Component {
     render() {
         return (
             <TouchableHighlight underlayColor={"rgba(0, 0, 0, .1)"}>
@@ -25,8 +24,6 @@ class PaletteCard extends React.Component {
     }
 }
 
-PaletteCard.propTypes = {
+CardAction.propTypes = {
     palette: React.PropTypes.object
 };
-
-module.exports = PaletteCard;

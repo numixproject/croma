@@ -1,8 +1,8 @@
-let Constants = require("./constants.json"),
-    React = require("react-native"),
-    Home = require("./components/home.js");
+import React from "react-native";
+import Constants from "./constants.json";
+import Home from "./views/home";
 
-let {
+const {
     AppRegistry,
     Navigator,
     Text,
@@ -66,7 +66,7 @@ const NavigationBarRouteMapper = {
     }
 };
 
-class Croma extends React.Component {
+export default class Croma extends React.Component {
     constructor(props) {
         super(props);
     }

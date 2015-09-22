@@ -1,14 +1,14 @@
-let Constants = require("../constants.json"),
-    React = require("react-native"),
-    PaletteCard = require("./palette-card.js"),
-    Colors = require("./colors.js"),
-    store = require("../store/store.js");
+import React from "react-native";
+import PaletteCard from "./palette-card";
+import Colors from "./colors";
+import store from "../store/store";
+import Constants from "../constants.json";
 
-let {
+const {
     ListView
 } = React;
 
-class Home extends React.Component {
+export default class Home extends React.Component {
     constructor(props) {
         super(props);
 
@@ -38,5 +38,3 @@ class Home extends React.Component {
         );
     }
 }
-
-module.exports = Home;

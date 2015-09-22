@@ -1,11 +1,16 @@
-let Constants = require("../constants.json"),
-    React = require("react-native"),
-    Clipboard = require("react-native-clipboard"),
-    Color = require("pigment/full");
+import React from "react-native";
+import Clipboard from "../modules/clipboard";
+import Color from "pigment/full";
+import Constants from "../constants.json";
 
-let { StyleSheet, Text, View, TouchableHighlight } = React;
+const {
+    StyleSheet,
+    Text,
+    View,
+    TouchableHighlight
+} = React;
 
-let styles = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: "column",
@@ -28,7 +33,7 @@ let styles = StyleSheet.create({
     hint: { margin: Constants.spacing * 2 }
 });
 
-class Full extends React.Component {
+export default class Full extends React.Component {
     constructor(props) {
         super(props);
 
@@ -87,5 +92,3 @@ class Full extends React.Component {
 Full.propTypes = {
     color: React.PropTypes.object
 };
-
-module.exports = Full;

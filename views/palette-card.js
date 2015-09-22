@@ -1,11 +1,16 @@
-let Constants = require("../constants.json"),
-    Card = require("./card.js"),
-    CardAction = require("./card-action.js"),
-    React = require("react-native");
+import React from "react-native";
+import Card from "./card";
+import CardAction from "./card-action";
+import Constants from "../constants.json";
 
-let { StyleSheet, TouchableHighlight, View, Text } = React;
+const {
+    StyleSheet,
+    TouchableHighlight,
+    View,
+    Text
+} = React;
 
-let styles = StyleSheet.create({
+const styles = StyleSheet.create({
     palette: {
         alignItems: "stretch",
         flexDirection: "row",
@@ -22,7 +27,7 @@ let styles = StyleSheet.create({
     }
 });
 
-class PaletteCard extends React.Component {
+export default class PaletteCard extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -48,5 +53,3 @@ class PaletteCard extends React.Component {
 PaletteCard.propTypes = {
     palette: React.PropTypes.object
 };
-
-module.exports = PaletteCard;
