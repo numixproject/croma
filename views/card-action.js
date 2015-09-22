@@ -1,5 +1,5 @@
 import React from "react-native";
-import Icon from "react-native-vector-icons/MaterialIcons";
+import Icon from "./icon";
 
 const {
     StyleSheet,
@@ -10,15 +10,18 @@ const styles = StyleSheet.create({
     icon: {
         flex: 0,
         height: 48,
-        padding: 14
+        width: 48,
+        alignItems: "center",
+        justifyContent: "center",
+        opacity: .7
     }
 });
 
 export default class CardAction extends React.Component {
     render() {
         return (
-            <TouchableHighlight underlayColor={"rgba(0, 0, 0, .1)"}>
-                <Icon size={20} color="#555" style={styles.icon} {...this.props} />
+            <TouchableHighlight {...this.props} underlayColor={"rgba(0, 0, 0, .1)"}>
+                <Icon color="black" name={this.props.name} style={styles.icon} />
             </TouchableHighlight>
         );
     }

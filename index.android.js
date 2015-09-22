@@ -1,6 +1,7 @@
 import React from "react-native";
 import Constants from "./constants.json";
 import Home from "./views/home";
+import Icon from "./views/icon";
 
 const {
     AppRegistry,
@@ -42,7 +43,7 @@ const NavigationBarRouteMapper = {
 
         return (
             <TouchableOpacity onPress={() => navigator.pop()}>
-                <Image source={require("image!ic_back_white")} style={styles.icon} />
+                <Icon name="back" color="white" style={styles.icon} />
             </TouchableOpacity>
         );
     },
