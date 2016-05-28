@@ -11,6 +11,10 @@
     "sourceType": "module",
   },
 
+  "plugins": [
+    "import",
+  ],
+
   "rules": {
     "comma-dangle": 0,
     "max-depth": 0,

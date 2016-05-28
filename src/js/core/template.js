@@ -64,12 +64,4 @@ class Template {
     }
 }
 
-if (typeof define === 'function' && define.amd) {
-    // Define as AMD module
-    define(() => Template);
-} else if (typeof module !== 'undefined' && module.exports) {
-    // Export to CommonJS
-    module.exports = Template;
-} else {
-    window.Template = Template;
-}
+module.exports = Template; // eslint-disable-line import/no-commonjs

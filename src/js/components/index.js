@@ -1,6 +1,6 @@
 import $ from 'jquery';
-import App from '.././core/app.js';
-import utils from '.././utils.js';
+import App from '.././core/app';
+import utils from '.././utils';
 
 App.IndexRoute.tags = [ 'home', 'add' ];
 

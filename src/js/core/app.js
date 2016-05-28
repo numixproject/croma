@@ -1,6 +1,6 @@
 import $ from 'jquery';
-import Events from './events.js';
-import Template from './template.js';
+import Events from './events';
+import Template from './template';
 
 // The app is basically an event emitter with additional methods
 const App = new Events();

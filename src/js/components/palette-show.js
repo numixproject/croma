@@ -1,5 +1,5 @@
-import App from '../core/app.js';
-import utils from '../utils.js';
+import App from '../core/app';
+import utils from '../utils';
 
 function savePalette(state, model) {
     const isPro = utils.isPro();

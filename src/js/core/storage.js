@@ -120,12 +120,4 @@ const Storage = ((() => {
     };
 })());
 
-if (typeof define === 'function' && define.amd) {
-    // Define as AMD module
-    define(() => Storage);
-} else if (typeof module !== 'undefined' && module.exports) {
-    // Export to CommonJS
-    module.exports = Storage;
-} else {
-    window.Storage = Storage;
-}
+export default Storage;

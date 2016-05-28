@@ -1,4 +1,4 @@
-class Events {
+export default class Events {
     constructor() {
         this._callbacks = {};
     }
@@ -41,14 +41,4 @@ class Events {
             }
         }
     }
-}
-
-if (typeof define === 'function' && define.amd) {
-    // Define as AMD module
-    define(() => Events);
-} else if (typeof module !== 'undefined' && module.exports) {
-    // Export to CommonJS
-    module.exports = Events;
-} else {
-    window.Events = Events;
 }

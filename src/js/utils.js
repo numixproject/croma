@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import Color from 'pigment/full';
-import Storage from './core/storage.js';
-import fxos from './fxos.js';
+import Storage from './core/storage';
+import fxos from './fxos';
 
 const utils = (() => {
     const productId = 'ultimate';

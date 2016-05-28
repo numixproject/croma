@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import Color from 'pigment';
-import App from '../core/app.js';
-import utils from '../utils.js';
+import App from '../core/app';
+import utils from '../utils';
 
 App.DetailsRoute.model = state => {
     const color = state.params ? state.params.color : null;
