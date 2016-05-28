@@ -1,6 +1,5 @@
 var gulp = require("gulp"),
     del = require("del"),
-    bower = require("bower"),
     browserify = require("browserify"),
     watchify = require("watchify"),
     babelify = require("babelify"),
@@ -79,14 +78,9 @@ function bundle(file, opts, cb) {
     }
 }
 
-gulp.task("bower", function() {
-    return bower.commands.install([], { save: true }, {})
-    .on("error", onerror);
-});
-
 // Bump version and do a new release
 gulp.task("bump", function() {
-    return gulp.src([ "package.json", "bower.json", "manifest.webapp" ])
+    return gulp.src([ "package.json", "manifest.webapp" ])
     .pipe(plumber({ errorHandler: onerror }))
     .pipe(bump())
     .pipe(gulp.dest("."));
@@ -96,7 +90,7 @@ gulp.task("release", [ "bump" ], function() {
     var version = require("./package.json").version,
         message = "Release " + version;
 
-    return gulp.src([ "package.json", "bower.json", "manifest.webapp" ])
+    return gulp.src([ "package.json", "manifest.webapp" ])
     .pipe(plumber({ errorHandler: onerror }))
     .pipe(git.add())
     .pipe(git.commit(message))

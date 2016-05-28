@@ -1,31 +1,31 @@
-var App = require("../core/app.js"),
-    utils = require("../utils.js");
+import $ from 'jquery';
+import App from '../core/app.js';
+import utils from '../utils.js';
 
-App.PaletteNameRoute.tags = [ "action" ];
+App.PaletteNameRoute.tags = [ 'action' ];
 
-App.PaletteNameRoute.model = function(state) {
-    var rename = state.params ? state.params.rename : null,
-        oldname = state.params ? state.params.oldname : null,
-        title, placeholder;
+App.PaletteNameRoute.model = state => {
+    const rename = state.params ? state.params.rename : null;
+    const oldname = state.params ? state.params.oldname : null;
+    let title;
+    let placeholder;
 
     if (rename) {
-        title = "Rename palette";
-        placeholder = "Enter new name for " + oldname;
+        title = 'Rename palette';
+        placeholder = `Enter new name for ${oldname}`;
     } else {
-        title = "Add new palette";
-        placeholder = "Enter a name for the palette";
+        title = 'Add new palette';
+        placeholder = 'Enter a name for the palette';
     }
 
     return {
-        title: title,
-        placeholder: placeholder
+        title,
+        placeholder
     };
 };
 
-App.PaletteNameRoute.afterRender = function(...args) {
-    var state = args[0],
-        suggested = state.params ? state.params.suggested : null,
-        $input = $("#palette-name");
+App.PaletteNameRoute.afterRender = (...args) => {
+    const state = args[0], suggested = state.params ? state.params.suggested : null, $input = $('#palette-name');
 
     // Prefill palette name
     if (utils.validateName(suggested)) {
@@ -34,20 +34,20 @@ App.PaletteNameRoute.afterRender = function(...args) {
 
     $input.focus();
 
-    App.setTitle("");
+    App.setTitle('');
 
     App.Global.afterRender(...args);
 };
 
 App.PaletteNameRoute.actions = {
-    done: function(state) {
-        var palette = $("#palette-name").val() || "",
-            oldname = state.params ? state.params.oldname : null,
-            data = {};
+    done(state) {
+        const palette = $('#palette-name').val() || '';
+        const oldname = state.params ? state.params.oldname : null;
+        let data = {};
 
         if (!utils.validateName(palette)) {
             utils.showToast({
-                body: "Invalid palette name " + palette + ".",
+                body: `Invalid palette name ${palette}.`,
                 timeout: 3000
             });
 
@@ -56,7 +56,7 @@ App.PaletteNameRoute.actions = {
 
         if (utils.getData(palette)) {
             utils.showToast({
-                body: "A palette with same name already exists.",
+                body: 'A palette with same name already exists.',
                 timeout: 3000
             });
 
@@ -74,8 +74,8 @@ App.PaletteNameRoute.actions = {
         App.vars.actionDone = true;
 
         App.transitionTo({
-            route: "colors",
-            params: { palette: palette }
+            route: 'colors',
+            params: { palette }
         });
     }
 };

@@ -1,53 +1,54 @@
-var Color = require("pigment/full"),
-    App = require("../core/app.js"),
-    utils = require("../utils.js"),
-    value = "#f06860";
+import $ from 'jquery';
+import Color from 'pigment/full';
+import App from '../core/app.js';
+import utils from '../utils.js';
 
-App.PickerRoute.tags = [ "action" ];
+let value = '#f06860';
+
+App.PickerRoute.tags = [ 'action' ];
 
 function renderHues() {
-    var colors = [
-            "#f50057", "#db0A5b", "#c51162", "#9c27b0", "#673ab7", "#4b77be", "#2196f3", "#03a9f4", "#00bcd4", "#1bbc9b",
-            "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#f44336", "#e00032"
-        ],
-        c, divs = "";
+    const colors = [
+        '#f50057', '#db0A5b', '#c51162', '#9c27b0', '#673ab7', '#4b77be', '#2196f3', '#03a9f4', '#00bcd4', '#1bbc9b',
+        '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#f44336', '#e00032'
+    ];
 
-    for (var i = 0; i < 20; i++) {
+    let c;
+    let divs = '';
+
+    for (let i = 0; i < 20; i++) {
         c = new Color(colors[i]);
 
-        divs += '<div class="picker-color-cell" style="background-color: ' + c.tohex() + '" data-hue="' + c.hsl[0] + '"></div>';
+        divs += `<div class="picker-color-cell" style="background-color: ${c.tohex()}" data-hue="${c.hsl[0]}"></div>`;
     }
 
     return divs;
 }
 
 function renderShades(h) {
-    var w = 100, b,
-        color,
-        divs = "";
+    let w = 100, b, color, divs = '';
 
-    for (var i = 0; i < 8; i++) {
+    for (let i = 0; i < 8; i++) {
         b = 10;
 
-        for (var j = 0; j < 10; j++) {
-            color = new Color("hsl(" + h + "," + w + "," + b + ")").tohex();
+        for (let j = 0; j < 10; j++) {
+            color = new Color(`hsl(${h},${w},${b})`).tohex();
 
-            divs += '<div class="picker-color-cell" style="background-color: ' + color + '"></div>';
+            divs += `<div class="picker-color-cell" style="background-color: ${color}"></div>`;
 
             b += 9;
         }
 
-        w = w - 12;
+        w -= 12;
     }
 
     return divs;
 }
 
 function setColor(color, update) {
-    var $colorbutton = $(".picker-color-button"),
-        $text = $(".picker-input");
+    const $colorbutton = $('.picker-color-button'), $text = $('.picker-input');
 
-    if (!(color && color !== "undefined")) {
+    if (!(color && color !== 'undefined')) {
         return;
     }
 
@@ -57,13 +58,11 @@ function setColor(color, update) {
         $text.val(value);
     }
 
-    $colorbutton.css({ "background-color": value });
+    $colorbutton.css({ 'background-color': value });
 }
 
 function updateColor(target) {
-    var $shades = $(".picker-shades"),
-        hue = $(target).data("hue"),
-        color = $(target).css("background-color");
+    const $shades = $('.picker-shades'), hue = $(target).data('hue'), color = $(target).css('background-color');
 
     setColor(color);
 
@@ -72,14 +71,8 @@ function updateColor(target) {
     }
 }
 
-App.PickerRoute.afterRender = function(...args) {
-    var $picker = $(".picker-wrapper"),
-        $hues = $picker.find(".picker-hues"),
-        $shades = $picker.find(".picker-shades"),
-        $text = $(".picker-input"),
-        startEvent = "touchstart mousedown pointerdown",
-        moveEvent = "touchmove mousemove pointermove",
-        endEvent = "touchend touchleave touchcancel mouseup pointerup";
+App.PickerRoute.afterRender = (...args) => {
+    const $picker = $('.picker-wrapper'), $hues = $picker.find('.picker-hues'), $shades = $picker.find('.picker-shades'), $text = $('.picker-input'), startEvent = 'touchstart mousedown pointerdown', moveEvent = 'touchmove mousemove pointermove', endEvent = 'touchend touchleave touchcancel mouseup pointerup';
 
     setColor(value);
 
@@ -92,19 +85,19 @@ App.PickerRoute.afterRender = function(...args) {
     $picker.on(startEvent, function(e) {
         updateColor(e.target);
 
-        $(this).on(moveEvent, function(ev) {
+        $(this).on(moveEvent, ev => {
             updateColor(ev.target);
         });
     }).on(endEvent, function() {
         $(this).off(moveEvent);
     });
 
-    $picker.on("click", ".picker-color-cell", function() {
+    $picker.on('click', '.picker-color-cell', function() {
         updateColor(this);
     });
 
-    $text.on("DOMSubtreeModified input paste change", function() {
-        var color = $(this).val();
+    $text.on('DOMSubtreeModified input paste change', function() {
+        const color = $(this).val();
 
         if (!(color && color.length > 2)) {
             return;
@@ -113,24 +106,23 @@ App.PickerRoute.afterRender = function(...args) {
         setColor(color, false);
     });
 
-    App.setTitle("");
+    App.setTitle('');
 
     App.Global.afterRender(...args);
 };
 
 App.PickerRoute.actions = {
-    done: function(state) {
-        var palette = state.params ? state.params.palette : null,
-            color, data;
+    done(state) {
+        const palette = state.params ? state.params.palette : null;
 
-        if ((!value) || typeof value !== "string") {
+        if ((!value) || typeof value !== 'string') {
             return;
         }
 
-        color = new Color(value).tohex();
+        const color = new Color(value).tohex();
 
         if (utils.validateName(palette)) {
-            data = utils.getData(palette);
+            const data = utils.getData(palette);
 
             if (data) {
                 data.colors = data.colors || {};
@@ -144,13 +136,13 @@ App.PickerRoute.actions = {
             App.vars.actiondone = true;
 
             App.transitionTo({
-                route: "colors",
-                params: { palette: palette }
+                route: 'colors',
+                params: { palette }
             });
         } else {
             App.transitionTo({
-                route: "palettes",
-                params: { color: color }
+                route: 'palettes',
+                params: { color }
             });
         }
     }

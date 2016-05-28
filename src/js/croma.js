@@ -1,21 +1,19 @@
-window.jQuery = window.$ = require("../../bower_components/jquery/dist/jquery.min.js"); // Include jQuery
-
-require("babelify/polyfill"); // Include ES6 polyfills
-
-let App = require("./core/app"),
-    animations = require("./animations");
+import $ from 'jquery';
+import 'babel-polyfill';
+import App from './core/app';
+import animations from './animations';
 
 // Handle URL opening in Firefox OS
-if ("mozSetMessageHandler" in navigator) {
+if ('mozSetMessageHandler' in navigator) {
     // Handle opening of URLs
-    navigator.mozSetMessageHandler("activity", (a) => {
-        let url = a.source.data.url;
+    navigator.mozSetMessageHandler('activity', (a) => {
+        const url = a.source.data.url;
 
-        if (typeof url !== "string") {
+        if (typeof url !== 'string') {
             return;
         }
 
-        App.transitionTo(App.parseURL(url.replace(/^((https?:\/\/croma.numixproject.org)|(croma:\/\/))/, "")));
+        App.transitionTo(App.parseURL(url.replace(/^((https?:\/\/croma.numixproject.org)|(croma:\/\/))/, '')));
     });
 }
 
@@ -26,10 +24,10 @@ App.vars = {
 };
 
 // Set app title
-let $appTitle = $("#app-title");
+const $appTitle = $('#app-title');
 
 App.setTitle = (title) => {
-    if (typeof title !== "string") {
+    if (typeof title !== 'string') {
         return;
     }
 
@@ -38,21 +36,21 @@ App.setTitle = (title) => {
 
 // Add animations after route is rendered
 App.Global.afterRender = () => {
-    var cls = [ "fade-in", "scale-in" ];
+    const cls = [ 'fade-in', 'scale-in' ];
 
     // Add ripple animation
-    animations.ripple(".fx-ripple");
+    animations.ripple('.fx-ripple');
 
     // Animate elements
     cls.forEach((c) => {
-        $(".fx-" + c).addClass(c);
+        $(`.fx-${c}`).addClass(c);
     });
 };
 
 // Provide global actions
 App.Global.actions = {
     goback: () => {
-        if (App.oldState && App.oldState.route !==  App.currentState.route && !App.vars.actionDone) {
+        if (App.oldState && App.oldState.route !== App.currentState.route && !App.vars.actionDone) {
             if (window.history.length > 1) {
                 window.history.back();
             } else {
@@ -61,30 +59,30 @@ App.Global.actions = {
 
             App.vars.actionDone = false;
         } else {
-            App.transitionTo({ route: "index" });
+            App.transitionTo({ route: 'index' });
         }
     }
 };
 
 // Add the routes
 App.registerRoutes(
-    "palette/new",
-    "palette/list",
-    "palette/name",
-    "palette/show",
-    "colors",
-    "picker",
-    "details",
-    "palettes"
+    'palette/new',
+    'palette/list',
+    'palette/name',
+    'palette/show',
+    'colors',
+    'picker',
+    'details',
+    'palettes'
 );
 
 // Include components
-require("./components/index");
-require("./components/colors");
-require("./components/details");
-require("./components/palettes");
-require("./components/picker");
-require("./components/palette-new");
-require("./components/palette-name");
-require("./components/palette-list");
-require("./components/palette-show");
+require('./components/index');
+require('./components/colors');
+require('./components/details');
+require('./components/palettes');
+require('./components/picker');
+require('./components/palette-new');
+require('./components/palette-name');
+require('./components/palette-list');
+require('./components/palette-show');

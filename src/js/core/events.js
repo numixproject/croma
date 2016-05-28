@@ -1,59 +1,52 @@
-/**
- * @fileOverview Simple event emitter.
- * @author Satyajit Sahoo <satyajit.happy@gmail.com>
- * @license GPL-3.0+
- */
+class Events {
+    constructor() {
+        this._callbacks = {};
+    }
 
-var Events = function() {
-    this._callbacks = {};
-};
-
-Events.prototype = {
-    on: function(event, handler) {
+    on(event, handler) {
         if (!(event in this._callbacks)) {
             this._callbacks[event] = [];
         }
 
         this._callbacks[event].push(handler);
-    },
+    }
 
-    off: function(event, handler) {
+    off(event, handler) {
         if (!this._callbacks && !this._callbacks[event]) {
             return null;
         }
 
-        if (arguments.length === 1) {
+        if (typeof handler !== 'undefined') {
             delete this._callbacks[event];
             return this;
         }
 
-        var i = this._callbacks[event].indexOf(handler);
+        const i = this._callbacks[event].indexOf(handler);
 
         this._callbacks.splice(i, 1);
-    },
 
-    trigger: function(event) {
-        var currentcallbacks = this._callbacks[event],
-            args = Array.prototype.slice.call(arguments, 1);
+        return this;
+    }
+
+    trigger(event, ...rest) {
+        const currentcallbacks = this._callbacks[event];
 
         if (!currentcallbacks) {
             return;
         }
 
-        for (var i = 0; i < currentcallbacks.length; i++) {
-            if (typeof currentcallbacks[i] === "function") {
-                currentcallbacks[i].apply(this, args);
+        for (let i = 0; i < currentcallbacks.length; i++) {
+            if (typeof currentcallbacks[i] === 'function') {
+                currentcallbacks[i].apply(this, rest);
             }
         }
     }
-};
+}
 
-if (typeof define === "function" && define.amd) {
+if (typeof define === 'function' && define.amd) {
     // Define as AMD module
-    define(function() {
-        return Events;
-    });
-} else if (typeof module !== "undefined" && module.exports) {
+    define(() => Events);
+} else if (typeof module !== 'undefined' && module.exports) {
     // Export to CommonJS
     module.exports = Events;
 } else {

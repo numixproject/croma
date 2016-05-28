@@ -1,13 +1,16 @@
-var PLUGIN_NAME = "gulp-microtemplate",
-    Template = require("./src/js/core/template.js"),
-    through = require("through"),
-    path = require("path"),
-    gutil = require("gulp-util");
+'use strict';
+
+const PLUGIN_NAME = "gulp-microtemplate";
+const Template = require("./src/js/core/template.js");
+const through = require("through");
+const path = require("path");
+const gutil = require("gulp-util");
 
 module.exports = function(filename) {
-    var firstfile,
-        contents = "",
-        template = new Template();
+    let firstfile,
+        contents = "";
+
+    const template = new Template();
 
     if (!filename) {
         throw new gutil.PluginError(PLUGIN_NAME, "Missing filename argument");
@@ -30,7 +33,7 @@ module.exports = function(filename) {
             throw new gutil.PluginError(PLUGIN_NAME, err);
         }
     }, function() {
-        var compiled = firstfile.clone({ contents: false });
+        const compiled = firstfile.clone({ contents: false });
 
         compiled.path = path.join(firstfile.base, filename);
         compiled.contents = new Buffer("{" + contents + "};");

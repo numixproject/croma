@@ -1,28 +1,29 @@
-var Color = require("pigment/full"),
-    Storage = require("./core/storage.js"),
-    fxos = require("./fxos.js");
+import $ from 'jquery';
+import Color from 'pigment/full';
+import Storage from './core/storage.js';
+import fxos from './fxos.js';
 
-let utils = (() => {
-    const productId = "ultimate";
+const utils = (() => {
+    const productId = 'ultimate';
 
-    let store = new Storage();
+    const store = new Storage();
 
     return {
 
         // Convert camelCase to sentence
         parseCamelCase: (text) => {
-            if (typeof text !== "string") {
-                return "";
+            if (typeof text !== 'string') {
+                return '';
             }
 
             return text
-            .replace(/([a-z])([A-Z])/g, "$1 $2")
-            .replace(/\b([A-Z]+)([A-Z])([a-z])/, "$1 $2$3")
+            .replace(/([a-z])([A-Z])/g, '$1 $2')
+            .replace(/\b([A-Z]+)([A-Z])([a-z])/, '$1 $2$3')
             .replace(/^./, (str) => str.toUpperCase());
         },
 
         getData: (palette) => {
-            let palettes = store.get("palettes") || {};
+            const palettes = store.get('palettes') || {};
 
             if (palette) {
                 return palettes[palette];
@@ -36,44 +37,44 @@ let utils = (() => {
                 return null;
             }
 
-            let palettes = utils.getData();
+            const palettes = utils.getData();
 
-            if (typeof data === "undefined" || data === null) {
+            if (typeof data === 'undefined' || data === null) {
                 delete palettes[palette];
             } else {
                 palettes[palette] = data;
             }
 
-            return store.set("palettes", palettes);
+            return store.set('palettes', palettes);
         },
 
         // Remove a card from the UI
         removeItem: (palette, color, callback) => {
-            if (typeof palette !== "string") {
+            if (typeof palette !== 'string') {
                 return;
             }
 
             let $el;
 
             if (color) {
-                $el = $('[data-color="' + color + '"]');
+                $el = $(`[data-color="${color}"]`);
             } else {
-                $el = $('[data-palette="' + palette + '"]');
+                $el = $(`[data-palette="${palette}"]`);
             }
 
             // Let's save the styles so we can undo them
-            $el.data("styles", {
-                height: $el.css("height"),
-                paddingTop: $el.css("padding-top"),
-                paddingBottom: $el.css("padding-bottom"),
-                marginTop: $el.css("margin-top"),
-                marginBottom: $el.css("margin-bottom")
+            $el.data('styles', {
+                height: $el.css('height'),
+                paddingTop: $el.css('padding-top'),
+                paddingBottom: $el.css('padding-bottom'),
+                marginTop: $el.css('margin-top'),
+                marginBottom: $el.css('margin-bottom')
             });
 
             // Swipe out the card
             $el.velocity({
                 opacity: 0,
-                translateX: "100%"
+                translateX: '100%'
             }, {
                 duration: 300,
                 easing: [ 0.7, 0.1, 0.57, 0.79 ]
@@ -87,7 +88,7 @@ let utils = (() => {
             }, {
                 duration: 150,
                 complete: () => {
-                    if (callback && typeof callback === "function") {
+                    if (callback && typeof callback === 'function') {
                         callback();
                     }
                 }
@@ -96,25 +97,25 @@ let utils = (() => {
 
         // Undo remove a card from the UI
         undoRemoveItem: (palette, color, callback) => {
-            if (typeof palette !== "string") {
+            if (typeof palette !== 'string') {
                 return;
             }
 
             let $el;
 
             if (color) {
-                $el = $('[data-color="' + color + '"]');
+                $el = $(`[data-color="${color}"]`);
             } else {
-                $el = $('[data-palette="' + palette + '"]');
+                $el = $(`[data-palette="${palette}"]`);
             }
 
             // Restore the card
             $el.velocity(
-                $el.data("styles"), 150
+                $el.data('styles'), 150
             ).velocity({ opacity: 1 }, {
                 duration: 150,
                 complete: () => {
-                    if (callback && typeof callback === "function") {
+                    if (callback && typeof callback === 'function') {
                         callback();
                     }
                 }
@@ -123,62 +124,60 @@ let utils = (() => {
 
         // Toggle love color in the UI and database
         loveItem: (palette) => {
-            if (typeof palette !== "string") {
+            if (typeof palette !== 'string') {
                 return;
             }
 
-            let $card = $('[data-palette="' + palette + '"]'),
-                $button = $card.find(".card-item-action-love");
+            const $card = $(`[data-palette="${palette}"]`), $button = $card.find('.card-item-action-love');
 
             // Add class to animate the click
-            $button.addClass("clicked");
+            $button.addClass('clicked');
 
             setTimeout(() => {
-                $button.removeClass("clicked");
+                $button.removeClass('clicked');
             }, 500);
 
             // Toggle love
-            $card.toggleClass("card-item-loved");
+            $card.toggleClass('card-item-loved');
         },
 
         // Trigger a file download
         downloadFile: (filename, content) => {
-            let el = document.createElement("a");
+            const el = document.createElement('a');
 
-            el.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(content));
-            el.setAttribute("download", filename);
+            el.setAttribute('href', `data:text/plain;charset=utf-8,${encodeURIComponent(content)}`);
+            el.setAttribute('download', filename);
             el.click();
         },
 
         // Convert color hashmap to human readable text
         paletteToText: (palette, colors) => {
-            let content = [
-                "Name: " + palette + "\n",
-                "Colors:"
+            const content = [
+                `Name: ${palette}\n`,
+                'Colors:'
             ];
 
-            for (let c in colors) {
+            for (const c in colors) {
                 content.push(c);
             }
 
-            return content.join("\n") + "\n";
+            return `${content.join('\n')}\n`;
         },
 
         // Convert query parameter to array
-        queryToPalette: (query) => {
-            query = decodeURIComponent(query);
+        queryToPalette: (q) => {
+            const query = decodeURIComponent(q);
 
-            if ((/^(([0-9]{1,3},){2}[0-9]{1,3}(,.)?[\:])+[\:]?$/).test(query + ":")) {
-                let colors = query.replace(/\:$/, "").split(":"),
-                    objs = [];
+            if ((/^(([0-9]{1,3},){2}[0-9]{1,3}(,.)?[:])+[:]?$/).test(`${query}:`)) {
+                const colors = query.replace(/:$/, '').split(':'), objs = [];
 
-                for (let c of colors) {
-                    let rgb = c.split(",");
+                for (const c of colors) {
+                    const rgb = c.split(',');
 
                     objs.push(new Color({
-                        red: parseInt(rgb[0]),
-                        green: parseInt(rgb[1]),
-                        blue: parseInt(rgb[2]),
+                        red: parseInt(rgb[0], 10),
+                        green: parseInt(rgb[1], 10),
+                        blue: parseInt(rgb[2], 10),
                         alpha: rgb[3] ? parseFloat(rgb[3]) : rgb[3]
                     }));
                 }
@@ -191,12 +190,12 @@ let utils = (() => {
 
         // Convert color hashmap to query parameter
         paletteToQuery: (colors) => {
-            let query = "";
+            let query = '';
 
-            for (let c in colors) {
-                let rgb = new Color(c).rgb;
+            for (const c in colors) {
+                const rgb = new Color(c).rgb;
 
-                query += rgb.join(",") + ":";
+                query += `${rgb.join(',')}:`;
             }
 
             return encodeURI(query);
@@ -204,48 +203,48 @@ let utils = (() => {
 
         // Convert color hashmap to link
         paletteToPath: (colors, name) => {
-            let path = "#/palette/show?";
+            let path = '#/palette/show?';
 
             if (name) {
-                path += "name=" + encodeURIComponent(name) + "&";
+                path += `name=${encodeURIComponent(name)}&`;
             }
 
-            path += "palette=" + utils.paletteToQuery(colors);
+            path += `palette=${utils.paletteToQuery(colors)}`;
 
             return path;
         },
 
         // Convert colors hashmap to GIMP Palette
         paletteToGPL: (palette, colors) => {
-            let content = [
-                "GIMP Palette",
-                "Name: " + palette,
-                "Columns: 4",
-                "#"
+            const content = [
+                'GIMP Palette',
+                `Name: ${palette}`,
+                'Columns: 4',
+                '#'
             ];
 
-            for (let c in colors) {
-                let rgb = new Color(c).rgb;
+            for (const c in colors) {
+                const rgb = new Color(c).rgb;
 
                 content.push(
-                    rgb.join("\t") + "\t" + c
+                    `${rgb.join('\t')}\t${c}`
                 );
             }
 
-            return content.join("\n") + "\n";
+            return `${content.join('\n')}\n`;
         },
 
         // Share a palette
         shareItem: (palette) => {
-            if ((!palette) || typeof palette !== "string") {
+            if ((!palette) || typeof palette !== 'string') {
                 return;
             }
 
-            let data = utils.getData(palette);
+            const data = utils.getData(palette);
 
-            if ("androidTools" in window && window.androidTools.shareWithLink) {
+            if ('androidTools' in window && window.androidTools.shareWithLink) {
                 try {
-                    window.androidTools.shareWithLink("Share palette", utils.paletteToText(palette, data.colors), utils.paletteToPath(data.colors, palette));
+                    window.androidTools.shareWithLink('Share palette', utils.paletteToText(palette, data.colors), utils.paletteToPath(data.colors, palette));
                 } catch (e) {
                     utils.showToast({
                         body: e,
@@ -253,15 +252,15 @@ let utils = (() => {
                     });
                 }
             } else if (fxos.supported) {
-                fxos.shareWithLink("Share palette", utils.paletteToText(palette, data.colors), utils.paletteToPath(data.colors, palette));
+                fxos.shareWithLink('Share palette', utils.paletteToText(palette, data.colors), utils.paletteToPath(data.colors, palette));
             } else {
-                utils.downloadFile(palette + ".gpl", utils.paletteToGPL(palette, data.colors));
+                utils.downloadFile(`${palette}.gpl`, utils.paletteToGPL(palette, data.colors));
             }
         },
 
         // Get palette from an image
         getPalette: (check) => {
-            let supported = ("imageUtils" in window && window.imageUtils.getPalette);
+            const supported = ('imageUtils' in window && window.imageUtils.getPalette);
 
             if (check === true) {
                 return supported;
@@ -277,11 +276,13 @@ let utils = (() => {
                     });
                 }
             }
+
+            return false;
         },
 
         // Copy text to clipboard
         copyToClipboard: (label, text) => {
-            let supported = ("androidTools" in window && window.androidTools.copyToClipboard);
+            const supported = ('androidTools' in window && window.androidTools.copyToClipboard);
 
             if (label === true) {
                 return supported;
@@ -297,15 +298,17 @@ let utils = (() => {
                     });
                 }
             }
+
+            return false;
         },
 
         // Check if pro version
         isPro: () => {
             let purchased = false;
 
-            if ("inAppBilling" in window && window.inAppBilling.isPurchased) {
+            if ('inAppBilling' in window && window.inAppBilling.isPurchased) {
                 try {
-                    purchased = (window.inAppBilling.isPurchased(productId) === "true") ? true : false;
+                    purchased = (window.inAppBilling.isPurchased(productId) === 'true');
                 } catch (e) {
                     purchased = false;
                 }
@@ -318,7 +321,7 @@ let utils = (() => {
 
         // Unlock pro version with IAP
         unlockPro: () => {
-            let supported = ("inAppBilling" in window && window.inAppBilling.purchase);
+            const supported = ('inAppBilling' in window && window.inAppBilling.purchase);
 
             if (supported) {
                 try {
@@ -330,63 +333,62 @@ let utils = (() => {
                     });
                 }
             } else {
-                location.href = "https://play.google.com/store/apps/details?id=org.numixproject.croma";
+                location.href = 'https://play.google.com/store/apps/details?id=org.numixproject.croma';
             }
         },
 
         // Show a toast
         // @param {{ body: String, actions: Object, timeout: Number, persistent: Boolean }} options
         showToast: (options) => {
-            let $wrapper = $(".toast-notification-wrapper"),
-                $container = $wrapper.find(".toast-notification-container");
+            let $wrapper = $('.toast-notification-wrapper'),
+                $container = $wrapper.find('.toast-notification-container');
 
             if (!$wrapper.length) {
-                $wrapper = $("<div>").addClass("toast-notification-wrapper");
-                $wrapper.appendTo("body");
+                $wrapper = $('<div>').addClass('toast-notification-wrapper');
+                $wrapper.appendTo('body');
             }
 
             if (!$container.length) {
-                $container = $("<div>").addClass("toast-notification-container");
+                $container = $('<div>').addClass('toast-notification-container');
                 $container.appendTo($wrapper);
             }
 
-            let $toast = $("<div>").addClass("toast-notification"),
-                $segment = $("<div>").addClass("toast-notification-segment").html(options.body);
+            const $toast = $('<div>').addClass('toast-notification'), $segment = $('<div>').addClass('toast-notification-segment').html(options.body);
 
             $toast.append($segment);
 
             if (options.actions) {
-                for (var action in options.actions) {
-                    if (typeof options.actions[action] === "function") {
+                for (const action in options.actions) {
+                    if (typeof options.actions[action] === 'function') {
                         $toast.append(
-                            $("<div>").addClass("toast-notification-segment toast-notification-action toast-notification-action-" + action)
+                            $('<div>').addClass(`toast-notification-segment toast-notification-action toast-notification-action-${action}`)
                             .text(action)
-                            .on("click", options.actions[action])
+                            .on('click', options.actions[action])
                         );
                     }
                 }
             }
 
             if (options.persistent) {
-                $toast.addClass("toast-persistent");
+                $toast.addClass('toast-persistent');
             }
 
-            $toast.on("click", function() {
+            $toast.on('click', function() {
                 utils.hideToast(this);
             }).appendTo($container);
 
             if (options.timeout) {
-                setTimeout(function() {
+                setTimeout(() => {
                     utils.hideToast($toast);
                 }, options.timeout);
             }
 
-            $(window).off("hashchange.toast").on("hashchange.toast", function(e) {
-                var event = e.originalEvent;
+            $(window).off('hashchange.toast').on('hashchange.toast', function(e) {
+                const event = e.originalEvent;
 
                 this.source = e.type;
 
-                if (event && event.oldURL.replace("#/", "") !== event.newURL.replace("#/", "")) {
+                if (event && event.oldURL.replace('#/', '') !== event.newURL.replace('#/', '')) {
                     utils.hideToast.apply(this);
                 }
             });
@@ -395,8 +397,9 @@ let utils = (() => {
         },
 
         // Hide toast
-        hideToast: function(el, duration = 300) {
-            let $el = el ? $(el) : (this.source === "hashchange") ? $(".toast-notification:not(.toast-persistent)") : $(".toast-notification");
+        hideToast(el, duration = 300) {
+            /* eslint-disable no-nested-ternary */
+            const $el = el ? $(el) : (this.source === 'hashchange') ? $('.toast-notification:not(.toast-persistent)') : $('.toast-notification');
 
             if ($.fn.velocity) {
                 $el.velocity({
@@ -417,14 +420,13 @@ let utils = (() => {
 
         // Genrate legacy webkit gradient
         makeWebkitGradient: (colors, direction) => {
-            let css = "-webkit-gradient(linear," + ((direction === "to bottom") ? "left top,left bottom" : "left top,right top") + ",";
+            let css = `-webkit-gradient(linear,${(direction === 'to bottom') ? 'left top,left bottom' : 'left top,right top'},`;
 
             for (let i = 0, l = colors.length; i < l; i++) {
-                css += "color-stop(" + ((i / l) * 100) + "%," + colors[i] + ")," + "color-stop(" + (((i + 1) / l) * 100) + "%," +
-                        colors[i] + ")" + ((i === (l - 1)) ? "" : ",");
+                css += `color-stop(${(i / l) * 100}%,${colors[i]}),color-stop(${((i + 1) / l) * 100}%,${colors[i]})${(i === (l - 1)) ? '' : ','}`;
             }
 
-            css += ")";
+            css += ')';
 
             return css;
 
@@ -432,24 +434,24 @@ let utils = (() => {
 
         // Generate CSS gradient
         makeGradient: (colors, direction) => {
-            let css = "linear-gradient(" + (direction ? direction : "to right") + ",";
+            let css = `linear-gradient(${direction ? direction : 'to right'},`;
 
             for (let i = 0, l = colors.length; i < l; i++) {
-                css += colors[i] + " " + ((i / l) * 100) + "%," + colors[i] + " " + (((i + 1) / l) * 100) + "%" + ((i === (l - 1)) ? "" : ",");
+                css += `${colors[i]} ${(i / l) * 100}%,${colors[i]} ${((i + 1) / l) * 100}%${(i === (l - 1)) ? '' : ','}`;
             }
 
-            css += ")";
+            css += ')';
 
             return css;
         },
 
         // Prefix CSS properties
         prefixCss: (property, value) => {
-            let prefixes = [ "-webkit-", "-moz-", "-o-", "" ],
-                css = "";
+            const prefixes = [ '-webkit-', '-moz-', '-o-', '' ];
+            let css = '';
 
-            for (let prefix of prefixes) {
-                css += property + ":" + prefix + value + ";";
+            for (const prefix of prefixes) {
+                css += `${property}:${prefix}${value};`;
             }
 
             return css;
@@ -457,11 +459,10 @@ let utils = (() => {
 
         generateBackground: (colors, direction) => {
             if (!Array.isArray(colors)) {
-                return "";
+                return '';
             }
 
-            return "background-image:" + utils.makeWebkitGradient(colors, direction) + ";" +
-                    utils.prefixCss("background-image", utils.makeGradient(colors, direction)) + ";";
+            return `background-image:${utils.makeWebkitGradient(colors, direction)};${utils.prefixCss('background-image', utils.makeGradient(colors, direction))};`;
         },
 
         sortByDate: (a, b) => {
@@ -474,8 +475,8 @@ let utils = (() => {
             }
         },
 
-        validateName: (name, tmp) => ((name && typeof name === "string" && !(/^(null|undefined)$/).test(name)) && (tmp || !(/(^_\$.*|"|'|<|>)/).test(name)))
+        validateName: (name, tmp) => ((name && typeof name === 'string' && !(/^(null|undefined)$/).test(name)) && (tmp || !(/(^_\$.*|"|'|<|>)/).test(name)))
     };
 })();
 
-module.exports = utils;
+export default utils;

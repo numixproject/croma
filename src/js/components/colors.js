@@ -1,23 +1,23 @@
-var App = require("../core/app.js"),
-    utils = require("../utils.js");
+import $ from 'jquery';
+import App from '../core/app.js';
+import utils from '../utils.js';
 
-App.ColorsRoute.tags = [ "add" ];
+App.ColorsRoute.tags = [ 'add' ];
 
-App.ColorsRoute.model = function(state) {
-    let name = state.params ? state.params.palette : null,
-        data = [];
+App.ColorsRoute.model = state => {
+    const name = state.params ? state.params.palette : null, data = [];
 
     if (!name) {
         return data;
     }
 
-    let current = utils.getData(name);
+    const current = utils.getData(name);
 
     if (!current) {
         return data;
     }
 
-    for (var c in current.colors) {
+    for (const c in current.colors) {
         data.push({
             color: c,
             created: current.colors[c].created
@@ -27,30 +27,28 @@ App.ColorsRoute.model = function(state) {
     return data.sort(utils.sortByDate);
 };
 
-App.ColorsRoute.afterRender = function(...args) {
-    App.setTitle(args[0].params.palette || "Error!");
+App.ColorsRoute.afterRender = (...args) => {
+    App.setTitle(args[0].params.palette || 'Error!');
 
     App.Global.afterRender(...args);
 };
 
 App.ColorsRoute.actions = {
-    todetails: function() {
-        var color = $(this).closest("[data-color]").attr("data-color");
+    todetails() {
+        const color = $(this).closest('[data-color]').attr('data-color');
 
         App.transitionTo({
-            route: "details",
-            params: { color: color }
+            route: 'details',
+            params: { color }
         });
     },
-    add: function(state) {
-        var data,
-            palette = state.params ? state.params.palette : null;
-
-        data = utils.getData(palette);
+    add(state) {
+        const palette = state.params ? state.params.palette : null;
+        const data = utils.getData(palette);
 
         if (!utils.isPro() && data && data.colors && Object.getOwnPropertyNames(data.colors).length >= App.vars.maxColors) {
             utils.showToast({
-                body: "Unlock pro to add more than " + App.vars.maxColors + " colors.",
+                body: `Unlock pro to add more than ${App.vars.maxColors} colors.`,
                 actions: {
                     unlock: utils.unlockPro
                 },
@@ -62,16 +60,17 @@ App.ColorsRoute.actions = {
         }
 
         App.transitionTo({
-            route: "picker",
-            params: { palette: palette }
+            route: 'picker',
+            params: { palette }
         });
     },
-    remove: function(state) {
-        var data, oldcolor,
-            palette = state.params ? state.params.palette : null,
-            color = $(this).closest("[data-color]").attr("data-color");
+    remove(state) {
+        let data;
+        let oldcolor;
+        const palette = state.params ? state.params.palette : null;
+        const color = $(this).closest('[data-color]').attr('data-color');
 
-        utils.removeItem(palette, color, function() {
+        utils.removeItem(palette, color, () => {
             data = utils.getData(palette);
 
             oldcolor = data.colors[color];
@@ -81,9 +80,9 @@ App.ColorsRoute.actions = {
             utils.setData(palette, data);
 
             utils.showToast({
-                body: "Deleted " + color + ". Tap to dismiss.",
+                body: `Deleted ${color}. Tap to dismiss.`,
                 actions: {
-                    undo: function() {
+                    undo() {
                         data = utils.getData(palette);
 
                         data.colors[color] = oldcolor;

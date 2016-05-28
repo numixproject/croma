@@ -1,25 +1,26 @@
-var App = require(".././core/app.js"),
-    utils = require(".././utils.js");
+import $ from 'jquery';
+import App from '.././core/app.js';
+import utils from '.././utils.js';
 
-App.IndexRoute.tags = [ "home", "add" ];
+App.IndexRoute.tags = [ 'home', 'add' ];
 
-App.IndexRoute.model = function() {
-    let palettes = utils.getData();
+App.IndexRoute.model = () => {
+    const palettes = utils.getData();
 
     if (!palettes) { return {}; }
 
-    let data = [];
+    const data = [];
 
-    for (let p in palettes) {
+    for (const p in palettes) {
         // Exclude names beginning with "_$"
         if (!(palettes[p] && utils.validateName(p))) {
             continue;
         }
 
-        let arr = [];
+        const arr = [];
 
         if (palettes[p].colors) {
-            for (let c in palettes[p].colors) {
+            for (const c in palettes[p].colors) {
                 if (palettes[p].colors[c]) {
                     arr.push(c);
                 }
@@ -36,54 +37,53 @@ App.IndexRoute.model = function() {
 
     return {
         palettes: data.sort(utils.sortByDate),
-        share: !("external" in window && window.external && "getUnityObject" in window.external && window.external.getUnityObject("1.0"))
+        share: !('external' in window && window.external && 'getUnityObject' in window.external && window.external.getUnityObject('1.0'))
     };
 };
 
-App.IndexRoute.afterRender = function(...args) {
-    App.setTitle("Croma");
+App.IndexRoute.afterRender = (...args) => {
+    App.setTitle('Croma');
 
     App.Global.afterRender(...args);
 };
 
 App.IndexRoute.actions = {
-    tocolors: function() {
-        let palette = $(this).closest("[data-palette]").attr("data-palette");
+    tocolors() {
+        const palette = $(this).closest('[data-palette]').attr('data-palette');
 
         App.transitionTo({
-            route: "colors",
-            params: { palette: palette }
+            route: 'colors',
+            params: { palette }
         });
     },
-    edit: function() {
-        let palette = $(this).closest("[data-palette]").attr("data-palette");
+    edit() {
+        const palette = $(this).closest('[data-palette]').attr('data-palette');
 
         App.transitionTo({
-            route: "palette/name",
+            route: 'palette/name',
             params: {
                 oldname: palette,
                 rename: true
             }
         });
     },
-    add: function() {
+    add() {
         App.transitionTo({
-            route: "palette/new"
+            route: 'palette/new'
         });
     },
-    share: function() {
-        let palette = $(this).closest("[data-palette]").attr("data-palette");
+    share() {
+        const palette = $(this).closest('[data-palette]').attr('data-palette');
 
         utils.shareItem(palette);
     },
-    remove: function() {
-        let palette = $(this).closest("[data-palette]").attr("data-palette"),
-            data = utils.getData(palette);
+    remove() {
+        const palette = $(this).closest('[data-palette]').attr('data-palette'), data = utils.getData(palette);
 
         utils.setData(palette);
         utils.removeItem(palette, false, () => {
             utils.showToast({
-                body: "Deleted " + palette + ". Tap to dismiss.",
+                body: `Deleted ${palette}. Tap to dismiss.`,
                 actions: {
                     undo: () => {
                         utils.setData(palette, data);

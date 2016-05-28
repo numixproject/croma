@@ -4,14 +4,13 @@
  * @license - GPL-3.0+
  */
 
-var Storage = (function() {
+const Storage = ((() => {
 
-    var _localStorage = ("androidStorage" in window) ? window.androidStorage : window.localStorage,
-        _cacheStorage = {};
+    const _localStorage = ('androidStorage' in window) ? window.androidStorage : window.localStorage, _cacheStorage = {};
 
     // Listen to localStorage changes and update cache
-    window.addEventListener("storage", function(e) {
-        if (e && typeof e.key !== "undefined") {
+    window.addEventListener('storage', e => {
+        if (e && typeof e.key !== 'undefined') {
             // Delete the key in cache
             delete _cacheStorage[e.key];
         }
@@ -21,16 +20,16 @@ var Storage = (function() {
      * Return the constructor function.
      */
     return function() {
-        var self = this;
+        const self = this;
 
         /**
          * Check if localStorage is supported.
          * @constructor
          * @return {Boolean}
          */
-        self.supported = function() {
+        self.supported = () => {
             try {
-                return "localStorage" in window && window.localStorage !== null;
+                return 'localStorage' in window && window.localStorage !== null;
             } catch (err) {
                 return false;
             }
@@ -42,15 +41,15 @@ var Storage = (function() {
          * @param {Object} key
          * @param {Object} value
          */
-        self.set = function(key, value) {
+        self.set = (k, value) => {
             // Convert the key to string
-            key = JSON.stringify(key);
+            const key = JSON.stringify(k);
 
             // Set the key in the cache
             _cacheStorage[key] = value;
 
             // Convert objects to strings and store asynchronously
-            setTimeout(function() {
+            setTimeout(() => {
                 try {
                     _localStorage.setItem(key, JSON.stringify(value));
                 } catch (err) {
@@ -65,16 +64,16 @@ var Storage = (function() {
          * @param {Object} key
          * @return {Object} value
          */
-        self.get = function(key) {
-            var value;
+        self.get = k => {
+            let value;
 
             // Convert the key to string
-            key = JSON.stringify(key);
+            const key = JSON.stringify(k);
 
             // If key is in cache return it
             value = _cacheStorage[key];
 
-            if (typeof value !== "undefined" && value !== null) {
+            if (typeof value !== 'undefined' && value !== null) {
                 return value;
             }
 
@@ -86,13 +85,15 @@ var Storage = (function() {
             }
 
             // Android WebView throws error if string is empty
-            if (typeof value === "string" && value.trim() !== "") {
+            if (typeof value === 'string' && value.trim() !== '') {
                 value = JSON.parse(value);
 
                 _cacheStorage[key] = value;
 
                 return value;
             }
+
+            return null;
         };
 
         /**
@@ -100,15 +101,15 @@ var Storage = (function() {
          * @constructor
          * @param {Object} key
          */
-        self.remove = function(key) {
+        self.remove = k => {
             // Convert the key to string
-            key = JSON.stringify(key);
+            const key = JSON.stringify(k);
 
             // Remove the key in cache
             delete _cacheStorage[key];
 
             // Remove stringified object asynchronously
-            setTimeout(function() {
+            setTimeout(() => {
                 try {
                     _localStorage.removeItem(key);
                 } catch (err) {
@@ -117,14 +118,12 @@ var Storage = (function() {
             }, 0);
         };
     };
-}());
+})());
 
-if (typeof define === "function" && define.amd) {
+if (typeof define === 'function' && define.amd) {
     // Define as AMD module
-    define(function() {
-        return Storage;
-    });
-} else if (typeof module !== "undefined" && module.exports) {
+    define(() => Storage);
+} else if (typeof module !== 'undefined' && module.exports) {
     // Export to CommonJS
     module.exports = Storage;
 } else {

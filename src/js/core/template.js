@@ -1,78 +1,73 @@
-/**
- * @fileOverview Simple templating engine based on John Resig's micro-templating engine
- * @author Satyajit Sahoo <satyajit.happy@gmail.com>
- * @license GPL-3.0+
- */
+'use strict';
 
-var Template = function() {
-    this._cache = {};
-};
+class Template {
+    constructor() {
+        this._cache = {};
+    }
 
-Template.prototype = {
-    compile: function(template) {
+    compile(template) {
         /* eslint-disable no-new-func */
-        var fn;
-
-        if (typeof template !== "string") {
-            throw new Error("Template must be a string");
+        if (typeof template !== 'string') {
+            throw new Error('Template must be a string');
         }
 
-        fn = this._cache[template] = this._cache[template] ||
+        const fn = this._cache[template] = this._cache[template] ||
 
             // Generate a reusable function that will serve as a template generator
             // The data is passed as "model"
-            new Function("model", (function() {
-                            var parts = template.split(/<%|%>/),
-                                body = "var t=[],printtext=function(){t.push.apply(t,arguments);};",
-                                tohtml = function(s) {
-                                    s = s + ""; // Convert argument to string
+            new Function('model', ((() => {
+                const parts = template.split(/<%|%>/);
+                let body = 'var t=[],printtext=function(){t.push.apply(t,arguments);};';
 
-                                    // Escape &, <, > and quotes to prevent XSS
-                                    // Convert new lines to <br> tags
-                                    return s.replace(/&/g, "&#38")
-                                            .replace(/</g, "&#60;").replace(/>/g, "&#62;")
-                                            .replace(/"/g, "&#34").replace(/'/g, "&#39;")
-                                            .replace(/(?:\\r\\n|\\r|\\n)/g, "<br>");
-                                };
+                const tohtml = s => {
+                    const str = s.toString(); // Convert argument to string
 
-                            body += "var tohtml=" + tohtml.toString() + ";";
+                    // Escape &, <, > and quotes to prevent XSS
+                    // Convert new lines to <br> tags
+                    return str
+                        .replace(/&/g, '&#38')
+                        .replace(/</g, '&#60;').replace(/>/g, '&#62;')
+                        .replace(/"/g, '&#34').replace(/'/g, '&#39;')
+                        .replace(/(?:\\r\\n|\\r|\\n)/g, '<br>');
+                };
 
-                            for (var i = 0, l = parts.length; i < l; i++) {
-                                body += i % 2 ? (
-                                    parts[i][0] === "=" ? "printtext(tohtml(" + parts[i].substr(1) + "));" :
-                                    parts[i][0] === "-" ? "printtext(" + parts[i].substr(1) + ");" : parts[i]
-                                ) : "t.push('" + parts[i].replace(/\n/g, "\\n\\\n").replace(/'/g, "\\'") + "');";
+                body += `var tohtml=${tohtml.toString()};`;
 
-                                body += "\n";
-                            }
+                for (let i = 0, l = parts.length; i < l; i++) {
+                    /* eslint-disable no-nested-ternary */
+                    body += i % 2 ? (
+                        parts[i][0] === '=' ? `printtext(tohtml(${parts[i].substr(1)}));` :
+                        parts[i][0] === '-' ? `printtext(${parts[i].substr(1)});` : parts[i]
+                    ) : `t.push('${parts[i].replace(/\n/g, '\\n\\\n').replace(/'/g, "\\'")}');`;
 
-                            body += ";return t.join('');";
+                    body += '\n';
+                }
 
-                            return body;
-                        }()));
+                body += ";return t.join('');";
+
+                return body;
+            })()));
 
         return fn;
-    },
+    }
 
-    render: function(template, data) {
-        if (typeof template !== "string") {
-            throw new Error("Template must be a string");
+    render(template, data) {
+        if (typeof template !== 'string') {
+            throw new Error('Template must be a string');
         }
 
-        if (typeof data !== "object") {
-            throw new Error("Data must be an object");
+        if (typeof data !== 'object') {
+            throw new Error('Data must be an object');
         }
 
         return this.compile(template)(data);
     }
-};
+}
 
-if (typeof define === "function" && define.amd) {
+if (typeof define === 'function' && define.amd) {
     // Define as AMD module
-    define(function() {
-        return Template;
-    });
-} else if (typeof module !== "undefined" && module.exports) {
+    define(() => Template);
+} else if (typeof module !== 'undefined' && module.exports) {
     // Export to CommonJS
     module.exports = Template;
 } else {
