@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import Velocity from 'velocity-animate';
 import Color from 'pigment/full';
 import Storage from './core/storage';
 import fxos from './fxos';
@@ -72,13 +73,14 @@ const utils = (() => {
             });
 
             // Swipe out the card
-            $el.velocity({
+            Velocity($el.get(), {
                 opacity: 0,
                 translateX: '100%'
             }, {
                 duration: 300,
                 easing: [ 0.7, 0.1, 0.57, 0.79 ]
-            }).velocity({
+            });
+            Velocity($el.get(), {
                 height: 0,
                 paddingTop: 0,
                 paddingBottom: 0,
@@ -110,9 +112,8 @@ const utils = (() => {
             }
 
             // Restore the card
-            $el.velocity(
-                $el.data('styles'), 150
-            ).velocity({ opacity: 1 }, {
+            Velocity($el.get(), $el.data('styles'), 150);
+            Velocity($el.get(), { opacity: 1 }, {
                 duration: 150,
                 complete: () => {
                     if (callback && typeof callback === 'function') {
@@ -401,21 +402,18 @@ const utils = (() => {
             /* eslint-disable no-nested-ternary */
             const $el = el ? $(el) : (this.source === 'hashchange') ? $('.toast-notification:not(.toast-persistent)') : $('.toast-notification');
 
-            if ($.fn.velocity) {
-                $el.velocity({
-                    opacity: 0
-                }, (duration / 2)).velocity({
-                    height: 0,
-                    paddingTop: 0,
-                    paddingBottom: 0,
-                    marginTop: 0,
-                    marginBottom: 0
-                }, (duration / 2), function() {
-                    $(this).remove();
-                });
-            } else {
-                $el.remove();
-            }
+            Velocity($el.get(), {
+                opacity: 0
+            }, (duration / 2));
+            Velocity($el.get(), {
+                height: 0,
+                paddingTop: 0,
+                paddingBottom: 0,
+                marginTop: 0,
+                marginBottom: 0
+            }, (duration / 2), function() {
+                $(this).remove();
+            });
         },
 
         // Genrate legacy webkit gradient

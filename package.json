@@ -51,6 +51,7 @@
   "dependencies": {
     "babel-polyfill": "^6.9.0",
     "jquery": "^2.2.4",
-    "pigment": "latest"
+    "pigment": "latest",
+    "velocity-animate": "^1.2.3"
   }
 }
