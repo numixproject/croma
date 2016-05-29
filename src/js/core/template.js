@@ -19,17 +19,17 @@ class Template {
                 const parts = template.split(/<%|%>/);
                 let body = 'var t=[],printtext=function(){t.push.apply(t,arguments);};';
 
-                const tohtml = s => {
-                    const str = s.toString(); // Convert argument to string
-
+                /* This function needs to be ES5 */
+                function tohtml(s) {
                     // Escape &, <, > and quotes to prevent XSS
                     // Convert new lines to <br> tags
-                    return str
+                    return s
+                        .toString()
                         .replace(/&/g, '&#38')
                         .replace(/</g, '&#60;').replace(/>/g, '&#62;')
                         .replace(/"/g, '&#34').replace(/'/g, '&#39;')
                         .replace(/(?:\\r\\n|\\r|\\n)/g, '<br>');
-                };
+                }
 
                 body += `var tohtml=${tohtml.toString()};`;
 
