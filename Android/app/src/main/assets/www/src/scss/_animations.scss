@@ -1,0 +1,178 @@
+@import "functions";
+
+@mixin prefix($property, $value) {
+    @each $prefix in -webkit-, -moz-, -ms-, -o-, "" {
+        #{$prefix}#{$property}: $value;
+    }
+}
+
+@mixin transform($args) {
+    @include prefix(transform, $args);
+}
+
+@mixin keyframes($animation) {
+    @-webkit-keyframes #{$animation} { @content; }
+
+    @-moz-keyframes #{$animation} { @content; }
+
+    @-ms-keyframes #{$animation} { @content; }
+
+    @keyframes #{$animation} { @content; }
+}
+
+@mixin fadein($args: .3s 1) {
+    @include prefix(animation, fadein $args);
+}
+
+@mixin scalein($args: .5s 1) {
+    @include prefix(animation, scalein $args);
+}
+
+@mixin slideup($args: .3s 1) {
+    @include prefix(animation, slideup $args);
+}
+
+@mixin slidedown($args: .3s 1) {
+    @include prefix(animation, slidedown $args);
+}
+
+@mixin love($args: .3s 1) {
+    @include prefix(animation, love $args);
+}
+
+@mixin break($args: .3s 1) {
+    @include prefix(animation, break $args);
+}
+
+@mixin ripple($args: .5s cubic-bezier(.25, .46, .45, .94)) {
+    @include prefix(animation, ripple $args);
+}
+
+@mixin input-effect($args: .3s 1) {
+    @include prefix(animation, input-effect $args);
+}
+
+@mixin transition($args: .05s ease) {
+    @include prefix(transition, $args);
+}
+
+@include exports("animations") {
+    @include keyframes(fadein) {
+        0% { opacity: 0; }
+
+        100% { opacity: 1; }
+    }
+
+    %fadein { @include fadein; }
+
+    @include keyframes(scalein) {
+        0% { @include transform(translateZ(0) scale(.5)); }
+
+        60% { @include transform(translateZ(0) scale(1.1)); }
+
+        100% { @include transform(translateZ(0) scale(1)); }
+    }
+
+    %scalein { @include scalein; }
+
+    @include keyframes(slideup) {
+        0% {
+            @include transform(translate3d(0, 100%, 0));
+
+            opacity: 0;
+        }
+
+        100% {
+            @include transform(translate3d(0, 0, 0));
+
+            opacity: 1;
+        }
+    }
+
+    %slideup { @include slideup; }
+
+    @include keyframes(slidedown) {
+        0% {
+            @include transform(translate3d(0, -100%, 0));
+
+            opacity: 0;
+        }
+
+        100% {
+            @include transform(translate3d(0, 0, 0));
+
+            opacity: 1;
+        }
+    }
+
+    %slidedown { @include slidedown; }
+
+    @include keyframes(love) {
+        0% {
+            @include transform(scale(5) translateZ(0));
+
+            opacity: 0;
+        }
+
+        100% {
+            @include transform(scale(1) translateZ(0));
+
+            opacity: 1;
+        }
+    }
+
+    %love { @include love; }
+
+    @include keyframes(break) {
+        0% {
+            @include transform(scale(1));
+
+            opacity: 1;
+        }
+
+        100% {
+            @include transform(scale(5));
+
+            opacity: 0;
+        }
+    }
+
+    %break { @include break; }
+
+
+    @include keyframes(ripple) {
+        0% { @include transform(scale(0) translateZ(0)); }
+
+        50% { @include transform(scale(1) translateZ(0)); }
+
+        100% {
+            @include transform(scale(1) translateZ(0));
+
+            opacity: 0;
+        }
+    }
+
+    %ripple { @include ripple; }
+
+    @include keyframes(input-effect) {
+        0% {
+            width: 50%;
+            background-color: $info-color;
+        }
+
+        100% {
+            width: 0;
+            background-color: transparent;
+        }
+    }
+
+    %input-effect { @include input-effect; }
+
+    %transition { @include transition; }
+
+    %snappy {
+        @extend %transition;
+
+        &:focus, &:hover, &:active { @include transition(none); }
+    }
+}

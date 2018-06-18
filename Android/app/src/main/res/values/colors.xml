@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="accent" type="color">#fff06860</item>
+    <item name="success" type="color">#ff60f0af</item>
+    <item name="primarydark" type="color">#ffc0534D</item>
+    <item name="navigation" type="color">#ff222222</item>
+
+    <integer-array name="androidcolors">
+        <item>@color/accent</item>
+        <item>@color/success</item>
+        <item>@color/primarydark</item>
+        <item>@color/navigation</item>
+    </integer-array>
+</resources>

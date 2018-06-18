@@ -1,0 +1,3 @@
+[submodule "app/src/main/assets/www"]
+	path = app/src/main/assets/www
+	url = git@github.com:numixproject/croma.git

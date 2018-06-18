@@ -1,0 +1,41 @@
+@import "global";
+@import "dropshadow";
+@import "animations";
+
+
+/*************
+! Paper button
+**************/
+
+@include exports("paper-button") {
+    .paper-button-container { margin: $spacing / 2; }
+
+    .paper-button {
+        @extend %transition;
+        @include dropshadow(1);
+
+        -webkit-appearance: none;
+        -moz-appearance: none;
+
+        padding: $spacing / 2;
+        background-image: none;
+        background-color: $light-color;
+        color: $dark-color;
+        border-radius: $roundness;
+        text-decoration: none;
+        text-align: center;
+        text-transform: uppercase;
+        cursor: pointer;
+
+        &:focus, &:hover { @include dropshadow(2); }
+
+        &:active { @include dropshadow(3); }
+
+        .unlock & {
+            background-color: $accent-color;
+            color: $light-color;
+        }
+    }
+
+    .paper-button-block { display: block; }
+}
