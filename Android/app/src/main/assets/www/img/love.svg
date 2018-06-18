@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="21" width="21" viewBox="0 0 21 21">
-    <g fill="#000" opacity="0.5">
-        <path transform="matrix(1.2570786,0,0,1.3155474,0.05555561,-3.3590538)" d="m 7.911 7.874 a 3.977 3.801 0 1 1 -7.955 0 3.977 3.801 0 1 1 7.955 0 z" id="0"/>
-        <use transform="matrix(1 0 0 1 10 0)" xlink:href="#0" />
-        <path d="M 0,7 C 0,11 0,13 10,19.800699 20,13 20,11 20,7 z"/>
-    </g>
-</svg>
